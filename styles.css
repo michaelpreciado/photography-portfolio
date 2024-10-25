@@ -53,18 +53,15 @@ body {
 
 /* Update content sections to work with parallax */
 .hero-image {
-    height: calc(100vh - 80px);
+    height: calc(100vh - 60px); /* Adjust for mobile header height */
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
     z-index: 2;
-    padding: 20px;
-    margin-top: 80px;
-    transform: translateZ(0);
-    will-change: transform;
-    transition: transform 0.1s cubic-bezier(0.2, 0, 0.1, 1);
+    padding: 0; /* Remove padding */
+    margin-top: 60px; /* Match mobile header height */
 }
 
 .hero-image a {
@@ -73,26 +70,25 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 1rem; /* Add padding to the link instead */
 }
 
 .hero-image img {
     width: auto;
     height: auto;
-    max-width: 85%; /* Reduced from 95% */
-    max-height: 80vh; /* Reduced from 90vh */
+    max-width: min(90%, 1200px);
+    max-height: 85vh;
     object-fit: contain;
-    cursor: pointer;
-    transition: 0.3s;
-    border-radius: 5px;
-    opacity: 0.9; /* Added transparency */
-    opacity: 0; /* Start invisible */
-    transition: opacity 1.5s ease-in-out, transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    will-change: opacity, transform;
+    margin: auto;
+    border-radius: 8px;
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25); /* Matching shadow intensity */
 }
 
 .hero-image img:hover {
-    opacity: 1; /* Full opacity on hover */
-    transform: scale(1.02); /* Slight zoom effect on hover */
+    transform: translateY(-5px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.35);
 }
 
 .hero-image img.loaded {
@@ -104,48 +100,127 @@ body {
     transform: scale(1.02); /* Subtle scale effect during transition */
 }
 
+/* Responsive breakpoints */
+@media screen and (max-width: 1200px) {
+    .hero-image img {
+        max-width: min(90%, 700px);
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .hero-image img {
+        max-width: min(80%, 600px);
+        max-height: min(65vh, 600px);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .hero-image {
+        height: calc(100vh - 60px);
+        margin-top: 60px;
+    }
+    
+    .hero-image img {
+        max-width: min(85%, 600px);
+        max-height: min(85vh, 600px);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .hero-image {
+        height: calc(100vh - 50px);
+        margin-top: 50px;
+    }
+    
+    .hero-image img {
+        max-width: min(70%, 400px);
+        max-height: min(55vh, 400px);
+    }
+}
+
+@media screen and (max-width: 360px) {
+    .hero-image img {
+        max-width: min(65%, 300px);
+        max-height: min(50vh, 300px);
+    }
+}
+
 /* Add responsive adjustments */
 @media screen and (max-width: 768px) {
     .hero-image {
         height: calc(100vh - 60px);
-        padding: 15px;
+        margin-top: 60px;
+    }
+    
+    .hero-image a {
+        padding: 0.8rem;
     }
     
     .hero-image img {
-        max-width: 95%;
-        max-height: 75vh;
+        max-width: 85%;
+        max-height: 70vh;
     }
 }
 
-/* Update portfolio grid layout for better centering */
+/* Update portfolio grid layout for better responsiveness */
 .portfolio-grid {
     display: flex !important;
     flex-direction: column !important;
     align-items: center;
     gap: 4rem;
     padding: 2rem;
-    max-width: 600px; /* Reduced from 800px for tighter centering */
+    width: 100%;
+    max-width: 1200px;
     margin: 150px auto 2rem;
-    background: rgba(248, 248, 248, 0.9);
+    background: transparent;
 }
 
 .portfolio-grid img {
-    width: 100%;
+    width: auto;
     height: auto;
-    max-width: 450px; /* Reduced from 500px */
-    max-height: 600px; /* Reduced from 700px */
+    max-width: min(90%, 800px);
     object-fit: contain;
-    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     opacity: 0;
     transform: translateY(30px);
-    border-radius: 3px;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.15);
+    border-radius: 8px; /* Reduced border radius for cleaner look */
     background: transparent;
-    opacity: 0.92;
-    filter: contrast(105%) brightness(98%) saturate(95%);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    transform: translateZ(0);
-    will-change: transform;
+    opacity: 0.98; /* Increased opacity for cleaner look */
+    filter: none; /* Removed filters for cleaner look */
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25); /* Increased shadow intensity */
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 1200px) {
+    .portfolio-grid img {
+        max-width: min(85%, 400px);
+        max-height: min(75vh, 550px);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .portfolio-grid {
+        padding: 1rem;
+        gap: 3rem;
+        margin: 120px auto 1rem;
+    }
+
+    .portfolio-grid img {
+        max-width: min(85%, 350px);
+        max-height: min(70vh, 500px);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .portfolio-grid {
+        gap: 2rem;
+        padding: 0.5rem;
+    }
+
+    .portfolio-grid img {
+        max-width: 85%;
+        max-height: min(65vh, 450px);
+    }
 }
 
 /* Remove film strip effect */
@@ -187,37 +262,6 @@ body {
     .portfolio-grid::before,
     .portfolio-grid::after {
         width: 20px; /* Smaller sprocket holes on mobile */
-    }
-}
-
-/* Responsive adjustments */
-@media screen and (max-width: 768px) {
-    .portfolio-grid {
-        padding: 1rem;
-        gap: 3rem;
-        margin: 120px auto 1rem;
-        max-width: 90%;
-    }
-
-    .portfolio-grid img {
-        max-width: 350px; /* Reduced for mobile */
-    }
-
-    .about-content {
-        margin: 120px 20px;
-        max-width: 300px; /* Reduced for mobile */
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .portfolio-grid {
-        gap: 2rem;
-        padding: 0.5rem;
-    }
-
-    .portfolio-grid img {
-        max-width: 100%; /* Full width on small screens */
-        max-height: 500px;
     }
 }
 
@@ -686,36 +730,62 @@ select option {
 /* Mobile-specific adjustments */
 @media screen and (max-width: 768px) {
     .transparent-header {
-        padding: 1rem 1.5rem;
-        height: 70px; /* Still larger than original mobile size */
+        padding: 0.8rem 1.2rem;
+        height: 60px; /* Reduced height */
     }
 
     .logo {
-        font-size: 1.6rem; /* Larger than original mobile size */
+        font-size: 1.6rem; /* Smaller font size */
+        letter-spacing: 2px; /* Reduced letter spacing */
     }
 
     .menu-btn {
-        padding: 10px;
+        padding: 8px;
+        gap: 6px; /* Reduced gap between lines */
+        margin-right: 5px; /* Add some right margin */
     }
 
     .menu-btn span {
-        width: 25px;
+        width: 22px; /* Slightly smaller lines */
+        height: 2px; /* Thinner lines */
     }
 
     .sidebar {
-        padding-top: 70px; /* Match mobile header height */
+        padding-top: 60px; /* Match new header height */
+        width: 240px; /* Slightly narrower */
+        right: -240px;
+    }
+
+    .sidebar ul li a {
+        font-size: 1.4rem; /* Smaller font size */
+        padding: 1rem 1.5rem; /* Reduced padding */
+        letter-spacing: 1px; /* Reduced letter spacing */
+    }
+
+    /* Adjust menu button animation for mobile */
+    .menu-btn.active span:first-child {
+        transform: rotate(45deg) translate(4px, 4px); /* Adjusted translation */
+    }
+
+    .menu-btn.active span:last-child {
+        transform: rotate(-45deg) translate(4px, -4px); /* Adjusted translation */
     }
 }
 
 /* Extra small devices */
 @media screen and (max-width: 360px) {
     .logo {
-        font-size: 1rem;
+        font-size: 1.4rem; /* Even smaller font */
     }
 
     .sidebar {
         width: 220px;
         right: -220px;
+    }
+
+    .sidebar ul li a {
+        font-size: 1.2rem;
+        padding: 0.8rem 1.2rem;
     }
 }
 
@@ -1002,36 +1072,50 @@ html {
     opacity: 1; /* Remove hover effect */
 }
 
-/* Update portfolio grid images */
+/* Update portfolio grid images with stronger shadow */
 .portfolio-grid img {
-    /* ... existing properties ... */
-    border-radius: 15px; /* Added rounded corners */
-    overflow: hidden;
+    width: auto;
+    height: auto;
+    max-width: min(90%, 800px);
+    object-fit: contain;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    transform: translateY(30px);
+    border-radius: 8px;
+    background: transparent;
+    opacity: 0.98;
+    filter: none;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25); /* Increased shadow intensity */
 }
 
-/* Update hero image */
+/* Update hover effect with stronger shadow */
+.portfolio-grid img:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.35); /* Enhanced shadow on hover */
+    opacity: 1;
+}
+
+/* Update hero image shadow */
 .hero-image img {
     /* ... existing properties ... */
-    border-radius: 15px; /* Added rounded corners */
-    overflow: hidden;
-}
-
-/* Add hover effect */
-.portfolio-grid img:hover {
-    transform: scale(1.02);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25); /* Matching shadow intensity */
 }
 
 .hero-image img:hover {
-    transform: scale(1.02);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.35);
 }
 
-/* Mobile adjustments */
+/* Mobile adjustments with visible shadows */
 @media screen and (max-width: 768px) {
     .portfolio-grid img,
     .hero-image img {
-        border-radius: 12px; /* Slightly smaller radius for mobile */
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    .portfolio-grid img:hover,
+    .hero-image img:hover {
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
     }
 }
 
@@ -1074,6 +1158,7 @@ html {
     .sidebar ul li a {
         font-size: 1.6rem;
         padding: 1.2rem 2rem;
+        text-decoration: none; /* Remove hyperlink styling */
     }
 
     .portfolio-grid {
@@ -1117,3 +1202,227 @@ html {
 .logo-link:hover {
     opacity: 1;
 }
+
+/* Update hero image styles for better mobile centering */
+.hero-image {
+    height: calc(100vh - 60px); /* Adjust for mobile header height */
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+    padding: 0; /* Remove padding */
+    margin-top: 60px; /* Match mobile header height */
+}
+
+.hero-image a {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem; /* Add padding to the link instead */
+}
+
+.hero-image img {
+    width: auto;
+    height: auto;
+    max-width: min(90%, 800px); /* Use min() for responsive scaling */
+    max-height: min(75vh, 800px);
+    object-fit: contain;
+    margin: auto;
+}
+
+/* Responsive breakpoints */
+@media screen and (max-width: 1200px) {
+    .hero-image img {
+        max-width: min(85%, 700px);
+        max-height: min(70vh, 700px);
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .hero-image img {
+        max-width: min(80%, 600px);
+        max-height: min(65vh, 600px);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .hero-image {
+        height: calc(100vh - 60px);
+        margin-top: 60px;
+    }
+    
+    .hero-image img {
+        max-width: min(75%, 500px);
+        max-height: min(60vh, 500px);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .hero-image {
+        height: calc(100vh - 50px);
+        margin-top: 50px;
+    }
+    
+    .hero-image img {
+        max-width: min(70%, 400px);
+        max-height: min(55vh, 400px);
+    }
+}
+
+@media screen and (max-width: 360px) {
+    .hero-image img {
+        max-width: min(65%, 300px);
+        max-height: min(50vh, 300px);
+    }
+}
+
+/* Mobile-specific adjustments */
+@media screen and (max-width: 768px) {
+    .hero-image {
+        height: calc(100vh - 60px);
+        margin-top: 60px;
+    }
+    
+    .hero-image a {
+        padding: 0.8rem;
+    }
+    
+    .hero-image img {
+        max-width: 85%;
+        max-height: 70vh;
+    }
+}
+
+/* Extra small devices */
+@media screen and (max-width: 480px) {
+    .hero-image {
+        height: calc(100vh - 50px);
+        margin-top: 50px;
+    }
+    
+    .hero-image img {
+        max-width: 90%;
+        max-height: 65vh;
+    }
+}
+
+/* Update logo styles for better mobile fit */
+@media screen and (max-width: 768px) {
+    .transparent-header {
+        padding: 0.8rem 1rem;
+        height: 60px;
+    }
+
+    .logo {
+        font-size: 1.4rem; /* Reduced from 2.2rem */
+        letter-spacing: 1.5px; /* Reduced letter spacing */
+    }
+
+    .logo-link {
+        white-space: nowrap; /* Prevent text wrapping */
+    }
+}
+
+/* Extra small devices */
+@media screen and (max-width: 360px) {
+    .transparent-header {
+        padding: 0.8rem 0.8rem;
+    }
+
+    .logo {
+        font-size: 1.2rem; /* Even smaller for very small devices */
+        letter-spacing: 1px;
+    }
+
+    .menu-btn {
+        padding: 6px;
+        margin-left: 8px;
+    }
+}
+
+/* Very small devices */
+@media screen and (max-width: 320px) {
+    .logo {
+        font-size: 1.1rem;
+        letter-spacing: 0.8px;
+    }
+}
+
+/* Mobile-specific adjustments */
+@media screen and (max-width: 768px) {
+    .transparent-header {
+        padding: 0.6rem 1rem;
+        height: 50px; /* Reduced height */
+    }
+
+    .logo {
+        font-size: 1.3rem; /* Smaller font */
+        letter-spacing: 1px;
+    }
+
+    .menu-btn {
+        padding: 6px;
+        gap: 4px; /* Reduced gap between lines */
+        margin-right: 0;
+        transform: scale(0.8); /* Make button smaller */
+    }
+
+    .menu-btn span {
+        width: 20px; /* Smaller lines */
+        height: 2px;
+    }
+
+    .sidebar {
+        padding-top: 50px; /* Match new header height */
+        width: 200px; /* Narrower sidebar */
+        right: -200px;
+    }
+
+    .sidebar ul li a {
+        font-size: 1.2rem; /* Smaller font */
+        padding: 0.8rem 1.2rem; /* Less padding */
+        letter-spacing: 1px;
+    }
+
+    /* Adjust menu button animation for mobile */
+    .menu-btn.active span:first-child {
+        transform: rotate(45deg) translate(3px, 3px); /* Adjusted for smaller size */
+    }
+
+    .menu-btn.active span:last-child {
+        transform: rotate(-45deg) translate(3px, -3px); /* Adjusted for smaller size */
+    }
+}
+
+/* Extra small devices */
+@media screen and (max-width: 360px) {
+    .transparent-header {
+        padding: 0.6rem 0.8rem;
+    }
+
+    .logo {
+        font-size: 1.1rem;
+    }
+
+    .sidebar {
+        width: 180px; /* Even narrower */
+        right: -180px;
+    }
+
+    .sidebar ul li a {
+        font-size: 1.1rem;
+        padding: 0.7rem 1rem;
+    }
+
+    .menu-btn {
+        transform: scale(0.75); /* Even smaller button */
+    }
+}
+
+
+
+

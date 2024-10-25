@@ -104,7 +104,7 @@ const toggleSidebar = () => {
     });
 };
 
-// Add image list
+// Add image list with all available images
 const imageList = [
     'image1.jpg',
     'image2.jpg',
@@ -125,28 +125,35 @@ const imageList = [
     'image17.jpeg'
 ];
 
+// Keep track of the last shown image to avoid repetition
+let lastShownImageIndex = -1;
+
 // Function to load random image with smooth transition
 const loadRandomImage = () => {
     const randomImage = document.getElementById('randomImage');
     if (randomImage) {
-        const randomIndex = Math.floor(Math.random() * imageList.length);
+        let randomIndex;
+        // Make sure we don't show the same image twice in a row
+        do {
+            randomIndex = Math.floor(Math.random() * imageList.length);
+        } while (randomIndex === lastShownImageIndex);
+        
+        lastShownImageIndex = randomIndex;
         const img = new Image();
         
-        // Start fade out with longer duration
+        // Start fade out
         randomImage.classList.add('fade-out');
         
         img.onload = () => {
-            // After new image is loaded, wait for fade out to complete
             setTimeout(() => {
                 randomImage.src = img.src;
-                // Start fade in with RAF for smooth animation
                 requestAnimationFrame(() => {
                     setTimeout(() => {
                         randomImage.classList.remove('fade-out');
                         randomImage.classList.add('loaded');
-                    }, 50); // Small delay for smoother transition
+                    }, 50);
                 });
-            }, 750); // Increased from 500ms for smoother transition
+            }, 750);
         };
         
         img.onerror = () => {
@@ -188,8 +195,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load first random image
     loadRandomImage();
     
-    // Change image every 10 seconds for smoother experience
-    setInterval(loadRandomImage, 10000);
+    // Change image every 7 seconds
+    setInterval(loadRandomImage, 7000);
 });
 
 // Export for HTML
