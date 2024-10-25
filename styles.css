@@ -100,66 +100,51 @@ body {
     }
 }
 
-/* Update portfolio grid layout and styling */
+/* Update portfolio grid layout for single column */
 .portfolio-grid {
-    position: relative;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: 1fr; /* Changed to single column */
+    gap: 2rem; /* Increased gap between images */
     padding: 2rem;
-    max-width: 1400px;
+    max-width: 1200px; /* Reduced max-width for better image display */
     margin: 0 auto;
     background: white;
-    z-index: 2;
 }
 
-/* Update portfolio page specific styles */
-.portfolio-content {
-    background: white;
-    min-height: 100vh;
-    width: 100%;
-    position: relative;
-    z-index: 2;
-    padding: 80px 0;
-}
-
-/* Keep the image hover effects */
 .portfolio-grid img {
     width: 100%;
-    height: 400px;
-    object-fit: cover;
-    transition: 0.4s ease-out;
+    height: auto; /* Changed to auto to maintain aspect ratio */
+    max-height: 800px; /* Maximum height for images */
+    object-fit: contain; /* Changed to contain to maintain aspect ratio */
+    transition: 0.3s;
     border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .portfolio-grid img:hover {
-    transform: scale(1.03);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
+    opacity: 0.9;
+    transform: scale(1.02);
 }
 
-/* Update media queries */
+/* Update responsive adjustments */
 @media screen and (max-width: 768px) {
     .portfolio-grid {
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         padding: 1rem;
-        margin: 60px auto;
+        gap: 1.5rem;
     }
 
     .portfolio-grid img {
-        height: 300px;
+        max-height: 600px;
     }
 }
 
 @media screen and (max-width: 480px) {
     .portfolio-grid {
-        grid-template-columns: 1fr;
+        padding: 0.8rem;
         gap: 1rem;
     }
 
     .portfolio-grid img {
-        height: 250px;
+        max-height: 400px;
     }
 }
 
@@ -213,21 +198,20 @@ body::before {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.5rem 2rem;
-    background: rgba(0, 0, 0, 0.3); /* More transparent */
+    padding: 1rem 1.5rem; /* Reduced padding */
+    background: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     z-index: 1000;
+    height: 60px; /* Fixed height */
 }
 
-/* Clean up logo style */
 .logo {
     color: white;
-    font-size: 2rem;
+    font-size: 1.5rem; /* Smaller font size */
     font-weight: 400;
     font-family: var(--groovy-font);
-    letter-spacing: 3px;
-    margin-right: auto;
+    letter-spacing: 2px;
 }
 
 .menu-btn {
@@ -255,12 +239,12 @@ body::before {
     top: 0;
     width: 300px;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.3); /* More transparent to match header */
+    background: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     transition: 0.3s;
     z-index: 999;
-    padding-top: 80px;
+    padding-top: 60px; /* Match header height */
 }
 
 .sidebar.active {
@@ -537,6 +521,50 @@ select option {
     
     .submit-btn {
         width: 100%;
+    }
+}
+
+/* Mobile-specific adjustments */
+@media screen and (max-width: 768px) {
+    .transparent-header {
+        padding: 0.8rem 1rem;
+        height: 50px; /* Slightly smaller on mobile */
+    }
+
+    .logo {
+        font-size: 1.2rem; /* Smaller font on mobile */
+    }
+
+    .sidebar {
+        width: 250px; /* Slightly narrower on mobile */
+        right: -250px;
+        padding-top: 50px; /* Match mobile header height */
+    }
+
+    .sidebar ul li a {
+        padding: 0.8rem 1.5rem;
+        font-size: 1.2rem;
+    }
+
+    .menu-btn {
+        padding: 8px;
+    }
+
+    .menu-btn span {
+        width: 22px;
+        height: 2px;
+    }
+}
+
+/* Extra small devices */
+@media screen and (max-width: 360px) {
+    .logo {
+        font-size: 1rem;
+    }
+
+    .sidebar {
+        width: 220px;
+        right: -220px;
     }
 }
 

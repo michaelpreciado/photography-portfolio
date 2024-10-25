@@ -3,26 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Groovy&family=Peace+Sans&display=swap" rel="stylesheet">
+    <meta name="description" content="Mario Preciado Photography - Professional Portrait and Lifestyle Photography">
+    <meta name="theme-color" content="#000000">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
-    <title>Photographer Portfolio</title>
+    <title>Mario Preciado Photography</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="parallax-bg"></div>
+    <div class="parallax-bg" aria-hidden="true"></div>
     
     <header class="transparent-header">
         <div class="logo">MARIO PRECIADO</div>
-        <button class="menu-btn" onclick="toggleSidebar()">
+        <button class="menu-btn" aria-label="Toggle Menu" onclick="toggleSidebar()">
             <span></span>
             <span></span>
             <span></span>
         </button>
     </header>
 
-    <nav class="sidebar">
+    <nav class="sidebar" aria-label="Main navigation">
         <ul>
-            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html" aria-current="page">Home</a></li>
             <li><a href="portfolio.html">Portfolio</a></li>
             <li><a href="about.html">About</a></li>
         </ul>
@@ -31,34 +34,17 @@
     <main class="parallax-container">
         <div class="parallax-content">
             <div class="hero-image">
-                <a href="portfolio.html">
-                    <img id="randomImage" src="image1.jpg" alt="Featured Photography">
+                <a href="portfolio.html" aria-label="View Portfolio">
+                    <img id="randomImage" 
+                         src="image1.jpg" 
+                         alt="Featured Photography" 
+                         loading="lazy" 
+                         decoding="async">
                 </a>
             </div>
         </div>
-        <script>
-            // Array of available image paths
-            const images = [
-                'image1.jpg',
-                'image2.jpg', 
-                'image3.jpg',
-                'image4.jpg',
-                'image5.jpg',
-                'image6.jpg',
-                'image7.jpg',
-                'image8.jpg',
-                'image9.jpg',
-                'image10.jpg'
-            ];
-            
-            // Get random image on page load
-            window.addEventListener('load', () => {
-                const randomIndex = Math.floor(Math.random() * images.length);
-                document.getElementById('randomImage').src = images[randomIndex];
-            });
-        </script>
     </main>
 
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
 </body>
 </html>
