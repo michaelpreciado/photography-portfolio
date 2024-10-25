@@ -30,24 +30,23 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    will-change: transform;
-    transform: translateZ(0);
-    background-color: #f0f0f0; /* More neutral gray */
-    filter: sepia(5%) contrast(105%) brightness(100%) saturate(90%);
-    transition: transform 0.1s cubic-bezier(0.2, 0, 0.1, 1);
+    background-attachment: fixed; /* Keep background fixed */
+    will-change: auto; /* Remove will-change */
+    transform: none; /* Remove transform */
 }
 
 /* Update parallax container */
 .parallax-container {
     position: relative;
-    height: 100vh;
+    min-height: 100vh;
     overflow-x: hidden;
     overflow-y: auto;
     z-index: 1;
+    transform: none; /* Remove transform */
 }
 
 .parallax-content {
-    transform-style: preserve-3d;
+    transform: none; /* Remove transform */
     position: relative;
 }
 
@@ -62,6 +61,8 @@ body {
     z-index: 2;
     padding: 0; /* Remove padding */
     margin-top: 60px; /* Match mobile header height */
+    transform: none; /* Remove transform */
+    will-change: auto; /* Remove will-change */
 }
 
 .hero-image a {
@@ -84,6 +85,8 @@ body {
     opacity: 0;
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25); /* Matching shadow intensity */
+    transform: none; /* Remove transform */
+    will-change: auto; /* Remove will-change */
 }
 
 .hero-image img:hover {
@@ -300,16 +303,14 @@ body {
     z-index: 2;
     color: white;
     padding: 2.5rem;
-    max-width: 350px; /* Reduced from 400px */
-    margin: 180px auto; /* Increased top margin */
+    width: 90%;
+    max-width: 500px; /* Larger default max-width */
+    margin: 150px auto;
     border-radius: 8px;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     border: none;
     text-align: center;
-    transform: translateZ(0);
-    will-change: transform;
-    transition: transform 0.1s cubic-bezier(0.2, 0, 0.1, 1);
 }
 
 /* Remove contact form styles */
@@ -349,9 +350,22 @@ body {
 /* Mobile adjustments */
 @media screen and (max-width: 768px) {
     .about-content {
-        margin: 120px 20px;
+        margin: 100px auto;
         padding: 2rem;
-        max-width: 350px; /* Even smaller on mobile */
+        width: 90%;
+        max-width: 320px;
+    }
+
+    .about-summary h2,
+    .contact-info h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .about-summary p,
+    .contact-info p {
+        font-size: 0.95rem;
+        margin: 0.8rem 0;
     }
 }
 
@@ -390,12 +404,14 @@ body::before {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.5rem 2rem; /* Increased padding */
+    padding: 2rem 3rem;
     background: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     z-index: 1000;
-    height: 80px; /* Increased height from 60px */
+    height: 100px;
+    transform: none; /* Remove transform */
+    will-change: auto; /* Remove will-change */
 }
 
 .logo {
@@ -1423,6 +1439,171 @@ html {
     }
 }
 
+/* Update about content styles for better mobile centering */
+.about-content {
+    position: relative;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 2;
+    color: white;
+    padding: 2.5rem;
+    width: 90%;
+    max-width: 500px; /* Larger default max-width */
+    margin: 150px auto;
+    border-radius: 8px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: none;
+    text-align: center;
+}
 
+/* Update about summary section */
+.about-summary {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
 
+.about-summary h2 {
+    font-family: var(--system-fonts);
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    opacity: 0.9;
+    letter-spacing: 2px;
+}
 
+.about-summary p {
+    margin: 1rem 0;
+    font-size: 1rem;
+    line-height: 1.6;
+    opacity: 0.8;
+    letter-spacing: 1px;
+}
+
+/* Update contact info section */
+.contact-info {
+    text-align: center;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.contact-info h2 {
+    font-family: var(--system-fonts);
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+    letter-spacing: 2px;
+}
+
+.contact-info p {
+    margin: 1rem 0;
+    font-size: 1rem;
+    opacity: 0.8;
+    letter-spacing: 1px;
+}
+
+/* Mobile adjustments */
+@media screen and (max-width: 768px) {
+    .about-content {
+        margin: 100px auto;
+        padding: 2rem;
+        width: 90%;
+        max-width: 320px;
+    }
+
+    .about-summary h2,
+    .contact-info h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .about-summary p,
+    .contact-info p {
+        font-size: 0.95rem;
+        margin: 0.8rem 0;
+    }
+}
+
+/* Extra small devices */
+@media screen and (max-width: 360px) {
+    .about-content {
+        margin: 80px auto;
+        padding: 1.5rem;
+        width: 95%;
+        max-width: 300px;
+    }
+
+    .about-summary h2,
+    .contact-info h2 {
+        font-size: 1.3rem;
+    }
+
+    .about-summary p,
+    .contact-info p {
+        font-size: 0.9rem;
+    }
+}
+
+/* Mobile-specific adjustments with larger header and fonts */
+@media screen and (max-width: 768px) {
+    .transparent-header {
+        padding: 0.8rem 1.2rem;
+        height: 70px; /* Increased from 50px */
+    }
+
+    .logo {
+        font-size: 1.8rem; /* Increased from 1.3rem */
+        letter-spacing: 2px;
+    }
+
+    .menu-btn {
+        padding: 8px;
+        gap: 6px;
+        margin-right: 5px;
+        transform: scale(0.9); /* Slightly larger than before */
+    }
+
+    .menu-btn span {
+        width: 25px; /* Larger lines */
+        height: 2px;
+    }
+
+    .sidebar {
+        padding-top: 70px; /* Match new header height */
+        width: 250px; /* Wider sidebar */
+        right: -250px;
+    }
+
+    .sidebar ul li a {
+        font-size: 1.6rem; /* Larger font */
+        padding: 1rem 1.5rem;
+        letter-spacing: 1.5px;
+    }
+}
+
+/* Extra small devices */
+@media screen and (max-width: 360px) {
+    .transparent-header {
+        padding: 0.8rem 1rem;
+        height: 65px; /* Still larger than original */
+    }
+
+    .logo {
+        font-size: 1.6rem; /* Increased from 1.1rem */
+        letter-spacing: 1.5px;
+    }
+
+    .sidebar {
+        width: 220px; /* Wider than before */
+        right: -220px;
+    }
+
+    .sidebar ul li a {
+        font-size: 1.4rem; /* Larger than before */
+        padding: 0.8rem 1.2rem;
+    }
+
+    .menu-btn {
+        transform: scale(0.85); /* Larger than before */
+    }
+}
