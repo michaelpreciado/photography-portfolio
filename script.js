@@ -12,6 +12,9 @@ const elements = {
     randomImage: document.getElementById('randomImage')
 };
 
+// iOS detection
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
 // Smooth scrolling variables
 let lastScrollTop = 0;
 let ticking = false;
@@ -27,14 +30,15 @@ const smoothScroll = (target, duration = 1000) => {
     const distance = targetPosition;
     const startTime = performance.now();
 
-    const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
+    // Apple's easing function
+    const easeOutQuart = t => 1 - (--t) * t * t * t;
 
     const animation = currentTime => {
         const timeElapsed = currentTime - startTime;
         const progress = Math.min(timeElapsed / duration, 1);
 
         window.scrollTo({
-            top: startPosition + distance * easeOutCubic(progress),
+            top: startPosition + distance * easeOutQuart(progress),
             behavior: 'auto'
         });
 
@@ -146,8 +150,8 @@ document.addEventListener('DOMContentLoaded', () => {
 // Smooth image reveal with Intersection Observer
 const observerOptions = {
     root: null,
-    rootMargin: '50px',
-    threshold: [0, 0.25, 0.5, 0.75, 1] // More thresholds for smoother transitions
+    rootMargin: '0px',
+    threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1] // More thresholds for smoother animations
 };
 
 const observer = new IntersectionObserver((entries) => {
@@ -175,7 +179,7 @@ const initializeImages = () => {
     images.forEach((img, index) => {
         img.style.transform = 'translateY(30px)';
         img.style.opacity = '0';
-        img.dataset.delay = index * 100; // Staggered delay
+        img.dataset.delay = index * (isIOS ? 50 : 100); // Faster animation on iOS
         observer.observe(img);
     });
 };
@@ -294,3 +298,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Export for HTML
 window.toggleSidebar = toggleSidebar;
+
+// Add momentum scrolling for iOS
+if (CSS.supports('-webkit-overflow-scrolling', 'touch')) {
+    document.body.style.webkitOverflowScrolling = 'touch';
+}
+
+// Optimize touch handling
+let lastY = 0;
+const touchStart = e => lastY = e.touches[0].clientY;
+const touchMove = e => {
+    const y = e.touches[0].clientY;
+    const delta = lastY - y;
+    
+    if (Math.abs(delta) > 2) {
+        requestAnimationFrame(() => {
+            window.scrollBy({
+                top: delta,
+                behavior: 'auto'
+            });
+        });
+    }
+    lastY = y;
+};
+
+document.addEventListener('touchstart', touchStart, { passive: true });
+document.addEventListener('touchmove', touchMove, { passive: true });
