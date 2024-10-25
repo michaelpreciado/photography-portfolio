@@ -12,43 +12,136 @@ const elements = {
     randomImage: document.getElementById('randomImage')
 };
 
-// Enhanced parallax effect
-const parallaxEffect = () => {
-    let scrolled = window.pageYOffset;
-    
-    requestAnimationFrame(() => {
-        if (elements.parallaxBg) {
-            elements.parallaxBg.style.transform = `translate3d(0, ${scrolled * 0.3}px, 0)`; // Slower background movement
+// Smooth scrolling variables
+let lastScrollTop = 0;
+let ticking = false;
+let animationFrame;
+let touchStartY = 0;
+let touchStartX = 0;
+let isScrolling = false;
+
+// Enhanced smooth scroll function with better easing
+const smoothScroll = (target, duration = 1000) => {
+    const targetPosition = target.getBoundingClientRect().top;
+    const startPosition = window.pageYOffset;
+    const distance = targetPosition;
+    const startTime = performance.now();
+
+    const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
+
+    const animation = currentTime => {
+        const timeElapsed = currentTime - startTime;
+        const progress = Math.min(timeElapsed / duration, 1);
+
+        window.scrollTo({
+            top: startPosition + distance * easeOutCubic(progress),
+            behavior: 'auto'
+        });
+
+        if (progress < 1) {
+            requestAnimationFrame(animation);
         }
-        
-        if (elements.heroImage) {
-            elements.heroImage.style.transform = `translate3d(0, ${scrolled * 0.2}px, 0)`; // Subtle hero image movement
-        }
-        
-        if (elements.portfolioGrid) {
-            const images = elements.portfolioGrid.querySelectorAll('img');
-            images.forEach((img, index) => {
-                const speed = 0.1 + (index % 3) * 0.05; // Varying speeds for different images
-                img.style.transform = `translate3d(0, ${scrolled * speed}px, 0)`;
-            });
-        }
-        
-        if (elements.aboutContent) {
-            elements.aboutContent.style.transform = `translate3d(0, ${scrolled * 0.1}px, 0)`; // Subtle content movement
-        }
-    });
+    };
+
+    requestAnimationFrame(animation);
 };
 
-// Optimized scroll listener
-window.addEventListener('scroll', () => {
-    if (!ticking) {
-        window.requestAnimationFrame(() => {
-            parallaxEffect();
+// Optimized parallax effect
+const parallaxEffect = () => {
+    if (!ticking && !isScrolling) {
+        animationFrame = requestAnimationFrame(() => {
+            const scrolled = window.pageYOffset;
+            const delta = scrolled - lastScrollTop;
+            
+            if (Math.abs(delta) > 2) { // Threshold for movement
+                if (elements.parallaxBg) {
+                    elements.parallaxBg.style.transform = `translate3d(0, ${scrolled * 0.3}px, 0)`;
+                }
+                
+                if (elements.portfolioGrid) {
+                    const images = elements.portfolioGrid.querySelectorAll('img');
+                    images.forEach((img, index) => {
+                        const speed = 0.1 + (index % 3) * 0.02;
+                        img.style.transform = `translate3d(0, ${scrolled * speed}px, 0)`;
+                    });
+                }
+                
+                lastScrollTop = scrolled;
+            }
+            
             ticking = false;
         });
+        
         ticking = true;
     }
+};
+
+// Optimized scroll handler with debounce
+const scrollHandler = () => {
+    if (!isScrolling) {
+        requestAnimationFrame(() => {
+            parallaxEffect();
+            isScrolling = false;
+        });
+        isScrolling = true;
+    }
+};
+
+// Enhanced touch handlers
+const touchStartHandler = (e) => {
+    touchStartY = e.touches[0].clientY;
+    touchStartX = e.touches[0].pageX;
+    isScrolling = false;
+};
+
+const touchMoveHandler = (e) => {
+    if (e.touches.length > 1) return; // Ignore multi-touch
+
+    const touchY = e.touches[0].clientY;
+    const touchX = e.touches[0].pageX;
+    
+    // Calculate movement
+    const deltaY = touchStartY - touchY;
+    const deltaX = touchStartX - touchX;
+    
+    // Check if scrolling vertically
+    if (Math.abs(deltaY) > Math.abs(deltaX)) {
+        isScrolling = true;
+        
+        // Smooth the scroll effect
+        window.scrollBy({
+            top: deltaY * 0.5,
+            behavior: 'auto'
+        });
+    }
+    
+    touchStartY = touchY;
+    touchStartX = touchX;
+};
+
+// Add event listeners with options
+window.addEventListener('scroll', scrollHandler, { passive: true });
+document.addEventListener('touchstart', touchStartHandler, { passive: true });
+document.addEventListener('touchmove', touchMoveHandler, { passive: true });
+document.addEventListener('touchend', () => {
+    isScrolling = false;
 }, { passive: true });
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize smooth scrolling for all internal links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', (e) => {
+            e.preventDefault();
+            const target = document.querySelector(anchor.getAttribute('href'));
+            if (target) {
+                smoothScroll(target);
+            }
+        });
+    });
+
+    // Rest of your initialization code...
+});
 
 // Smooth image reveal with Intersection Observer
 const observerOptions = {
