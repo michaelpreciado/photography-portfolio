@@ -26,13 +26,15 @@ body {
     width: 100%;
     height: 100vh;
     z-index: -1;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('image2.jpg');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('image.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     will-change: transform;
     transform: translateZ(0);
-    background-color: #000; /* Fallback color while image loads */
+    background-color: #f0f0f0; /* More neutral gray */
+    filter: sepia(5%) contrast(105%) brightness(100%) saturate(90%);
+    transition: transform 0.1s cubic-bezier(0.2, 0, 0.1, 1);
 }
 
 /* Update parallax container */
@@ -60,6 +62,9 @@ body {
     z-index: 2;
     padding: 20px;
     margin-top: 80px;
+    transform: translateZ(0);
+    will-change: transform;
+    transition: transform 0.1s cubic-bezier(0.2, 0, 0.1, 1);
 }
 
 .hero-image a {
@@ -80,11 +85,23 @@ body {
     transition: 0.3s;
     border-radius: 5px;
     opacity: 0.9; /* Added transparency */
+    opacity: 0; /* Start invisible */
+    transition: opacity 1.5s ease-in-out, transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: opacity, transform;
 }
 
 .hero-image img:hover {
     opacity: 1; /* Full opacity on hover */
     transform: scale(1.02); /* Slight zoom effect on hover */
+}
+
+.hero-image img.loaded {
+    opacity: 1; /* Fade in when loaded */
+}
+
+.hero-image img.fade-out {
+    opacity: 0;
+    transform: scale(1.02); /* Subtle scale effect during transition */
 }
 
 /* Add responsive adjustments */
@@ -100,88 +117,219 @@ body {
     }
 }
 
-/* Update portfolio grid layout for single column */
+/* Update portfolio grid layout for better centering */
 .portfolio-grid {
-    display: grid;
-    grid-template-columns: 1fr; /* Changed to single column */
-    gap: 2rem; /* Increased gap between images */
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center;
+    gap: 4rem;
     padding: 2rem;
-    max-width: 1200px; /* Reduced max-width for better image display */
-    margin: 0 auto;
-    background: white;
+    max-width: 600px; /* Reduced from 800px for tighter centering */
+    margin: 150px auto 2rem;
+    background: rgba(248, 248, 248, 0.9);
 }
 
 .portfolio-grid img {
     width: 100%;
-    height: auto; /* Changed to auto to maintain aspect ratio */
-    max-height: 800px; /* Maximum height for images */
-    object-fit: contain; /* Changed to contain to maintain aspect ratio */
-    transition: 0.3s;
-    border-radius: 5px;
+    height: auto;
+    max-width: 450px; /* Reduced from 500px */
+    max-height: 600px; /* Reduced from 700px */
+    object-fit: contain;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    transform: translateY(30px);
+    border-radius: 3px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.15);
+    background: transparent;
+    opacity: 0.92;
+    filter: contrast(105%) brightness(98%) saturate(95%);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    transform: translateZ(0);
+    will-change: transform;
 }
 
-.portfolio-grid img:hover {
+/* Remove film strip effect */
+.portfolio-grid::before,
+.portfolio-grid::after {
+    display: none; /* Remove the sprocket holes */
+}
+
+/* Add vintage camera viewfinder overlay */
+.parallax-bg::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at center, transparent 60%, rgba(0, 0, 0, 0.7) 100%),
+        repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.1) 0px, rgba(0, 0, 0, 0.1) 1px, transparent 1px, transparent 3px);
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.3;
+}
+
+/* Update header for camera aesthetic */
+.transparent-header {
+    background: rgba(0, 0, 0, 0.85);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo {
+    font-family: 'Courier New', monospace; /* Classic camera typography */
+    letter-spacing: 3px;
     opacity: 0.9;
-    transform: scale(1.02);
 }
 
-/* Update responsive adjustments */
+/* Mobile adjustments */
+@media screen and (max-width: 768px) {
+    .portfolio-grid::before,
+    .portfolio-grid::after {
+        width: 20px; /* Smaller sprocket holes on mobile */
+    }
+}
+
+/* Responsive adjustments */
 @media screen and (max-width: 768px) {
     .portfolio-grid {
         padding: 1rem;
-        gap: 1.5rem;
+        gap: 3rem;
+        margin: 120px auto 1rem;
+        max-width: 90%;
     }
 
     .portfolio-grid img {
-        max-height: 600px;
+        max-width: 350px; /* Reduced for mobile */
+    }
+
+    .about-content {
+        margin: 120px 20px;
+        max-width: 300px; /* Reduced for mobile */
     }
 }
 
 @media screen and (max-width: 480px) {
     .portfolio-grid {
-        padding: 0.8rem;
-        gap: 1rem;
+        gap: 2rem;
+        padding: 0.5rem;
     }
 
     .portfolio-grid img {
-        max-height: 400px;
+        max-width: 100%; /* Full width on small screens */
+        max-height: 500px;
     }
 }
 
-/* Update about content styles */
+/* Remove any grid properties */
+.portfolio-grid {
+    grid-template-columns: unset !important;
+    grid-template-rows: unset !important;
+    grid: none !important;
+}
+
+/* Class to be added when image enters viewport */
+.portfolio-grid img.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .portfolio-grid {
+        padding: 1rem;
+        gap: 3rem;
+        margin: 120px auto 1rem; /* Adjusted for mobile */
+        max-width: 95%;
+    }
+
+    .portfolio-grid img {
+        max-width: 100%;
+        border-width: 8px;
+    }
+}
+
+/* Update about content centering */
 .about-content {
     position: relative;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.3);
     z-index: 2;
     color: white;
-    padding: 4rem;
-    max-width: 800px;
-    margin: 100px auto;
+    padding: 2.5rem;
+    max-width: 350px; /* Reduced from 400px */
+    margin: 180px auto; /* Increased top margin */
     border-radius: 8px;
-}
-
-/* Update about content headings */
-.about-content h1 {
-    margin-bottom: 2rem;
-    font-size: 3rem;
-    font-weight: 400;
-    font-family: var(--groovy-font);
-    letter-spacing: 3px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: none;
     text-align: center;
-    background: none;
-    padding: 0;
+    transform: translateZ(0);
+    will-change: transform;
+    transition: transform 0.1s cubic-bezier(0.2, 0, 0.1, 1);
 }
 
-/* Update about content paragraphs */
-.about-content p {
-    margin-bottom: 1.5rem;
-    line-height: 1.6;
-    font-size: 1.2rem;
-    font-weight: 300;
-    font-family: var(--system-fonts);
-    letter-spacing: 1px;
-    background: none;
+/* Remove contact form styles */
+.contact-form {
+    display: none; /* Hide the contact form */
+}
+
+/* Update contact info styles */
+.contact-info {
+    text-align: center;
+    margin: 0 auto;
     padding: 0;
+    border-top: none;
+}
+
+.contact-info h2 {
+    font-family: var(--system-fonts);
+    font-size: 1.4rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+    letter-spacing: 2px;
+}
+
+.contact-info p {
+    margin: 1.2rem 0;
+    font-size: 1rem;
+    opacity: 0.8;
+    letter-spacing: 1px;
+    transition: opacity 0.3s ease;
+}
+
+.contact-info p:hover {
+    opacity: 1;
+    cursor: pointer;
+}
+
+/* Mobile adjustments */
+@media screen and (max-width: 768px) {
+    .about-content {
+        margin: 120px 20px;
+        padding: 2rem;
+        max-width: 350px; /* Even smaller on mobile */
+    }
+}
+
+/* Simplify contact info */
+.contact-info {
+    text-align: left;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.contact-info h2 {
+    font-family: var(--system-fonts);
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    opacity: 0.9;
+}
+
+.contact-info p {
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+    opacity: 0.8;
 }
 
 /* Remove the previous body::before overlay */
@@ -198,36 +346,36 @@ body::before {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 1.5rem; /* Reduced padding */
+    padding: 1.5rem 2rem; /* Increased padding */
     background: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     z-index: 1000;
-    height: 60px; /* Fixed height */
+    height: 80px; /* Increased height from 60px */
 }
 
 .logo {
     color: white;
-    font-size: 1.5rem; /* Smaller font size */
+    font-size: 2rem; /* Increased font size from 1.5rem */
     font-weight: 400;
     font-family: var(--groovy-font);
-    letter-spacing: 2px;
+    letter-spacing: 3px; /* Increased letter spacing */
 }
 
 .menu-btn {
     background: none;
     border: none;
     cursor: pointer;
-    padding: 10px;
+    padding: 12px; /* Increased padding */
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px; /* Increased gap */
     margin-left: auto;
 }
 
 .menu-btn span {
     display: block;
-    width: 25px;
+    width: 30px; /* Increased width */
     height: 3px;
     background-color: white;
     transition: 0.3s;
@@ -244,7 +392,7 @@ body::before {
     -webkit-backdrop-filter: blur(8px);
     transition: 0.3s;
     z-index: 999;
-    padding-top: 60px; /* Match header height */
+    padding-top: 80px; /* Match new header height */
 }
 
 .sidebar.active {
@@ -252,6 +400,17 @@ body::before {
 }
 
 /* Clean up sidebar links */
+.sidebar ul {
+    list-style: none; /* Remove bullets */
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li {
+    margin: 0;
+    padding: 0;
+}
+
 .sidebar ul li a {
     display: block;
     padding: 1rem 2rem;
@@ -287,12 +446,12 @@ body::before {
 
 /* Hide parallax background on portfolio page */
 .portfolio-page .parallax-bg {
-    display: none;
+    display: block; /* Changed from 'none' to show background */
 }
 
 /* Add white background to the main container for portfolio */
 .portfolio-page .parallax-container {
-    background: white;
+    background: rgba(248, 248, 248, 0.92); /* Very light gray background */
 }
 
 /* Performance optimizations for CSS */
@@ -335,7 +494,7 @@ body::before {
     width: 100%;
     height: 100vh;
     z-index: -1;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('image2.jpg');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('image.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -527,32 +686,24 @@ select option {
 /* Mobile-specific adjustments */
 @media screen and (max-width: 768px) {
     .transparent-header {
-        padding: 0.8rem 1rem;
-        height: 50px; /* Slightly smaller on mobile */
+        padding: 1rem 1.5rem;
+        height: 70px; /* Still larger than original mobile size */
     }
 
     .logo {
-        font-size: 1.2rem; /* Smaller font on mobile */
-    }
-
-    .sidebar {
-        width: 250px; /* Slightly narrower on mobile */
-        right: -250px;
-        padding-top: 50px; /* Match mobile header height */
-    }
-
-    .sidebar ul li a {
-        padding: 0.8rem 1.5rem;
-        font-size: 1.2rem;
+        font-size: 1.6rem; /* Larger than original mobile size */
     }
 
     .menu-btn {
-        padding: 8px;
+        padding: 10px;
     }
 
     .menu-btn span {
-        width: 22px;
-        height: 2px;
+        width: 25px;
+    }
+
+    .sidebar {
+        padding-top: 70px; /* Match mobile header height */
     }
 }
 
@@ -568,3 +719,317 @@ select option {
     }
 }
 
+/* Update background for all pages */
+.parallax-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: -1;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('image.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    will-change: transform;
+    transform: translateZ(0);
+    background-color: #000; /* Fallback color while image loads */
+    filter: sepia(20%) contrast(110%) brightness(95%) saturate(85%);
+}
+
+/* Remove the background hiding on portfolio page */
+.portfolio-page .parallax-bg {
+    display: block; /* Changed from 'none' to show background */
+}
+
+/* Update portfolio page background */
+.portfolio-page .parallax-container {
+    background: rgba(250, 250, 250, 0.95); /* More neutral background */
+}
+
+/* Update portfolio grid background */
+.portfolio-grid {
+    background: transparent; /* Changed from white to transparent */
+}
+
+/* Add overlay to make content more readable */
+.parallax-bg::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(248, 248, 248, 0.03),
+        rgba(248, 248, 248, 0.08)
+    );
+    z-index: 1;
+}
+
+/* Add padding to the portfolio content container */
+.portfolio-content {
+    padding-top: 50px; /* Add extra padding at the top */
+}
+
+/* Add smooth scrolling to the entire page */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Optimize portfolio grid animations */
+.portfolio-grid {
+    /* ... existing properties ... */
+    transform: translateZ(0); /* Hardware acceleration */
+    will-change: transform; /* Optimize for animations */
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.portfolio-grid img {
+    /* ... existing properties ... */
+    transform: translateZ(0);
+    will-change: transform, opacity;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    transform: translateY(30px); /* Reduced distance for smoother animation */
+}
+
+/* Optimize image reveal animation */
+.portfolio-grid img.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Smoother hover effects */
+.portfolio-grid img:hover {
+    transform: scale(1.02);
+    transition: all 0.4s cubic-bezier(0.2, 0, 0.1, 1);
+}
+
+/* Add styles for about summary section */
+.about-summary {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.about-summary h2 {
+    font-family: var(--system-fonts);
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+    opacity: 0.9;
+    letter-spacing: 2px;
+}
+
+.about-summary p {
+    margin: 1rem 0;
+    font-size: 1rem;
+    line-height: 1.6;
+    opacity: 0.8;
+    letter-spacing: 1px;
+}
+
+/* Update header styles for larger size */
+.transparent-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 3rem; /* Increased padding */
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 1000;
+    height: 100px; /* Increased height from 80px */
+}
+
+.logo {
+    color: white;
+    font-size: 2.5rem; /* Increased font size */
+    font-weight: 400;
+    font-family: var(--groovy-font);
+    letter-spacing: 4px; /* Increased letter spacing */
+}
+
+/* Update menu button for larger size */
+.menu-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 15px; /* Increased padding */
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Increased gap */
+    margin-left: auto;
+}
+
+.menu-btn span {
+    display: block;
+    width: 35px; /* Increased width */
+    height: 3px;
+    background-color: white;
+    transition: 0.3s;
+}
+
+/* Update sidebar to match new header height */
+.sidebar {
+    padding-top: 100px; /* Match new header height */
+}
+
+/* Adjust content margins to account for larger header */
+.hero-image {
+    margin-top: 100px; /* Match header height */
+}
+
+.portfolio-grid {
+    margin-top: 170px; /* Increased to account for larger header */
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .transparent-header {
+        padding: 1.5rem 2rem;
+        height: 80px; /* Still larger than original mobile size */
+    }
+
+    .logo {
+        font-size: 2rem;
+    }
+
+    .menu-btn {
+        padding: 12px;
+    }
+
+    .menu-btn span {
+        width: 30px;
+    }
+
+    .sidebar {
+        padding-top: 80px;
+    }
+}
+
+/* Update font sizes for larger text */
+.logo {
+    color: white;
+    font-size: 3rem; /* Increased from 2.5rem */
+    font-weight: 400;
+    font-family: var(--groovy-font);
+    letter-spacing: 5px; /* Increased letter spacing */
+}
+
+/* Update sidebar navigation */
+.sidebar ul li a {
+    display: block;
+    padding: 1.5rem 2.5rem; /* Increased padding */
+    color: white;
+    text-decoration: none;
+    font-size: 1.8rem; /* Increased from 1.4rem */
+    font-weight: 400;
+    font-family: var(--groovy-font);
+    letter-spacing: 3px;
+    transition: 0.3s;
+}
+
+/* Update about content text */
+.about-summary h2 {
+    font-family: var(--system-fonts);
+    font-size: 2rem; /* Increased from 1.4rem */
+    margin-bottom: 2rem;
+    opacity: 0.9;
+    letter-spacing: 3px;
+}
+
+.about-summary p {
+    margin: 1.2rem 0;
+    font-size: 1.3rem; /* Increased from 1rem */
+    line-height: 1.8;
+    opacity: 0.8;
+    letter-spacing: 1.5px;
+}
+
+.contact-info h2 {
+    font-family: var(--system-fonts);
+    font-size: 2rem; /* Increased from 1.4rem */
+    margin-bottom: 2.5rem;
+    opacity: 0.9;
+    letter-spacing: 3px;
+}
+
+.contact-info p {
+    margin: 1.5rem 0;
+    font-size: 1.3rem; /* Increased from 1rem */
+    opacity: 0.8;
+    letter-spacing: 1.5px;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .logo {
+        font-size: 2.2rem; /* Increased mobile size */
+    }
+
+    .sidebar ul li a {
+        font-size: 1.6rem;
+        padding: 1.2rem 2rem;
+    }
+
+    .about-summary h2,
+    .contact-info h2 {
+        font-size: 1.8rem;
+    }
+
+    .about-summary p,
+    .contact-info p {
+        font-size: 1.2rem;
+    }
+}
+
+/* Add logo link styles */
+.logo-link {
+    color: white;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+}
+
+.logo-link:hover {
+    opacity: 0.8;
+}
+
+/* Update portfolio grid images */
+.portfolio-grid img {
+    /* ... existing properties ... */
+    border-radius: 15px; /* Added rounded corners */
+    overflow: hidden;
+}
+
+/* Update hero image */
+.hero-image img {
+    /* ... existing properties ... */
+    border-radius: 15px; /* Added rounded corners */
+    overflow: hidden;
+}
+
+/* Add hover effect */
+.portfolio-grid img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.hero-image img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Mobile adjustments */
+@media screen and (max-width: 768px) {
+    .portfolio-grid img,
+    .hero-image img {
+        border-radius: 12px; /* Slightly smaller radius for mobile */
+    }
+}
