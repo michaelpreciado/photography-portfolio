@@ -995,10 +995,11 @@ html {
     color: white;
     text-decoration: none;
     transition: opacity 0.3s ease;
+    cursor: default; /* Change cursor to default */
 }
 
 .logo-link:hover {
-    opacity: 0.8;
+    opacity: 1; /* Remove hover effect */
 }
 
 /* Update portfolio grid images */
@@ -1032,4 +1033,87 @@ html {
     .hero-image img {
         border-radius: 12px; /* Slightly smaller radius for mobile */
     }
+}
+
+/* General mobile optimizations */
+@media screen and (max-width: 768px) {
+    .transparent-header {
+        padding: 1rem 1.5rem;
+        height: 70px;
+    }
+
+    .logo {
+        font-size: 2rem;
+    }
+
+    .menu-btn {
+        padding: 10px;
+    }
+
+    .menu-btn span {
+        width: 25px;
+    }
+
+    .sidebar {
+        padding-top: 70px;
+        width: 250px; /* Adjusted width for mobile */
+        right: -250px;
+    }
+
+    .sidebar ul {
+        list-style: none; /* Remove bullets */
+        padding: 0;
+        margin: 0;
+    }
+
+    .sidebar ul li {
+        margin: 0;
+        padding: 0;
+    }
+
+    .sidebar ul li a {
+        font-size: 1.6rem;
+        padding: 1.2rem 2rem;
+    }
+
+    .portfolio-grid {
+        padding: 1rem;
+        gap: 3rem;
+        margin: 120px auto 1rem;
+        max-width: 90%;
+    }
+
+    .portfolio-grid img {
+        max-width: 350px;
+    }
+
+    .about-content {
+        margin: 120px 20px;
+        max-width: 300px;
+    }
+}
+
+/* Extra small devices */
+@media screen and (max-width: 480px) {
+    .portfolio-grid {
+        gap: 2rem;
+        padding: 0.5rem;
+    }
+
+    .portfolio-grid img {
+        max-width: 100%;
+        max-height: 500px;
+    }
+}
+
+/* Remove hyperlink look from logo */
+.logo-link {
+    color: white;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+    cursor: default;
+}
+
+.logo-link:hover {
+    opacity: 1;
 }
