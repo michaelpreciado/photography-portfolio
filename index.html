@@ -32,10 +32,31 @@
         <div class="parallax-content">
             <div class="hero-image">
                 <a href="portfolio.html">
-                    <img src="images/chloe.jpeg" alt="Featured Photography">
+                    <img id="randomImage" src="image1.jpg" alt="Featured Photography">
                 </a>
             </div>
         </div>
+        <script>
+            // Array of available image paths
+            const images = [
+                'image1.jpg',
+                'image2.jpg', 
+                'image3.jpg',
+                'image4.jpg',
+                'image5.jpg',
+                'image6.jpg',
+                'image7.jpg',
+                'image8.jpg',
+                'image9.jpg',
+                'image10.jpg'
+            ];
+            
+            // Get random image on page load
+            window.addEventListener('load', () => {
+                const randomIndex = Math.floor(Math.random() * images.length);
+                document.getElementById('randomImage').src = images[randomIndex];
+            });
+        </script>
     </main>
 
     <script src="script.js"></script>

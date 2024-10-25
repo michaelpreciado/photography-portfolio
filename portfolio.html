@@ -3,27 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Groovy&family=Peace+Sans&display=swap" rel="stylesheet">
+    <meta name="description" content="Mario Preciado's Photography Portfolio">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
-    <title>Portfolio - Photographer</title>
+    <title>Portfolio - Mario Preciado Photography</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="portfolio-page">
     <div class="parallax-bg"></div>
     
     <header class="transparent-header">
-        <div class="logo">Mario Preciado</div>
-        <button class="menu-btn" onclick="toggleSidebar()">
+        <div class="logo">MARIO PRECIADO</div>
+        <button class="menu-btn" aria-label="Toggle Menu" onclick="toggleSidebar()">
             <span></span>
             <span></span>
             <span></span>
         </button>
     </header>
 
-    <nav class="sidebar">
+    <nav class="sidebar" aria-label="Main navigation">
         <ul>
             <li><a href="index.html">Home</a></li>
-            <li><a href="portfolio.html">Portfolio</a></li>
+            <li><a href="portfolio.html" aria-current="page">Portfolio</a></li>
             <li><a href="about.html">About</a></li>
         </ul>
     </nav>
@@ -31,20 +32,21 @@
     <main class="parallax-container">
         <div class="portfolio-content">
             <div class="portfolio-grid">
-                <img src="images/image1.jpg" alt="Photography 1">
-                <img src="images/image2.jpg" alt="Photography 2">
-                <img src="images/image3.jpg" alt="Photography 3">
-                <img src="images/image4.jpg" alt="Photography 4">
-                <img src="images/image5.jpg" alt="Photography 5">
-                <img src="images/image6.jpg" alt="Photography 6">
-                <img src="images/image7.jpg" alt="Photography 7">
-                <img src="images/image8.jpg" alt="Photography 8">
-                <img src="images/image9.jpg" alt="Photography 9">
-                <img src="images/image10.jpg" alt="Photography 10">
+                <!-- Updated image paths -->
+                <img src="image1.jpg" loading="lazy" alt="Portrait Photography 1">
+                <img src="image2.jpg" loading="lazy" alt="Portrait Photography 2">
+                <img src="image3.jpg" loading="lazy" alt="Portrait Photography 3">
+                <img src="image4.jpg" loading="lazy" alt="Portrait Photography 4">
+                <img src="image5.jpg" loading="lazy" alt="Portrait Photography 5">
+                <img src="image6.jpg" loading="lazy" alt="Portrait Photography 6">
+                <img src="image7.jpg" loading="lazy" alt="Portrait Photography 7">
+                <img src="image8.jpg" loading="lazy" alt="Portrait Photography 8">
+                <img src="image9.jpg" loading="lazy" alt="Portrait Photography 9">
+                <img src="image10.jpg" loading="lazy" alt="Portrait Photography 10">
             </div>
         </div>
     </main>
 
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
 </body>
 </html>
