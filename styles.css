@@ -1,0 +1,545 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Use system font stack for better performance */
+:root {
+    --groovy-font: 'Righteous', cursive;
+    --system-fonts: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+body {
+    font-family: 'Righteous', cursive;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    background-color: #000; /* Fallback color */
+}
+
+/* Create parallax background sections */
+.parallax-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh; /* Increased height to allow for movement */
+    z-index: -1;
+    /* Let's make the path more explicit and add a background color for visibility */
+    background-image: url('images/image2.jpg'); /* Try this if your images folder is outside current directory */
+    /* OR */
+    /* background-image: url('./images/sky.jpeg'); */ /* Try this if your images folder is in current directory */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    will-change: transform;
+    transform: translateZ(0);
+    background-color: #000; /* Fallback color while image loads */
+}
+
+/* Update parallax container */
+.parallax-container {
+    position: relative;
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    z-index: 1;
+}
+
+.parallax-content {
+    transform-style: preserve-3d;
+    position: relative;
+}
+
+/* Update content sections to work with parallax */
+.hero-image {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+    padding: 80px 20px; /* Added top padding to account for header */
+}
+
+.hero-image a {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 1400px; /* Limit maximum width */
+    margin: 0 auto;
+}
+
+.hero-image img {
+    width: auto;
+    height: auto;
+    max-width: 85%; /* Reduced from 90% */
+    max-height: 85vh; /* Reduced from 90vh */
+    object-fit: contain;
+    cursor: pointer;
+    transition: 0.3s;
+    display: block;
+    margin: auto;
+    border-radius: 5px; /* Optional: adds slight rounding to corners */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Optional: adds subtle shadow */
+}
+
+.hero-image img:hover {
+    transform: scale(1.02);
+}
+
+/* Add responsive adjustments */
+@media screen and (max-width: 768px) {
+    .hero-image {
+        padding: 60px 15px;
+    }
+    
+    .hero-image img {
+        max-width: 95%;
+        max-height: 80vh;
+    }
+}
+
+/* Update portfolio grid layout and styling */
+.portfolio-grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 1.5rem;
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    background: white;
+    z-index: 2;
+}
+
+/* Update portfolio page specific styles */
+.portfolio-content {
+    background: white;
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+    padding: 80px 0;
+}
+
+/* Keep the image hover effects */
+.portfolio-grid img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    transition: 0.4s ease-out;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.portfolio-grid img:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+/* Update media queries */
+@media screen and (max-width: 768px) {
+    .portfolio-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        padding: 1rem;
+        margin: 60px auto;
+    }
+
+    .portfolio-grid img {
+        height: 300px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .portfolio-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .portfolio-grid img {
+        height: 250px;
+    }
+}
+
+/* Update about content styles */
+.about-content {
+    position: relative;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 2;
+    color: white;
+    padding: 4rem;
+    max-width: 800px;
+    margin: 100px auto;
+    border-radius: 8px;
+}
+
+/* Update about content headings */
+.about-content h1 {
+    margin-bottom: 2rem;
+    font-size: 3rem;
+    font-weight: 400;
+    font-family: var(--groovy-font);
+    letter-spacing: 3px;
+    text-align: center;
+    background: none;
+    padding: 0;
+}
+
+/* Update about content paragraphs */
+.about-content p {
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+    font-size: 1.2rem;
+    font-weight: 300;
+    font-family: var(--system-fonts);
+    letter-spacing: 1px;
+    background: none;
+    padding: 0;
+}
+
+/* Remove the previous body::before overlay */
+body::before {
+    display: none;
+}
+
+/* Simplify header */
+.transparent-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    background: rgba(0, 0, 0, 0.3); /* More transparent */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 1000;
+}
+
+/* Clean up logo style */
+.logo {
+    color: white;
+    font-size: 2rem;
+    font-weight: 400;
+    font-family: var(--groovy-font);
+    letter-spacing: 3px;
+    margin-right: auto;
+}
+
+.menu-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-left: auto;
+}
+
+.menu-btn span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    transition: 0.3s;
+}
+
+.sidebar {
+    position: fixed;
+    right: -300px;
+    top: 0;
+    width: 300px;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.3); /* More transparent to match header */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: 0.3s;
+    z-index: 999;
+    padding-top: 80px;
+}
+
+.sidebar.active {
+    right: 0;
+}
+
+/* Clean up sidebar links */
+.sidebar ul li a {
+    display: block;
+    padding: 1rem 2rem;
+    color: white;
+    text-decoration: none;
+    font-size: 1.4rem;
+    font-weight: 400;
+    font-family: var(--groovy-font);
+    letter-spacing: 2px;
+    transition: 0.3s;
+}
+
+.sidebar ul li a:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* Update parallax layer styles */
+.parallax-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.parallax-layer-back {
+    transform: translateZ(-6px) scale(1.75);
+}
+
+.parallax-layer-base {
+    transform: translateZ(0);
+}
+
+/* Hide parallax background on portfolio page */
+.portfolio-page .parallax-bg {
+    display: none;
+}
+
+/* Add white background to the main container for portfolio */
+.portfolio-page .parallax-container {
+    background: white;
+}
+
+/* Performance optimizations for CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Optimize animations */
+.parallax-bg, .sidebar, .menu-btn span, .portfolio-grid img, .hero-image img {
+    will-change: transform;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+}
+
+/* Reduce repaints by using transform instead of top/left properties */
+.sidebar {
+    transform: translateX(300px);
+    will-change: transform;
+}
+
+.sidebar.active {
+    transform: translateX(0);
+}
+
+/* Use modern CSS properties for better performance */
+.transparent-header {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.3);
+    contain: layout style paint;
+}
+
+/* Fix parallax background */
+.parallax-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: -1;
+    background-image: url('images/image2.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+/* Clean up portfolio grid */
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 1rem;
+    padding: 1.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    background: white;
+}
+
+.portfolio-grid img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    transition: 0.3s;
+}
+
+.portfolio-grid img:hover {
+    opacity: 0.9;
+    transform: none;
+}
+
+/* Remove all text shadows and unnecessary effects */
+* {
+    text-shadow: none !important;
+    box-shadow: none !important;
+}
+
+/* Fix backdrop-filter issues */
+@supports not (backdrop-filter: blur(8px)) {
+    .transparent-header {
+        background: rgba(0, 0, 0, 0.7); /* Darker fallback when no blur */
+    }
+    
+    .sidebar {
+        background: rgba(0, 0, 0, 0.7); /* Darker fallback when no blur */
+    }
+}
+
+/* Add fallback for browsers that don't support backdrop-filter */
+@supports not (backdrop-filter: blur(10px)) {
+    .sidebar {
+        background: rgba(0, 0, 0, 0.9);
+    }
+}
+
+/* Update about/contact content styles */
+.about-content {
+    position: relative;
+    background: rgba(0, 0, 0, 0.4); /* More transparent background */
+    z-index: 2;
+    color: white;
+    padding: 4rem;
+    max-width: 800px;
+    margin: 100px auto;
+    border-radius: 20px; /* More rounded corners */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Contact form styling */
+.contact-form {
+    max-width: 600px;
+    margin: 2rem auto;
+}
+
+.form-group {
+    margin-bottom: 2rem;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.8rem;
+    font-family: var(--groovy-font);
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    opacity: 0.9;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border-radius: 12px; /* More rounded inputs */
+    font-family: var(--system-fonts);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+.submit-btn {
+    display: block;
+    width: 200px;
+    margin: 3rem auto;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    font-family: var(--groovy-font);
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 50px; /* Fully rounded button */
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.submit-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-2px);
+}
+
+/* Contact info section */
+.contact-info {
+    text-align: center;
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.contact-info h2 {
+    font-family: var(--groovy-font);
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    letter-spacing: 2px;
+    opacity: 0.9;
+}
+
+.contact-info p {
+    margin: 1rem 0;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+.contact-info p:hover {
+    opacity: 1;
+}
+
+/* Make form elements more visible on dark background */
+::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+select option {
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .about-content {
+        padding: 2rem;
+        margin: 80px 20px;
+        border-radius: 15px;
+    }
+    
+    .submit-btn {
+        width: 100%;
+    }
+}
