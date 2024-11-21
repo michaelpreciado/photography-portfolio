@@ -1,403 +1,31 @@
+/* Base styles */
+:root {
+    --groovy-font: 'Righteous', cursive;
+    --system-fonts: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --header-height-desktop: 100px;
+    --header-height-mobile: 70px;
+    --sidebar-width: 300px;
+    --blur-effect: blur(8px);
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Use system font stack for better performance */
-:root {
-    --groovy-font: 'Righteous', cursive;
-    --system-fonts: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-}
-
 body {
-    font-family: 'Righteous', cursive;
+    font-family: var(--groovy-font);
     overflow-x: hidden;
-    margin: 0;
-    padding: 0;
-    background-color: #000; /* Fallback color */
+    background-color: #000;
 }
 
-/* Create parallax background sections */
-.parallax-bg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    z-index: -1;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('image.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed; /* Keep background fixed */
-    will-change: auto; /* Remove will-change */
-    transform: none; /* Remove transform */
+/* Performance optimizations for animations */
+.sidebar, .menu-btn span, .portfolio-grid img, .hero-image img {
+    will-change: transform, opacity;
 }
 
-/* Update parallax container */
-.parallax-container {
-    position: relative;
-    min-height: 100vh;
-    overflow-x: hidden;
-    overflow-y: auto;
-    z-index: 1;
-    transform: none; /* Remove transform */
-}
-
-.parallax-content {
-    transform: none; /* Remove transform */
-    position: relative;
-}
-
-/* Update content sections to work with parallax */
-.hero-image {
-    height: calc(100vh - 70px); /* Full viewport height minus header */
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    z-index: 2;
-    padding: 0;
-    margin-top: 70px; /* Match header height */
-}
-
-.hero-image a {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0; /* Remove padding */
-}
-
-.hero-image img {
-    width: 100%;
-    height: 100%;
-    max-width: none; /* Remove max-width constraint */
-    max-height: none; /* Remove max-height constraint */
-    object-fit: contain; /* Keep aspect ratio */
-    margin: 0;
-    padding: 1rem;
-}
-
-/* Mobile adjustments */
-@media screen and (max-width: 768px) {
-    .hero-image {
-        height: calc(100vh - 60px); /* Adjust for smaller header on mobile */
-        margin-top: 60px;
-    }
-    
-    .hero-image img {
-        padding: 0.8rem;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .hero-image {
-        height: calc(100vh - 50px);
-        margin-top: 50px;
-    }
-    
-    .hero-image img {
-        padding: 0.5rem;
-    }
-}
-
-/* Responsive breakpoints */
-@media screen and (max-width: 1200px) {
-    .hero-image img {
-        max-width: min(90%, 700px);
-    }
-}
-
-@media screen and (max-width: 992px) {
-    .hero-image img {
-        max-width: min(80%, 600px);
-        max-height: min(65vh, 600px);
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .hero-image {
-        height: calc(100vh - 60px);
-        margin-top: 60px;
-    }
-    
-    .hero-image img {
-        max-width: min(85%, 600px);
-        max-height: min(85vh, 600px);
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .hero-image {
-        height: calc(100vh - 50px);
-        margin-top: 50px;
-    }
-    
-    .hero-image img {
-        max-width: min(70%, 400px);
-        max-height: min(55vh, 400px);
-    }
-}
-
-@media screen and (max-width: 360px) {
-    .hero-image img {
-        max-width: min(65%, 300px);
-        max-height: min(50vh, 300px);
-    }
-}
-
-/* Add responsive adjustments */
-@media screen and (max-width: 768px) {
-    .hero-image {
-        height: calc(100vh - 60px);
-        margin-top: 60px;
-    }
-    
-    .hero-image a {
-        padding: 0.8rem;
-    }
-    
-    .hero-image img {
-        max-width: 85%;
-        max-height: 70vh;
-    }
-}
-
-/* Update portfolio grid layout for better responsiveness */
-.portfolio-grid {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center;
-    gap: 4rem;
-    padding: 2rem;
-    width: 100%;
-    max-width: 1200px;
-    margin: 150px auto 2rem;
-    background: transparent;
-}
-
-.portfolio-grid img {
-    width: auto;
-    height: auto;
-    max-width: min(90%, 800px);
-    object-fit: contain;
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    opacity: 0;
-    transform: translateY(30px);
-    border-radius: 8px; /* Reduced border radius for cleaner look */
-    background: transparent;
-    opacity: 0.98; /* Increased opacity for cleaner look */
-    filter: none; /* Removed filters for cleaner look */
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25); /* Increased shadow intensity */
-}
-
-/* Responsive adjustments */
-@media screen and (max-width: 1200px) {
-    .portfolio-grid img {
-        max-width: min(85%, 400px);
-        max-height: min(75vh, 550px);
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .portfolio-grid {
-        padding: 1rem;
-        gap: 3rem;
-        margin: 120px auto 1rem;
-    }
-
-    .portfolio-grid img {
-        max-width: min(85%, 350px);
-        max-height: min(70vh, 500px);
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .portfolio-grid {
-        gap: 2rem;
-        padding: 0.5rem;
-    }
-
-    .portfolio-grid img {
-        max-width: 85%;
-        max-height: min(65vh, 450px);
-    }
-}
-
-/* Remove film strip effect */
-.portfolio-grid::before,
-.portfolio-grid::after {
-    display: none; /* Remove the sprocket holes */
-}
-
-/* Add vintage camera viewfinder overlay */
-.parallax-bg::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: 
-        radial-gradient(circle at center, transparent 60%, rgba(0, 0, 0, 0.7) 100%),
-        repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.1) 0px, rgba(0, 0, 0, 0.1) 1px, transparent 1px, transparent 3px);
-    pointer-events: none;
-    z-index: 1;
-    opacity: 0.3;
-}
-
-/* Update header for camera aesthetic */
-.transparent-header {
-    background: rgba(0, 0, 0, 0.85);
-    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-}
-
-.logo {
-    font-family: 'Courier New', monospace; /* Classic camera typography */
-    letter-spacing: 3px;
-    opacity: 0.9;
-}
-
-/* Mobile adjustments */
-@media screen and (max-width: 768px) {
-    .portfolio-grid::before,
-    .portfolio-grid::after {
-        width: 20px; /* Smaller sprocket holes on mobile */
-    }
-}
-
-/* Remove any grid properties */
-.portfolio-grid {
-    grid-template-columns: unset !important;
-    grid-template-rows: unset !important;
-    grid: none !important;
-}
-
-/* Class to be added when image enters viewport */
-.portfolio-grid img.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Responsive adjustments */
-@media screen and (max-width: 768px) {
-    .portfolio-grid {
-        padding: 1rem;
-        gap: 3rem;
-        margin: 120px auto 1rem; /* Adjusted for mobile */
-        max-width: 95%;
-    }
-
-    .portfolio-grid img {
-        max-width: 100%;
-        border-width: 8px;
-    }
-}
-
-/* Update about content centering */
-.about-content {
-    position: relative;
-    background: rgba(0, 0, 0, 0.3);
-    z-index: 2;
-    color: white;
-    padding: 2.5rem;
-    width: 90%;
-    max-width: 500px; /* Larger default max-width */
-    margin: 150px auto;
-    border-radius: 8px;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: none;
-    text-align: center;
-}
-
-/* Remove contact form styles */
-.contact-form {
-    display: none; /* Hide the contact form */
-}
-
-/* Update contact info styles */
-.contact-info {
-    text-align: center;
-    margin: 0 auto;
-    padding: 0;
-    border-top: none;
-}
-
-.contact-info h2 {
-    font-family: var(--system-fonts);
-    font-size: 1.4rem;
-    margin-bottom: 2rem;
-    opacity: 0.9;
-    letter-spacing: 2px;
-}
-
-.contact-info p {
-    margin: 1.2rem 0;
-    font-size: 1rem;
-    opacity: 0.8;
-    letter-spacing: 1px;
-    transition: opacity 0.3s ease;
-}
-
-.contact-info p:hover {
-    opacity: 1;
-    cursor: pointer;
-}
-
-/* Mobile adjustments */
-@media screen and (max-width: 768px) {
-    .about-content {
-        margin: 100px auto;
-        padding: 2rem;
-        width: 90%;
-        max-width: 320px;
-    }
-
-    .about-summary h2,
-    .contact-info h2 {
-        font-size: 1.5rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .about-summary p,
-    .contact-info p {
-        font-size: 0.95rem;
-        margin: 0.8rem 0;
-    }
-}
-
-/* Simplify contact info */
-.contact-info {
-    text-align: left;
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.contact-info h2 {
-    font-family: var(--system-fonts);
-    font-size: 1.2rem;
-    margin-bottom: 1rem;
-    opacity: 0.9;
-}
-
-.contact-info p {
-    margin: 0.5rem 0;
-    font-size: 0.9rem;
-    opacity: 0.8;
-}
-
-/* Remove the previous body::before overlay */
-body::before {
-    display: none;
-}
-
-/* Simplify header */
+/* Update header styles for better performance */
 .transparent-header {
     position: fixed;
     top: 0;
@@ -407,42 +35,47 @@ body::before {
     justify-content: space-between;
     align-items: center;
     padding: 2rem 3rem;
-    background: rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    background: rgba(0, 0, 0, 0.8); /* Increased opacity for better text contrast */
+    backdrop-filter: var(--blur-effect);
+    -webkit-backdrop-filter: var(--blur-effect);
     z-index: 1000;
-    height: 100px;
-    transform: none; /* Remove transform */
-    will-change: auto; /* Remove will-change */
+    height: var(--header-height-desktop);
+    transform: translateZ(0); /* Hardware acceleration */
 }
 
 .logo {
     color: white;
-    font-size: 2rem; /* Increased font size from 1.5rem */
+    font-size: 2.5rem;
     font-weight: 400;
-    font-family: var(--groovy-font);
-    letter-spacing: 3px; /* Increased letter spacing */
+    letter-spacing: 4px;
 }
 
+.logo-link {
+    color: white;
+    text-decoration: none;
+    cursor: default;
+}
+
+/* Menu button styles */
 .menu-btn {
     background: none;
     border: none;
     cursor: pointer;
-    padding: 12px; /* Increased padding */
+    padding: 15px;
     display: flex;
     flex-direction: column;
-    gap: 8px; /* Increased gap */
-    margin-left: auto;
+    gap: 10px;
 }
 
 .menu-btn span {
     display: block;
-    width: 30px; /* Increased width */
+    width: 35px;
     height: 3px;
     background-color: white;
     transition: 0.3s;
 }
 
+/* Sidebar styles */
 .sidebar {
     position: fixed;
     right: -300px;
@@ -454,360 +87,30 @@ body::before {
     -webkit-backdrop-filter: blur(8px);
     transition: 0.3s;
     z-index: 999;
-    padding-top: 80px; /* Match new header height */
+    padding-top: 100px;
 }
 
 .sidebar.active {
     right: 0;
 }
 
-/* Clean up sidebar links */
 .sidebar ul {
-    list-style: none; /* Remove bullets */
+    list-style: none;
     padding: 0;
     margin: 0;
-}
-
-.sidebar ul li {
-    margin: 0;
-    padding: 0;
 }
 
 .sidebar ul li a {
     display: block;
-    padding: 1rem 2rem;
+    padding: 1.5rem 2.5rem;
     color: white;
     text-decoration: none;
-    font-size: 1.4rem;
-    font-weight: 400;
-    font-family: var(--groovy-font);
-    letter-spacing: 2px;
-    transition: 0.3s;
-}
-
-.sidebar ul li a:hover {
-    background: rgba(255, 255, 255, 0.15);
-}
-
-/* Update parallax layer styles */
-.parallax-layer {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-}
-
-.parallax-layer-back {
-    transform: translateZ(-6px) scale(1.75);
-}
-
-.parallax-layer-base {
-    transform: translateZ(0);
-}
-
-/* Hide parallax background on portfolio page */
-.portfolio-page .parallax-bg {
-    display: block; /* Changed from 'none' to show background */
-}
-
-/* Add white background to the main container for portfolio */
-.portfolio-page .parallax-container {
-    background: rgba(248, 248, 248, 0.92); /* Very light gray background */
-}
-
-/* Performance optimizations for CSS */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* Optimize animations */
-.parallax-bg, .sidebar, .menu-btn span, .portfolio-grid img, .hero-image img {
-    will-change: transform;
-    backface-visibility: hidden;
-    transform: translateZ(0);
-}
-
-/* Reduce repaints by using transform instead of top/left properties */
-.sidebar {
-    transform: translateX(300px);
-    will-change: transform;
-}
-
-.sidebar.active {
-    transform: translateX(0);
-}
-
-/* Use modern CSS properties for better performance */
-.transparent-header {
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    background: rgba(0, 0, 0, 0.3);
-    contain: layout style paint;
-}
-
-/* Fix parallax background */
-.parallax-bg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    z-index: -1;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('image.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-}
-
-/* Clean up portfolio grid */
-.portfolio-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 1rem;
-    padding: 1.5rem;
-    max-width: 1400px;
-    margin: 0 auto;
-    background: white;
-}
-
-.portfolio-grid img {
-    width: 100%;
-    height: 400px;
-    object-fit: cover;
-    transition: 0.3s;
-}
-
-.portfolio-grid img:hover {
-    opacity: 0.9;
-    transform: none;
-}
-
-/* Remove all text shadows and unnecessary effects */
-* {
-    text-shadow: none !important;
-    box-shadow: none !important;
-}
-
-/* Fix backdrop-filter issues */
-@supports not (backdrop-filter: blur(8px)) {
-    .transparent-header {
-        background: rgba(0, 0, 0, 0.7); /* Darker fallback when no blur */
-    }
-    
-    .sidebar {
-        background: rgba(0, 0, 0, 0.7); /* Darker fallback when no blur */
-    }
-}
-
-/* Add fallback for browsers that don't support backdrop-filter */
-@supports not (backdrop-filter: blur(10px)) {
-    .sidebar {
-        background: rgba(0, 0, 0, 0.9);
-    }
-}
-
-/* Update about/contact content styles */
-.about-content {
-    position: relative;
-    background: rgba(0, 0, 0, 0.4); /* More transparent background */
-    z-index: 2;
-    color: white;
-    padding: 4rem;
-    max-width: 800px;
-    margin: 100px auto;
-    border-radius: 20px; /* More rounded corners */
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Contact form styling */
-.contact-form {
-    max-width: 600px;
-    margin: 2rem auto;
-}
-
-.form-group {
-    margin-bottom: 2rem;
-    text-align: left;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 0.8rem;
-    font-family: var(--groovy-font);
-    font-size: 1.1rem;
-    letter-spacing: 1px;
-    opacity: 0.9;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-    width: 100%;
-    padding: 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    border-radius: 12px; /* More rounded inputs */
-    font-family: var(--system-fonts);
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-    outline: none;
-    border-color: rgba(255, 255, 255, 0.5);
-    background: rgba(255, 255, 255, 0.15);
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
-}
-
-.submit-btn {
-    display: block;
-    width: 200px;
-    margin: 3rem auto;
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: white;
-    font-family: var(--groovy-font);
-    font-size: 1.1rem;
-    letter-spacing: 2px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border-radius: 50px; /* Fully rounded button */
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-}
-
-.submit-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.4);
-    transform: translateY(-2px);
-}
-
-/* Contact info section */
-.contact-info {
-    text-align: center;
-    margin-top: 4rem;
-    padding-top: 2rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.contact-info h2 {
-    font-family: var(--groovy-font);
     font-size: 1.8rem;
-    margin-bottom: 2rem;
-    letter-spacing: 2px;
-    opacity: 0.9;
+    letter-spacing: 3px;
+    transition: 0.3s;
 }
 
-.contact-info p {
-    margin: 1rem 0;
-    font-size: 1.1rem;
-    letter-spacing: 1px;
-    opacity: 0.8;
-    transition: opacity 0.3s ease;
-}
-
-.contact-info p:hover {
-    opacity: 1;
-}
-
-/* Make form elements more visible on dark background */
-::placeholder {
-    color: rgba(255, 255, 255, 0.5);
-}
-
-select option {
-    background: rgba(0, 0, 0, 0.8);
-    color: white;
-}
-
-/* Responsive adjustments */
-@media screen and (max-width: 768px) {
-    .about-content {
-        padding: 2rem;
-        margin: 80px 20px;
-        border-radius: 15px;
-    }
-    
-    .submit-btn {
-        width: 100%;
-    }
-}
-
-/* Mobile-specific adjustments */
-@media screen and (max-width: 768px) {
-    .transparent-header {
-        padding: 0.8rem 1.2rem;
-        height: 60px; /* Reduced height */
-    }
-
-    .logo {
-        font-size: 1.6rem; /* Smaller font size */
-        letter-spacing: 2px; /* Reduced letter spacing */
-    }
-
-    .menu-btn {
-        padding: 8px;
-        gap: 6px; /* Reduced gap between lines */
-        margin-right: 5px; /* Add some right margin */
-    }
-
-    .menu-btn span {
-        width: 22px; /* Slightly smaller lines */
-        height: 2px; /* Thinner lines */
-    }
-
-    .sidebar {
-        padding-top: 60px; /* Match new header height */
-        width: 240px; /* Slightly narrower */
-        right: -240px;
-    }
-
-    .sidebar ul li a {
-        font-size: 1.4rem; /* Smaller font size */
-        padding: 1rem 1.5rem; /* Reduced padding */
-        letter-spacing: 1px; /* Reduced letter spacing */
-    }
-
-    /* Adjust menu button animation for mobile */
-    .menu-btn.active span:first-child {
-        transform: rotate(45deg) translate(4px, 4px); /* Adjusted translation */
-    }
-
-    .menu-btn.active span:last-child {
-        transform: rotate(-45deg) translate(4px, -4px); /* Adjusted translation */
-    }
-}
-
-/* Extra small devices */
-@media screen and (max-width: 360px) {
-    .logo {
-        font-size: 1.4rem; /* Even smaller font */
-    }
-
-    .sidebar {
-        width: 220px;
-        right: -220px;
-    }
-
-    .sidebar ul li a {
-        font-size: 1.2rem;
-        padding: 0.8rem 1.2rem;
-    }
-}
-
-/* Update background for all pages */
+/* Background and container styles */
 .parallax-bg {
     position: fixed;
     top: 0;
@@ -815,633 +118,74 @@ select option {
     width: 100%;
     height: 100vh;
     z-index: -1;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('image.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    will-change: transform;
-    transform: translateZ(0);
-    background-color: #000; /* Fallback color while image loads */
-    filter: sepia(20%) contrast(110%) brightness(95%) saturate(85%);
+    background-color: #000;
 }
 
-/* Remove the background hiding on portfolio page */
-.portfolio-page .parallax-bg {
-    display: block; /* Changed from 'none' to show background */
-}
-
-/* Update portfolio page background */
-.portfolio-page .parallax-container {
-    background: rgba(250, 250, 250, 0.95); /* More neutral background */
-}
-
-/* Update portfolio grid background */
-.portfolio-grid {
-    background: transparent; /* Changed from white to transparent */
-}
-
-/* Add overlay to make content more readable */
-.parallax-bg::after {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-        to bottom,
-        rgba(248, 248, 248, 0.03),
-        rgba(248, 248, 248, 0.08)
-    );
+.parallax-container {
+    position: relative;
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
     z-index: 1;
 }
 
-/* Add padding to the portfolio content container */
-.portfolio-content {
-    padding-top: 50px; /* Add extra padding at the top */
+/* Hero image styles */
+.hero-image {
+    height: calc(100vh - 100px);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 100px;
 }
 
-/* Add smooth scrolling to the entire page */
-html {
-    scroll-behavior: smooth;
+.hero-image img {
+    width: auto;
+    height: auto;
+    max-width: min(90%, 800px);
+    max-height: min(75vh, 800px);
+    object-fit: contain;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    transition: opacity 0.5s ease;
 }
 
-/* Optimize portfolio grid animations */
+.hero-image img.loaded {
+    opacity: 1;
+}
+
+.fade-out {
+    opacity: 0 !important;
+}
+
+/* Portfolio grid styles */
 .portfolio-grid {
-    /* ... existing properties ... */
-    transform: translateZ(0); /* Hardware acceleration */
-    will-change: transform; /* Optimize for animations */
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+    width: 100%;
+    max-width: 1400px;
+    margin: 150px auto 2rem;
 }
 
 .portfolio-grid img {
-    /* ... existing properties ... */
-    transform: translateZ(0);
-    will-change: transform, opacity;
-    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    aspect-ratio: 3/4;
     opacity: 0;
-    transform: translateY(30px); /* Reduced distance for smoother animation */
+    transform: translateY(30px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
-/* Optimize image reveal animation */
 .portfolio-grid img.visible {
     opacity: 1;
     transform: translateY(0);
 }
 
-/* Smoother hover effects */
-.portfolio-grid img:hover {
-    transform: scale(1.02);
-    transition: all 0.4s cubic-bezier(0.2, 0, 0.1, 1);
-}
-
-/* Add styles for about summary section */
-.about-summary {
-    text-align: center;
-    margin-bottom: 3rem;
-    padding-bottom: 2rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.about-summary h2 {
-    font-family: var(--system-fonts);
-    font-size: 1.4rem;
-    margin-bottom: 1.5rem;
-    opacity: 0.9;
-    letter-spacing: 2px;
-}
-
-.about-summary p {
-    margin: 1rem 0;
-    font-size: 1rem;
-    line-height: 1.6;
-    opacity: 0.8;
-    letter-spacing: 1px;
-}
-
-/* Update header styles for larger size */
-.transparent-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 2rem 3rem; /* Increased padding */
-    background: rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    z-index: 1000;
-    height: 100px; /* Increased height from 80px */
-}
-
-.logo {
-    color: white;
-    font-size: 2.5rem; /* Increased font size */
-    font-weight: 400;
-    font-family: var(--groovy-font);
-    letter-spacing: 4px; /* Increased letter spacing */
-}
-
-/* Update menu button for larger size */
-.menu-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 15px; /* Increased padding */
-    display: flex;
-    flex-direction: column;
-    gap: 10px; /* Increased gap */
-    margin-left: auto;
-}
-
-.menu-btn span {
-    display: block;
-    width: 35px; /* Increased width */
-    height: 3px;
-    background-color: white;
-    transition: 0.3s;
-}
-
-/* Update sidebar to match new header height */
-.sidebar {
-    padding-top: 100px; /* Match new header height */
-}
-
-/* Adjust content margins to account for larger header */
-.hero-image {
-    margin-top: 100px; /* Match header height */
-}
-
-.portfolio-grid {
-    margin-top: 170px; /* Increased to account for larger header */
-}
-
-/* Responsive adjustments */
-@media screen and (max-width: 768px) {
-    .transparent-header {
-        padding: 1.5rem 2rem;
-        height: 80px; /* Still larger than original mobile size */
-    }
-
-    .logo {
-        font-size: 2rem;
-    }
-
-    .menu-btn {
-        padding: 12px;
-    }
-
-    .menu-btn span {
-        width: 30px;
-    }
-
-    .sidebar {
-        padding-top: 80px;
-    }
-}
-
-/* Update font sizes for larger text */
-.logo {
-    color: white;
-    font-size: 3rem; /* Increased from 2.5rem */
-    font-weight: 400;
-    font-family: var(--groovy-font);
-    letter-spacing: 5px; /* Increased letter spacing */
-}
-
-/* Update sidebar navigation */
-.sidebar ul li a {
-    display: block;
-    padding: 1.5rem 2.5rem; /* Increased padding */
-    color: white;
-    text-decoration: none;
-    font-size: 1.8rem; /* Increased from 1.4rem */
-    font-weight: 400;
-    font-family: var(--groovy-font);
-    letter-spacing: 3px;
-    transition: 0.3s;
-}
-
-/* Update about content text */
-.about-summary h2 {
-    font-family: var(--system-fonts);
-    font-size: 2rem; /* Increased from 1.4rem */
-    margin-bottom: 2rem;
-    opacity: 0.9;
-    letter-spacing: 3px;
-}
-
-.about-summary p {
-    margin: 1.2rem 0;
-    font-size: 1.3rem; /* Increased from 1rem */
-    line-height: 1.8;
-    opacity: 0.8;
-    letter-spacing: 1.5px;
-}
-
-.contact-info h2 {
-    font-family: var(--system-fonts);
-    font-size: 2rem; /* Increased from 1.4rem */
-    margin-bottom: 2.5rem;
-    opacity: 0.9;
-    letter-spacing: 3px;
-}
-
-.contact-info p {
-    margin: 1.5rem 0;
-    font-size: 1.3rem; /* Increased from 1rem */
-    opacity: 0.8;
-    letter-spacing: 1.5px;
-}
-
-/* Responsive adjustments */
-@media screen and (max-width: 768px) {
-    .logo {
-        font-size: 2.2rem; /* Increased mobile size */
-    }
-
-    .sidebar ul li a {
-        font-size: 1.6rem;
-        padding: 1.2rem 2rem;
-    }
-
-    .about-summary h2,
-    .contact-info h2 {
-        font-size: 1.8rem;
-    }
-
-    .about-summary p,
-    .contact-info p {
-        font-size: 1.2rem;
-    }
-}
-
-/* Add logo link styles */
-.logo-link {
-    color: white;
-    text-decoration: none;
-    transition: opacity 0.3s ease;
-    cursor: default; /* Change cursor to default */
-}
-
-.logo-link:hover {
-    opacity: 1; /* Remove hover effect */
-}
-
-/* Update portfolio grid images with stronger shadow */
-.portfolio-grid img {
-    width: auto;
-    height: auto;
-    max-width: min(90%, 800px);
-    object-fit: contain;
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    opacity: 0;
-    transform: translateY(30px);
-    border-radius: 8px;
-    background: transparent;
-    opacity: 0.98;
-    filter: none;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25); /* Increased shadow intensity */
-}
-
-/* Update hover effect with stronger shadow */
-.portfolio-grid img:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.35); /* Enhanced shadow on hover */
-    opacity: 1;
-}
-
-/* Update hero image shadow */
-.hero-image img {
-    /* ... existing properties ... */
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25); /* Matching shadow intensity */
-}
-
-.hero-image img:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.35);
-}
-
-/* Mobile adjustments with visible shadows */
-@media screen and (max-width: 768px) {
-    .portfolio-grid img,
-    .hero-image img {
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-    }
-    
-    .portfolio-grid img:hover,
-    .hero-image img:hover {
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-    }
-}
-
-/* General mobile optimizations */
-@media screen and (max-width: 768px) {
-    .transparent-header {
-        padding: 1rem 1.5rem;
-        height: 70px;
-    }
-
-    .logo {
-        font-size: 2rem;
-    }
-
-    .menu-btn {
-        padding: 10px;
-    }
-
-    .menu-btn span {
-        width: 25px;
-    }
-
-    .sidebar {
-        padding-top: 70px;
-        width: 250px; /* Adjusted width for mobile */
-        right: -250px;
-    }
-
-    .sidebar ul {
-        list-style: none; /* Remove bullets */
-        padding: 0;
-        margin: 0;
-    }
-
-    .sidebar ul li {
-        margin: 0;
-        padding: 0;
-    }
-
-    .sidebar ul li a {
-        font-size: 1.6rem;
-        padding: 1.2rem 2rem;
-        text-decoration: none; /* Remove hyperlink styling */
-    }
-
-    .portfolio-grid {
-        padding: 1rem;
-        gap: 3rem;
-        margin: 120px auto 1rem;
-        max-width: 90%;
-    }
-
-    .portfolio-grid img {
-        max-width: 350px;
-    }
-
-    .about-content {
-        margin: 120px 20px;
-        max-width: 300px;
-    }
-}
-
-/* Extra small devices */
-@media screen and (max-width: 480px) {
-    .portfolio-grid {
-        gap: 2rem;
-        padding: 0.5rem;
-    }
-
-    .portfolio-grid img {
-        max-width: 100%;
-        max-height: 500px;
-    }
-}
-
-/* Remove hyperlink look from logo */
-.logo-link {
-    color: white;
-    text-decoration: none;
-    transition: opacity 0.3s ease;
-    cursor: default;
-}
-
-.logo-link:hover {
-    opacity: 1;
-}
-
-/* Update hero image styles for better mobile centering */
-.hero-image {
-    height: calc(100vh - 60px); /* Adjust for mobile header height */
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    z-index: 2;
-    padding: 0; /* Remove padding */
-    margin-top: 60px; /* Match mobile header height */
-}
-
-.hero-image a {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem; /* Add padding to the link instead */
-}
-
-.hero-image img {
-    width: auto;
-    height: auto;
-    max-width: min(90%, 800px); /* Use min() for responsive scaling */
-    max-height: min(75vh, 800px);
-    object-fit: contain;
-    margin: auto;
-}
-
-/* Responsive breakpoints */
-@media screen and (max-width: 1200px) {
-    .hero-image img {
-        max-width: min(85%, 700px);
-        max-height: min(70vh, 700px);
-    }
-}
-
-@media screen and (max-width: 992px) {
-    .hero-image img {
-        max-width: min(80%, 600px);
-        max-height: min(65vh, 600px);
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .hero-image {
-        height: calc(100vh - 60px);
-        margin-top: 60px;
-    }
-    
-    .hero-image img {
-        max-width: min(75%, 500px);
-        max-height: min(60vh, 500px);
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .hero-image {
-        height: calc(100vh - 50px);
-        margin-top: 50px;
-    }
-    
-    .hero-image img {
-        max-width: min(70%, 400px);
-        max-height: min(55vh, 400px);
-    }
-}
-
-@media screen and (max-width: 360px) {
-    .hero-image img {
-        max-width: min(65%, 300px);
-        max-height: min(50vh, 300px);
-    }
-}
-
-/* Mobile-specific adjustments */
-@media screen and (max-width: 768px) {
-    .hero-image {
-        height: calc(100vh - 60px);
-        margin-top: 60px;
-    }
-    
-    .hero-image a {
-        padding: 0.8rem;
-    }
-    
-    .hero-image img {
-        max-width: 85%;
-        max-height: 70vh;
-    }
-}
-
-/* Extra small devices */
-@media screen and (max-width: 480px) {
-    .hero-image {
-        height: calc(100vh - 50px);
-        margin-top: 50px;
-    }
-    
-    .hero-image img {
-        max-width: 90%;
-        max-height: 65vh;
-    }
-}
-
-/* Update logo styles for better mobile fit */
-@media screen and (max-width: 768px) {
-    .transparent-header {
-        padding: 0.8rem 1rem;
-        height: 60px;
-    }
-
-    .logo {
-        font-size: 1.4rem; /* Reduced from 2.2rem */
-        letter-spacing: 1.5px; /* Reduced letter spacing */
-    }
-
-    .logo-link {
-        white-space: nowrap; /* Prevent text wrapping */
-    }
-}
-
-/* Extra small devices */
-@media screen and (max-width: 360px) {
-    .transparent-header {
-        padding: 0.8rem 0.8rem;
-    }
-
-    .logo {
-        font-size: 1.2rem; /* Even smaller for very small devices */
-        letter-spacing: 1px;
-    }
-
-    .menu-btn {
-        padding: 6px;
-        margin-left: 8px;
-    }
-}
-
-/* Very small devices */
-@media screen and (max-width: 320px) {
-    .logo {
-        font-size: 1.1rem;
-        letter-spacing: 0.8px;
-    }
-}
-
-/* Mobile-specific adjustments */
-@media screen and (max-width: 768px) {
-    .transparent-header {
-        padding: 0.6rem 1rem;
-        height: 50px; /* Reduced height */
-    }
-
-    .logo {
-        font-size: 1.3rem; /* Smaller font */
-        letter-spacing: 1px;
-    }
-
-    .menu-btn {
-        padding: 6px;
-        gap: 4px; /* Reduced gap between lines */
-        margin-right: 0;
-        transform: scale(0.8); /* Make button smaller */
-    }
-
-    .menu-btn span {
-        width: 20px; /* Smaller lines */
-        height: 2px;
-    }
-
-    .sidebar {
-        padding-top: 50px; /* Match new header height */
-        width: 200px; /* Narrower sidebar */
-        right: -200px;
-    }
-
-    .sidebar ul li a {
-        font-size: 1.2rem; /* Smaller font */
-        padding: 0.8rem 1.2rem; /* Less padding */
-        letter-spacing: 1px;
-    }
-
-    /* Adjust menu button animation for mobile */
-    .menu-btn.active span:first-child {
-        transform: rotate(45deg) translate(3px, 3px); /* Adjusted for smaller size */
-    }
-
-    .menu-btn.active span:last-child {
-        transform: rotate(-45deg) translate(3px, -3px); /* Adjusted for smaller size */
-    }
-}
-
-/* Extra small devices */
-@media screen and (max-width: 360px) {
-    .transparent-header {
-        padding: 0.6rem 0.8rem;
-    }
-
-    .logo {
-        font-size: 1.1rem;
-    }
-
-    .sidebar {
-        width: 180px; /* Even narrower */
-        right: -180px;
-    }
-
-    .sidebar ul li a {
-        font-size: 1.1rem;
-        padding: 0.7rem 1rem;
-    }
-
-    .menu-btn {
-        transform: scale(0.75); /* Even smaller button */
-    }
-}
-
-/* Update about content styles for better mobile centering */
+/* About content styles */
 .about-content {
     position: relative;
     background: rgba(0, 0, 0, 0.3);
@@ -1449,283 +193,103 @@ html {
     color: white;
     padding: 2.5rem;
     width: 90%;
-    max-width: 500px; /* Larger default max-width */
+    max-width: 500px;
     margin: 150px auto;
     border-radius: 8px;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    border: none;
     text-align: center;
 }
 
-/* Update about summary section */
-.about-summary {
-    text-align: center;
-    margin-bottom: 2.5rem;
-    padding-bottom: 2rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.about-summary h2 {
-    font-family: var(--system-fonts);
-    font-size: 1.8rem;
-    margin-bottom: 1.5rem;
-    opacity: 0.9;
-    letter-spacing: 2px;
-}
-
-.about-summary p {
-    margin: 1rem 0;
-    font-size: 1rem;
-    line-height: 1.6;
-    opacity: 0.8;
-    letter-spacing: 1px;
-}
-
-/* Update contact info section */
-.contact-info {
-    text-align: center;
-    margin: 0 auto;
-    padding: 0;
-}
-
-.contact-info h2 {
-    font-family: var(--system-fonts);
-    font-size: 1.8rem;
-    margin-bottom: 2rem;
-    opacity: 0.9;
-    letter-spacing: 2px;
-}
-
-.contact-info p {
-    margin: 1rem 0;
-    font-size: 1rem;
-    opacity: 0.8;
-    letter-spacing: 1px;
-}
-
-/* Mobile adjustments */
-@media screen and (max-width: 768px) {
-    .about-content {
-        margin: 100px auto;
-        padding: 2rem;
-        width: 90%;
-        max-width: 320px;
-    }
-
-    .about-summary h2,
-    .contact-info h2 {
-        font-size: 1.5rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .about-summary p,
-    .contact-info p {
-        font-size: 0.95rem;
-        margin: 0.8rem 0;
-    }
-}
-
-/* Extra small devices */
-@media screen and (max-width: 360px) {
-    .about-content {
-        margin: 80px auto;
-        padding: 1.5rem;
-        width: 95%;
-        max-width: 300px;
-    }
-
-    .about-summary h2,
-    .contact-info h2 {
-        font-size: 1.3rem;
-    }
-
-    .about-summary p,
-    .contact-info p {
-        font-size: 0.9rem;
-    }
-}
-
-/* Mobile-specific adjustments with larger header and fonts */
+/* Media queries */
 @media screen and (max-width: 768px) {
     .transparent-header {
         padding: 0.8rem 1.2rem;
-        height: 70px; /* Increased from 50px */
+        height: 70px;
     }
 
     .logo {
-        font-size: 1.8rem; /* Increased from 1.3rem */
+        font-size: 1.8rem;
         letter-spacing: 2px;
     }
 
     .menu-btn {
         padding: 8px;
         gap: 6px;
-        margin-right: 5px;
-        transform: scale(0.9); /* Slightly larger than before */
-    }
-
-    .menu-btn span {
-        width: 25px; /* Larger lines */
-        height: 2px;
     }
 
     .sidebar {
-        padding-top: 70px; /* Match new header height */
-        width: 250px; /* Wider sidebar */
+        width: 250px;
         right: -250px;
+        padding-top: 70px;
     }
 
-    .sidebar ul li a {
-        font-size: 1.6rem; /* Larger font */
-        padding: 1rem 1.5rem;
-        letter-spacing: 1.5px;
-    }
-}
-
-/* Extra small devices */
-@media screen and (max-width: 360px) {
-    .transparent-header {
-        padding: 0.8rem 1rem;
-        height: 65px; /* Still larger than original */
-    }
-
-    .logo {
-        font-size: 1.6rem; /* Increased from 1.1rem */
-        letter-spacing: 1.5px;
-    }
-
-    .sidebar {
-        width: 220px; /* Wider than before */
-        right: -220px;
-    }
-
-    .sidebar ul li a {
-        font-size: 1.4rem; /* Larger than before */
-        padding: 0.8rem 1.2rem;
-    }
-
-    .menu-btn {
-        transform: scale(0.85); /* Larger than before */
-    }
-}
-
-/* Enable scrolling on mobile */
-html, body {
-    height: 100%;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch; /* Enable smooth scrolling on iOS */
-    overscroll-behavior-y: contain; /* Prevent pull-to-refresh */
-}
-
-/* Update container styles */
-.parallax-container {
-    position: relative;
-    min-height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
-    z-index: 1;
-    -webkit-overflow-scrolling: touch;
-}
-
-/* Update portfolio grid for mobile scrolling */
-.portfolio-grid {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center;
-    gap: 4rem;
-    padding: 2rem;
-    width: 100%;
-    max-width: 1200px;
-    margin: 150px auto 2rem;
-    background: transparent;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-}
-
-/* Mobile adjustments */
-@media screen and (max-width: 768px) {
-    .parallax-container {
-        height: auto;
-        min-height: 100%;
+    .hero-image {
+        height: calc(100vh - 70px);
+        margin-top: 70px;
     }
 
     .portfolio-grid {
-        margin-top: 80px;
+        margin-top: 100px;
+        gap: 3rem;
     }
 
     .about-content {
-        margin-top: 80px;
+        margin: 100px auto;
+        padding: 2rem;
+        max-width: 320px;
     }
 }
 
-/* iOS-specific optimizations */
-@supports (-webkit-overflow-scrolling: touch) {
-    html, body {
-        -webkit-overflow-scrolling: touch;
-        overflow-x: hidden;
-        position: fixed;
-        width: 100%;
-        height: 100%;
+@media screen and (max-width: 480px) {
+    .logo {
+        font-size: 1.4rem;
     }
 
-    .parallax-container {
-        -webkit-overflow-scrolling: touch;
-        overflow-y: scroll;
-        position: absolute;
-        width: 100%;
-        height: 100%;
+    .sidebar {
+        width: 220px;
+        right: -220px;
     }
 
-    .portfolio-grid img {
-        -webkit-transform: translate3d(0, 0, 0);
-        transform: translate3d(0, 0, 0);
-        -webkit-backface-visibility: hidden;
-        backface-visibility: hidden;
-    }
-
-    .hero-image img {
-        -webkit-transform: translate3d(0, 0, 0);
-        transform: translate3d(0, 0, 0);
-        -webkit-backface-visibility: hidden;
-        backface-visibility: hidden;
+    .portfolio-grid {
+        gap: 2rem;
     }
 }
 
-/* Add fluid animations and smooth scrolling */
-html {
-    scroll-behavior: smooth;
+/* Add loading state styles */
+.loading {
+    position: relative;
 }
 
-/* Optimize for high performance animations */
-.portfolio-grid img {
-    transform: translate3d(0, 0, 0);
-    backface-visibility: hidden;
-    perspective: 1000px;
-    will-change: transform, opacity;
-    transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); /* Apple's easing */
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    animation: loading 1.5s infinite;
 }
 
-.hero-image img {
-    transform: translate3d(0, 0, 0);
-    backface-visibility: hidden;
-    perspective: 1000px;
-    will-change: transform, opacity;
-    transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+@keyframes loading {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
 }
 
-/* Smooth reveal animations */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translate3d(0, 30px, 0);
-    }
-    to {
-        opacity: 1;
-        transform: translate3d(0, 0, 0);
-    }
+/* Image error state */
+.image-error {
+    min-height: 200px;
+    background-color: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
 }
 
-.portfolio-grid img.visible {
-    animation: fadeInUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+.image-error::after {
+    content: '⚠️ Image not available';
+    color: white;
+    font-size: 1rem;
+    text-align: center;
 }
