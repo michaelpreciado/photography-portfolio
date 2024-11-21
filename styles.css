@@ -52,17 +52,15 @@ body {
 
 /* Update content sections to work with parallax */
 .hero-image {
-    height: calc(100vh - 60px); /* Adjust for mobile header height */
+    height: calc(100vh - 70px); /* Full viewport height minus header */
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
     z-index: 2;
-    padding: 0; /* Remove padding */
-    margin-top: 60px; /* Match mobile header height */
-    transform: none; /* Remove transform */
-    will-change: auto; /* Remove will-change */
+    padding: 0;
+    margin-top: 70px; /* Match header height */
 }
 
 .hero-image a {
@@ -71,36 +69,40 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1rem; /* Add padding to the link instead */
+    padding: 0; /* Remove padding */
 }
 
 .hero-image img {
-    width: auto;
-    height: auto;
-    max-width: min(90%, 1200px);
-    max-height: 85vh;
-    object-fit: contain;
-    margin: auto;
-    border-radius: 8px;
-    opacity: 0;
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25); /* Matching shadow intensity */
-    transform: none; /* Remove transform */
-    will-change: auto; /* Remove will-change */
+    width: 100%;
+    height: 100%;
+    max-width: none; /* Remove max-width constraint */
+    max-height: none; /* Remove max-height constraint */
+    object-fit: contain; /* Keep aspect ratio */
+    margin: 0;
+    padding: 1rem;
 }
 
-.hero-image img:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.35);
+/* Mobile adjustments */
+@media screen and (max-width: 768px) {
+    .hero-image {
+        height: calc(100vh - 60px); /* Adjust for smaller header on mobile */
+        margin-top: 60px;
+    }
+    
+    .hero-image img {
+        padding: 0.8rem;
+    }
 }
 
-.hero-image img.loaded {
-    opacity: 1; /* Fade in when loaded */
-}
-
-.hero-image img.fade-out {
-    opacity: 0;
-    transform: scale(1.02); /* Subtle scale effect during transition */
+@media screen and (max-width: 480px) {
+    .hero-image {
+        height: calc(100vh - 50px);
+        margin-top: 50px;
+    }
+    
+    .hero-image img {
+        padding: 0.5rem;
+    }
 }
 
 /* Responsive breakpoints */
