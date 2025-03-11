@@ -2,54 +2,97 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0">
     <meta name="description" content="Mario Preciado Photography - Professional Portrait and Lifestyle Photography">
     <meta name="theme-color" content="#000000">
+    <meta name="format-detection" content="telephone=no">
+    <!-- Open Graph tags for social sharing -->
+    <meta property="og:title" content="Mario Preciado Photography">
+    <meta property="og:description" content="Professional Portrait and Lifestyle Photography">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mario.preciado.photography">
+    <!-- Apple touch icon -->
+    <link rel="apple-touch-icon" href="public/apple-touch-icon.png">
+    <!-- Resource preloading for performance -->
     <link rel="preload" href="styles.css" as="style">
     <link rel="preload" href="script.js" as="script">
+    <link rel="preload" href="animations.js" as="script">
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&family=Righteous&display=swap" rel="stylesheet">
     <title>Mario Preciado Photography</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="homepage-intro.css">
 </head>
-<body>
-    <div class="parallax-bg" aria-hidden="true"></div>
+<body class="home-page">
+    <div class="parallax-bg parallax-element" data-speed="0.2" aria-hidden="true"></div>
     
     <header class="transparent-header">
+        <!-- Horizontal navigation for desktop -->
+        <nav class="horizontal-nav" aria-label="Desktop navigation">
+            <ul>
+                <li><a href="index.html" aria-current="page">HOME</a></li>
+                <li><a href="portfolio.html">PORTFOLIO</a></li>
+                <li><a href="about.html">ABOUT</a></li>
+                <li><a href="about.html#contact">CONTACT</a></li>
+            </ul>
+        </nav>
+
+        <!-- Centered logo -->
         <div class="logo">
-            <a href="index.html" class="logo-link">MARIO PRECIADO</a>
+            <a href="index.html" class="logo-link" aria-label="Home - Mario Preciado Photography" data-text="MARIO PRECIADO">MARIO PRECIADO</a>
         </div>
-        <button class="menu-btn" aria-label="Toggle Menu" onclick="toggleSidebar()">
+        
+        <!-- Mobile menu button -->
+        <button class="menu-btn" aria-expanded="false" aria-controls="main-navigation" aria-label="Toggle Menu" onclick="toggleSidebar(this)">
             <span></span>
             <span></span>
             <span></span>
         </button>
     </header>
 
-    <nav class="sidebar" aria-label="Main navigation">
+    <!-- Mobile sidebar navigation -->
+    <nav id="main-navigation" class="sidebar" aria-label="Mobile navigation">
         <ul>
-            <li><a href="index.html" aria-current="page">Home</a></li>
-            <li><a href="portfolio.html">Portfolio</a></li>
-            <li><a href="about.html">About</a></li>
+            <li><a href="index.html" aria-current="page">HOME</a></li>
+            <li><a href="portfolio.html">PORTFOLIO</a></li>
+            <li><a href="about.html">ABOUT</a></li>
+            <li><a href="about.html#contact">CONTACT</a></li>
         </ul>
     </nav>
 
     <main class="parallax-container">
         <div class="parallax-content">
-            <div class="hero-image">
-                <a href="portfolio.html" aria-label="View Portfolio">
-                    <img id="randomImage" 
-                         alt="Featured Photography" 
-                         loading="lazy" 
-                         decoding="async">
-                </a>
+            <h1 class="visually-hidden">Mario Preciado Photography</h1>
+            
+            <!-- Introduction text with typing effect - moved to top -->
+            <div class="intro-container">
+                <p class="intro-text-secondary">
+                    <span class="welcome-word fade-in-animation" style="animation-delay: 0.5s;">WELCOME</span>
+                    <span class="welcome-space">&nbsp;&nbsp;&nbsp;</span>
+                    <span class="welcome-word fade-in-animation" style="animation-delay: 0.7s;">TO</span>
+                    <span class="welcome-space">&nbsp;&nbsp;&nbsp;</span>
+                    <span class="welcome-word fade-in-animation" style="animation-delay: 0.9s;">MY</span>
+                    <span class="welcome-space">&nbsp;&nbsp;&nbsp;</span>
+                    <span class="welcome-word fade-in-animation" style="animation-delay: 1.1s;">PAGE!</span>
+                </p>
+            </div>
+            
+            <!-- Live Music Section -->
+            <h2 class="section-title">LIVE MUSIC</h2>
+            
+            <!-- Two-column grid for images -->
+            <div class="two-column-grid">
+                <img src="public/image1.jpg" loading="lazy" decoding="async" alt="Live music photography 1" width="600" height="800" class="visible parallax-element" data-speed="0.05">
+                <img src="public/image2.jpg" loading="lazy" decoding="async" alt="Live music photography 2" width="600" height="800" class="visible parallax-element" data-speed="0.08">
             </div>
         </div>
     </main>
 
     <script src="script.js" defer></script>
+    <script src="animations.js" defer></script>
+    <script src="hippie-symbols.js" defer></script>
 </body>
 </html>

@@ -1,0 +1,21 @@
+/* Homepage-specific styles */
+
+/* Hide intro container on all pages by default */
+.intro-container {
+    display: none;
+}
+
+/* Only show intro container on the home page */
+body.home-page .intro-container {
+    display: block;
+}
+
+/* Add specific styling for the about page */
+body.about-page .section-title {
+    margin-top: var(--space-xl);
+}
+
+/* Add specific styling for the portfolio page */
+body.portfolio-page .section-title {
+    margin-top: var(--space-xl);
+} 

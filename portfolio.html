@@ -2,61 +2,101 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0">
     <meta name="description" content="Mario Preciado's Photography Portfolio - Professional Portrait Collection">
     <meta name="theme-color" content="#000000">
+    <meta name="format-detection" content="telephone=no">
+    <!-- Open Graph tags for social sharing -->
+    <meta property="og:title" content="Portfolio - Mario Preciado Photography">
+    <meta property="og:description" content="Browse Mario Preciado's professional portrait photography collection">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mario.preciado.photography/portfolio.html">
+    <!-- Apple touch icon -->
+    <link rel="apple-touch-icon" href="public/apple-touch-icon.png">
+    <!-- Resource preloading for performance -->
+    <link rel="preload" href="styles.css" as="style">
+    <link rel="preload" href="script.js" as="script">
+    <link rel="preload" href="animations.js" as="script">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&family=Righteous&display=swap" rel="stylesheet">
     <title>Portfolio - Mario Preciado Photography</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="homepage-intro.css">
 </head>
 <body class="portfolio-page">
-    <div class="parallax-bg" aria-hidden="true"></div>
+    <div class="parallax-bg parallax-element" data-speed="0.2" aria-hidden="true"></div>
     
     <header class="transparent-header">
+        <!-- Horizontal navigation for desktop -->
+        <nav class="horizontal-nav" aria-label="Desktop navigation">
+            <ul>
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="portfolio.html" aria-current="page">PORTFOLIO</a></li>
+                <li><a href="about.html">ABOUT</a></li>
+                <li><a href="about.html#contact">CONTACT</a></li>
+            </ul>
+        </nav>
+
+        <!-- Centered logo -->
         <div class="logo">
-            <a href="index.html" class="logo-link">MARIO PRECIADO</a>
+            <a href="index.html" class="logo-link" aria-label="Home - Mario Preciado Photography" data-text="MARIO PRECIADO">MARIO PRECIADO</a>
         </div>
-        <button class="menu-btn" aria-label="Toggle Menu" onclick="toggleSidebar()">
+        
+        <!-- Mobile menu button -->
+        <button class="menu-btn" aria-expanded="false" aria-controls="main-navigation" aria-label="Toggle Menu" onclick="toggleSidebar(this)">
             <span></span>
             <span></span>
             <span></span>
         </button>
     </header>
 
-    <nav class="sidebar" aria-label="Main navigation">
+    <!-- Mobile sidebar navigation -->
+    <nav id="main-navigation" class="sidebar" aria-label="Mobile navigation">
         <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="portfolio.html" aria-current="page">Portfolio</a></li>
-            <li><a href="about.html">About</a></li>
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="portfolio.html" aria-current="page">PORTFOLIO</a></li>
+            <li><a href="about.html">ABOUT</a></li>
+            <li><a href="about.html#contact">CONTACT</a></li>
         </ul>
     </nav>
 
     <main class="parallax-container">
         <div class="portfolio-content">
+            <h1 class="visually-hidden">Mario Preciado's Portfolio</h1>
+            
+            <!-- Introduction text with typing effect - added to top -->
+            <div class="intro-container">
+                <p class="intro-text-secondary fade-in-animation">WELCOME TO MY PAGE!</p>
+            </div>
+            
+            <h2 class="section-title">PORTFOLIO</h2>
             <div class="portfolio-grid" role="list">
-                <img src="public/image1.jpg" data-src="public/image1.jpg" loading="lazy" decoding="async" alt="Portrait Photography 1">
-                <img src="public/image2.jpg" data-src="public/image2.jpg" loading="lazy" decoding="async" alt="Portrait Photography 2">
-                <img src="public/image3.jpg" loading="lazy" decoding="async" alt="Portrait Photography 3">
-                <img src="public/image4.JPG" loading="lazy" decoding="async" alt="Portrait Photography 4">
-                <img src="public/image5.JPG" loading="lazy" decoding="async" alt="Portrait Photography 5">
-                <img src="public/image6.jpg" loading="lazy" decoding="async" alt="Portrait Photography 6">
-                <img src="public/image7.jpg" loading="lazy" decoding="async" alt="Portrait Photography 7">
-                <img src="public/image8.jpg" loading="lazy" decoding="async" alt="Portrait Photography 8">
-                <img src="public/image9.JPG" loading="lazy" decoding="async" alt="Portrait Photography 9">
-                <img src="public/image10.jpg" loading="lazy" decoding="async" alt="Portrait Photography 10">
-                <img src="public/image11.jpeg" loading="lazy" decoding="async" alt="Portrait Photography 11">
-                <img src="public/image12.jpeg" loading="lazy" decoding="async" alt="Portrait Photography 12">
-                <img src="public/image13.jpeg" loading="lazy" decoding="async" alt="Portrait Photography 13">
-                <img src="public/image14.jpeg" loading="lazy" decoding="async" alt="Portrait Photography 14">
-                <img src="public/image15.jpeg" loading="lazy" decoding="async" alt="Portrait Photography 15">
-                <img src="public/image16.jpeg" loading="lazy" decoding="async" alt="Portrait Photography 16">
-                <img src="public/image17.jpeg" loading="lazy" decoding="async" alt="Portrait Photography 17">
+                <img src="public/image1.jpg" data-src="public/image1.jpg" loading="lazy" decoding="async" alt="Portrait Photography 1" width="300" height="400" class="parallax-element" data-speed="0.03">
+                <img src="public/image2.jpg" data-src="public/image2.jpg" loading="lazy" decoding="async" alt="Portrait Photography 2" width="300" height="400" class="parallax-element" data-speed="0.05">
+                <img src="public/image3.jpg" loading="lazy" decoding="async" alt="Portrait Photography 3" width="300" height="400" class="parallax-element" data-speed="0.02">
+                <img src="public/image4.JPG" loading="lazy" decoding="async" alt="Portrait Photography 4" width="300" height="400" class="parallax-element" data-speed="0.04">
+                <img src="public/image5.JPG" loading="lazy" decoding="async" alt="Portrait Photography 5" width="300" height="400" class="parallax-element" data-speed="0.06">
+                <img src="public/image6.jpg" loading="lazy" decoding="async" alt="Portrait Photography 6" width="300" height="400" class="parallax-element" data-speed="0.03">
+                <img src="public/image7.jpg" loading="lazy" decoding="async" alt="Portrait Photography 7" width="300" height="400" class="parallax-element" data-speed="0.05">
+                <img src="public/image8.jpg" loading="lazy" decoding="async" alt="Portrait Photography 8" width="300" height="400" class="parallax-element" data-speed="0.02">
+                <img src="public/image9.JPG" loading="lazy" decoding="async" alt="Portrait Photography 9" width="300" height="400" class="parallax-element" data-speed="0.04">
+                <img src="public/image10.jpg" loading="lazy" decoding="async" alt="Portrait Photography 10" width="300" height="400" class="parallax-element" data-speed="0.06">
+                <img src="public/image11.jpeg" loading="lazy" decoding="async" alt="Portrait Photography 11" width="300" height="400" class="parallax-element" data-speed="0.03">
+                <img src="public/image12.jpeg" loading="lazy" decoding="async" alt="Portrait Photography 12" width="300" height="400" class="parallax-element" data-speed="0.05">
+                <img src="public/image13.jpeg" loading="lazy" decoding="async" alt="Portrait Photography 13" width="300" height="400" class="parallax-element" data-speed="0.02">
+                <img src="public/image14.jpeg" loading="lazy" decoding="async" alt="Portrait Photography 14" width="300" height="400" class="parallax-element" data-speed="0.04">
+                <img src="public/image15.jpeg" loading="lazy" decoding="async" alt="Portrait Photography 15" width="300" height="400" class="parallax-element" data-speed="0.06">
+                <img src="public/image16.jpeg" loading="lazy" decoding="async" alt="Portrait Photography 16" width="300" height="400" class="parallax-element" data-speed="0.03">
+                <img src="public/image17.jpeg" loading="lazy" decoding="async" alt="Portrait Photography 17" width="300" height="400" class="parallax-element" data-speed="0.05">
             </div>
         </div>
     </main>
 
     <script src="script.js" defer></script>
+    <script src="animations.js" defer></script>
+    <script src="hippie-symbols.js" defer></script>
 </body>
 </html>
