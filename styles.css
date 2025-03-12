@@ -1,6 +1,6 @@
 /* 
 * Mario Preciado Photography - Mobile-First Stylesheet
-* Optimized for iPhone devices and responsive scaling
+* Performance-optimized for iPhone devices
 */
 
 /* Base variables and settings */
@@ -14,6 +14,7 @@
     --sidebar-width-mobile: 75vw;
     --sidebar-width-desktop: 300px;
     --blur-effect: blur(8px);
+    --ios-blur-effect: blur(5px); /* Reduced blur for iOS performance */
     
     /* Colors */
     --color-black: #000;
@@ -43,6 +44,8 @@
     --transition-fast: 0.2s ease;
     --transition-medium: 0.3s ease;
     --transition-slow: 0.5s ease;
+    --ios-transition-fast: 0.15s ease;   /* Faster transitions for iOS */
+    --ios-transition-medium: 0.25s ease; /* Faster transitions for iOS */
 }
 
 /* Reset and base styles */
@@ -65,18 +68,33 @@ body {
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Improve iOS performance */
+    -webkit-tap-highlight-color: transparent;
 }
 
 img {
     max-width: 100%;
     height: auto;
     display: block;
+    /* Preserve memory by preventing layout shifts */
+    content-visibility: auto;
 }
 
 a {
     color: inherit;
     text-decoration: none;
     transition: opacity var(--transition-medium);
+}
+
+/* iOS performance optimizations - use simple opacity changes for interactive elements */
+@media (pointer: coarse) {
+    a, button {
+        transition: opacity var(--ios-transition-fast);
+    }
+    
+    a:hover, a:focus, button:hover, button:focus {
+        opacity: 0.85;
+    }
 }
 
 a:hover, a:focus {
@@ -108,12 +126,18 @@ a:focus, button:focus {
     border: 0;
 }
 
-/* Performance optimizations */
+/* Performance optimizations - Use will-change only on elements that absolutely need it */
 .sidebar, 
-.menu-btn span, 
+.menu-btn span {
+    will-change: transform;
+}
+
+/* Use transform: translate3d for hardware acceleration on key elements */
+.transparent-header, 
+.sidebar, 
 .portfolio-grid img, 
-.hero-image img {
-    will-change: transform, opacity;
+.two-column-grid img {
+    transform: translateZ(0);
 }
 
 /* Header styles - mobile first */
@@ -123,15 +147,23 @@ a:focus, button:focus {
     left: 0;
     right: 0;
     display: flex;
-    justify-content: center; /* Center the logo */
+    justify-content: center;
     align-items: center;
     padding: var(--space-sm) var(--space-md);
     background: var(--color-overlay);
+    /* Apply different backdrop-filter based on device capability */
     backdrop-filter: var(--blur-effect);
     -webkit-backdrop-filter: var(--blur-effect);
     z-index: 1000;
     height: var(--header-height-mobile);
-    transform: translateZ(0); /* Hardware acceleration */
+}
+
+/* iOS optimization - reduce complexity of backdrop-filter */
+@supports (-webkit-touch-callout: none) {
+    .transparent-header {
+        backdrop-filter: var(--ios-blur-effect);
+        -webkit-backdrop-filter: var(--ios-blur-effect);
+    }
 }
 
 .logo {
@@ -141,7 +173,7 @@ a:focus, button:focus {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    text-align: center; /* Center text */
+    text-align: center;
     font-family: var(--groovy-font);
 }
 
@@ -175,7 +207,7 @@ a:focus, button:focus {
     opacity: 0.9;
 }
 
-/* Simplify the hover effect to match the design */
+/* Simplify hover effects for better performance */
 .horizontal-nav ul li a:hover,
 .horizontal-nav ul li a:focus {
     opacity: 1;
@@ -193,6 +225,35 @@ a:focus, button:focus {
     letter-spacing: 0.2em;
     text-transform: uppercase;
     font-family: var(--groovy-font);
+}
+
+/* Add iOS-specific animation styles */
+.ios-title-animation {
+    animation: simple-fade-in 0.5s ease forwards;
+}
+
+@keyframes simple-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.ios-animate-in {
+    animation: ios-fade-in 0.4s ease forwards;
+}
+
+@keyframes ios-fade-in {
+    from { 
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.ios-fade-in {
+    animation: simple-fade-in 0.6s ease forwards;
 }
 
 /* Menu button styles - now on the right */
@@ -220,6 +281,13 @@ a:focus, button:focus {
     margin: 3px 0;
 }
 
+/* iOS-specific transition for better performance */
+@supports (-webkit-touch-callout: none) {
+    .menu-btn span {
+        transition: transform var(--ios-transition-fast), opacity var(--ios-transition-fast);
+    }
+}
+
 /* Sidebar styles - mobile first */
 .sidebar {
     position: fixed;
@@ -237,6 +305,17 @@ a:focus, button:focus {
     box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
     overflow-y: auto;
     font-family: var(--main-font);
+}
+
+/* iOS optimization for sidebar */
+@supports (-webkit-touch-callout: none) {
+    .sidebar {
+        backdrop-filter: var(--ios-blur-effect);
+        -webkit-backdrop-filter: var(--ios-blur-effect);
+        transition: right var(--ios-transition-medium);
+        /* Use simpler background instead of heavy backdrop-filter for extreme performance needs */
+        background: rgba(0, 0, 0, 0.9);
+    }
 }
 
 .sidebar.active {
@@ -264,17 +343,160 @@ a:focus, button:focus {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Background and container styles */
+/* Optimize parallax bg for iOS by simplifying or removing */
 .parallax-bg {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vh;
+    height: 100%;
+    background-image: url('../public/bg-texture.jpg');
+    background-size: cover;
+    background-position: center;
     z-index: -1;
-    background-color: var(--color-black);
 }
 
+/* iOS devices get a static background instead of parallax */
+@supports (-webkit-touch-callout: none) {
+    .parallax-bg {
+        position: fixed;
+        transform: none !important;
+    }
+    
+    .parallax-element {
+        transform: none !important;
+    }
+}
+
+/* Optimize image loading and animations */
+.portfolio-grid img, .two-column-grid img {
+    opacity: 0;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    transform: translateY(20px);
+}
+
+/* iOS optimization for images */
+@supports (-webkit-touch-callout: none) {
+    .portfolio-grid img, .two-column-grid img {
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        transform: translateY(10px);
+    }
+}
+
+.portfolio-grid img.visible, .two-column-grid img.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Optimize image hover effects */
+.hover-zoom {
+    transform: scale(1.03) !important;
+    transition: transform 0.3s ease !important;
+}
+
+/* iOS-specific simple hover effects */
+@supports (-webkit-touch-callout: none) {
+    .hover-zoom {
+        transform: scale(1.02) !important;
+        transition: transform 0.2s ease !important;
+    }
+}
+
+/* Simpler page transition overlay for iOS */
+.simple-page-transition-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-black);
+    opacity: 0;
+    visibility: hidden;
+    z-index: 9999;
+    transition: opacity 0.3s ease;
+}
+
+.simple-page-transition-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Add simplified effect styles for iOS */
+.simple-title-effect {
+    position: relative;
+    display: inline-block;
+    animation: simple-pulse 3s infinite alternate;
+}
+
+@keyframes simple-pulse {
+    0% {
+        opacity: 0.9;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.ios-typing-effect {
+    border-right: 2px solid var(--color-white);
+    animation: simple-blink 1s step-end infinite;
+}
+
+@keyframes simple-blink {
+    from, to { border-color: transparent; }
+    50% { border-color: var(--color-white); }
+}
+
+/* Reduce animation calculations on iOS devices */
+@supports (-webkit-touch-callout: none) {
+    /* Replace complex keyframe animations with simple transitions */
+    .character-animation span {
+        animation: none;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+    }
+    
+    .character-animation span.loaded {
+        opacity: 1;
+    }
+    
+    /* Disable heavy effects completely */
+    .glitch-effect::before,
+    .glitch-effect::after {
+        display: none;
+    }
+    
+    /* Simplify cursor animations */
+    .custom-cursor {
+        display: none !important;
+    }
+    
+    /* Disable or simplify particle animations */
+    .particles-container {
+        opacity: 0.3;
+    }
+    
+    .particle {
+        animation-duration: 20s !important;
+    }
+}
+
+/* Fix iOS 100vh issue */
+@supports (-webkit-touch-callout: none) {
+    .sidebar, 
+    .simple-page-transition-overlay,
+    .page-transition-overlay {
+        height: 100%;
+        height: -webkit-fill-available;
+    }
+}
+
+/* Lazy load images for better performance */
+img[loading="lazy"] {
+    content-visibility: auto;
+}
+
+/* Background and container styles */
 .parallax-container {
     position: relative;
     min-height: 100vh;
@@ -1326,7 +1548,7 @@ a:focus, button:focus {
 
 .welcome-space {
     display: inline-block;
-    width: 0.5em;
+    width: 0.2em;
 }
 
 /* 3D Floating Hippie Symbols */

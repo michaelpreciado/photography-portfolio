@@ -2,10 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0, viewport-fit=cover">
     <meta name="description" content="Mario Preciado Photography - Professional Portrait and Lifestyle Photography">
     <meta name="theme-color" content="#000000">
     <meta name="format-detection" content="telephone=no">
+    <!-- iOS optimizations -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Mario Preciado Photography">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="msapplication-TileColor" content="#000000">
+    <!-- Touch behavior optimization -->
+    <meta name="HandheldFriendly" content="true">
     <!-- Open Graph tags for social sharing -->
     <meta property="og:title" content="Mario Preciado Photography">
     <meta property="og:description" content="Professional Portrait and Lifestyle Photography">
@@ -13,6 +21,10 @@
     <meta property="og:url" content="https://mario.preciado.photography">
     <!-- Apple touch icon -->
     <link rel="apple-touch-icon" href="public/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="public/apple-touch-icon-180x180.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="public/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="public/apple-touch-icon-120x120.png">
+    <link rel="mask-icon" href="public/safari-pinned-tab.svg" color="#000000">
     <!-- Resource preloading for performance -->
     <link rel="preload" href="styles.css" as="style">
     <link rel="preload" href="script.js" as="script">
@@ -71,11 +83,11 @@
             <div class="intro-container">
                 <p class="intro-text-secondary">
                     <span class="welcome-word fade-in-animation" style="animation-delay: 0.5s;">WELCOME</span>
-                    <span class="welcome-space">&nbsp;&nbsp;&nbsp;</span>
+                    <span class="welcome-space">&nbsp;</span>
                     <span class="welcome-word fade-in-animation" style="animation-delay: 0.7s;">TO</span>
-                    <span class="welcome-space">&nbsp;&nbsp;&nbsp;</span>
+                    <span class="welcome-space">&nbsp;</span>
                     <span class="welcome-word fade-in-animation" style="animation-delay: 0.9s;">MY</span>
-                    <span class="welcome-space">&nbsp;&nbsp;&nbsp;</span>
+                    <span class="welcome-space">&nbsp;</span>
                     <span class="welcome-word fade-in-animation" style="animation-delay: 1.1s;">PAGE!</span>
                 </p>
             </div>
@@ -94,5 +106,11 @@
     <script src="script.js" defer></script>
     <script src="animations.js" defer></script>
     <script src="hippie-symbols.js" defer></script>
+    <script>
+        // Add passive touch listeners for better performance on iOS
+        document.addEventListener('touchstart', function() {}, {passive: true});
+        document.addEventListener('touchmove', function() {}, {passive: true});
+        document.addEventListener('touchend', function() {}, {passive: true});
+    </script>
 </body>
 </html>
