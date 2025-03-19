@@ -3,35 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0">
-    <meta name="description" content="Mario Preciado's Photography Portfolio - Professional Portrait Collection">
+    <meta name="description" content="Mario Preciado's Photography Portfolio - Professional Portrait Collection with 8-bit Retro Style">
     <meta name="theme-color" content="#000000">
     <meta name="format-detection" content="telephone=no">
     <!-- Open Graph tags for social sharing -->
     <meta property="og:title" content="Portfolio - Mario Preciado Photography">
-    <meta property="og:description" content="Browse Mario Preciado's professional portrait photography collection">
+    <meta property="og:description" content="Browse Mario Preciado's professional portrait photography collection with 8-bit retro aesthetic">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://mario.preciado.photography/portfolio.html">
     <!-- Apple touch icon -->
     <link rel="apple-touch-icon" href="public/apple-touch-icon.png">
     <!-- Resource preloading for performance -->
     <link rel="preload" href="styles.css" as="style">
+    <link rel="preload" href="8bit-style.css" as="style">
     <link rel="preload" href="script.js" as="script">
-    <link rel="preload" href="animations.js" as="script">
+    <link rel="preload" href="8bit-animations.js" as="script">
+    <link rel="preload" href="peace-symbols.js" as="script">
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&family=Righteous&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <title>Portfolio - Mario Preciado Photography</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="homepage-intro.css">
+    <link rel="stylesheet" href="8bit-style.css">
+    <style>
+        /* 8-bit specific overrides for portfolio page */
+        body {
+            background-color: var(--color-black);
+        }
+        
+        .logo-link {
+            font-family: var(--pixel-font);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .horizontal-nav ul li a,
+        .sidebar ul li a {
+            font-family: var(--pixel-font);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .portfolio-grid {
+            gap: calc(var(--pixel-size) * 4);
+            padding: var(--pixel-size);
+        }
+        
+        .section-title {
+            font-family: var(--pixel-font);
+            text-shadow: var(--pixel-size) var(--pixel-size) 0 var(--color-blue);
+            margin-bottom: 2rem;
+        }
+    </style>
 </head>
 <body class="portfolio-page">
     <div class="parallax-bg parallax-element" data-speed="0.2" aria-hidden="true"></div>
     
+    <!-- Peace symbols container will be added by JavaScript -->
+    
     <header class="transparent-header">
         <!-- Horizontal navigation for desktop -->
-        <nav class="horizontal-nav" aria-label="Desktop navigation">
+        <nav class="horizontal-nav pixel-nav" aria-label="Desktop navigation">
             <ul>
                 <li><a href="index.html">HOME</a></li>
                 <li><a href="portfolio.html" aria-current="page">PORTFOLIO</a></li>
@@ -42,7 +77,7 @@
 
         <!-- Centered logo -->
         <div class="logo">
-            <a href="index.html" class="logo-link" aria-label="Home - Mario Preciado Photography" data-text="MARIO PRECIADO">MARIO PRECIADO</a>
+            <a href="index.html" class="logo-link pixel-text" aria-label="Home - Mario Preciado Photography" data-text="MARIO PRECIADO">MARIO PRECIADO</a>
         </div>
         
         <!-- Mobile menu button -->
@@ -56,47 +91,55 @@
     <!-- Mobile sidebar navigation -->
     <nav id="main-navigation" class="sidebar" aria-label="Mobile navigation">
         <ul>
-            <li><a href="index.html">HOME</a></li>
-            <li><a href="portfolio.html" aria-current="page">PORTFOLIO</a></li>
-            <li><a href="about.html">ABOUT</a></li>
-            <li><a href="about.html#contact">CONTACT</a></li>
+            <li><a href="index.html" class="pixel-text">HOME</a></li>
+            <li><a href="portfolio.html" aria-current="page" class="pixel-text">PORTFOLIO</a></li>
+            <li><a href="about.html" class="pixel-text">ABOUT</a></li>
+            <li><a href="about.html#contact" class="pixel-text">CONTACT</a></li>
         </ul>
     </nav>
 
     <main class="parallax-container">
-        <div class="portfolio-content">
-            <h1 class="visually-hidden">Mario Preciado's Portfolio</h1>
+        <div class="parallax-content">
+            <h1 class="section-title pixel-title">PORTFOLIO</h1>
             
-            <!-- Introduction text with typing effect - added to top -->
-            <div class="intro-container">
-                <p class="intro-text-secondary fade-in-animation">WELCOME TO MY PAGE!</p>
-            </div>
-            
-            <h2 class="section-title">PORTFOLIO</h2>
-            <div class="portfolio-grid" role="list">
-                <img src="public/image1.jpg" data-src="public/image1.jpg" loading="lazy" decoding="async" alt="Portrait Photography 1" width="300" height="400" class="parallax-element" data-speed="0.03">
-                <img src="public/image2.jpg" data-src="public/image2.jpg" loading="lazy" decoding="async" alt="Portrait Photography 2" width="300" height="400" class="parallax-element" data-speed="0.05">
-                <img src="public/image3.jpg" loading="lazy" decoding="async" alt="Portrait Photography 3" width="300" height="400" class="parallax-element" data-speed="0.02">
-                <img src="public/image4.JPG" loading="lazy" decoding="async" alt="Portrait Photography 4" width="300" height="400" class="parallax-element" data-speed="0.04">
-                <img src="public/image5.JPG" loading="lazy" decoding="async" alt="Portrait Photography 5" width="300" height="400" class="parallax-element" data-speed="0.06">
-                <img src="public/image6.jpg" loading="lazy" decoding="async" alt="Portrait Photography 6" width="300" height="400" class="parallax-element" data-speed="0.03">
-                <img src="public/image7.jpg" loading="lazy" decoding="async" alt="Portrait Photography 7" width="300" height="400" class="parallax-element" data-speed="0.05">
-                <img src="public/image8.jpg" loading="lazy" decoding="async" alt="Portrait Photography 8" width="300" height="400" class="parallax-element" data-speed="0.02">
-                <img src="public/image9.JPG" loading="lazy" decoding="async" alt="Portrait Photography 9" width="300" height="400" class="parallax-element" data-speed="0.04">
-                <img src="public/image10.jpg" loading="lazy" decoding="async" alt="Portrait Photography 10" width="300" height="400" class="parallax-element" data-speed="0.06">
-                <img src="public/image11.jpeg" loading="lazy" decoding="async" alt="Portrait Photography 11" width="300" height="400" class="parallax-element" data-speed="0.03">
-                <img src="public/image12.jpeg" loading="lazy" decoding="async" alt="Portrait Photography 12" width="300" height="400" class="parallax-element" data-speed="0.05">
-                <img src="public/image13.jpeg" loading="lazy" decoding="async" alt="Portrait Photography 13" width="300" height="400" class="parallax-element" data-speed="0.02">
-                <img src="public/image14.jpeg" loading="lazy" decoding="async" alt="Portrait Photography 14" width="300" height="400" class="parallax-element" data-speed="0.04">
-                <img src="public/image15.jpeg" loading="lazy" decoding="async" alt="Portrait Photography 15" width="300" height="400" class="parallax-element" data-speed="0.06">
-                <img src="public/image16.jpeg" loading="lazy" decoding="async" alt="Portrait Photography 16" width="300" height="400" class="parallax-element" data-speed="0.03">
-                <img src="public/image17.jpeg" loading="lazy" decoding="async" alt="Portrait Photography 17" width="300" height="400" class="parallax-element" data-speed="0.05">
+            <!-- Portfolio grid with images -->
+            <div class="portfolio-grid pixel-grid">
+                <!-- Images will be loaded with JavaScript for better performance -->
+                <img src="public/portfolio1.jpg" loading="lazy" decoding="async" alt="Portrait photography 1" class="pixel-image pixel-border" width="400" height="600">
+                <img src="public/portfolio2.jpg" loading="lazy" decoding="async" alt="Portrait photography 2" class="pixel-image pixel-border" width="400" height="600">
+                <img src="public/portfolio3.jpg" loading="lazy" decoding="async" alt="Portrait photography 3" class="pixel-image pixel-border" width="400" height="600">
+                <img src="public/portfolio4.jpg" loading="lazy" decoding="async" alt="Portrait photography 4" class="pixel-image pixel-border" width="400" height="600">
+                <img src="public/portfolio5.jpg" loading="lazy" decoding="async" alt="Portrait photography 5" class="pixel-image pixel-border" width="400" height="600">
+                <img src="public/portfolio6.jpg" loading="lazy" decoding="async" alt="Portrait photography 6" class="pixel-image pixel-border" width="400" height="600">
             </div>
         </div>
     </main>
 
+    <!-- 8-bit loader for page transitions -->
+    <div class="pixel-loader" style="display: none;"></div>
+
     <script src="script.js" defer></script>
     <script src="animations.js" defer></script>
-    <script src="hippie-symbols.js" defer></script>
+    <script src="8bit-animations.js" defer></script>
+    <script src="peace-symbols.js" defer></script>
+    <script>
+        // Add passive touch listeners for better performance on iOS
+        document.addEventListener('touchstart', function() {}, {passive: true});
+        document.addEventListener('touchmove', function() {}, {passive: true});
+        document.addEventListener('touchend', function() {}, {passive: true});
+        
+        // Register service worker for offline capabilities
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful');
+                    })
+                    .catch(error => {
+                        console.log('ServiceWorker registration failed: ', error);
+                    });
+            });
+        }
+    </script>
 </body>
 </html>
