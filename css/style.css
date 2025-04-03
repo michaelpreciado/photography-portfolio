@@ -1,0 +1,279 @@
+/* Basic Reset & Global Styles */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'VT323', monospace; /* Changed to VT323 */
+    background-color: #000000; /* Changed to black */
+    color: #ffff99; /* Changed to light yellow */
+    scroll-behavior: smooth;
+}
+
+a {
+    color: #ffff99; /* Match base text color */
+    text-decoration: none;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block; /* Remove extra space below images */
+}
+
+h2, h3 {
+    text-align: center;
+    text-transform: uppercase;
+    margin-top: 4rem;
+    margin-bottom: 2rem;
+    letter-spacing: 2px;
+    color: #ff00ff; /* Added bright pink for headers */
+    font-family: 'VT323', monospace; /* Ensure headers use the font too */
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #003333; /* Changed to dark teal */
+    position: fixed; /* Sticky header */
+    top: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box; /* Include padding in width */
+    z-index: 1000;
+}
+
+header nav ul {
+    display: flex;
+}
+
+header nav ul li {
+    margin-right: 1.5rem;
+}
+
+header nav ul li a {
+    transition: color 0.3s ease;
+}
+
+header nav ul li a:hover {
+    color: #ff00ff; /* Changed accent color to bright pink */
+}
+
+.header-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Main Content */
+main {
+    padding-top: 60px; /* Adjust based on actual header height */
+}
+
+section {
+    padding: 2rem;
+    min-height: 80vh; /* Ensure sections take up significant space */
+}
+
+/* Home Section */
+#home .full-width-image {
+    width: 100%;
+    height: calc(100vh - 60px); /* Full viewport height minus header */
+    object-fit: cover; /* Cover the area without distortion */
+}
+
+/* Portfolio Section */
+.portfolio-section h3 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.image-grid {
+    display: grid;
+    /* Default to 2 columns, adjust as needed */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+    margin-bottom: 3rem;
+}
+
+.image-grid img {
+    width: 100%;
+    height: 300px; /* Fixed height for grid items */
+    object-fit: cover;
+    border: 2px solid #555555; /* Use mid-gray border consistent with inputs */
+    /* Initial state for reveal animation */
+    clip-path: inset(0 100% 0 0); /* Start hidden (wipes in from the right) */
+    /* Add filter, clip-path, and opacity to transitions */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease, clip-path 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease-in-out;
+    /* Inherit fade-in class for observer */
+    opacity: 1; /* Override initial fade-in opacity 0, handled by clip-path now */
+}
+
+/* Dim other images when hovering the grid */
+.image-grid:hover img {
+    opacity: 0.5; /* Dim images when grid is hovered */
+}
+
+/* Style applied by Intersection Observer when element is visible */
+.image-grid img.fade-in.visible {
+    clip-path: inset(0 0 0 0); /* Reveal the image */
+    opacity: 1; /* Ensure it's fully visible after animation */
+}
+
+.image-grid img:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 15px #ff00ff; /* Changed accent color glow to bright pink */
+    filter: brightness(1.1) contrast(1.05); /* Subtle enhancement on hover */
+    opacity: 1; /* Ensure the hovered image is fully opaque */
+}
+
+/* About Section */
+#about {
+    text-align: center;
+}
+
+#about p {
+    max-width: 800px;
+    margin: 0 auto 2rem auto;
+    line-height: 1.8;
+    letter-spacing: 1px;
+}
+
+.social-links img {
+    width: 40px; /* Adjust icon size */
+    height: 40px;
+    margin: 0 1rem;
+    transition: transform 0.3s ease;
+}
+
+.social-links img:hover {
+    transform: scale(1.2);
+}
+
+/* Contact Section */
+#contact form {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+#contact label {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    text-align: left;
+}
+
+#contact input,
+#contact textarea,
+#contact button {
+    background-color: #222222; /* Changed to dark gray */
+    border: 1px solid #555555; /* Changed to mid-gray border */
+    color: #ffff99; /* Match text color */
+    padding: 0.8rem;
+    font-family: 'VT323', monospace; /* Ensure form elements use the font */
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+}
+
+#contact textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+#contact button {
+    background-color: #ffff99; /* Light yellow button */
+    color: #000000; /* Changed text to black */
+    border: none;
+    padding: 1rem;
+    /* font-family inherit removed as explicitly set above */
+    font-size: 1.2rem; /* Slightly larger button text */
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 4px;
+    margin-top: 1rem;
+}
+
+#contact button:hover {
+    background-color: #ff00ff; /* Bright pink hover */
+    color: #ffff99; /* Light yellow text */
+}
+
+/* Back to Top Button */
+#back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: rgba(255, 0, 255, 0.7); /* Semi-transparent pink */
+    color: #ffff99; /* Light yellow */
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: none; /* Hidden by default */
+    z-index: 999;
+    transition: opacity 0.3s ease, background-color 0.3s ease;
+}
+
+#back-to-top:hover {
+    background-color: rgba(255, 0, 255, 1); /* Solid pink on hover */
+}
+
+/* Floating Peace Signs Background */
+#peace-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Hide signs that float off-screen */
+    z-index: -1; /* Place it behind all other content */
+    pointer-events: none; /* Allow clicks to pass through */
+}
+
+.peace-sign {
+    position: absolute;
+    bottom: -50px; /* Start below the screen */
+    font-size: 2rem; /* Adjust size as needed */
+    color: rgba(255, 255, 153, 0.08); /* Made much more transparent */
+    user-select: none;
+    animation-name: floatUp;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0);
+        opacity: 1; /* Constant opacity */
+    }
+    100% {
+        transform: translateY(-110vh); /* Move up well past the top */
+        opacity: 1; /* Constant opacity */
+    }
+}
+
+/* Animations (Example - fade in on scroll) */
+.fade-in {
+    opacity: 0;
+    transition: opacity 1s ease-out;
+}
+
+.fade-in.visible {
+    opacity: 1;
+}
+
+/* Add 8-bit/Hippie Theme Elements Here */
+/* Examples: pixelated borders, specific color palettes, maybe some CRT scanline effects? */
+/* .pixelated-border { border-image: url('path/to/pixel-border.png') 8 stretch; } */ 
