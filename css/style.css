@@ -112,52 +112,31 @@ section {
     height: auto; /* Maintain aspect ratio */
     /* object-fit: cover; /* Cover the container, might crop */
     opacity: 0;
-    /* animation-name is set individually below */
+    animation-name: fadeCycle;
     animation-timing-function: ease-in-out;
     animation-iteration-count: infinite;
-    /* Total duration: 10s (first image) + 15 * 6s (rest) = 100s */
-    animation-duration: 100s;
+    /* Total animation duration = (fade-in + display + fade-out) * number of images */
+    /* Example: (1s + 4s + 1s) = 6s per image. 6s * 8 images = 48s total */
+    animation-duration: 48s; /* 6s per image * 8 images */
 }
 
-/* --- Animation for the FIRST image (10s cycle) --- */
-.slideshow-image:nth-child(1) {
-    animation-name: fadeCycleFirst;
-    animation-delay: 0s;
-}
+/* Stagger the animation delays for each image */
+.slideshow-image:nth-child(1) { animation-delay: 0s; }
+.slideshow-image:nth-child(2) { animation-delay: 6s; }
+.slideshow-image:nth-child(3) { animation-delay: 12s; }
+.slideshow-image:nth-child(4) { animation-delay: 18s; }
+.slideshow-image:nth-child(5) { animation-delay: 24s; }
+.slideshow-image:nth-child(6) { animation-delay: 30s; }
+.slideshow-image:nth-child(7) { animation-delay: 36s; }
+.slideshow-image:nth-child(8) { animation-delay: 42s; }
 
-/* --- Animation for the REST of the images (6s cycle) --- */
-.slideshow-image:nth-child(2) { animation-name: fadeCycleRest; animation-delay: 10s; } /* Starts after first image's 10s cycle */
-.slideshow-image:nth-child(3) { animation-name: fadeCycleRest; animation-delay: 16s; } /* 10s + 6s */
-.slideshow-image:nth-child(4) { animation-name: fadeCycleRest; animation-delay: 22s; } /* 10s + 2*6s */
-.slideshow-image:nth-child(5) { animation-name: fadeCycleRest; animation-delay: 28s; } /* 10s + 3*6s */
-.slideshow-image:nth-child(6) { animation-name: fadeCycleRest; animation-delay: 34s; } /* 10s + 4*6s */
-.slideshow-image:nth-child(7) { animation-name: fadeCycleRest; animation-delay: 40s; } /* 10s + 5*6s */
-.slideshow-image:nth-child(8) { animation-name: fadeCycleRest; animation-delay: 46s; } /* 10s + 6*6s */
-.slideshow-image:nth-child(9) { animation-name: fadeCycleRest; animation-delay: 52s; } /* 10s + 7*6s */
-.slideshow-image:nth-child(10) { animation-name: fadeCycleRest; animation-delay: 58s; } /* 10s + 8*6s */
-.slideshow-image:nth-child(11) { animation-name: fadeCycleRest; animation-delay: 64s; } /* 10s + 9*6s */
-.slideshow-image:nth-child(12) { animation-name: fadeCycleRest; animation-delay: 70s; } /* 10s + 10*6s */
-.slideshow-image:nth-child(13) { animation-name: fadeCycleRest; animation-delay: 76s; } /* 10s + 11*6s */
-.slideshow-image:nth-child(14) { animation-name: fadeCycleRest; animation-delay: 82s; } /* 10s + 12*6s */
-.slideshow-image:nth-child(15) { animation-name: fadeCycleRest; animation-delay: 88s; } /* 10s + 13*6s */
-.slideshow-image:nth-child(16) { animation-name: fadeCycleRest; animation-delay: 94s; } /* 10s + 14*6s */
-
-
-/* Keyframes for the FIRST image (10s cycle within 100s total duration) */
-@keyframes fadeCycleFirst {
+@keyframes fadeCycle {
+    /* Each image cycle: Fade in (2%), Display (10.5%), Fade out (2%) = 14.5% total */
+    /* 100% / 8 images = 12.5% duration per image */
     0%   { opacity: 0; }
-    1%   { opacity: 1; } /* Fade in (1s / 100s) */
-    9%   { opacity: 1; } /* Stay visible (Ends at 9s / 100s) */
-    10%  { opacity: 0; } /* Fade out (Ends at 10s / 100s) */
-    100% { opacity: 0; }
-}
-
-/* Keyframes for the REST of the images (6s cycle within 100s total duration) */
-@keyframes fadeCycleRest {
-    0%   { opacity: 0; }
-    1%   { opacity: 1; } /* Fade in (1s / 100s) */
-    5%   { opacity: 1; } /* Stay visible (Ends at 5s / 100s relative to start) */
-    6%   { opacity: 0; } /* Fade out (Ends at 6s / 100s relative to start) */
+    2%   { opacity: 1; } /* Fade in for 2% of total duration (approx 1s) */
+    10.5% { opacity: 1; } /* Stay visible */
+    12.5% { opacity: 0; } /* Fade out (starts slightly before next image fades in) */
     100% { opacity: 0; }
 }
 
@@ -387,113 +366,4 @@ section {
 
 /* Add 8-bit/Hippie Theme Elements Here */
 /* Examples: pixelated borders, specific color palettes, maybe some CRT scanline effects? */
-/* .pixelated-border { border-image: url('path/to/pixel-border.png') 8 stretch; } */
-
-/* =========================== */
-/* ===== Mobile Styles ===== */
-/* =========================== */
-
-@media (max-width: 768px) {
-
-    body, html {
-        font-size: 15px; /* Slightly adjust base font size if needed */
-    }
-
-    /* --- Header Adjustments --- */
-    header {
-        padding: 0.8rem 1rem; /* Reduce padding */
-        flex-wrap: wrap; /* Allow items to wrap if needed, though we'll hide nav */
-    }
-
-    .header-decoration-image {
-        height: 30px; /* Slightly smaller star */
-        margin-right: 0.5rem;
-    }
-
-    .header-title {
-        font-size: 1.5rem; /* Reduce title size */
-        order: -1; /* Ensure title appears first if wrapping occurs */
-        flex-basis: calc(100% - 80px); /* Allow space for star and future menu icon */
-        text-align: left;
-        padding: 0;
-    }
-
-    header nav {
-        /* Hide nav links for now - prep for hamburger */
-        display: none;
-        /* When hamburger is implemented, this would likely become:
-           position: absolute;
-           top: 100%; // Or header height
-           left: 0;
-           width: 100%;
-           background-color: #000;
-           flex-direction: column;
-           padding: 1rem 0;
-        */
-    }
-
-     /* Placeholder for hamburger icon styling (add icon HTML later) */
-    .menu-toggle {
-        display: block; /* Show hamburger */
-        /* Add styling for the button/icon here */
-        font-size: 1.8rem;
-        background: none;
-        border: none;
-        color: #fff;
-        cursor: pointer;
-        margin-left: auto; /* Push to the right */
-    }
-
-    /* --- Main Content Adjustments --- */
-    main {
-        padding-top: 50px; /* Adjust based on potentially smaller header */
-    }
-
-    section {
-        padding: 1.5rem 1rem; /* Reduce section padding */
-    }
-
-    h2, h3 {
-        margin-top: 2rem;
-        margin-bottom: 1.5rem;
-        font-size: 1.8rem; /* Adjust header sizes */
-    }
-
-    /* --- Slideshow Adjustments --- */
-    #home .slideshow-container {
-        min-height: 60vh; /* Reduce height on mobile */
-    }
-
-    /* --- Font/Text Adjustments --- */
-    #about p {
-        line-height: 1.6;
-        letter-spacing: 0.5px;
-    }
-
-    /* --- Form Adjustments --- */
-    #contact input,
-    #contact textarea,
-    #contact button {
-        font-size: 0.9rem;
-        padding: 0.7rem;
-    }
-
-    #contact button {
-        font-size: 1rem;
-    }
-
-    /* --- Footer Adjustments --- */
-    #back-to-top {
-        width: 40px;
-        height: 40px;
-        font-size: 1.2rem;
-        bottom: 15px;
-        right: 15px;
-    }
-
-    /* --- Peace Sign Adjustments (Optional) --- */
-    .peace-sign {
-        font-size: 1.5rem; /* Slightly smaller peace signs */
-    }
-
-} 
+/* .pixelated-border { border-image: url('path/to/pixel-border.png') 8 stretch; } */ 
