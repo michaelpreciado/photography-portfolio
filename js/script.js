@@ -1,11 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
     const backToTopButton = document.getElementById('back-to-top');
+    const portfolioDisplay = document.getElementById('portfolio-display'); // Get the portfolio display area
+    const categoryButtonsContainer = document.querySelector('.portfolio-categories'); // Get category buttons container
 
     // --- Helper Function: Fisher-Yates (Knuth) Shuffle --- //
     function shuffleArray(array) {
         for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1)); // random index from 0 to i
-            [array[i], array[j]] = [array[j], array[i]]; // swap elements
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
         }
     }
 
@@ -42,11 +44,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Image Data --- //
-    // This object MUST list all the images you want to display from the images/portfolio/ folder.
+    // --- Image Data (Categorized) --- //
+    // ** IMPORTANT: Update these paths and categories to match your actual images **
     const portfolioImages = {
-        // You can keep categories if it helps organize, or just put all paths in one array.
-        'all': [
+        'live-music': [
             'images/portfolio/P1030270.jpg',
             'images/portfolio/IMG_0748_jpg.jpeg',
             'images/portfolio/IMG_0737_jpg.jpeg',
@@ -55,90 +56,118 @@ document.addEventListener('DOMContentLoaded', () => {
             'images/portfolio/DSC06038.JPG',
             'images/portfolio/DSC06009.jpg',
             'images/portfolio/DSC04810.jpeg',
-            'images/portfolio/DSC04810 2.jpeg',
+            // 'images/portfolio/DSC04810 2.jpeg', // Removed potential duplicate
             'images/portfolio/DSC04697.jpg',
             'images/portfolio/DSC04388.jpg',
             'images/portfolio/DSC04062.JPG',
             'images/portfolio/DSC03627 2.jpeg',
-            'images/portfolio/DSC02668.JPG',
+            // 'images/portfolio/DSC02668.JPG', // Removed duplicate
             'images/portfolio/DSC02668.jpeg',
             'images/portfolio/DSC02607 2.jpeg',
             'images/portfolio/DSC02569.jpeg',
-            'images/portfolio/DSC02569 2.jpeg',
+            // 'images/portfolio/DSC02569 2.jpeg', // Removed duplicate
             'images/portfolio/DSC02507.jpg',
-            'images/portfolio/(510) 449-8036.zip - 9.PNG' // Ensure this PNG displays correctly
-            // Add ALL image paths from images/portfolio/ here
+            // '(510) 449-8036.zip - 9.PNG' // Removed, moved to header
         ],
-        // You could still have other keys like 'live-music', 'street' etc.
-        // The script will now combine them all.
-        'live-music': [
-            // Add live music specific images here if you want to organize
+        'video-postcards': [
+            // Add paths for Video Postcards images here later
         ],
-        'street': [
-            // Add street specific images here
+        'glitch-art': [
+            // Add paths for Glitch Art images here later
+        ],
+        'liquid-lights': [
+            // Add paths for Liquid Lights images here later
         ]
     };
 
-    // --- Randomize Home Image --- //
-    function randomizeHomeImage() {
-        const homeImageElement = document.querySelector('#home .full-width-image');
-        if (!homeImageElement) {
-            console.error('Home image element not found.');
-            return;
-        }
-        // Combine all image paths from the portfolioImages object
-        let allImagePaths = [];
-        for (const category in portfolioImages) {
-            if (portfolioImages.hasOwnProperty(category)) {
-                allImagePaths = allImagePaths.concat(portfolioImages[category]);
-            }
-        }
-        // Ensure there are images to choose from
-        if (allImagePaths.length > 0) {
-            const randomIndex = Math.floor(Math.random() * allImagePaths.length);
-            homeImageElement.src = allImagePaths[randomIndex];
-            homeImageElement.alt = "Home Image"; // Keep or update alt text as needed
-        } else {
-            console.warn('No portfolio images available to set as home image.');
-        }
-    }
-
-    // --- Load All Portfolio Images into Single Grid --- //
-    function loadAllPortfolioImages(gridSelector) {
-        const grid = document.querySelector(gridSelector);
-        if (!grid) {
-            console.error('Portfolio grid container not found:', gridSelector);
+    // --- Load Portfolio Images By Category --- //
+    function loadPortfolioImagesByCategory(category, gridElement) {
+        if (!gridElement) {
+            console.error('Target grid element not provided for category:', category);
             return;
         }
 
-        // Combine all image paths from the portfolioImages object into one array
-        let allImagePaths = [];
-        for (const category in portfolioImages) {
-            if (portfolioImages.hasOwnProperty(category)) {
-                allImagePaths = allImagePaths.concat(portfolioImages[category]);
-            }
-        }
+        const imagePaths = portfolioImages[category];
 
-        if (allImagePaths.length === 0) {
-            console.warn('No image paths found in the portfolioImages object in js/script.js. Did you add your filenames?');
-            grid.innerHTML = '<p style="text-align: center;">No images found. Please add image paths to js/script.js.</p>';
+        if (!imagePaths || imagePaths.length === 0) {
+            console.warn(`No image paths found for category: ${category}. Update js/script.js.`);
+            gridElement.innerHTML = `<p style="text-align: center;">No images found for ${category}.</p>`;
             return;
         }
 
-        // Shuffle the combined list
-        shuffleArray(allImagePaths);
+        // Clear existing content (like 'Loading...')
+        gridElement.innerHTML = ''; 
 
-        // Append shuffled images to the grid
-        allImagePaths.forEach(imgPath => {
+        // Shuffle the category's images
+        const shuffledPaths = [...imagePaths]; // Clone before shuffling
+        shuffleArray(shuffledPaths);
+
+        // Create and append images
+        const imageElements = [];
+        shuffledPaths.forEach(imgPath => {
             const img = document.createElement('img');
             img.src = imgPath;
-            img.alt = 'Portfolio photo'; // Generic alt text
+            img.alt = `${category.replace('-', ' ')} photo`; // Dynamic alt text
             img.classList.add('fade-in'); // Add class for scroll animation
-            grid.appendChild(img);
+            gridElement.appendChild(img);
+            imageElements.push(img);
         });
 
-        // Re-observe newly added images for fade-in animation
+        // Observe newly added images for fade-in animation
         observeFadeInElements(); // NOW scrollObserver IS DEFINED
+
+        // Mark grid as loaded
+        gridElement.dataset.loaded = true;
+    }
+
+    // --- Portfolio Category Switching Logic --- //
+    if (categoryButtonsContainer && portfolioDisplay) {
+        const buttons = categoryButtonsContainer.querySelectorAll('.category-button');
+        const grids = portfolioDisplay.querySelectorAll('.image-grid');
+
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                const category = button.dataset.category;
+                const targetGrid = portfolioDisplay.querySelector(`.${category}-grid`);
+
+                if (!targetGrid) {
+                    console.error(`Grid for category '${category}' not found.`);
+                    return;
+                }
+
+                // Update active button
+                buttons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                // Update active grid
+                grids.forEach(grid => grid.classList.remove('active'));
+                targetGrid.classList.add('active');
+
+                // Load images if not already loaded
+                if (!targetGrid.dataset.loaded) {
+                    loadPortfolioImagesByCategory(category, targetGrid);
+                }
+            });
+        });
+
+        // --- Initial Portfolio Load --- //
+        const initialActiveButton = categoryButtonsContainer.querySelector('.category-button.active');
+        if (initialActiveButton) {
+            const initialCategory = initialActiveButton.dataset.category;
+            const initialGrid = portfolioDisplay.querySelector(`.${initialCategory}-grid`);
+            if (initialGrid) {
+                 initialGrid.classList.add('active'); // Ensure initial grid is visible
+                 loadPortfolioImagesByCategory(initialCategory, initialGrid);
+            } else {
+                console.error("Initial portfolio grid not found for active button.");
+            }
+        } else {
+             console.warn("No active category button found on initial load.");
+        }
+
+    } else {
+        // Only run portfolio logic if relevant elements exist (i.e., on portfolio.html)
+        // console.log("Not on the portfolio page or necessary elements missing.");
     }
 
     // --- Back to Top Button Logic --- //
@@ -181,24 +210,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- Load Images and Set Up Initial Animations --- //
-
-    // Randomize the home image first
-    randomizeHomeImage();
-
-    // Call the function to load all images into the single grid
-    loadAllPortfolioImages('.all-portfolio-grid');
-
-    // Initial observation pass for static elements and sections (like #about, #contact)
-    document.querySelectorAll('section').forEach(el => {
-        if (!el.classList.contains('fade-in')) {
-             el.classList.add('fade-in');
-        }
-       if (!el.dataset.observed) {
-            scrollObserver.observe(el);
-            el.dataset.observed = true;
-       }
-    });
+    // --- Initial observation for non-portfolio elements (if any) ---
+    // Observe static fade-in elements present on page load (like sections in about/contact)
+    observeFadeInElements(); 
 
     // --- Create Floating Peace Signs --- //
     function createPeaceSigns(count) {
@@ -226,11 +240,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Initialize --- //
-    console.log('Portfolio site initializing.');
+    console.log('Site script initializing.');
     createPeaceSigns(10); // Create fewer: 10 peace signs
 
     // Note: The initial call to observeFadeInElements() might now be redundant
-    // because loadAllPortfolioImages already calls it for the newly added images,
+    // because loadPortfolioImagesByCategory already calls it for the newly added images,
     // and the loop above handles the static sections. You could potentially remove
     // the standalone observeFadeInElements() call if you don't have other elements
     // with the .fade-in class added directly in the HTML outside of sections or the image grid.

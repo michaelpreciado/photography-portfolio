@@ -12,12 +12,13 @@
 <body>
     <div id="peace-background"></div> <!-- Container for floating peace signs -->
     <header>
+        <img src="images/portfolio/rainbow-star.png" alt="Rainbow Star" class="header-decoration-image">
         <nav>
             <ul>
-                <li><a href="#home">HOME</a></li>
-                <li><a href="#portfolio">PORTFOLIO</a></li>
-                <li><a href="#about">ABOUT</a></li>
-                <li><a href="#contact">CONTACT</a></li>
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="portfolio.html">PORTFOLIO</a></li>
+                <li><a href="about.html">ABOUT</a></li>
+                <li><a href="contact.html">CONTACT</a></li>
             </ul>
         </nav>
         <div class="header-title">MARIO PRECIADO</div>
@@ -25,45 +26,20 @@
 
     <main>
         <section id="home">
-            <!-- Initial image or hero section -->
-            <img src="images/portfolio/DSC02507.jpg" alt="Home Image" class="full-width-image">
-        </section>
-
-        <section id="portfolio">
-            <h2>PORTFOLIO</h2>
-            <!-- Removed specific category sections -->
-            <div class="image-grid all-portfolio-grid">
-                <!-- All portfolio images loaded by JS will go here -->
+            <!-- Slideshow container -->
+            <div class="slideshow-container full-width-image">
+                <img src="images/portfolio/DSC02569.jpeg" alt="Home Hero Image - Musician on stage with green and blue lights" class="slideshow-image">
+                <img src="images/portfolio/DSC02575.jpeg" alt="Musicians on stage with psychedelic projections" class="slideshow-image">
+                <img src="images/portfolio/DSC02577.jpeg" alt="Band playing on stage with colorful lights and projections" class="slideshow-image">
+                <img src="images/portfolio/DSC02578.jpeg" alt="Keyboard player on stage with blue and pink lights" class="slideshow-image">
+                <img src="images/portfolio/DSC02624.jpeg" alt="Keyboard player singing on stage with yellow and orange lights" class="slideshow-image">
+                <img src="images/portfolio/DSC02628.jpeg" alt="Guitarist playing on stage with green lights" class="slideshow-image">
+                <img src="images/portfolio/DSC02765.jpeg" alt="Guitarist with cowboy hat playing on stage with yellow lights" class="slideshow-image">
+                <img src="images/portfolio/DSC02770.jpeg" alt="Guitarist with cowboy hat playing on stage with orange lights" class="slideshow-image">
             </div>
         </section>
 
-        <section id="about">
-            <h2>ABOUT</h2>
-            <p>I'M MARIO PRECIADO. I'M A BAY AREA BASED PHOTOGRAPHER.<br>
-               MY PHOTOGRAPHY CONSISTS OF LIVE MUSIC, STREET, FASHION, PORTRAITURE, ART CULTURE AND COMMUNITY. MY FOCUS IS EXPRESSING THE STYLE AND VIBRANT COLORS THAT I BELIEVE HELP REFLECT THE ATMOSPHERE OF THESE SUBJECTS/EVENTS.<br>
-               I LOOK FORWARD TO WORKING WITH YOU!</p>
-            <div class="social-links">
-                <!-- Add actual links -->
-                <a href="#" target="_blank"><img src="images/icon_instagram.png" alt="Instagram"></a>
-                <a href="mailto:your.email@example.com"><img src="images/icon_email.png" alt="Email"></a>
-            </div>
-        </section>
-
-        <section id="contact">
-            <h2>CONTACT</h2>
-            <form action="#" method="post"> <!-- Replace # with form submission endpoint -->
-                <label for="name">NAME *</label>
-                <input type="text" id="name" name="name" placeholder="YOUR NAME..." required>
-
-                <label for="email">EMAIL ADDRESS *</label>
-                <input type="email" id="email" name="email" placeholder="YOUR EMAIL ADDRESS..." required>
-
-                <label for="message">MESSAGE *</label>
-                <textarea id="message" name="message" placeholder="YOUR MESSAGE..." required></textarea>
-
-                <button type="submit">SUBMIT</button>
-            </form>
-        </section>
+        
     </main>
 
     <footer>

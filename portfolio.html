@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Mario Preciado Photography</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="peace-background"></div> <!-- Container for floating peace signs -->
+    <header>
+        <img src="images/rainbow-star.png" alt="Rainbow Star" class="header-decoration-image">
+        <nav>
+            <ul>
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="portfolio.html">PORTFOLIO</a></li>
+                <li><a href="about.html">ABOUT</a></li>
+                <li><a href="contact.html">CONTACT</a></li>
+            </ul>
+        </nav>
+        <div class="header-title">MARIO PRECIADO</div>
+    </header>
+
+    <main>
+        <section id="portfolio">
+            <h2>PORTFOLIO</h2>
+            
+            <div class="portfolio-categories">
+                <button class="category-button active" data-category="live-music">Live Music</button>
+                <button class="category-button" data-category="video-postcards">Video Postcards</button> <!-- Future category -->
+                <button class="category-button" data-category="glitch-art">Glitch Art</button> <!-- Future category -->
+                <button class="category-button" data-category="liquid-lights">Liquid Lights</button> <!-- Future category -->
+            </div>
+
+            <div id="portfolio-display">
+                <!-- Images for the selected category will be loaded here by JS -->
+                <div class="image-grid live-music-grid">
+                    <!-- Live Music images will go here -->
+                     <p>Loading Live Music images...</p> 
+                </div>
+                <!-- Add divs for other categories later, e.g.: -->
+                <!-- <div class="image-grid video-postcards-grid" style="display: none;"></div> -->
+                <!-- <div class="image-grid glitch-art-grid" style="display: none;"></div> -->
+                <!-- <div class="image-grid liquid-lights-grid" style="display: none;"></div> -->
+            </div>
+
+            <!-- Old grid - can be removed or kept for reference -->
+            <!-- 
+            <div class="image-grid all-portfolio-grid">
+                 All portfolio images loaded by JS will go here 
+            </div> 
+            -->
+        </section>
+    </main>
+
+    <footer>
+        <!-- Footer content if needed -->
+        <button id="back-to-top" title="Go to top">↑</button>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html> 

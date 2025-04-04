@@ -3,13 +3,13 @@ body, html {
     margin: 0;
     padding: 0;
     font-family: 'VT323', monospace; /* Changed to VT323 */
-    background-color: #000000; /* Changed to black */
-    color: #ffff99; /* Changed to light yellow */
+    background-color: #000000; /* Black background */
+    color: #ffffff; /* Changed to white */
     scroll-behavior: smooth;
 }
 
 a {
-    color: #ffff99; /* Match base text color */
+    color: #ffffff; /* Match base text color (white) */
     text-decoration: none;
 }
 
@@ -41,7 +41,7 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2rem;
-    background-color: #003333; /* Changed to dark teal */
+    background-color: #000000; /* Changed to black */
     position: fixed; /* Sticky header */
     top: 0;
     left: 0;
@@ -63,12 +63,25 @@ header nav ul li a {
 }
 
 header nav ul li a:hover {
-    color: #ff00ff; /* Changed accent color to bright pink */
+    color: #cccccc; /* Changed hover color to light gray */
 }
 
 .header-title {
-    font-size: 1.5rem;
+    font-size: 1.8rem; /* Increased size slightly */
     font-weight: bold;
+    /* Rainbow gradient effect */
+    background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent; /* Make the original text color transparent */
+    padding: 0 5px; /* Add slight padding so gradient doesn't clip */
+}
+
+/* Added style for the header decoration image */
+.header-decoration-image {
+    height: 40px; /* Adjust size as needed */
+    width: auto;
+    margin-right: 1rem; /* Space between image and nav */
 }
 
 /* Main Content */
@@ -82,13 +95,81 @@ section {
 }
 
 /* Home Section */
-#home .full-width-image {
+/* Updated styles for the slideshow */
+#home .slideshow-container {
+    position: relative; /* Needed for absolute positioning of images */
     width: 100%;
-    height: calc(100vh - 60px); /* Full viewport height minus header */
-    object-fit: cover; /* Cover the area without distortion */
+    min-height: calc(100vh - 60px); /* Ensure container has height (viewport height minus header) */
+    /* height: calc(100vh - 60px); Maintain full viewport height minus header if desired */
+    overflow: hidden; /* Hide parts of images that might overflow if needed */
 }
 
+.slideshow-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: auto; /* Maintain aspect ratio */
+    /* object-fit: cover; /* Cover the container, might crop */
+    opacity: 0;
+    animation-name: fadeCycle;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    /* Total animation duration = (fade-in + display + fade-out) * number of images */
+    /* Example: (1s + 4s + 1s) = 6s per image. 6s * 8 images = 48s total */
+    animation-duration: 48s; /* 6s per image * 8 images */
+}
+
+/* Stagger the animation delays for each image */
+.slideshow-image:nth-child(1) { animation-delay: 0s; }
+.slideshow-image:nth-child(2) { animation-delay: 6s; }
+.slideshow-image:nth-child(3) { animation-delay: 12s; }
+.slideshow-image:nth-child(4) { animation-delay: 18s; }
+.slideshow-image:nth-child(5) { animation-delay: 24s; }
+.slideshow-image:nth-child(6) { animation-delay: 30s; }
+.slideshow-image:nth-child(7) { animation-delay: 36s; }
+.slideshow-image:nth-child(8) { animation-delay: 42s; }
+
+@keyframes fadeCycle {
+    /* Each image cycle: Fade in (2%), Display (10.5%), Fade out (2%) = 14.5% total */
+    /* 100% / 8 images = 12.5% duration per image */
+    0%   { opacity: 0; }
+    2%   { opacity: 1; } /* Fade in for 2% of total duration (approx 1s) */
+    10.5% { opacity: 1; } /* Stay visible */
+    12.5% { opacity: 0; } /* Fade out (starts slightly before next image fades in) */
+    100% { opacity: 0; }
+}
+
+/* Original full-width-image style (can be removed if only used for slideshow now) */
+/* #home .full-width-image { */
+/*     width: 100%; */
+/* } */
+
 /* Portfolio Section */
+.portfolio-categories {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.category-button {
+    background-color: #222222;
+    border: 1px solid #555555;
+    color: #ffffff; /* Changed to white */
+    padding: 0.5rem 1rem;
+    font-family: 'VT323', monospace;
+    font-size: 1rem;
+    margin: 0 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    border-radius: 4px;
+}
+
+.category-button:hover, .category-button.active {
+    background-color: #ff00ff; /* Bright pink hover/active */
+    color: #ffffff; /* Keep text white */
+    border-color: #ff00ff;
+}
+
 .portfolio-section h3 {
     margin-top: 2rem;
     margin-bottom: 1rem;
@@ -102,10 +183,19 @@ section {
     margin-bottom: 3rem;
 }
 
+/* Hide category grids by default (JS will show the active one) */
+#portfolio-display .image-grid {
+    display: none;
+}
+
+#portfolio-display .image-grid.active {
+    display: grid; /* Or display: block; if not using grid for categories */
+}
+
 .image-grid img {
     width: 100%;
-    height: 300px; /* Fixed height for grid items */
-    object-fit: cover;
+    /* height: 300px; Fixed height for grid items */
+    /* object-fit: cover; */
     border: 2px solid #555555; /* Use mid-gray border consistent with inputs */
     /* Initial state for reveal animation */
     clip-path: inset(0 100% 0 0); /* Start hidden (wipes in from the right) */
@@ -176,7 +266,7 @@ section {
 #contact button {
     background-color: #222222; /* Changed to dark gray */
     border: 1px solid #555555; /* Changed to mid-gray border */
-    color: #ffff99; /* Match text color */
+    color: #ffffff; /* Changed text color to white */
     padding: 0.8rem;
     font-family: 'VT323', monospace; /* Ensure form elements use the font */
     font-size: 1rem;
@@ -190,8 +280,8 @@ section {
 }
 
 #contact button {
-    background-color: #ffff99; /* Light yellow button */
-    color: #000000; /* Changed text to black */
+    background-color: #555555; /* Darker button background */
+    color: #ffffff; /* White text */
     border: none;
     padding: 1rem;
     /* font-family inherit removed as explicitly set above */
@@ -205,7 +295,7 @@ section {
 
 #contact button:hover {
     background-color: #ff00ff; /* Bright pink hover */
-    color: #ffff99; /* Light yellow text */
+    color: #ffffff; /* White text */
 }
 
 /* Back to Top Button */
@@ -214,7 +304,7 @@ section {
     bottom: 20px;
     right: 20px;
     background-color: rgba(255, 0, 255, 0.7); /* Semi-transparent pink */
-    color: #ffff99; /* Light yellow */
+    color: #ffffff; /* Changed to white */
     border: none;
     border-radius: 50%;
     width: 50px;
@@ -246,7 +336,7 @@ section {
     position: absolute;
     bottom: -50px; /* Start below the screen */
     font-size: 2rem; /* Adjust size as needed */
-    color: rgba(255, 255, 153, 0.08); /* Made much more transparent */
+    color: rgba(255, 255, 255, 0.08); /* Changed to faint white */
     user-select: none;
     animation-name: floatUp;
     animation-timing-function: linear;
