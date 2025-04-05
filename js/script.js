@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const backToTopButton = document.getElementById('back-to-top');
     const portfolioDisplay = document.getElementById('portfolio-display'); // Get the portfolio display area
     const categoryButtonsContainer = document.querySelector('.portfolio-categories'); // Get category buttons container
+    const slideshowContainer = document.querySelector('.slideshow-container'); // Get slideshow container for homepage
 
     // --- Helper Function: Fisher-Yates (Knuth) Shuffle --- //
     function shuffleArray(array) {
@@ -250,4 +251,42 @@ document.addEventListener('DOMContentLoaded', () => {
     // with the .fade-in class added directly in the HTML outside of sections or the image grid.
     // For simplicity, we'll leave it commented out for now.
     // observeFadeInElements();
+
+    // --- Slideshow Logic (Homepage) --- //
+    if (slideshowContainer) {
+        const images = slideshowContainer.querySelectorAll('.slideshow-image');
+        const targetImageSrc = 'images/portfolio/DSC02569.jpeg'; // The image to start with
+        let initialImageIndex = 0; // Default to the first image
+
+        // Find the index of the target image
+        for (let i = 0; i < images.length; i++) {
+            // Use getAttribute to compare against the relative path in HTML
+            if (images[i].getAttribute('src') === targetImageSrc) {
+                initialImageIndex = i;
+                break;
+            }
+        }
+
+        let currentImageIndex = initialImageIndex; // Start the index here
+        const slideInterval = 4000; // Time each image is displayed (in milliseconds)
+
+        function showNextImage() {
+            if (images.length > 0) {
+                 // Remove active class from current image
+                images[currentImageIndex].classList.remove('active');
+
+                // Increment index, looping back to 0 if necessary
+                currentImageIndex = (currentImageIndex + 1) % images.length;
+
+                // Add active class to the new current image
+                images[currentImageIndex].classList.add('active');
+            }
+        }
+
+        // Initialize the slideshow
+        if (images.length > 0) {
+            images[currentImageIndex].classList.add('active'); // Show the target image immediately
+            setInterval(showNextImage, slideInterval);
+        }
+    }
 });

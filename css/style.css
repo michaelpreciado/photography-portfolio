@@ -8,6 +8,32 @@ body, html {
     scroll-behavior: smooth;
 }
 
+/* Subtle Background Animation */
+body::before {
+    content: "";
+    position: fixed; /* Cover the whole viewport */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Place it behind everything */
+    background:
+        linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.03));
+    background-size: 100px 100px, 100px 100px; /* Adjust size for desired noise scale */
+    opacity: 0.1; /* Make it very subtle */
+    animation: subtleNoise 20s linear infinite alternate;
+}
+
+@keyframes subtleNoise {
+    0% {
+        background-position: 0 0, 0 0;
+    }
+    100% {
+        background-position: 100px 200px, -100px -200px; /* Move the noise patterns */
+    }
+}
+
 a {
     color: #ffffff; /* Match base text color (white) */
     text-decoration: none;
@@ -69,12 +95,14 @@ header nav ul li a:hover {
 .header-title {
     font-size: 1.8rem; /* Increased size slightly */
     font-weight: bold;
+    white-space: nowrap; /* Prevent wrapping */
     /* Rainbow gradient effect */
     background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent; /* Make the original text color transparent */
     padding: 0 5px; /* Add slight padding so gradient doesn't clip */
+    margin-right: 1rem; /* Space between image and nav */
 }
 
 /* Added style for the header decoration image */
@@ -82,6 +110,26 @@ header nav ul li a:hover {
     height: 40px; /* Adjust size as needed */
     width: auto;
     margin-right: 1rem; /* Space between image and nav */
+}
+
+/* Media query for smaller screens */
+@media (max-width: 600px) {
+    header {
+        padding: 0.5rem 1rem; /* Reduce header padding */
+    }
+
+    .header-title {
+        font-size: 1.2rem; /* Reduce font size for title */
+    }
+
+    .header-decoration-image {
+        height: 30px; /* Make image smaller */
+        margin-right: 0.5rem;
+    }
+
+    header nav ul li {
+        margin-right: 1rem; /* Reduce nav spacing */
+    }
 }
 
 /* Main Content */
@@ -111,34 +159,40 @@ section {
     width: 100%;
     height: auto; /* Maintain aspect ratio */
     /* object-fit: cover; /* Cover the container, might crop */
-    opacity: 0;
-    animation-name: fadeCycle;
-    animation-timing-function: ease-in-out;
-    animation-iteration-count: infinite;
-    /* Total animation duration = (fade-in + display + fade-out) * number of images */
-    /* Example: (1s + 4s + 1s) = 6s per image. 6s * 8 images = 48s total */
-    animation-duration: 48s; /* 6s per image * 8 images */
+    opacity: 0; /* Hide by default */
+    transition: opacity 1s ease-in-out; /* Add fade transition */
+    /* REMOVE CSS Animation properties below */
+    /* animation-name: fadeCycle; */
+    /* animation-timing-function: ease-in-out; */
+    /* animation-iteration-count: infinite; */
+    /* animation-duration: 48s; */ /* 6s per image * 8 images */
 }
 
-/* Stagger the animation delays for each image */
-.slideshow-image:nth-child(1) { animation-delay: 0s; }
-.slideshow-image:nth-child(2) { animation-delay: 6s; }
-.slideshow-image:nth-child(3) { animation-delay: 12s; }
-.slideshow-image:nth-child(4) { animation-delay: 18s; }
-.slideshow-image:nth-child(5) { animation-delay: 24s; }
-.slideshow-image:nth-child(6) { animation-delay: 30s; }
-.slideshow-image:nth-child(7) { animation-delay: 36s; }
-.slideshow-image:nth-child(8) { animation-delay: 42s; }
+/* Add rule for the active image */
+.slideshow-image.active {
+    opacity: 1; /* Show the active image */
+}
 
-@keyframes fadeCycle {
+/* REMOVE Staggered animation delays */
+/* .slideshow-image:nth-child(1) { animation-delay: 0s; } */
+/* .slideshow-image:nth-child(2) { animation-delay: 6s; } */
+/* .slideshow-image:nth-child(3) { animation-delay: 12s; } */
+/* .slideshow-image:nth-child(4) { animation-delay: 18s; } */
+/* .slideshow-image:nth-child(5) { animation-delay: 24s; } */
+/* .slideshow-image:nth-child(6) { animation-delay: 30s; } */
+/* .slideshow-image:nth-child(7) { animation-delay: 36s; } */
+/* .slideshow-image:nth-child(8) { animation-delay: 42s; } */
+
+/* REMOVE fadeCycle keyframes */
+/* @keyframes fadeCycle { */
     /* Each image cycle: Fade in (2%), Display (10.5%), Fade out (2%) = 14.5% total */
     /* 100% / 8 images = 12.5% duration per image */
-    0%   { opacity: 0; }
-    2%   { opacity: 1; } /* Fade in for 2% of total duration (approx 1s) */
-    10.5% { opacity: 1; } /* Stay visible */
-    12.5% { opacity: 0; } /* Fade out (starts slightly before next image fades in) */
-    100% { opacity: 0; }
-}
+/*    0%   { opacity: 0; } */
+/*    2%   { opacity: 1; } */ /* Fade in for 2% of total duration (approx 1s) */
+/*    10.5% { opacity: 1; } */ /* Stay visible */
+/*    12.5% { opacity: 0; } */ /* Fade out (starts slightly before next image fades in) */
+/*    100% { opacity: 0; } */
+/* } */
 
 /* Original full-width-image style (can be removed if only used for slideshow now) */
 /* #home .full-width-image { */
@@ -246,6 +300,26 @@ section {
     transform: scale(1.2);
 }
 
+/* Font Awesome Icon Styling */
+.social-links a {
+    display: inline-block; /* Allows setting width/height/padding */
+    background-color: #333; /* Dark gray background */
+    color: #fff; /* White icon color */
+    border-radius: 50%; /* Make it circular */
+    width: 45px; /* Size of the circle */
+    height: 45px;
+    line-height: 45px; /* Vertically center icon */
+    text-align: center; /* Horizontally center icon */
+    margin: 0 0.5rem; /* Spacing between icons */
+    font-size: 1.2rem; /* Icon size */
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.social-links a:hover {
+    background-color: #ff00ff; /* Pink background on hover */
+    transform: scale(1.1); /* Slight scale effect on hover */
+}
+
 /* Contact Section */
 #contact form {
     max-width: 600px;
@@ -318,6 +392,13 @@ section {
 
 #back-to-top:hover {
     background-color: rgba(255, 0, 255, 1); /* Solid pink on hover */
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 1rem 0;
+    margin-top: 2rem; /* Add some space above the footer */
 }
 
 /* Floating Peace Signs Background */
