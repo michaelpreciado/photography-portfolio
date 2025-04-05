@@ -111,7 +111,7 @@ header nav ul li a:hover {
     font-weight: bold;
     white-space: nowrap; /* Prevent wrapping */
     /* Rainbow gradient effect */
-    background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+    background: linear-gradient(to right, violet, indigo, blue, green, yellow, orange, red); /* Changed starting color */
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent; /* Make the original text color transparent */
@@ -202,9 +202,8 @@ section {
 #home .slideshow-container {
     position: relative; /* Needed for absolute positioning of images */
     width: 100%;
-    min-height: calc(100vh - 60px); /* Ensure container has height (viewport height minus header) */
-    /* height: calc(100vh - 60px); Maintain full viewport height minus header if desired */
-    overflow: hidden; /* Hide parts of images that might overflow if needed */
+    height: calc(100vh - 60px); /* Explicitly set height to viewport height minus header */
+    overflow: hidden; /* Hide parts of images that might overflow */
 }
 
 .slideshow-image {
@@ -212,15 +211,10 @@ section {
     top: 0;
     left: 0;
     width: 100%;
-    height: auto; /* Maintain aspect ratio */
-    /* object-fit: cover; /* Cover the container, might crop */
+    height: 100%; /* Make image fill the container height */
+    object-fit: contain; /* Fit entire image within container, maintain aspect ratio, may show background */
     opacity: 0; /* Hide by default */
     transition: opacity 1s ease-in-out; /* Add fade transition */
-    /* REMOVE CSS Animation properties below */
-    /* animation-name: fadeCycle; */
-    /* animation-timing-function: ease-in-out; */
-    /* animation-iteration-count: infinite; */
-    /* animation-duration: 48s; */ /* 6s per image * 8 images */
 }
 
 /* Add rule for the active image */
@@ -290,8 +284,8 @@ section {
 
 .image-grid {
     display: grid;
-    /* Default to 2 columns, adjust as needed */
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    /* Explicitly set to 2 columns */
+    grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
     margin-bottom: 3rem;
 }
@@ -383,32 +377,38 @@ section {
 #contact form {
     max-width: 600px;
     margin: 0 auto;
-    display: flex;
-    flex-direction: column;
+    /* display: flex; flex-direction: column; No longer needed */
+}
+
+/* Add rule to control spacing of form field paragraphs */
+#contact form p {
+    margin: 0 0 1.5rem 0; /* Reset default margins, add bottom margin for spacing */
 }
 
 #contact label {
-    margin-top: 1rem;
-    margin-bottom: 0.5rem;
+    display: block; /* Make labels stack above inputs */
+    margin-bottom: 0.5rem; /* Space between label and input */
     font-size: 0.9rem;
     text-align: left;
+    /* margin-top: 1rem; Removed */
 }
 
 #contact input,
-#contact textarea,
-#contact button {
-    background-color: #222222; /* Changed to dark gray */
-    border: 1px solid #555555; /* Changed to mid-gray border */
-    color: #ffffff; /* Changed text color to white */
+#contact textarea {
+    background-color: transparent; /* Make background transparent */
+    border: 1px solid #555555; /* Keep existing border */
+    color: #ffffff; /* Keep existing text color */
     padding: 0.8rem;
-    font-family: 'VT323', monospace; /* Ensure form elements use the font */
+    font-family: 'VT323', monospace;
     font-size: 1rem;
-    margin-bottom: 1rem;
+    /* margin-bottom: 1rem; Removed, handled by parent p tag */
     border-radius: 4px;
+    width: 100%; /* Make inputs fill container width */
+    box-sizing: border-box; /* Include padding/border in width calculation */
 }
 
 #contact textarea {
-    min-height: 150px;
+    min-height: 200px; /* Increased height */
     resize: vertical;
 }
 
