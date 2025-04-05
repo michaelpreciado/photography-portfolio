@@ -201,7 +201,11 @@ section {
 
 /* Portfolio Section */
 .portfolio-categories {
-    text-align: center;
+    text-align: center; /* Keep text alignment for potential fallback/internal text */
+    display: flex; /* Use Flexbox */
+    flex-wrap: wrap; /* Allow buttons to wrap to the next line */
+    justify-content: center; /* Center buttons horizontally */
+    gap: 0.5rem; /* Add spacing between buttons */
     margin-bottom: 2rem;
 }
 
