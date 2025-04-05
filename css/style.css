@@ -64,9 +64,9 @@ h2, h3 {
 /* Header */
 header {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Key for centering middle element */
     align-items: center;
-    padding: 1rem 2rem;
+    padding: 1rem 6rem; /* Increased horizontal padding */
     background-color: #000000; /* Changed to black */
     position: fixed; /* Sticky header */
     top: 0;
@@ -76,20 +76,33 @@ header {
     z-index: 1000;
 }
 
+/* Style individual navs if needed, e.g., ensure flex display */
 header nav ul {
     display: flex;
 }
 
-header nav ul li {
-    margin-right: 1.5rem;
+/* Adjust list item margins */
+header nav.left-nav ul li {
+    margin-right: 1.5rem; /* Space between left items */
+}
+header nav.right-nav ul li {
+    margin-left: 1.5rem; /* Space between right items */
 }
 
 header nav ul li a {
     transition: color 0.3s ease;
+    align-items: center; /* Center items horizontally */
 }
 
 header nav ul li a:hover {
     color: #cccccc; /* Changed hover color to light gray */
+}
+
+/* New wrapper for logo and title */
+.header-logo-title {
+    display: flex;
+    flex-direction: column; /* Stack image and title vertically */
+    align-items: center; /* Center items horizontally */
 }
 
 .header-title {
@@ -102,34 +115,75 @@ header nav ul li a:hover {
     background-clip: text;
     color: transparent; /* Make the original text color transparent */
     padding: 0 5px; /* Add slight padding so gradient doesn't clip */
-    margin-right: 1rem; /* Space between image and nav */
+    /* margin-right: 1rem; Removed margin */
 }
 
 /* Added style for the header decoration image */
 .header-decoration-image {
     height: 40px; /* Adjust size as needed */
     width: auto;
-    margin-right: 1rem; /* Space between image and nav */
+    margin-bottom: 0.25rem; /* Add space below image */
+    /* margin-right: 1rem; Removed margin */
 }
 
 /* Media query for smaller screens */
-@media (max-width: 600px) {
+@media (max-width: 768px) { /* Increased breakpoint for better stacking */
     header {
-        padding: 0.5rem 1rem; /* Reduce header padding */
+        padding: 0.5rem 2rem; /* Increased horizontal padding slightly on smaller screens too */
+        /* flex-direction: column; Removed stacking */
+        /* align-items: center; Removed stacking */
+        /* gap: 0.5rem; Removed stacking gap */
+    }
+
+    /* Adjust spacing for horizontal layout on small screens */
+    header nav.left-nav ul li {
+        margin-right: 0.25rem; /* Further reduce space between left items */
+    }
+    header nav.right-nav ul li {
+        margin-left: 0.25rem; /* Further reduce space between right items */
+    }
+
+    /* Reduce nav link font size */
+    header nav ul li a {
+        font-size: 0.9rem;
+    }
+
+    .header-logo-title {
+        /* order: 0; Removed order property */
     }
 
     .header-title {
-        font-size: 1.2rem; /* Reduce font size for title */
+        font-size: 1.1rem; /* Slightly smaller title */
     }
 
     .header-decoration-image {
-        height: 30px; /* Make image smaller */
-        margin-right: 0.5rem;
+        height: 25px; /* Make image smaller */
     }
 
-    header nav ul li {
-        margin-right: 1rem; /* Reduce nav spacing */
-    }
+    /* Remove rules specific to stacked layout */
+    /* header nav ul {
+        justify-content: center;
+        width: 100%;
+        gap: 1rem;
+    } */
+    /* header nav.left-nav ul li {
+        margin-right: 0;
+    } */
+    /* header nav.right-nav ul li {
+        margin-left: 0;
+    } */
+
+    /* Keep old centering logic removal */
+    /* header nav ul li {
+        margin-right: 1rem; 
+        margin-left: 1rem; 
+    } */
+    /* header nav ul li:first-child {
+        margin-left: 0;
+    } */
+    /* header nav ul li:last-child {
+        margin-right: 0;
+    } */
 }
 
 /* Main Content */
