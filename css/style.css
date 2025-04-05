@@ -83,15 +83,16 @@ header nav ul {
 
 /* Adjust list item margins */
 header nav.left-nav ul li {
-    margin-right: 1.5rem; /* Space between left items */
+    margin-right: 2rem; /* Increase space between left items */
 }
 header nav.right-nav ul li {
-    margin-left: 1.5rem; /* Space between right items */
+    margin-left: 2rem; /* Increase space between right items */
 }
 
 header nav ul li a {
     transition: color 0.3s ease;
     align-items: center; /* Center items horizontally */
+    font-size: 1.6rem; /* Increase font size again */
 }
 
 header nav ul li a:hover {
@@ -137,15 +138,15 @@ header nav ul li a:hover {
 
     /* Adjust spacing for horizontal layout on small screens */
     header nav.left-nav ul li {
-        margin-right: 0.25rem; /* Further reduce space between left items */
+        margin-right: 0.5rem; /* Increase space between left items on small screens */
     }
     header nav.right-nav ul li {
-        margin-left: 0.25rem; /* Further reduce space between right items */
+        margin-left: 0.5rem; /* Increase space between right items on small screens */
     }
 
     /* Reduce nav link font size */
     header nav ul li a {
-        font-size: 0.9rem;
+        font-size: 1.2rem; /* Adjusted smaller screen font size again */
     }
 
     .header-logo-title {
