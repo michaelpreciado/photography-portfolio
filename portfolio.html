@@ -38,21 +38,39 @@
             
             <div class="portfolio-categories">
                 <button class="category-button active" data-category="live-music">Live Music</button>
-                <button class="category-button" data-category="video-postcards">Video Postcards</button> <!-- Future category -->
-                <button class="category-button" data-category="glitch-art">Glitch Art</button> <!-- Future category -->
-                <button class="category-button" data-category="liquid-lights">Liquid Lights</button> <!-- Future category -->
+                <button class="category-button" data-category="videography">Videography</button>
+                <button class="category-button" data-category="art">Art</button>
+                <button class="category-button" data-category="typography">Typography</button>
+                <button class="category-button" data-category="glitch-art">Glitch Art</button>
+                <button class="category-button" data-category="liquid-lights">Liquid Lights</button>
             </div>
 
             <div id="portfolio-display">
                 <!-- Images for the selected category will be loaded here by JS -->
                 <div class="image-grid live-music-grid">
                     <!-- Live Music images will go here -->
-                     <p>Loading Live Music images...</p> 
+                     <p>Loading Live Music images...</p>
                 </div>
-                <!-- Add divs for other categories later, e.g.: -->
-                <!-- <div class="image-grid video-postcards-grid" style="display: none;"></div> -->
-                <!-- <div class="image-grid glitch-art-grid" style="display: none;"></div> -->
-                <!-- <div class="image-grid liquid-lights-grid" style="display: none;"></div> -->
+                <div class="image-grid videography-grid" style="display: none;">
+                    <!-- Videography images will go here -->
+                    <p>Loading Videography images...</p>
+                </div>
+                <div class="image-grid art-grid" style="display: none;">
+                    <!-- Art images will go here -->
+                    <p>Loading Art images...</p>
+                </div>
+                <div class="image-grid typography-grid" style="display: none;">
+                    <!-- Typography images will go here -->
+                    <p>Loading Typography images...</p>
+                </div>
+                <div class="image-grid glitch-art-grid" style="display: none;">
+                    <!-- Glitch Art images will go here -->
+                    <p>Loading Glitch Art images...</p>
+                </div>
+                <div class="image-grid liquid-lights-grid" style="display: none;">
+                     <!-- Liquid Lights images will go here -->
+                     <p>Loading Liquid Lights images...</p>
+                </div>
             </div>
 
             <!-- Old grid - can be removed or kept for reference -->
@@ -66,8 +84,16 @@
 
     <footer>
         <!-- Footer content if needed -->
+        <p class="site-credit">Website designed by <a href="https://michael-preciado.com" target="_blank">MP</a></p>
         <button id="back-to-top" title="Go to top">↑</button>
     </footer>
+
+    <!-- Image Modal Structure -->
+    <div id="imageModal" class="modal">
+        <span class="close-modal">&times;</span>
+        <img class="modal-content" id="modalImage">
+        <div id="caption"></div> <!-- Optional: for alt text or descriptions -->
+    </div>
 
     <script src="js/script.js"></script>
 </body>

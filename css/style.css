@@ -130,7 +130,7 @@ header nav ul li a:hover {
 /* Media query for smaller screens */
 @media (max-width: 768px) { /* Increased breakpoint for better stacking */
     header {
-        padding: 0.5rem 2rem; /* Increased horizontal padding slightly on smaller screens too */
+        padding: 0.5rem 1rem; /* Adjusted padding for smaller screens */
         /* flex-direction: column; Removed stacking */
         /* align-items: center; Removed stacking */
         /* gap: 0.5rem; Removed stacking gap */
@@ -176,8 +176,8 @@ header nav ul li a:hover {
 
     /* Keep old centering logic removal */
     /* header nav ul li {
-        margin-right: 1rem; 
-        margin-left: 1rem; 
+        margin-right: 1rem;
+        margin-left: 1rem;
     } */
     /* header nav ul li:first-child {
         margin-left: 0;
@@ -185,6 +185,37 @@ header nav ul li a:hover {
     /* header nav ul li:last-child {
         margin-right: 0;
     } */
+}
+
+/* Additional media query for very small screens (e.g., mobile portrait) */
+@media (max-width: 600px) {
+    .image-grid {
+        grid-template-columns: 1fr; /* Switch to single column */
+        gap: 0.8rem; /* Adjust gap for single column */
+    }
+
+    section {
+        padding: 1rem; /* Reduce section padding */
+    }
+
+    h2, h3 {
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        font-size: 1.5rem; /* Adjust heading size */
+    }
+
+    #contact form {
+        max-width: 95%; /* Allow form to take more width */
+    }
+
+    .portfolio-categories {
+        gap: 0.3rem; /* Reduce gap between category buttons */
+    }
+
+    .category-button {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+    }
 }
 
 /* Main Content */
@@ -295,8 +326,14 @@ section {
     display: none;
 }
 
-#portfolio-display .image-grid.active {
-    display: grid; /* Or display: block; if not using grid for categories */
+/* Specific grid display rules (handled by JS adding .active) */
+#portfolio-display .live-music-grid.active,
+#portfolio-display .videography-grid.active, /* Updated */
+#portfolio-display .art-grid.active, /* New */
+#portfolio-display .typography-grid.active, /* New */
+#portfolio-display .glitch-art-grid.active,
+#portfolio-display .liquid-lights-grid.active {
+    display: grid; 
 }
 
 .image-grid img {
@@ -506,4 +543,101 @@ footer {
 
 /* Add 8-bit/Hippie Theme Elements Here */
 /* Examples: pixelated borders, specific color palettes, maybe some CRT scanline effects? */
-/* .pixelated-border { border-image: url('path/to/pixel-border.png') 8 stretch; } */ 
+/* .pixelated-border { border-image: url('path/to/pixel-border.png') 8 stretch; } */
+
+/* --- Image Modal Styles --- */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1001; /* Sit on top (higher than header) */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out; /* Fade transition */
+}
+
+.modal.visible {
+    display: block; /* Make visible */
+    opacity: 1;
+}
+
+/* Modal Content (Image) */
+.modal-content {
+    margin: auto;
+    display: block;
+    max-width: 80%;
+    max-height: 80vh;
+    /* Animation */
+    animation-name: zoom;
+    animation-duration: 0.6s;
+}
+
+/* Add Animation */
+@keyframes zoom {
+    from {transform:scale(0)}
+    to {transform:scale(1)}
+}
+
+/* The Close Button */
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.close-modal:hover,
+.close-modal:focus {
+    color: #bbb;
+    text-decoration: none;
+}
+
+/* Optional Caption */
+#caption {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+    text-align: center;
+    color: #ccc;
+    padding: 10px 0;
+    height: 50px; /* Give it some space */
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 700px){
+    .modal-content {
+        max-width: 95%;
+    }
+    #caption {
+        width: 95%;
+    }
+}
+
+/* --- End Image Modal Styles --- */
+
+/* Site Credit */
+.site-credit {
+    font-size: 0.8rem; /* Smaller font size */
+    color: #aaa; /* Dimmed color */
+    margin-top: 1rem; /* Add some space above */
+    text-align: center; /* Center the text */
+}
+
+.site-credit a {
+    color: #ccc; /* Slightly brighter link color */
+    text-decoration: underline; /* Add underline for clarity */
+}
+
+.site-credit a:hover {
+    color: #fff; /* White on hover */
+} 

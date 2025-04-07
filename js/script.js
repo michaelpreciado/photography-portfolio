@@ -4,6 +4,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const categoryButtonsContainer = document.querySelector('.portfolio-categories'); // Get category buttons container
     const slideshowContainer = document.querySelector('.slideshow-container'); // Get slideshow container for homepage
 
+    // --- Modal Elements --- //
+    const modal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    const captionText = document.getElementById('caption');
+    const closeModal = document.querySelector('.close-modal');
+
     // --- Helper Function: Fisher-Yates (Knuth) Shuffle --- //
     function shuffleArray(array) {
         for (let i = array.length - 1; i > 0; i--) {
@@ -70,8 +76,14 @@ document.addEventListener('DOMContentLoaded', () => {
             'images/portfolio/DSC02507.jpg',
             // '(510) 449-8036.zip - 9.PNG' // Removed, moved to header
         ],
-        'video-postcards': [
-            // Add paths for Video Postcards images here later
+        'videography': [
+            // Add paths for Videography images here later
+        ],
+        'art': [
+            // Add paths for Art images here later
+        ],
+        'typography': [
+            // Add paths for Typography images here later
         ],
         'glitch-art': [
             // Add paths for Glitch Art images here later
@@ -244,13 +256,29 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Site script initializing.');
     createPeaceSigns(10); // Create fewer: 10 peace signs
 
-    // Note: The initial call to observeFadeInElements() might now be redundant
-    // because loadPortfolioImagesByCategory already calls it for the newly added images,
-    // and the loop above handles the static sections. You could potentially remove
-    // the standalone observeFadeInElements() call if you don't have other elements
-    // with the .fade-in class added directly in the HTML outside of sections or the image grid.
-    // For simplicity, we'll leave it commented out for now.
-    // observeFadeInElements();
+    // --- Modal Event Listeners --- //
+    if (modal && modalImage && closeModal && portfolioDisplay) {
+        // Open modal when an image inside portfolio display is clicked
+        portfolioDisplay.addEventListener('click', (event) => {
+            if (event.target.tagName === 'IMG') {
+                modal.classList.add('visible'); // Use class to trigger CSS transition
+                modalImage.src = event.target.src;
+                captionText.innerHTML = event.target.alt; // Use alt text for caption
+            }
+        });
+
+        // Close modal when the close button is clicked
+        closeModal.addEventListener('click', () => {
+            modal.classList.remove('visible');
+        });
+
+        // Close modal when clicking outside the image content
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) { // Only close if the click is on the modal background itself
+                modal.classList.remove('visible');
+            }
+        });
+    }
 
     // --- Slideshow Logic (Homepage) --- //
     if (slideshowContainer) {
