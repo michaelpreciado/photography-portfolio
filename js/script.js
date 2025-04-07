@@ -66,26 +66,23 @@ document.addEventListener('DOMContentLoaded', () => {
     // ** IMPORTANT: Update these paths and categories to match your actual images **
     const portfolioImages = {
         'live-music': [
-            'images/portfolio/P1030270.jpg',
-            'images/portfolio/IMG_0748_jpg.jpeg',
-            'images/portfolio/IMG_0737_jpg.jpeg',
-            'images/portfolio/DSC06390.jpg',
-            'images/portfolio/DSC06115.JPG',
-            'images/portfolio/DSC06038.JPG',
-            'images/portfolio/DSC06009.jpg',
-            'images/portfolio/DSC04810.jpeg',
-            // 'images/portfolio/DSC04810 2.jpeg', // Removed potential duplicate
-            'images/portfolio/DSC04697.jpg',
-            'images/portfolio/DSC04388.jpg',
-            'images/portfolio/DSC04062.JPG',
-            'images/portfolio/DSC03627 2.jpeg',
-            // 'images/portfolio/DSC02668.JPG', // Removed duplicate
-            'images/portfolio/DSC02668.jpeg',
-            'images/portfolio/DSC02607 2.jpeg',
-            'images/portfolio/DSC02569.jpeg',
-            // 'images/portfolio/DSC02569 2.jpeg', // Removed duplicate
-            'images/portfolio/DSC02507.jpg',
-            // '(510) 449-8036.zip - 9.PNG' // Removed, moved to header
+            'images/portfolio/live-music/portfolio_001.jpeg',
+            'images/portfolio/live-music/portfolio_002.jpeg',
+            'images/portfolio/live-music/portfolio_003.jpeg',
+            'images/portfolio/live-music/portfolio_004.jpg',
+            'images/portfolio/live-music/portfolio_005.jpeg',
+            'images/portfolio/live-music/portfolio_006.JPG',
+            'images/portfolio/live-music/portfolio_007.JPG',
+            'images/portfolio/live-music/portfolio_008.jpg',
+            'images/portfolio/live-music/portfolio_009.jpg',
+            'images/portfolio/live-music/portfolio_010.jpg',
+            'images/portfolio/live-music/portfolio_011.JPG',
+            'images/portfolio/live-music/portfolio_012.JPG',
+            'images/portfolio/live-music/portfolio_013.jpg',
+            'images/portfolio/live-music/portfolio_014.jpeg',
+            'images/portfolio/live-music/portfolio_015.jpeg',
+            'images/portfolio/live-music/portfolio_016.jpeg',
+            'images/portfolio/live-music/portfolio_017.jpg',
         ],
         'videography': [
             // Add paths for Videography images here later
@@ -167,8 +164,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Clear existing content (like 'Loading...')
         gridElement.innerHTML = ''; 
 
-        // Shuffle the category's images
-        const shuffledPaths = [...imagePaths]; // Clone before shuffling
+        // Get unique image paths using a Set
+        const uniqueImagePaths = [...new Set(imagePaths)];
+
+        // Shuffle the unique category's images
+        const shuffledPaths = [...uniqueImagePaths]; // Clone unique paths before shuffling
         shuffleArray(shuffledPaths);
 
         // Create and append images
@@ -453,7 +453,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Slideshow Logic (Homepage) --- //
     if (slideshowContainer) {
         const images = slideshowContainer.querySelectorAll('.slideshow-image');
-        const targetImageSrc = 'images/portfolio/DSC02569.jpeg'; // The image to start with
+        const targetImageSrc = 'images/portfolio/portfolio_001.jpeg'; // The image to start with
         let initialImageIndex = 0; // Default to the first image
 
         // Find the index of the target image
@@ -466,7 +466,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         let currentImageIndex = initialImageIndex; // Start the index here
-        const slideInterval = 4000; // Time each image is displayed (in milliseconds)
+        const slideInterval = 3000; // Time each image is displayed (in milliseconds)
 
         function showNextImage() {
             if (images.length > 0) {
