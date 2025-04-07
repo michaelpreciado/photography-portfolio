@@ -9,6 +9,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalImage = document.getElementById('modalImage');
     const captionText = document.getElementById('caption');
     const closeModal = document.querySelector('.close-modal');
+    // Add refs for nav buttons
+    const modalPrevButton = document.querySelector('.modal-prev');
+    const modalNextButton = document.querySelector('.modal-next');
+
+    // --- State for Modal Swipe Navigation --- //
+    let currentModalImageIndex = -1;
+    let activeCategoryImages = []; // Array of {src: '', alt: ''}
+    let touchStartX = 0;
+    let touchEndX = 0;
+    let touchStartY = 0; // To prevent scroll hijacking
+    let isSwiping = false; // Flag to track if swipe is in progress
 
     // --- Helper Function: Fisher-Yates (Knuth) Shuffle --- //
     function shuffleArray(array) {
@@ -92,6 +103,51 @@ document.addEventListener('DOMContentLoaded', () => {
             // Add paths for Liquid Lights images here later
         ]
     };
+
+    // --- Update Modal Content --- //
+    function updateModalContent(index) {
+        if (index >= 0 && index < activeCategoryImages.length) {
+            currentModalImageIndex = index;
+            const imageData = activeCategoryImages[index];
+
+            // Fade out the current image
+            modalImage.style.opacity = '0';
+
+            // Wait for fade out, then change src and fade in
+            setTimeout(() => {
+                modalImage.src = imageData.src;
+                captionText.innerHTML = imageData.alt;
+                // Preload next and previous images for smoother transition
+                preloadAdjacentImages(index);
+                // Fade in the new image
+                modalImage.style.opacity = '1';
+            }, 300); // Should match the CSS transition duration
+
+            // Show/hide nav buttons based on image count
+            if (activeCategoryImages.length > 1) {
+                modalPrevButton.style.display = 'block';
+                modalNextButton.style.display = 'block';
+            } else {
+                modalPrevButton.style.display = 'none';
+                modalNextButton.style.display = 'none';
+            }
+        }
+    }
+
+    // --- Preload Adjacent Images --- //
+    function preloadAdjacentImages(index) {
+        const prevIndex = (index - 1 + activeCategoryImages.length) % activeCategoryImages.length;
+        const nextIndex = (index + 1) % activeCategoryImages.length;
+
+        if (prevIndex !== index && activeCategoryImages[prevIndex]) {
+            const prevImage = new Image();
+            prevImage.src = activeCategoryImages[prevIndex].src;
+        }
+        if (nextIndex !== index && activeCategoryImages[nextIndex]) {
+            const nextImage = new Image();
+            nextImage.src = activeCategoryImages[nextIndex].src;
+        }
+    }
 
     // --- Load Portfolio Images By Category --- //
     function loadPortfolioImagesByCategory(category, gridElement) {
@@ -261,22 +317,116 @@ document.addEventListener('DOMContentLoaded', () => {
         // Open modal when an image inside portfolio display is clicked
         portfolioDisplay.addEventListener('click', (event) => {
             if (event.target.tagName === 'IMG') {
-                modal.classList.add('visible'); // Use class to trigger CSS transition
-                modalImage.src = event.target.src;
-                captionText.innerHTML = event.target.alt; // Use alt text for caption
+                // Populate activeCategoryImages based on the currently visible grid
+                const activeGrid = portfolioDisplay.querySelector('.image-grid.active');
+                if (activeGrid) {
+                    activeCategoryImages = Array.from(activeGrid.querySelectorAll('img')).map((img, index) => {
+                        // Find the index of the clicked image
+                        if (img.src === event.target.src) {
+                            currentModalImageIndex = index;
+                        }
+                        return { src: img.src, alt: img.alt };
+                    });
+
+                    if (currentModalImageIndex !== -1) {
+                        modal.classList.add('visible'); // Use class to trigger CSS transition
+                        updateModalContent(currentModalImageIndex); // Use the new function
+                    } else {
+                         console.error("Clicked image not found in active category array.");
+                    }
+                } else {
+                    console.error("Could not determine active image grid.");
+                }
             }
         });
 
         // Close modal when the close button is clicked
         closeModal.addEventListener('click', () => {
             modal.classList.remove('visible');
+            modalPrevButton.style.display = 'none'; // Hide buttons
+            modalNextButton.style.display = 'none'; // Hide buttons
+            activeCategoryImages = []; // Clear the array when modal closes
+            currentModalImageIndex = -1;
         });
 
         // Close modal when clicking outside the image content
         modal.addEventListener('click', (event) => {
             if (event.target === modal) { // Only close if the click is on the modal background itself
                 modal.classList.remove('visible');
+                modalPrevButton.style.display = 'none'; // Hide buttons
+                modalNextButton.style.display = 'none'; // Hide buttons
+                activeCategoryImages = []; // Clear the array when modal closes
+                currentModalImageIndex = -1;
             }
+        });
+
+        // --- Click Listeners for Modal Navigation Buttons --- //
+        if (modalPrevButton && modalNextButton) {
+            modalPrevButton.addEventListener('click', () => {
+                if (currentModalImageIndex === -1 || activeCategoryImages.length <= 1) return;
+                const prevIndex = (currentModalImageIndex - 1 + activeCategoryImages.length) % activeCategoryImages.length;
+                updateModalContent(prevIndex);
+            });
+
+            modalNextButton.addEventListener('click', () => {
+                if (currentModalImageIndex === -1 || activeCategoryImages.length <= 1) return;
+                const nextIndex = (currentModalImageIndex + 1) % activeCategoryImages.length;
+                updateModalContent(nextIndex);
+            });
+        }
+
+        // --- Touch Swipe Listeners for Modal Image --- //
+        modalImage.addEventListener('touchstart', (event) => {
+            // event.preventDefault(); // Prevent default only if necessary, might interfere with zoom
+            touchStartX = event.touches[0].clientX;
+            touchStartY = event.touches[0].clientY; // Record start Y
+            touchEndX = touchStartX; // Reset endX
+            isSwiping = false; // Reset swipe flag
+        }, { passive: true }); // Use passive: true initially if not preventing default scroll immediately
+
+        modalImage.addEventListener('touchmove', (event) => {
+            touchEndX = event.touches[0].clientX;
+            const touchEndY = event.touches[0].clientY;
+            const deltaX = Math.abs(touchEndX - touchStartX);
+            const deltaY = Math.abs(touchEndY - touchStartY);
+
+            // Determine if it's primarily a horizontal swipe and prevent scroll
+            if (deltaX > deltaY + 10 && !isSwiping) { // Threshold to confirm horizontal swipe intention
+                isSwiping = true;
+                // event.preventDefault(); // Uncomment if needed, but may block pinch-zoom. Test on device.
+            }
+             // If actively swiping horizontally, prevent vertical scroll
+            if (isSwiping) {
+                // event.preventDefault(); // Might be needed here too. Test required.
+            }
+
+        }, { passive: false }); // Use passive: false ONLY if you call preventDefault
+
+
+        modalImage.addEventListener('touchend', () => {
+            if (currentModalImageIndex === -1 || activeCategoryImages.length <= 1) {
+                return; // No swipe needed if only one image or index is invalid
+            }
+
+            const swipeThreshold = 50; // Minimum pixels to register as a swipe
+            const deltaX = touchEndX - touchStartX;
+
+            if (Math.abs(deltaX) > swipeThreshold && isSwiping) { // Check isSwiping flag
+                if (deltaX < 0) {
+                    // Swiped Left (Next Image)
+                    const nextIndex = (currentModalImageIndex + 1) % activeCategoryImages.length;
+                    updateModalContent(nextIndex);
+                } else {
+                    // Swiped Right (Previous Image)
+                    const prevIndex = (currentModalImageIndex - 1 + activeCategoryImages.length) % activeCategoryImages.length;
+                    updateModalContent(prevIndex);
+                }
+            }
+             // Reset variables after swipe attempt
+            touchStartX = 0;
+            touchEndX = 0;
+            touchStartY = 0;
+            isSwiping = false;
         });
     }
 
