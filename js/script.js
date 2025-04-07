@@ -193,6 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (categoryButtonsContainer && portfolioDisplay) {
         const buttons = categoryButtonsContainer.querySelectorAll('.category-button');
         const grids = portfolioDisplay.querySelectorAll('.image-grid');
+        const portfolioSection = document.getElementById('portfolio'); // Get the parent section
 
         buttons.forEach(button => {
             button.addEventListener('click', () => {
@@ -203,6 +204,23 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.error(`Grid for category '${category}' not found.`);
                     return;
                 }
+
+                // --- Theme Switching --- //
+                if (portfolioSection) {
+                    // Remove previous theme classes
+                    const themePrefix = 'theme-';
+                    const classesToRemove = [];
+                    for (const className of portfolioSection.classList) {
+                        if (className.startsWith(themePrefix)) {
+                            classesToRemove.push(className);
+                        }
+                    }
+                    portfolioSection.classList.remove(...classesToRemove);
+
+                    // Add new theme class
+                    portfolioSection.classList.add(`theme-${category}`);
+                }
+                // --- End Theme Switching --- //
 
                 // Update active button
                 buttons.forEach(btn => btn.classList.remove('active'));
@@ -221,11 +239,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // --- Initial Portfolio Load --- //
         const initialActiveButton = categoryButtonsContainer.querySelector('.category-button.active');
-        if (initialActiveButton) {
+        if (initialActiveButton && portfolioSection) { // Also check for portfolioSection
             const initialCategory = initialActiveButton.dataset.category;
             const initialGrid = portfolioDisplay.querySelector(`.${initialCategory}-grid`);
             if (initialGrid) {
                  initialGrid.classList.add('active'); // Ensure initial grid is visible
+                 // Apply initial theme class
+                 portfolioSection.classList.add(`theme-${initialCategory}`);
                  loadPortfolioImagesByCategory(initialCategory, initialGrid);
             } else {
                 console.error("Initial portfolio grid not found for active button.");

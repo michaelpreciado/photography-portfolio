@@ -57,8 +57,8 @@ h2, h3 {
     margin-top: 4rem;
     margin-bottom: 2rem;
     letter-spacing: 2px;
-    color: #ff00ff; /* Added bright pink for headers */
     font-family: 'VT323', monospace; /* Ensure headers use the font too */
+    transition: color 0.3s ease-in-out; /* Add transition for color change */
 }
 
 /* Header */
@@ -309,9 +309,7 @@ section {
 }
 
 .category-button:hover, .category-button.active {
-    background-color: #ff00ff; /* Bright pink hover/active */
     color: #ffffff; /* Keep text white */
-    border-color: #ff00ff;
 }
 
 .portfolio-section h3 {
@@ -683,4 +681,98 @@ footer {
 
 .site-credit a:hover {
     color: #fff; /* White on hover */
-} 
+}
+
+/* --- Theme Colors for Portfolio Section --- */
+/* Defaults (can be overridden by specific themes) */
+#portfolio {
+    /* Add transition for potential background or shadow changes */
+    transition: box-shadow 0.5s ease-in-out;
+}
+
+#portfolio h2 {
+    color: #ff00ff; /* Default to pink if no theme */
+}
+#portfolio .category-button.active {
+    background-color: #ff00ff;
+    border-color: #ff00ff;
+}
+
+/* Live Music Theme (Pink) */
+#portfolio.theme-live-music {
+    box-shadow: 0 0 40px 5px rgba(255, 0, 255, 0.4);
+}
+#portfolio.theme-live-music h2 {
+    color: #ff00ff;
+}
+#portfolio.theme-live-music .category-button.active {
+    background-color: #ff00ff;
+    border-color: #ff00ff;
+    color: #ffffff;
+}
+
+/* Videography Theme (Cyan) */
+#portfolio.theme-videography {
+    box-shadow: 0 0 40px 5px rgba(0, 255, 255, 0.4);
+}
+#portfolio.theme-videography h2 {
+    color: #00ffff;
+}
+#portfolio.theme-videography .category-button.active {
+    background-color: #00ffff;
+    border-color: #00ffff;
+    color: #000000; /* Black text for contrast */
+}
+
+/* Art Theme (Yellow) */
+#portfolio.theme-art {
+    box-shadow: 0 0 40px 5px rgba(255, 255, 0, 0.4);
+}
+#portfolio.theme-art h2 {
+    color: #ffff00;
+}
+#portfolio.theme-art .category-button.active {
+    background-color: #ffff00;
+    border-color: #ffff00;
+    color: #000000; /* Black text for contrast */
+}
+
+/* Typography Theme (Orange) */
+#portfolio.theme-typography {
+    box-shadow: 0 0 40px 5px rgba(255, 165, 0, 0.4);
+}
+#portfolio.theme-typography h2 {
+    color: #ffa500;
+}
+#portfolio.theme-typography .category-button.active {
+    background-color: #ffa500;
+    border-color: #ffa500;
+    color: #ffffff;
+}
+
+/* Glitch Art Theme (Green) */
+#portfolio.theme-glitch-art {
+    box-shadow: 0 0 40px 5px rgba(0, 255, 0, 0.4);
+}
+#portfolio.theme-glitch-art h2 {
+    color: #00ff00;
+}
+#portfolio.theme-glitch-art .category-button.active {
+    background-color: #00ff00;
+    border-color: #00ff00;
+    color: #000000; /* Black text for contrast */
+}
+
+/* Liquid Lights Theme (BlueViolet) */
+#portfolio.theme-liquid-lights {
+    box-shadow: 0 0 40px 5px rgba(138, 43, 226, 0.4);
+}
+#portfolio.theme-liquid-lights h2 {
+    color: #8a2be2;
+}
+#portfolio.theme-liquid-lights .category-button.active {
+    background-color: #8a2be2;
+    border-color: #8a2be2;
+    color: #ffffff;
+}
+/* --- End Theme Colors --- */ 
