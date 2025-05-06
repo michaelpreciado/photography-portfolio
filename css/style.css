@@ -195,17 +195,37 @@ header {
     padding: 10px 0; /* Add some vertical padding */
     box-sizing: border-box; /* Include padding in width */
     z-index: var(--z-header);
-    transition: background-color 0.4s ease, backdrop-filter 0.4s ease;
+    transition: background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+                backdrop-filter 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+                transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 
-    /* Solid background for better visibility with improved transition */
-    background-color: rgba(0, 0, 0, 0.85); /* Slightly darker for better contrast */
-    backdrop-filter: blur(8px); /* Enhanced blur */
-    -webkit-backdrop-filter: blur(8px); /* Safari prefix */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+    /* Glass morphism effect with optimized opacity */
+    background-color: rgba(0, 0, 0, 0.75); 
+    backdrop-filter: blur(12px); /* Increased blur for more modern look */
+    -webkit-backdrop-filter: blur(12px); /* Safari prefix */
     
-    /* Hardware acceleration for smoother scrolling */
-    transform: translateZ(0);
-    will-change: background-color, backdrop-filter;
+    /* Subtle highlight for depth */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.2);
+    
+    /* Performance optimizations */
+    transform: translate3d(0, 0, 0); /* Force hardware acceleration */
+    will-change: transform, background-color, backdrop-filter;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    perspective: 1000;
+    -webkit-perspective: 1000;
+}
+
+/* Header state variations */
+header.header-hidden {
+    transform: translate3d(0, -100%, 0);
+}
+
+header.header-scrolled {
+    background-color: rgba(0, 0, 0, 0.95);
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
+    border-bottom-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Container for header elements */
@@ -213,12 +233,13 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
+    width: 80%; /* Slightly wider for better balance */
     height: 100%;
-    padding: 0.75rem 1.5rem;
+    padding: 0.75rem 0;
     max-width: 1400px;
     margin: 0 auto;
     flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    position: relative; /* For absolute positioning of logo */
 }
 
 /* Make logo clickable */
@@ -230,6 +251,20 @@ header {
     justify-content: center;
 }
 
+.header-logo-title {
+    display: flex;
+    align-items: center; /* Vertically center the image and text */
+    flex-direction: column; /* Stack image and title vertically for all sizes */
+    /* Added transition for opacity */
+    transition: opacity 0.3s ease-in-out;
+}
+
+.header-logo-title.fade-out {
+    opacity: 0;
+    /* Optional: to remove from layout and prevent interaction after fade */
+    /* visibility: hidden; */ 
+}
+
 /* Style individual navs if needed, e.g., ensure flex display */
 header nav ul {
     display: flex;
@@ -237,58 +272,76 @@ header nav ul {
 
 /* Adjust list item margins */
 header nav.left-nav ul li {
-    margin-right: 1.5rem; /* Reduced but still clear spacing */
-    padding-right: 0.5rem; /* Additional padding */
+    margin-right: 1rem; /* Reduced spacing */
+    padding-right: 0.25rem; /* Reduced padding */
 }
 header nav.right-nav ul li {
-    margin-left: 1.5rem; /* Reduced but still clear spacing */
-    padding-left: 0.5rem; /* Additional padding */
+    margin-left: 1rem; /* Reduced spacing */
+    padding-left: 0.25rem; /* Reduced padding */
 }
 
-/* Add spacing between all menu items */
 header nav ul li {
-    margin: 0 0.5rem; /* Horizontal margins on all menu items */
+    margin: 0 0.25rem; /* Reduced horizontal margins */
     position: relative; /* For potential separators */
 }
 
 header nav ul li a {
-    transition: color 0.3s ease, border-bottom 0.3s ease;
+    transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+              border-bottom 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              text-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     align-items: center; /* Center items horizontally */
-    font-size: 0.9rem; /* Much smaller font size so everything fits */
+    font-size: 1.2rem; /* Restored to user preference for desktop nav (1.2rem) */
     color: #ffffff; /* White text */
     font-weight: bold; /* Bold text */
     text-transform: uppercase; /* Uppercase text */
-    padding: 0 6px 3px 6px; /* Reduced padding for more compact layout */
+    padding: 0 10px 3px 10px; /* Balanced padding for clean look and spacing */
     border-bottom: 1px solid transparent; /* Thinner border */
-    margin: 0 3px; /* Smaller margins to fit more text */
-    letter-spacing: 0.2px; /* Reduced letter spacing */
+    margin: 0 8px; /* Balanced spacing between items */
+    letter-spacing: 1px; /* Restored to user preference */
+    /* Performance optimizations */
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 header nav ul li a:hover {
     color: #ffffff; /* Stay white on hover */
     border-bottom: 2px solid #ffffff; /* White underline on hover */
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.5); /* Subtle glow effect */
+    transform: translate3d(0, -1px, 0); /* Subtle lift effect */
 }
 
 header nav ul li a.active {
     border-bottom: 2px solid #ffffff; /* White underline for active page */
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.4); /* Slight glow for active page */
 }
 
 /* New wrapper for logo and title */
 .header-logo-title {
     display: flex;
-    flex-direction: row; /* Change to row for horizontal layout */
+    flex-direction: column; /* Stack image and title vertically for all sizes */
     align-items: center; /* Center items vertically */
     justify-content: center;
     z-index: 10; /* Ensure it's above other elements */
-    transition: transform 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    /* Use absolute positioning to center in the header per user preference */
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 50%; /* Center vertically */
+    margin-top: -3px; /* Fine-tune vertical alignment */
+    /* Add subtle hover effect optimization */
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 .header-logo-link:hover .header-logo-title {
-    transform: scale(1.03); /* Subtle zoom effect on hover */
+    transform: translateX(-50%) scale(1.03); /* Maintain centering while adding scale effect */
+    filter: brightness(1.15); /* Subtle brightness boost on hover */
 }
 
 .header-title {
-    font-size: 2.4rem; /* Increased size to match larger logo */
+    font-size: 2.8rem; /* Adjusted size for better proportions */
     font-weight: bold;
     white-space: nowrap; /* Prevent wrapping */
     margin: 0; /* Remove default margins */
@@ -300,43 +353,49 @@ header nav ul li a.active {
     padding: 0 5px; /* Add slight padding so gradient doesn't clip */
     letter-spacing: 2px; /* Increased letter spacing for better readability */
     font-family: var(--font-primary); /* Use our design token */
-    text-shadow: 0 0 12px rgba(255, 255, 255, 0.2); /* Enhanced glow effect */
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.2); /* Enhanced glow effect */
 }
 
 /* Header decoration image styles */
 .header-decoration-image {
     height: auto; /* Allow height to adjust based on width */
     width: auto; /* Allow natural sizing */
-    max-height: 150px; /* Much larger maximum height */
-    max-width: 150px; /* Much larger maximum width */
-    margin-right: 1.2rem; /* More space between the larger image and title */
+    max-height: 180px; /* Default max height (primarily for desktop) */
+    max-width: 180px; /* Default max width (primarily for desktop) */
+    margin-right: 0; /* Image is stacked, so no right margin */
+    margin-bottom: 0.5rem; /* Space below the image */
     object-fit: contain; /* Ensure entire image is visible without cropping */
     opacity: 1; /* Fully opaque for better visibility */
     transition: transform 0.3s ease; /* Smooth transition for hover effects */
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* Stronger glow for the larger image */
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.4); /* Subtle glow */
 }
 
 /* Mobile Menu Toggle Button (Hamburger) */
 .mobile-menu-toggle {
     display: none; /* Hidden by default on desktop */
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.6);
     border: none;
-    width: 50px; /* Larger touch target */
-    height: 50px; /* Larger touch target */
+    width: 48px; /* Optimized touch target */
+    height: 48px; /* Optimized touch target */
     cursor: pointer;
-    padding: 14px; /* Increased padding */
-    position: fixed; /* Fixed position so it stays at the top */
+    padding: 13px; /* Adjusted padding */
+    position: fixed; /* Fixed position */
     top: 15px; /* Position at the top of the screen */
     left: 15px; /* Position at the left of the screen */
     z-index: 9999; /* Above everything else */
-    transition: transform var(--transition-speed);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     /* Improve iOS tap target */
-    -webkit-tap-highlight-color: rgba(255, 255, 255, 0.3);
+    -webkit-tap-highlight-color: transparent;
     /* Add subtle border for visibility */
-    border-radius: 8px;
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 0 10px rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12), 0 4px 8px rgba(0, 0, 0, 0.4);
     /* Ensure there's no touch delay on iOS */
     touch-action: manipulation;
+    /* Performance optimizations */
+    transform: translate3d(0, 0, 0);
+    will-change: transform, background-color, box-shadow;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 .mobile-menu-toggle span {
@@ -429,14 +488,20 @@ header nav ul li a.active {
 .mobile-nav ul li {
     opacity: 0;
     transform: translateY(10px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
+    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+               transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     transition-delay: 0.1s;
-    margin: 1.2rem 0; /* Optimized spacing for mobile */
-    padding: 0.6rem 0; /* Increased tap target size */
+    margin: 2.5rem 0; /* Increased vertical spacing per user preference */
+    padding: 0.8rem 0; /* Larger tap target for better mobile experience */
     position: relative;
-    border-radius: 8px;
-    /* Add subtle highlighting */
+    border-radius: 12px; /* Slightly more rounded corners */
+    /* Enhanced subtle highlighting with hardware acceleration */
     background-color: rgba(255, 255, 255, 0.05);
+    /* Performance optimizations */
+    transform: translate3d(0, 10px, 0); /* Modified for hardware acceleration */
+    will-change: opacity, transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 /* Individual delays for menu items */
@@ -455,21 +520,55 @@ header nav ul li a.active {
 
 .mobile-menu-active .mobile-nav ul li {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0); /* Fixed for hardware acceleration */
+}
+
+/* Extra small devices - specific optimizations */
+@media (max-width: 375px) {
+    /* Extremely small screens need even smaller fonts */
+    .mobile-nav ul li a {
+        font-size: 0.95rem; /* Even smaller font */
+        letter-spacing: 1px; /* Minimal letter spacing */
+        padding: 0.35rem 0.6rem; /* Smaller padding but still touch-friendly */
+    }
+    
+    /* Add more horizontal spacing for menu items by reducing menu width */
+    .mobile-nav ul {
+        width: 85%;
+        max-width: 280px; /* Narrower menu */
+    }
+    
+    /* Smaller logo with better spacing */
+    .header-decoration-image {
+        max-height: 30px; /* Even smaller image */
+        margin-right: 0; /* Image is stacked */
+        margin-bottom: 0.2rem; /* Space below image on extra small screens */
+    }
+    
+    .header-title {
+        font-size: 1.2rem; /* Smaller font */
+        letter-spacing: 0.5px;
+    }
 }
 
 .mobile-nav ul li a {
-    font-size: 1.1rem; /* Further reduced font size */
+    font-size: 1.1rem; /* Reduced font size to fit better on mobile */
     color: var(--text-color);
     text-decoration: none;
     text-transform: uppercase;
     font-weight: bold;
-    padding: 0.4rem 0.7rem; /* Reduced padding for better fit */
-    margin: 0.2rem 0; /* Reduced vertical margin */
+    padding: 0.4rem 0.8rem; /* Slightly reduced padding */
+    margin: 0.3rem 0; /* Adjusted vertical margin */
     display: inline-block;
     position: relative;
-    transition: transform 0.3s ease, color 0.3s ease;
-    letter-spacing: 2px; /* Reduced letter spacing */
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+               color 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+               text-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    letter-spacing: 2px; /* Reduced letter spacing for better fit */
+    /* Performance optimization */
+    transform: translate3d(0, 0, 0);
+    will-change: transform, color;
+    -webkit-font-smoothing: antialiased;
 }
 
 .mobile-nav ul li a::after {
@@ -499,7 +598,7 @@ header nav ul li a.active {
 /* Media query for smaller screens */
 @media (max-width: 768px) {
     header {
-        padding: 0.5rem 1rem; /* Adjusted padding for smaller screens */
+        padding: 0.5rem 0.8rem; /* Reduced padding for smaller screens */
     }
     
     /* Adjust desktop navigation for smaller screens - maintain visibility in medium screens */
@@ -510,20 +609,24 @@ header nav ul li a.active {
     }
     
     .desktop-nav ul li {
-        margin: 0 0.5rem;
+        margin: 0 0.3rem; /* Reduced horizontal margins */
     }
     
     .desktop-nav ul li a {
-        font-size: 1rem;
-        padding: 0.2rem 0;
+        font-size: 0.85rem; /* Smaller font size for better fit */
+        padding: 0.15rem 0;
+        letter-spacing: 0.5px; /* Reduced letter spacing */
+        margin: 0 5px; /* Reduced margins */
     }
     
     .header-title {
-        font-size: 1.1rem; /* Slightly smaller title */
+        font-size: 1.8rem; /* Smaller title */
     }
     
     .header-decoration-image {
-        height: 25px; /* Make image smaller */
+        height: 50px; /* Make image smaller */
+        margin-right: 0; /* Image is stacked */
+        margin-bottom: 0.3rem; /* Space below image on smaller screens */
     }
 }
 
@@ -532,6 +635,20 @@ header nav ul li a.active {
     /* Hide desktop navigation on mobile */
     .desktop-nav {
         display: none;
+    }
+    
+    /* Further reduced font sizes for very small screens */
+    .header-title {
+        font-size: 1.2rem; /* Even smaller title for mobile */
+        letter-spacing: 1px; /* Reduced letter spacing */
+    }
+    
+    /* Optimize navigation spacing */
+    header nav.desktop-nav ul li a {
+        font-size: 0.75rem; /* Very small font for narrow mobile screens */
+        padding: 0.1rem 0.3rem;
+        margin: 0 2px;
+        letter-spacing: 0px;
     }
     
     /* Show hamburger menu on mobile and optimize positioning */
@@ -620,13 +737,13 @@ header nav ul li a.active {
     
     /* Adjust logo size for mobile */
     .header-decoration-image {
-        height: 22px;
+        height: 50px;
         margin-bottom: 2px;
     }
     
     /* Make title text smaller and more balanced */
     .header-title {
-        font-size: 0.8rem;
+        font-size: 1.2rem;
         line-height: 1;
         letter-spacing: 0.5px;
     }
@@ -1009,7 +1126,7 @@ section {
 }
 .category-button[data-category="live-music"].active,
 .category-button[data-category="live-music"]:hover {
-    box-shadow: 0 0 15px #ff00ff, 0 0 25px rgba(255, 0, 255, 0.6);
+    box-shadow: 0 0 15px #ff00ff, 0 0 30px rgba(255, 0, 255, 0.6);
     border-color: #ff00ff;
     text-shadow: 0 0 5px #ff00ff;
 }
@@ -1020,7 +1137,7 @@ section {
 }
 .category-button[data-category="visuals"].active,
 .category-button[data-category="visuals"]:hover {
-    box-shadow: 0 0 15px #00ffff, 0 0 25px rgba(0, 255, 255, 0.6);
+    box-shadow: 0 0 15px #00ffff, 0 0 30px rgba(0, 255, 255, 0.6);
     border-color: #00ffff;
     text-shadow: 0 0 5px #00ffff;
 }
@@ -1031,7 +1148,7 @@ section {
 }
 .category-button[data-category="art"].active,
 .category-button[data-category="art"]:hover {
-    box-shadow: 0 0 15px #00ff8c, 0 0 25px rgba(0, 255, 140, 0.6);
+    box-shadow: 0 0 15px #00ff8c, 0 0 30px rgba(0, 255, 140, 0.6);
     border-color: #00ff8c;
     text-shadow: 0 0 5px #00ff8c;
 }
@@ -1042,7 +1159,7 @@ section {
 }
 .category-button[data-category="typography"].active,
 .category-button[data-category="typography"]:hover {
-    box-shadow: 0 0 15px #ffcc00, 0 0 25px rgba(255, 204, 0, 0.6);
+    box-shadow: 0 0 15px #ffcc00, 0 0 30px rgba(255, 204, 0, 0.6);
     border-color: #ffcc00;
     text-shadow: 0 0 5px #ffcc00;
 }

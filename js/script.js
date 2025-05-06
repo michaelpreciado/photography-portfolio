@@ -57,6 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const body = document.body;
     const mobileNavOverlay = document.getElementById('mobile-nav');
     const mobileNavLinks = document.querySelectorAll('.mobile-nav a');
+    const headerLogoTitle = document.querySelector('.header-logo-title'); // Added this line
     
     // Mobile menu toggle with improved accessibility
     if (mobileMenuToggle && mobileNavOverlay) {
@@ -71,6 +72,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!isExpanded) {
                 // Opening menu - prevent scrolling
                 body.style.overflow = 'hidden';
+                if (headerLogoTitle) { // Added this block
+                    headerLogoTitle.classList.add('fade-out');
+                }
                 
                 // iOS-specific fixes
                 if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
@@ -86,6 +90,9 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 // Closing menu - restore scrolling
                 body.style.overflow = '';
+                if (headerLogoTitle) { // Added this block
+                    headerLogoTitle.classList.remove('fade-out');
+                }
                 
                 // iOS-specific fixes
                 if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
@@ -112,6 +119,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 mobileMenuToggle.setAttribute('aria-expanded', 'false');
                 mobileNavOverlay.setAttribute('aria-hidden', 'true');
                 body.style.overflow = '';
+                if (headerLogoTitle) { // Added this line
+                    headerLogoTitle.classList.remove('fade-out');
+                }
                 if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
                     body.style.position = '';
                     body.style.width = '';
@@ -120,23 +130,63 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Header transparency effect on scroll
+    // Enhanced header scroll behavior with smart hiding
     const header = document.querySelector('header');
     if (header) {
         let lastScrollTop = 0;
-        window.addEventListener('scroll', () => {
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        let scrollTimer = null;
+        let isScrolling = false;
+        const scrollThreshold = 10; // Minimum scroll amount to trigger hide/show
+        
+        const handleScroll = () => {
+            if (scrollTimer !== null) {
+                clearTimeout(scrollTimer);
+            }
             
-            if (scrollTop > 50) {
-                // Make header more opaque when scrolled down
-                header.style.backgroundColor = 'rgba(0, 0, 0, 0.95)';
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollDelta = scrollTop - lastScrollTop;
+            
+            // Apply scrolled class for styling
+            if (scrollTop > 20) {
+                header.classList.add('header-scrolled');
             } else {
-                // Make header more transparent at the top
-                header.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+                header.classList.remove('header-scrolled');
+            }
+            
+            // Smart hide/show header based on scroll direction
+            if (!prefersReducedMotion) { // Skip animation if user prefers reduced motion
+                // Only apply on pages that aren't the home page (which has fixed positioning)
+                if (!document.body.classList.contains('home-page')) {
+                    // Scrolling down and past threshold - hide header
+                    if (scrollDelta > scrollThreshold && scrollTop > 100) {
+                        header.classList.add('header-hidden');
+                    } 
+                    // Scrolling up - show header
+                    else if (scrollDelta < -scrollThreshold) {
+                        header.classList.remove('header-hidden');
+                    }
+                    // At top of page - always show header
+                    else if (scrollTop < 10) {
+                        header.classList.remove('header-hidden');
+                    }
+                }
             }
             
             lastScrollTop = scrollTop;
-        });
+            isScrolling = true;
+            
+            // Reset scrolling state after scrolling stops
+            scrollTimer = setTimeout(() => {
+                isScrolling = false;
+                // Always show header when user stops scrolling
+                if (scrollTop < 300) { // Only auto-show near top of page
+                    header.classList.remove('header-hidden');
+                }
+            }, 150);
+        };
+        
+        // Use passive event listener for better scroll performance
+        window.addEventListener('scroll', handleScroll, { passive: true });
     }
 
     // --- Modal Elements --- //
