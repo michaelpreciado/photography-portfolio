@@ -547,20 +547,20 @@ header nav ul li a.active {
     
     /* iOS-specific fixes using CSS feature detection */
     @supports (-webkit-touch-callout: none) {
-        /* iOS-specific selector */
-        .portfolio-page .mobile-menu-toggle {
-            /* Even more aggressive fixes for iOS */
+        /* iOS-specific selector for all pages */
+        .mobile-menu-toggle {
+            /* Consistent iOS fixes for all pages */
             cursor: pointer;
             -webkit-tap-highlight-color: rgba(255, 255, 255, 0.5);
-            /* Make entire area clickable */
-            padding: 25px !important;
             /* Ensure iOS registers touch events */
             touch-action: manipulation;
             /* iOS Safari specific tweaks */
             -webkit-user-select: none;
             user-select: none;
-            /* Even more visible contrast */
-            background: rgba(0, 0, 0, 0.9) !important;
+            /* Better visibility */
+            background: rgba(0, 0, 0, 0.85) !important;
+            /* iOS-specific positioning adjustment if needed */
+            top: 85px !important;
         }
         
         /* Handle potential Safari conflicts */
