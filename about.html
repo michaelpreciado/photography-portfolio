@@ -23,25 +23,29 @@
     
     <div id="peace-background" aria-hidden="true"></div> <!-- Container for floating peace signs -->
     <header role="banner">
-        <!-- Desktop navigation with improved semantics -->
-        <nav class="desktop-nav left-nav" aria-label="Main navigation">
-            <ul>
-                <li><a href="index.html">HOME</a></li>
-                <li><a href="portfolio.html">PORTFOLIO</a></li>
-            </ul>
-        </nav>
-        
-        <div class="header-logo-title">
-            <img src="images/portfolio/header.jpeg" alt="Header Image" class="header-decoration-image">
-            <div class="header-title">MARIO PRECIADO</div>
+        <!-- Optimized desktop navigation structure -->
+        <div class="header-container">
+            <nav class="desktop-nav left-nav" aria-label="Main navigation">
+                <ul>
+                    <li><a href="index.html">HOME</a></li>
+                    <li><a href="portfolio.html">PORTFOLIO</a></li>
+                </ul>
+            </nav>
+            
+            <a href="index.html" class="header-logo-link">
+                <div class="header-logo-title">
+                    <img src="images/portfolio/header.jpeg" alt="" class="header-decoration-image" loading="eager">
+                    <h1 class="header-title">MARIO PRECIADO</h1>
+                </div>
+            </a>
+            
+            <nav class="desktop-nav right-nav" aria-label="Secondary navigation">
+                <ul>
+                    <li><a href="about.html" class="active" aria-current="page">ABOUT</a></li>
+                    <li><a href="contact.html">CONTACT</a></li>
+                </ul>
+            </nav>
         </div>
-        
-        <nav class="desktop-nav right-nav" aria-label="Secondary navigation">
-            <ul>
-                <li><a href="about.html" class="active" aria-current="page">ABOUT</a></li>
-                <li><a href="contact.html">CONTACT</a></li>
-            </ul>
-        </nav>
         
         <!-- Mobile navigation overlay with improved accessibility -->
         <div class="mobile-nav-overlay" id="mobile-nav" aria-hidden="true">

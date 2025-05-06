@@ -186,21 +186,19 @@ h2, h3 {
 
 /* Header - Floating on top of carousel */
 header {
-    display: flex;
-    justify-content: space-between; /* Revert to space-between for proper nav spacing */
-    align-items: center;
-    padding: 1rem 2rem; /* Reduced horizontal padding */
     position: fixed; /* Sticky header */
     top: 0;
     left: 0;
     width: 100%;
-    height: var(--header-height);
+    height: auto; /* Allow height to adjust based on content */
+    min-height: var(--header-height); /* Minimum height */
+    padding: 10px 0; /* Add some vertical padding */
     box-sizing: border-box; /* Include padding in width */
-    z-index: 1000;
+    z-index: var(--z-header);
     transition: background-color 0.4s ease, backdrop-filter 0.4s ease;
 
     /* Solid background for better visibility with improved transition */
-    background-color: rgba(0, 0, 0, 0.8); /* Slightly more transparent by default */
+    background-color: rgba(0, 0, 0, 0.85); /* Slightly darker for better contrast */
     backdrop-filter: blur(8px); /* Enhanced blur */
     -webkit-backdrop-filter: blur(8px); /* Safari prefix */
     border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
@@ -208,6 +206,28 @@ header {
     /* Hardware acceleration for smoother scrolling */
     transform: translateZ(0);
     will-change: background-color, backdrop-filter;
+}
+
+/* Container for header elements */
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 0.75rem 1.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+/* Make logo clickable */
+.header-logo-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Style individual navs if needed, e.g., ensure flex display */
@@ -256,33 +276,44 @@ header nav ul li a.active {
 /* New wrapper for logo and title */
 .header-logo-title {
     display: flex;
-    flex-direction: column; /* Stack image and title vertically */
-    align-items: center; /* Center items horizontally */
-    position: absolute; /* Position in the center regardless of other elements */
-    left: 50%;
-    transform: translateX(-50%); /* Perfect centering */
+    flex-direction: row; /* Change to row for horizontal layout */
+    align-items: center; /* Center items vertically */
+    justify-content: center;
     z-index: 10; /* Ensure it's above other elements */
+    transition: transform 0.3s ease;
+}
+
+.header-logo-link:hover .header-logo-title {
+    transform: scale(1.03); /* Subtle zoom effect on hover */
 }
 
 .header-title {
-    font-size: 1.8rem; /* Increased size slightly */
+    font-size: 2.4rem; /* Increased size to match larger logo */
     font-weight: bold;
     white-space: nowrap; /* Prevent wrapping */
-    /* Rainbow gradient effect */
-    background: linear-gradient(to right, violet, indigo, blue, green, yellow, orange, red); /* Changed starting color */
+    margin: 0; /* Remove default margins */
+    /* Enhanced rainbow gradient effect */
+    background: linear-gradient(to right, var(--neon-pink), var(--neon-blue), var(--neon-green), var(--neon-yellow)); 
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent; /* Make the original text color transparent */
     padding: 0 5px; /* Add slight padding so gradient doesn't clip */
-    /* margin-right: 1rem; Removed margin */
+    letter-spacing: 2px; /* Increased letter spacing for better readability */
+    font-family: var(--font-primary); /* Use our design token */
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.2); /* Enhanced glow effect */
 }
 
-/* Added style for the header decoration image */
+/* Header decoration image styles */
 .header-decoration-image {
-    height: 40px; /* Adjust size as needed */
-    width: auto;
-    margin-bottom: 0.25rem; /* Add space below image */
-    /* margin-right: 1rem; Removed margin */
+    height: auto; /* Allow height to adjust based on width */
+    width: auto; /* Allow natural sizing */
+    max-height: 150px; /* Much larger maximum height */
+    max-width: 150px; /* Much larger maximum width */
+    margin-right: 1.2rem; /* More space between the larger image and title */
+    object-fit: contain; /* Ensure entire image is visible without cropping */
+    opacity: 1; /* Fully opaque for better visibility */
+    transition: transform 0.3s ease; /* Smooth transition for hover effects */
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* Stronger glow for the larger image */
 }
 
 /* Mobile Menu Toggle Button (Hamburger) */
@@ -530,7 +561,7 @@ header nav ul li a.active {
     .about-page .mobile-menu-toggle,
     .contact-page .mobile-menu-toggle {
         /* Ensure all pages have the same positioning */
-        top: 85px !important;
+        top: 120px !important; /* Increased to account for larger header */
         left: 15px !important;
         width: 45px !important;
         height: 45px !important;
