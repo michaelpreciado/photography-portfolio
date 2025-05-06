@@ -61,13 +61,12 @@ h2, h3 {
     transition: color 0.3s ease-in-out; /* Add transition for color change */
 }
 
-/* Header */
+/* Header - Floating on top of carousel */
 header {
     display: flex;
     justify-content: space-between; /* Key for centering middle element */
     align-items: center;
     padding: 1rem 6rem; /* Increased horizontal padding */
-    /* background-color: #000000; Old black background */
     position: fixed; /* Sticky header */
     top: 0;
     left: 0;
@@ -75,11 +74,11 @@ header {
     box-sizing: border-box; /* Include padding in width */
     z-index: 1000;
 
-    /* Glassmorphism styles */
-    background-color: rgba(25, 25, 25, 0.5); /* Dark semi-transparent background */
-    backdrop-filter: blur(10px); /* Adjust blur amount as needed */
-    -webkit-backdrop-filter: blur(10px); /* Safari prefix */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle white border */
+    /* Solid background for better visibility */
+    background-color: rgba(0, 0, 0, 0.9); /* More opaque background */
+    backdrop-filter: blur(5px); /* Subtle blur */
+    -webkit-backdrop-filter: blur(5px); /* Safari prefix */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
 }
 
 /* Style individual navs if needed, e.g., ensure flex display */
@@ -96,13 +95,23 @@ header nav.right-nav ul li {
 }
 
 header nav ul li a {
-    transition: color 0.3s ease;
+    transition: color 0.3s ease, border-bottom 0.3s ease;
     align-items: center; /* Center items horizontally */
     font-size: 1.6rem; /* Increase font size again */
+    color: #ffffff; /* White text */
+    font-weight: bold; /* Bold text */
+    text-transform: uppercase; /* Uppercase text */
+    padding-bottom: 5px; /* Space for underline */
+    border-bottom: 2px solid transparent; /* Transparent border for hover effect */
 }
 
 header nav ul li a:hover {
-    color: #cccccc; /* Changed hover color to light gray */
+    color: #ffffff; /* Stay white on hover */
+    border-bottom: 2px solid #ffffff; /* White underline on hover */
+}
+
+header nav ul li a.active {
+    border-bottom: 2px solid #ffffff; /* White underline for active page */
 }
 
 /* New wrapper for logo and title */
@@ -155,9 +164,7 @@ header nav ul li a:hover {
         font-size: 1.2rem; /* Adjusted smaller screen font size again */
     }
 
-    .header-logo-title {
-        /* order: 0; Removed order property */
-    }
+    /* Removed empty ruleset */
 
     .header-title {
         font-size: 1.1rem; /* Slightly smaller title */
@@ -226,21 +233,55 @@ header nav ul li a:hover {
 
 /* Main Content */
 main {
-    padding-top: 60px; /* Adjust based on actual header height */
+    position: relative; /* Establish positioning context */
+    z-index: 1; /* Above the background carousel */
+    padding-top: 60px; /* Add padding to account for fixed header */
 }
 
 section {
     padding: 2rem;
-    min-height: 80vh; /* Ensure sections take up significant space */
+    min-height: 100vh; /* Full viewport height sections */
+    position: relative; /* Ensure proper stacking */
+    z-index: 1; /* Above the background slideshow */
+}
+
+/* Home section specific styles */
+#home {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    padding: 0;
+    overflow: hidden;
+}
+
+/* Portfolio section specific styles */
+#portfolio {
+    background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+    position: relative;
+    z-index: 2; /* Ensure portfolio content is above the slideshow */
+    padding-top: 120px; /* Add more padding to account for the fixed header */
+}
+
+/* Portfolio heading */
+#portfolio h2 {
+    margin-top: 0; /* Remove default top margin */
+    color: #ffffff; /* Ensure text is white */
+    font-size: 2.5rem; /* Larger font size */
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add text shadow for better visibility */
 }
 
 /* Home Section */
-/* Updated styles for the slideshow */
-#home .slideshow-container {
-    position: relative; /* Needed for absolute positioning of images */
+/* Full-screen background carousel */
+.slideshow-container {
+    position: fixed; /* Fixed position to cover entire viewport */
+    top: 0;
+    left: 0;
     width: 100%;
-    height: calc(100vh - 60px); /* Explicitly set height to viewport height minus header */
+    height: 100vh; /* Full viewport height */
+    z-index: 0; /* Changed from -1 to 0 so elements inside can receive clicks */
     overflow: hidden; /* Hide parts of images that might overflow */
+    background-color: #000; /* Black background */
 }
 
 .slideshow-image {
@@ -248,15 +289,58 @@ section {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%; /* Make image fill the container height */
-    object-fit: contain; /* Fit entire image within container, maintain aspect ratio, may show background */
+    height: 100%;
+    object-fit: cover; /* Set to cover to fill the entire background */
     opacity: 0; /* Hide by default */
-    transition: opacity 1s ease-in-out; /* Add fade transition */
+    transition: opacity 1.5s ease-in-out; /* Smooth fade transition */
+    display: none; /* Hide by default */
+    background-color: #000; /* Black background */
 }
 
 /* Add rule for the active image */
 .slideshow-image.active {
     opacity: 1; /* Show the active image */
+    display: block; /* Make the active image visible */
+}
+
+/* Slide navigation arrows */
+.slide-arrow {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1010; /* Higher z-index to ensure clickability */
+    border-radius: 50%;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    pointer-events: auto; /* Ensure click events work */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add shadow for visibility */
+}
+
+.slide-arrow:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+    transform: translateY(-50%) scale(1.1);
+    color: #fff;
+}
+
+.slide-arrow.prev {
+    left: 20px;
+}
+
+.slide-arrow.next {
+    right: 20px;
+}
+
+/* Make sure the icons inside the arrows are clickable too */
+.slide-arrow i {
+    pointer-events: none; /* This ensures clicks pass through to the parent */
 }
 
 /* REMOVE Staggered animation delays */
@@ -287,29 +371,49 @@ section {
 
 /* Portfolio Section */
 .portfolio-categories {
-    text-align: center; /* Keep text alignment for potential fallback/internal text */
-    display: flex; /* Use Flexbox */
-    flex-wrap: wrap; /* Allow buttons to wrap to the next line */
-    justify-content: center; /* Center buttons horizontally */
-    gap: 0.5rem; /* Add spacing between buttons */
-    margin-bottom: 2rem;
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.8rem;
+    margin: 1rem 0 3rem 0;
+    padding: 1rem;
+    position: relative;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .category-button {
-    background-color: #222222;
+    background-color: rgba(34, 34, 34, 0.8);
     border: 1px solid #555555;
-    color: #ffffff; /* Changed to white */
-    padding: 0.5rem 1rem;
+    color: #ffffff; /* White text */
+    padding: 0.8rem 1.2rem;
     font-family: 'VT323', monospace;
-    font-size: 1rem;
-    margin: 0 0.5rem;
+    font-size: 1.1rem;
+    margin: 0 0.5rem 0.5rem 0.5rem;
     cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    transition: all 0.3s ease;
     border-radius: 4px;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 10;
 }
 
-.category-button:hover, .category-button.active {
-    color: #ffffff; /* Keep text white */
+.category-button:hover {
+    background-color: rgba(60, 60, 60, 0.9);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.category-button.active {
+    background-color: rgba(80, 80, 80, 0.9);
+    color: #ffffff;
+    border-color: #ffffff;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
 .portfolio-section h3 {
@@ -317,58 +421,80 @@ section {
     margin-bottom: 1rem;
 }
 
+/* Masonry-style image grid */
 .image-grid {
-    display: grid;
-    /* Explicitly set to 2 columns */
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
+    /* Base styles for all grids */
+    width: 100%;
     margin-bottom: 3rem;
+    position: relative;
+    z-index: 1; /* Above the background slideshow */
 }
 
 /* Hide category grids by default (JS will show the active one) */
 #portfolio-display .image-grid {
     display: none;
+    position: relative; /* Ensure proper stacking context */
+    z-index: 1; /* Above the background slideshow */
 }
 
 /* Specific grid display rules (handled by JS adding .active) */
 #portfolio-display .live-music-grid.active,
-#portfolio-display .videography-grid.active, /* Updated */
-#portfolio-display .art-grid.active, /* New */
-#portfolio-display .typography-grid.active, /* New */
+#portfolio-display .videography-grid.active,
+#portfolio-display .art-grid.active,
+#portfolio-display .typography-grid.active,
 #portfolio-display .glitch-art-grid.active,
 #portfolio-display .liquid-lights-grid.active {
-    display: grid; 
+    display: block; /* Changed to block for Masonry */
 }
 
+/* Grid items for masonry layout */
+.image-grid .grid-item {
+    width: calc(33.333% - 10px); /* Three columns by default */
+    margin-bottom: 10px;
+    break-inside: avoid;
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+}
+
+/* Actual images inside grid items */
 .image-grid img {
     width: 100%;
-    /* height: 300px; Fixed height for grid items */
-    /* object-fit: cover; */
-    border: 2px solid #555555; /* Use mid-gray border consistent with inputs */
-    /* Initial state for reveal animation */
-    clip-path: inset(0 100% 0 0); /* Start hidden (wipes in from the right) */
-    /* Add filter, clip-path, and opacity to transitions */
-    transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease, clip-path 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease-in-out;
-    /* Inherit fade-in class for observer */
-    opacity: 1; /* Override initial fade-in opacity 0, handled by clip-path now */
+    height: auto;
+    display: block;
+    border-radius: 4px;
+    transition: all 0.4s ease;
+    opacity: 1;
+    position: relative;
+    z-index: 1;
+    /* Remove clip-path animation for smoother masonry layout */
 }
 
-/* Dim other images when hovering the grid */
-.image-grid:hover img {
-    opacity: 0.5; /* Dim images when grid is hovered */
-}
-
-/* Style applied by Intersection Observer when element is visible */
-.image-grid img.fade-in.visible {
-    clip-path: inset(0 0 0 0); /* Reveal the image */
-    opacity: 1; /* Ensure it's fully visible after animation */
-}
-
-.image-grid img:hover {
+/* Hover effects */
+.image-grid .grid-item:hover img {
     transform: scale(1.03);
-    box-shadow: 0 0 15px #ff00ff; /* Changed accent color glow to bright pink */
-    filter: brightness(1.1) contrast(1.05); /* Subtle enhancement on hover */
-    opacity: 1; /* Ensure the hovered image is fully opaque */
+    filter: brightness(1.1) contrast(1.05);
+    box-shadow: 0 0 15px rgba(255, 0, 255, 0.5);
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .image-grid .grid-item {
+        width: calc(50% - 10px); /* Two columns */
+    }
+}
+
+@media (max-width: 768px) {
+    .image-grid .grid-item {
+        width: calc(50% - 8px); /* Two columns with smaller gap */
+        margin-bottom: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .image-grid .grid-item {
+        width: 100%; /* Single column */
+    }
 }
 
 /* About Section */
@@ -554,7 +680,6 @@ footer {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1001; /* Sit on top (higher than header) */
-    padding-top: 100px; /* Location of the box */
     left: 0;
     top: 0;
     width: 100%; /* Full width */
@@ -563,16 +688,20 @@ footer {
     background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
     opacity: 0;
     transition: opacity 0.5s ease-in-out; /* Fade transition */
+    /* Add flexbox for centering */
+    display: none; /* Start hidden, but use flex when visible */
+    justify-content: center;
+    align-items: center;
 }
 
 .modal.visible {
-    display: block; /* Make visible */
+    display: flex; /* Make visible as flex container */
     opacity: 1;
 }
 
 /* Modal Content (Image) */
 .modal-content {
-    margin: auto;
+    margin: 0; /* Remove auto margin as flex handles centering */
     display: block;
     max-width: 80%;
     max-height: 80vh;
@@ -581,6 +710,8 @@ footer {
     animation-duration: 0.6s;
     /* Add transition for fade effect */
     transition: opacity 0.3s ease-in-out;
+    /* Additional padding to account for caption and close button */
+    padding: 20px 0;
 }
 
 /* Add Animation */
@@ -609,14 +740,16 @@ footer {
 
 /* Optional Caption */
 #caption {
-    margin: auto;
-    display: block;
     width: 80%;
     max-width: 700px;
     text-align: center;
     color: #ccc;
     padding: 10px 0;
-    height: 50px; /* Give it some space */
+    margin-top: 10px;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 /* Responsive adjustments for smaller screens */

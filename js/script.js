@@ -171,20 +171,68 @@ document.addEventListener('DOMContentLoaded', () => {
         const shuffledPaths = [...uniqueImagePaths]; // Clone unique paths before shuffling
         shuffleArray(shuffledPaths);
 
-        // Create and append images
+        // Create and append images with grid items for masonry layout
         const imageElements = [];
         shuffledPaths.forEach(imgPath => {
+            // Create a grid item wrapper for each image
+            const gridItem = document.createElement('div');
+            gridItem.className = 'grid-item';
+            
+            // Create and configure the image
             const img = document.createElement('img');
             img.src = imgPath;
             img.alt = `${category.replace('-', ' ')} photo`; // Dynamic alt text
             img.classList.add('fade-in'); // Add class for scroll animation
-            gridElement.appendChild(img);
+            
+            // Create a preloader to prevent reflow during masonry initialization
+            const imgLoader = new Image();
+            imgLoader.onload = function() {
+                // Once image is loaded, set proper dimensions
+                // For varied layouts, we can randomly adjust sizes for some images
+                if (Math.random() > 0.7) { // 30% of images will get special treatment
+                    if (imgLoader.width > imgLoader.height) {
+                        // Landscape image - can span 2 columns occasionally
+                        if (Math.random() > 0.5) {
+                            gridItem.style.width = 'calc(66.666% - 10px)'; // Two column width with gap
+                        }
+                    } else if (imgLoader.height > imgLoader.width * 1.5) {
+                        // Very tall portrait image - might need special handling
+                        img.style.maxHeight = '500px'; // Limit very tall images
+                    }
+                }
+            };
+            imgLoader.src = imgPath;
+            
+            // Add the image to the grid item
+            gridItem.appendChild(img);
+            
+            // Add the grid item to the grid
+            gridElement.appendChild(gridItem);
             imageElements.push(img);
         });
 
-        // Observe newly added images for fade-in animation
-        observeFadeInElements(); // NOW scrollObserver IS DEFINED
+        // Initialize Masonry layout once all images are added
+        const msnry = new Masonry(gridElement, {
+            itemSelector: '.grid-item',
+            columnWidth: '.grid-item',
+            percentPosition: true,
+            gutter: 10, // Space between items
+            horizontalOrder: false, // For a more varied layout
+            transitionDuration: '0.4s' // Smooth transitions when filtering
+        });
 
+        // Use imagesLoaded to recalculate layout after all images have loaded
+        imagesLoaded(gridElement).on('progress', function() {
+            // Layout Masonry after each image loads
+            msnry.layout();
+        });
+
+        // Observe newly added images for fade-in animation
+        observeFadeInElements();
+
+        // Store masonry instance for future reference
+        gridElement.msnry = msnry;
+        
         // Mark grid as loaded
         gridElement.dataset.loaded = true;
     }
@@ -452,39 +500,72 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Slideshow Logic (Homepage) --- //
     if (slideshowContainer) {
+        console.log('Initializing slideshow');
         const images = slideshowContainer.querySelectorAll('.slideshow-image');
-        const targetImageSrc = 'images/portfolio/portfolio_001.jpeg'; // The image to start with
-        let initialImageIndex = 0; // Default to the first image
+        let currentImageIndex = 0; // Start with the first image
+        let slideInterval = 7000; // Time each image is displayed (increased to 7 seconds)
+        let slideTimer; // Variable to store the interval timer
+        let isTransitioning = false; // Flag to prevent transition issues
+        
+        console.log('Found ' + images.length + ' slideshow images');
 
-        // Find the index of the target image
-        for (let i = 0; i < images.length; i++) {
-            // Use getAttribute to compare against the relative path in HTML
-            if (images[i].getAttribute('src') === targetImageSrc) {
-                initialImageIndex = i;
-                break;
-            }
+        // Function to show a specific image
+        function showImage(index) {
+            if (isTransitioning) return; // Prevent rapid transitions
+            isTransitioning = true;
+            
+            // Remove active class from all images
+            images.forEach(img => img.classList.remove('active'));
+            
+            // Add active class to the target image
+            images[index].classList.add('active');
+            console.log('Showing image index:', index);
+            
+            // Reset transition lock after transition completes
+            setTimeout(() => {
+                isTransitioning = false;
+            }, 1500); // Match this to your CSS transition time
         }
 
-        let currentImageIndex = initialImageIndex; // Start the index here
-        const slideInterval = 3000; // Time each image is displayed (in milliseconds)
-
+        // Function to show the next image
         function showNextImage() {
-            if (images.length > 0) {
-                 // Remove active class from current image
-                images[currentImageIndex].classList.remove('active');
-
-                // Increment index, looping back to 0 if necessary
-                currentImageIndex = (currentImageIndex + 1) % images.length;
-
-                // Add active class to the new current image
-                images[currentImageIndex].classList.add('active');
-            }
+            currentImageIndex = (currentImageIndex + 1) % images.length;
+            showImage(currentImageIndex);
         }
+
+        // Function to show the previous image
+        function showPrevImage() {
+            currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+            showImage(currentImageIndex);
+        }
+
+        // No navigation buttons - slideshow runs automatically
+
+        // Add keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                clearInterval(slideTimer);
+                showPrevImage();
+                slideTimer = setInterval(showNextImage, slideInterval);
+            } else if (e.key === 'ArrowRight') {
+                clearInterval(slideTimer);
+                showNextImage();
+                slideTimer = setInterval(showNextImage, slideInterval);
+            }
+        });
 
         // Initialize the slideshow
         if (images.length > 0) {
-            images[currentImageIndex].classList.add('active'); // Show the target image immediately
-            setInterval(showNextImage, slideInterval);
+            console.log('Initializing slideshow with ' + images.length + ' images');
+            
+            // Show the first image immediately without any delay
+            showImage(currentImageIndex);
+            console.log('First image set to active: ' + images[currentImageIndex].src);
+            
+            // Start the automatic slideshow
+            slideTimer = setInterval(showNextImage, slideInterval);
+        } else {
+            console.log('No slideshow images found');
         }
     }
 });
