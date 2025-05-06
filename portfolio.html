@@ -10,15 +10,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="portfolio-page">
     <div id="peace-background"></div> <!-- Container for floating peace signs -->
-    <header>
-        <!-- Mobile menu button (hamburger) -->
-        <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
+    <!-- Skip to content link for accessibility -->
+    <a href="#portfolio-container" class="skip-to-content">Skip to content</a>
+    
+    <!-- Mobile menu button moved outside header to prevent overlay issues -->
+    <button class="mobile-menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    
+    <header role="banner">
         
         <!-- Desktop navigation -->
         <nav class="desktop-nav left-nav">
@@ -40,8 +44,8 @@
             </ul>
         </nav>
         
-        <!-- Mobile navigation overlay -->
-        <div class="mobile-nav-overlay">
+        <!-- Mobile navigation overlay with proper ID for accessibility -->
+        <div class="mobile-nav-overlay" id="mobile-nav">
             <nav class="mobile-nav">
                 <ul>
                     <li><a href="index.html">HOME</a></li>

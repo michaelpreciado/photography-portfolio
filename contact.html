@@ -10,18 +10,21 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-    <div id="peace-background"></div> <!-- Container for floating peace signs -->
-    <header>
-        <!-- Mobile menu button (hamburger) -->
-        <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-        
-        <!-- Desktop navigation -->
-        <nav class="desktop-nav left-nav">
+<body class="contact-page">
+    <!-- Skip to content link for accessibility -->
+    <a href="#contact" class="skip-to-content">Skip to content</a>
+    
+    <!-- Mobile menu button moved outside header to prevent overlay issues -->
+    <button class="mobile-menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    
+    <div id="peace-background" aria-hidden="true"></div> <!-- Container for floating peace signs -->
+    <header role="banner">
+        <!-- Desktop navigation with improved semantics -->
+        <nav class="desktop-nav left-nav" aria-label="Main navigation">
             <ul>
                 <li><a href="index.html">HOME</a></li>
                 <li><a href="portfolio.html">PORTFOLIO</a></li>
@@ -33,21 +36,21 @@
             <div class="header-title">MARIO PRECIADO</div>
         </div>
         
-        <nav class="desktop-nav right-nav">
+        <nav class="desktop-nav right-nav" aria-label="Secondary navigation">
             <ul>
                 <li><a href="about.html">ABOUT</a></li>
-                <li><a href="contact.html" class="active">CONTACT</a></li>
+                <li><a href="contact.html" class="active" aria-current="page">CONTACT</a></li>
             </ul>
         </nav>
         
-        <!-- Mobile navigation overlay -->
-        <div class="mobile-nav-overlay">
-            <nav class="mobile-nav">
+        <!-- Mobile navigation overlay with improved accessibility -->
+        <div class="mobile-nav-overlay" id="mobile-nav" aria-hidden="true">
+            <nav class="mobile-nav" aria-label="Mobile navigation">
                 <ul>
                     <li><a href="index.html">HOME</a></li>
                     <li><a href="portfolio.html">PORTFOLIO</a></li>
                     <li><a href="about.html">ABOUT</a></li>
-                    <li><a href="contact.html" class="active">CONTACT</a></li>
+                    <li><a href="contact.html" class="active" aria-current="page">CONTACT</a></li>
                 </ul>
             </nav>
         </div>

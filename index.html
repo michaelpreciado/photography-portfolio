@@ -25,14 +25,15 @@
     <!-- Skip to content link for accessibility -->
     <a href="#home" class="skip-to-content">Skip to content</a>
     
+    <!-- Mobile menu button moved outside header to prevent overlay issues -->
+    <button class="mobile-menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    
     <div id="peace-background" aria-hidden="true"></div> <!-- Container for floating peace signs -->
     <header role="banner">
-        <!-- Mobile menu button (hamburger) with improved accessibility -->
-        <button class="mobile-menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-nav">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
         
         <!-- Desktop navigation with improved semantics -->
         <nav class="desktop-nav left-nav" aria-label="Main navigation">

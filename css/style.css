@@ -288,24 +288,36 @@ header nav ul li a.active {
 /* Mobile Menu Toggle Button (Hamburger) */
 .mobile-menu-toggle {
     display: none; /* Hidden by default on desktop */
-    background: transparent;
+    background: rgba(0, 0, 0, 0.5);
     border: none;
-    width: 40px;
-    height: 40px;
+    width: 50px; /* Larger touch target */
+    height: 50px; /* Larger touch target */
     cursor: pointer;
-    padding: 10px;
-    position: relative;
-    z-index: 2000; /* Above the overlay */
+    padding: 14px; /* Increased padding */
+    position: fixed; /* Fixed position so it stays at the top */
+    top: 15px; /* Position at the top of the screen */
+    left: 15px; /* Position at the left of the screen */
+    z-index: 9999; /* Above everything else */
     transition: transform var(--transition-speed);
+    /* Improve iOS tap target */
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0.3);
+    /* Add subtle border for visibility */
+    border-radius: 8px;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 0 10px rgba(0, 0, 0, 0.5);
+    /* Ensure there's no touch delay on iOS */
+    touch-action: manipulation;
 }
 
 .mobile-menu-toggle span {
     display: block;
     width: 100%;
-    height: 2px;
+    height: 3px; /* Thicker lines for better visibility */
     background-color: var(--text-color);
-    margin: 6px 0;
+    margin: 7px 0; /* More spacing between lines */
     transition: transform 0.3s ease, opacity 0.3s ease;
+    /* Add glow effect for better visibility */
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+    border-radius: 1px;
 }
 
 /* Hamburger menu animation */
@@ -494,12 +506,68 @@ header nav ul li a.active {
     /* Show hamburger menu on mobile and optimize positioning */
     .mobile-menu-toggle {
         display: block;
-        position: absolute;
-        left: 15px;
-        top: 50%;
-        transform: translateY(-50%);
+        position: fixed !important; /* Keep it fixed at the viewport */
+        left: 15px !important;
+        top: 85px !important; /* Move down below header text */
+        transform: none !important; /* Remove vertical centering */
         padding: 10px;
-        z-index: 1010;
+        z-index: 99999 !important; /* Ensure it's above everything */
+        /* More compact but still tappable size */
+        width: 45px;
+        height: 45px;
+        /* Make tap area extend beyond visible button */
+        margin: -5px;
+        /* Ensure better visibility against background */
+        background: rgba(0, 0, 0, 0.7);
+        /* Fix pointer events to ensure taps register */
+        pointer-events: auto !important;
+        /* Add subtle border for visibility */
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    /* Portfolio page specific fix to ensure menu button is tappable */
+    .portfolio-page .mobile-menu-toggle {
+        position: fixed !important; /* Use fixed position on portfolio page */
+        top: 15px !important; /* Position from top of viewport */
+        left: 15px !important; /* Ensure consistent left position */
+        transform: none !important; /* Remove vertical centering */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add shadow for better visibility */
+        /* Force the button to be in front of everything */
+        z-index: 99999 !important;
+        /* Create a larger hit area for iOS */
+        width: 70px !important;
+        height: 70px !important;
+        padding: 20px !important;
+    }
+    
+    /* iOS-specific fixes using CSS feature detection */
+    @supports (-webkit-touch-callout: none) {
+        /* iOS-specific selector */
+        .portfolio-page .mobile-menu-toggle {
+            /* Even more aggressive fixes for iOS */
+            cursor: pointer;
+            -webkit-tap-highlight-color: rgba(255, 255, 255, 0.5);
+            /* Make entire area clickable */
+            padding: 25px !important;
+            /* Ensure iOS registers touch events */
+            touch-action: manipulation;
+            /* iOS Safari specific tweaks */
+            -webkit-user-select: none;
+            user-select: none;
+            /* Even more visible contrast */
+            background: rgba(0, 0, 0, 0.9) !important;
+        }
+        
+        /* Handle potential Safari conflicts */
+        .portfolio-page * {
+            pointer-events: auto;
+        }
+        
+        /* Target the problematic elements that might overlay the button */
+        .portfolio-page #peace-background,
+        .portfolio-page header > *:not(.mobile-menu-toggle) {
+            pointer-events: none;
+        }
     }
     
     /* Optimize header for mobile */
