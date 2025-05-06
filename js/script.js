@@ -1,8 +1,88 @@
+// Fix for 100vh in iOS mobile Safari
+function setVHVariable() {
+    // First, get viewport height and multiply by 1% to get a value for 1vh unit
+    let vh = window.innerHeight * 0.01;
+    // Then set the value in the --vh custom property to the root of the document
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
+
+// Set the --vh variable initially
+setVHVariable();
+
+// Update the --vh variable on resize
+window.addEventListener('resize', () => {
+    // Avoid excessive updates during resize by debouncing
+    clearTimeout(window.resizeTimeout);
+    window.resizeTimeout = setTimeout(setVHVariable, 200);
+});
+
+// Update on orientation change for iOS
+window.addEventListener('orientationchange', setVHVariable);
+
 document.addEventListener('DOMContentLoaded', () => {
     const backToTopButton = document.getElementById('back-to-top');
     const portfolioDisplay = document.getElementById('portfolio-display'); // Get the portfolio display area
     const categoryButtonsContainer = document.querySelector('.portfolio-categories'); // Get category buttons container
     const slideshowContainer = document.querySelector('.slideshow-container'); // Get slideshow container for homepage
+    
+    // Mobile menu elements
+    const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+    const body = document.body;
+    const mobileNavLinks = document.querySelectorAll('.mobile-nav a');
+    
+    // Mobile menu toggle functionality
+    if (mobileMenuToggle) {
+        mobileMenuToggle.addEventListener('click', () => {
+            body.classList.toggle('mobile-menu-active');
+            if (body.classList.contains('mobile-menu-active')) {
+                // Prevent scrolling when menu is open
+                body.style.overflow = 'hidden';
+                // Ensure iOS devices handle this properly
+                if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+                    body.style.position = 'fixed';
+                    body.style.width = '100%';
+                }
+            } else {
+                // Allow scrolling when menu is closed
+                body.style.overflow = '';
+                if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+                    body.style.position = '';
+                    body.style.width = '';
+                }
+            }
+        });
+        
+        // Close menu when a link is clicked
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                body.classList.remove('mobile-menu-active');
+                body.style.overflow = '';
+                if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+                    body.style.position = '';
+                    body.style.width = '';
+                }
+            });
+        });
+    }
+    
+    // Header transparency effect on scroll
+    const header = document.querySelector('header');
+    if (header) {
+        let lastScrollTop = 0;
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollTop > 50) {
+                // Make header more opaque when scrolled down
+                header.style.backgroundColor = 'rgba(0, 0, 0, 0.95)';
+            } else {
+                // Make header more transparent at the top
+                header.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+            }
+            
+            lastScrollTop = scrollTop;
+        });
+    }
 
     // --- Modal Elements --- //
     const modal = document.getElementById('imageModal');

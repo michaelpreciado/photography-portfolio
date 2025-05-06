@@ -1,11 +1,31 @@
 /* Basic Reset & Global Styles */
+:root {
+    /* Define CSS variables for consistent values throughout the site */
+    --header-height: 70px;
+    --text-color: #ffffff;
+    --bg-color: #000000;
+    --accent-color: #ffffff;
+    --transition-speed: 0.3s;
+    --glow-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+/* Apply smooth scrolling to everything except iOS devices with special needs */
+@media screen and (prefers-reduced-motion: no-preference) {
+    html {
+        scroll-behavior: smooth;
+    }
+}
+
 body, html {
     margin: 0;
     padding: 0;
-    font-family: 'VT323', monospace; /* Changed to VT323 */
-    background-color: #000000; /* Black background */
-    color: #ffffff; /* Changed to white */
-    scroll-behavior: smooth;
+    font-family: 'VT323', monospace, -apple-system, BlinkMacSystemFont, sans-serif; /* Added system fonts as fallbacks */
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    -webkit-tap-highlight-color: transparent; /* Remove tap highlight on iOS */
 }
 
 /* Subtle Background Animation */
@@ -71,14 +91,20 @@ header {
     top: 0;
     left: 0;
     width: 100%;
+    height: var(--header-height);
     box-sizing: border-box; /* Include padding in width */
     z-index: 1000;
+    transition: background-color 0.4s ease, backdrop-filter 0.4s ease;
 
-    /* Solid background for better visibility */
-    background-color: rgba(0, 0, 0, 0.9); /* More opaque background */
-    backdrop-filter: blur(5px); /* Subtle blur */
-    -webkit-backdrop-filter: blur(5px); /* Safari prefix */
+    /* Solid background for better visibility with improved transition */
+    background-color: rgba(0, 0, 0, 0.8); /* Slightly more transparent by default */
+    backdrop-filter: blur(8px); /* Enhanced blur */
+    -webkit-backdrop-filter: blur(8px); /* Safari prefix */
     border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+    
+    /* Hardware acceleration for smoother scrolling */
+    transform: translateZ(0);
+    will-change: background-color, backdrop-filter;
 }
 
 /* Style individual navs if needed, e.g., ensure flex display */
@@ -142,63 +168,170 @@ header nav ul li a.active {
     /* margin-right: 1rem; Removed margin */
 }
 
+/* Mobile Menu Toggle Button (Hamburger) */
+.mobile-menu-toggle {
+    display: none; /* Hidden by default on desktop */
+    background: transparent;
+    border: none;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    padding: 10px;
+    position: relative;
+    z-index: 2000; /* Above the overlay */
+    transition: transform var(--transition-speed);
+}
+
+.mobile-menu-toggle span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: var(--text-color);
+    margin: 6px 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Hamburger menu animation */
+.mobile-menu-active .mobile-menu-toggle span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+.mobile-menu-active .mobile-menu-toggle span:nth-child(2) {
+    opacity: 0;
+}
+
+.mobile-menu-active .mobile-menu-toggle span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+/* Mobile Navigation Overlay */
+.mobile-nav-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.96);
+    z-index: 1500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+    /* iOS height fixes */
+    height: calc(var(--vh, 1vh) * 100);
+    max-height: -webkit-fill-available;
+    overflow-y: auto; /* Allow scrolling if needed */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+.mobile-menu-active .mobile-nav-overlay {
+    opacity: 1;
+    visibility: visible;
+}
+
+.mobile-nav {
+    text-align: center;
+    width: 100%;
+    padding: 2rem;
+}
+
+.mobile-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.mobile-nav ul li {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    transition-delay: 0.1s;
+    margin: 1.5rem 0;
+}
+
+/* Individual delays for menu items */
+.mobile-menu-active .mobile-nav ul li:nth-child(1) {
+    transition-delay: 0.1s;
+}
+.mobile-menu-active .mobile-nav ul li:nth-child(2) {
+    transition-delay: 0.2s;
+}
+.mobile-menu-active .mobile-nav ul li:nth-child(3) {
+    transition-delay: 0.3s;
+}
+.mobile-menu-active .mobile-nav ul li:nth-child(4) {
+    transition-delay: 0.4s;
+}
+
+.mobile-menu-active .mobile-nav ul li {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.mobile-nav ul li a {
+    font-size: 2rem;
+    color: var(--text-color);
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: bold;
+    padding: 0.5rem 0;
+    display: inline-block;
+    position: relative;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.mobile-nav ul li a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 50%;
+    background-color: var(--accent-color);
+    transition: width 0.3s ease, left 0.3s ease;
+}
+
+.mobile-nav ul li a:hover,
+.mobile-nav ul li a.active {
+    color: var(--accent-color);
+    transform: scale(1.05);
+    text-shadow: var(--glow-shadow);
+}
+
+.mobile-nav ul li a:hover::after,
+.mobile-nav ul li a.active::after {
+    width: 100%;
+    left: 0;
+}
+
 /* Media query for smaller screens */
-@media (max-width: 768px) { /* Increased breakpoint for better stacking */
+@media (max-width: 768px) {
     header {
         padding: 0.5rem 1rem; /* Adjusted padding for smaller screens */
-        /* flex-direction: column; Removed stacking */
-        /* align-items: center; Removed stacking */
-        /* gap: 0.5rem; Removed stacking gap */
     }
-
-    /* Adjust spacing for horizontal layout on small screens */
-    header nav.left-nav ul li {
-        margin-right: 0.5rem; /* Increase space between left items on small screens */
+    
+    /* Hide desktop navigation on mobile */
+    .desktop-nav {
+        display: none;
     }
-    header nav.right-nav ul li {
-        margin-left: 0.5rem; /* Increase space between right items on small screens */
+    
+    /* Show hamburger menu on mobile */
+    .mobile-menu-toggle {
+        display: block;
     }
-
-    /* Reduce nav link font size */
-    header nav ul li a {
-        font-size: 1.2rem; /* Adjusted smaller screen font size again */
-    }
-
-    /* Removed empty ruleset */
-
+    
     .header-title {
         font-size: 1.1rem; /* Slightly smaller title */
     }
-
+    
     .header-decoration-image {
         height: 25px; /* Make image smaller */
     }
-
-    /* Remove rules specific to stacked layout */
-    /* header nav ul {
-        justify-content: center;
-        width: 100%;
-        gap: 1rem;
-    } */
-    /* header nav.left-nav ul li {
-        margin-right: 0;
-    } */
-    /* header nav.right-nav ul li {
-        margin-left: 0;
-    } */
-
-    /* Keep old centering logic removal */
-    /* header nav ul li {
-        margin-right: 1rem;
-        margin-left: 1rem;
-    } */
-    /* header nav ul li:first-child {
-        margin-left: 0;
-    } */
-    /* header nav ul li:last-child {
-        margin-right: 0;
-    } */
 }
+
+/* End of mobile media query styles */
 
 /* Additional media query for very small screens (e.g., mobile portrait) */
 @media (max-width: 600px) {
@@ -273,15 +406,19 @@ section {
 
 /* Home Section */
 /* Full-screen background carousel */
+/* iOS-friendly full viewport container */
 .slideshow-container {
     position: fixed; /* Fixed position to cover entire viewport */
     top: 0;
     left: 0;
     width: 100%;
     height: 100vh; /* Full viewport height */
+    height: calc(var(--vh, 1vh) * 100); /* Custom vh calculation for iOS - will be set by JS */
+    max-height: -webkit-fill-available; /* iOS Safari workaround */
     z-index: 0; /* Changed from -1 to 0 so elements inside can receive clicks */
     overflow: hidden; /* Hide parts of images that might overflow */
-    background-color: #000; /* Black background */
+    background-color: var(--bg-color);
+    will-change: transform; /* GPU acceleration hint */
 }
 
 .slideshow-image {
@@ -292,9 +429,13 @@ section {
     height: 100%;
     object-fit: cover; /* Set to cover to fill the entire background */
     opacity: 0; /* Hide by default */
-    transition: opacity 1.5s ease-in-out; /* Smooth fade transition */
+    transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1); /* Improved transition curve */
     display: none; /* Hide by default */
-    background-color: #000; /* Black background */
+    background-color: var(--bg-color); 
+    transform: translateZ(0); /* Hardware acceleration */
+    will-change: opacity; /* Hint for browser optimization */
+    backface-visibility: hidden; /* Prevent flickering on some browsers */
+    -webkit-backface-visibility: hidden;
 }
 
 /* Add rule for the active image */

@@ -13,23 +13,44 @@
 <body>
     <div id="peace-background"></div> <!-- Container for floating peace signs -->
     <header>
-        <!-- Split nav and centered logo/title -->
-        <nav class="left-nav">
+        <!-- Mobile menu button (hamburger) -->
+        <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        
+        <!-- Desktop navigation -->
+        <nav class="desktop-nav left-nav">
             <ul>
-                <li><a href="index.html">HOME</a></li>
+                <li><a href="index.html" class="active">HOME</a></li>
                 <li><a href="portfolio.html">PORTFOLIO</a></li>
             </ul>
         </nav>
+        
         <div class="header-logo-title">
             <img src="images/portfolio/header.jpeg" alt="Header Image" class="header-decoration-image">
             <div class="header-title">MARIO PRECIADO</div>
         </div>
-        <nav class="right-nav">
+        
+        <nav class="desktop-nav right-nav">
             <ul>
                 <li><a href="about.html">ABOUT</a></li>
                 <li><a href="contact.html">CONTACT</a></li>
             </ul>
         </nav>
+        
+        <!-- Mobile navigation overlay -->
+        <div class="mobile-nav-overlay">
+            <nav class="mobile-nav">
+                <ul>
+                    <li><a href="index.html" class="active">HOME</a></li>
+                    <li><a href="portfolio.html">PORTFOLIO</a></li>
+                    <li><a href="about.html">ABOUT</a></li>
+                    <li><a href="contact.html">CONTACT</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
     <main>
