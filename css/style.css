@@ -27,7 +27,6 @@ body, html {
     text-rendering: optimizeLegibility;
     -webkit-tap-highlight-color: transparent; /* Remove tap highlight on iOS */
     height: 100%; /* Ensure full height */
-    overflow: hidden; /* Prevent scrolling */
 }
 
 /* Special styling for the home page only */
@@ -36,6 +35,13 @@ body.home-page {
     height: 100vh; /* Full viewport height */
     width: 100vw; /* Full viewport width */
     position: fixed; /* Fix the body in place */
+}
+
+/* Enable scrolling on all other pages */
+body:not(.home-page) {
+    overflow-y: auto; /* Allow vertical scrolling */
+    height: auto; /* Auto height */
+    position: relative; /* Normal positioning */
 }
 
 /* Subtle Background Animation */
