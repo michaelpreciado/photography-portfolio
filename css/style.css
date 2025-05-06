@@ -84,9 +84,9 @@ h2, h3 {
 /* Header - Floating on top of carousel */
 header {
     display: flex;
-    justify-content: space-between; /* Key for centering middle element */
+    justify-content: space-between; /* Revert to space-between for proper nav spacing */
     align-items: center;
-    padding: 1rem 6rem; /* Increased horizontal padding */
+    padding: 1rem 2rem; /* Reduced horizontal padding */
     position: fixed; /* Sticky header */
     top: 0;
     left: 0;
@@ -114,21 +114,31 @@ header nav ul {
 
 /* Adjust list item margins */
 header nav.left-nav ul li {
-    margin-right: 2rem; /* Increase space between left items */
+    margin-right: 1.5rem; /* Reduced but still clear spacing */
+    padding-right: 0.5rem; /* Additional padding */
 }
 header nav.right-nav ul li {
-    margin-left: 2rem; /* Increase space between right items */
+    margin-left: 1.5rem; /* Reduced but still clear spacing */
+    padding-left: 0.5rem; /* Additional padding */
+}
+
+/* Add spacing between all menu items */
+header nav ul li {
+    margin: 0 0.5rem; /* Horizontal margins on all menu items */
+    position: relative; /* For potential separators */
 }
 
 header nav ul li a {
     transition: color 0.3s ease, border-bottom 0.3s ease;
     align-items: center; /* Center items horizontally */
-    font-size: 1.6rem; /* Increase font size again */
+    font-size: 1.2rem; /* Reduced font size for better fit */
     color: #ffffff; /* White text */
     font-weight: bold; /* Bold text */
     text-transform: uppercase; /* Uppercase text */
-    padding-bottom: 5px; /* Space for underline */
+    padding: 0 10px 5px 10px; /* Added horizontal padding to create space between items */
     border-bottom: 2px solid transparent; /* Transparent border for hover effect */
+    margin: 0 5px; /* Added margin to separate menu items */
+    letter-spacing: 0.5px; /* Add letter spacing for better readability */
 }
 
 header nav ul li a:hover {
@@ -145,6 +155,10 @@ header nav ul li a.active {
     display: flex;
     flex-direction: column; /* Stack image and title vertically */
     align-items: center; /* Center items horizontally */
+    position: absolute; /* Position in the center regardless of other elements */
+    left: 50%;
+    transform: translateX(-50%); /* Perfect centering */
+    z-index: 10; /* Ensure it's above other elements */
 }
 
 .header-title {
@@ -204,6 +218,16 @@ header nav ul li a.active {
     transform: translateY(-8px) rotate(-45deg);
 }
 
+/* Adjust position of mobile menu toggle when active */
+.mobile-menu-active .mobile-menu-toggle {
+    position: fixed;
+    top: 70px; /* Moved down from 20px to 70px to avoid overlapping with navigation */
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 50%;
+    padding: 12px;
+}
+
 /* Mobile Navigation Overlay */
 .mobile-nav-overlay {
     position: fixed;
@@ -248,7 +272,8 @@ header nav ul li a.active {
     transform: translateY(10px);
     transition: opacity 0.4s ease, transform 0.4s ease;
     transition-delay: 0.1s;
-    margin: 1.5rem 0;
+    margin: 2.5rem 0; /* Increased vertical spacing between items */
+    padding: 0.5rem 0; /* Additional padding */
 }
 
 /* Individual delays for menu items */
@@ -271,15 +296,17 @@ header nav ul li a.active {
 }
 
 .mobile-nav ul li a {
-    font-size: 2rem;
+    font-size: 1.5rem; /* Reduced font size */
     color: var(--text-color);
     text-decoration: none;
     text-transform: uppercase;
     font-weight: bold;
-    padding: 0.5rem 0;
+    padding: 0.5rem 1rem; /* Added horizontal padding */
+    margin: 0.25rem 0; /* Added vertical margin */
     display: inline-block;
     position: relative;
     transition: transform 0.3s ease, color 0.3s ease;
+    letter-spacing: 4px; /* Added letter spacing to separate letters */
 }
 
 .mobile-nav ul li a::after {
@@ -312,14 +339,20 @@ header nav ul li a.active {
         padding: 0.5rem 1rem; /* Adjusted padding for smaller screens */
     }
     
-    /* Hide desktop navigation on mobile */
-    .desktop-nav {
-        display: none;
+    /* Adjust desktop navigation for smaller screens - maintain visibility in medium screens */
+    .desktop-nav ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
     }
     
-    /* Show hamburger menu on mobile */
-    .mobile-menu-toggle {
-        display: block;
+    .desktop-nav ul li {
+        margin: 0 0.5rem;
+    }
+    
+    .desktop-nav ul li a {
+        font-size: 1rem;
+        padding: 0.2rem 0;
     }
     
     .header-title {
@@ -328,6 +361,19 @@ header nav ul li a.active {
     
     .header-decoration-image {
         height: 25px; /* Make image smaller */
+    }
+}
+
+/* Very small screen adjustments - show hamburger menu */
+@media (max-width: 600px) {
+    /* Hide desktop navigation on mobile */
+    .desktop-nav {
+        display: none;
+    }
+    
+    /* Show hamburger menu on mobile */
+    .mobile-menu-toggle {
+        display: block;
     }
 }
 
@@ -355,12 +401,55 @@ header nav ul li a.active {
     }
 
     .portfolio-categories {
-        gap: 0.3rem; /* Reduce gap between category buttons */
+        gap: 0.1rem; /* Minimal gap between buttons */
+        padding: 0.25rem;
+        max-width: 90%;
+        display: grid; /* Use grid layout for X pattern */
+        grid-template-columns: 1fr 1fr; /* Two columns */
+        grid-template-rows: auto auto auto; /* Three rows */
+        margin-top: 0.25rem;
+        margin-bottom: 0.25rem;
+    }
+    
+    /* X pattern arrangement */
+    .portfolio-categories button:nth-child(1) { /* Live Music */
+        grid-column: 1;
+        grid-row: 1;
+    }
+    
+    .portfolio-categories button:nth-child(2) { /* Videography */
+        grid-column: 2;
+        grid-row: 1;
+    }
+    
+    .portfolio-categories button:nth-child(3) { /* Art */
+        grid-column: 1;
+        grid-row: 2;
+    }
+    
+    .portfolio-categories button:nth-child(4) { /* Typography */
+        grid-column: 2;
+        grid-row: 2;
+    }
+    
+    .portfolio-categories button:nth-child(5) { /* Glitch Art */
+        grid-column: 1;
+        grid-row: 3;
+    }
+    
+    .portfolio-categories button:nth-child(6) { /* Liquid Lights */
+        grid-column: 2;
+        grid-row: 3;
     }
 
     .category-button {
-        padding: 0.4rem 0.8rem;
-        font-size: 0.9rem;
+        padding: 0.2rem 0.4rem;
+        font-size: 0.7rem;
+        margin: 0.1rem;
+        width: calc(100% - 0.2rem); /* Fill available space */
+        line-height: 1;
+        min-height: 0;
+        letter-spacing: 0;
     }
 }
 
@@ -393,7 +482,8 @@ section {
     background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
     position: relative;
     z-index: 2; /* Ensure portfolio content is above the slideshow */
-    padding-top: 120px; /* Add more padding to account for the fixed header */
+    padding-top: 80px; /* Reduced padding to minimize space */
+    padding-bottom: 0; /* Remove bottom padding */
 }
 
 /* Portfolio heading */
@@ -516,45 +606,121 @@ section {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 0.8rem;
-    margin: 1rem 0 3rem 0;
-    padding: 1rem;
+    gap: 0.15rem; /* Ultra minimal gap */
+    margin: -10px auto 1rem auto; /* Negative top margin to move it higher */
+    padding: 0.2rem; /* Reduced padding */
     position: relative;
     z-index: 10;
-    background-color: rgba(0, 0, 0, 0.6);
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.4); /* More transparent background */
+    border-radius: 3px; /* Smaller border radius */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4); /* Enhanced shadow */
+    /* More compact width */
+    max-width: 40%; /* Further reduced width */
+    /* Grid layout for more compact arrangement */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    grid-gap: 0.15rem;
 }
 
 .category-button {
-    background-color: rgba(34, 34, 34, 0.8);
-    border: 1px solid #555555;
+    background-color: rgba(10, 10, 10, 0.7);
+    border: 1px solid #333333;
     color: #ffffff; /* White text */
-    padding: 0.8rem 1.2rem;
+    padding: 0.25rem 0.4rem; /* Even smaller padding */
     font-family: 'VT323', monospace;
-    font-size: 1.1rem;
-    margin: 0 0.5rem 0.5rem 0.5rem;
+    font-size: 0.75rem; /* Smaller font size */
+    margin: 0;
     cursor: pointer;
     transition: all 0.3s ease;
-    border-radius: 4px;
+    border-radius: 2px;
     text-transform: uppercase;
     font-weight: bold;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px; /* Slight letter spacing for readability */
     position: relative;
     z-index: 10;
+    white-space: nowrap;
+    line-height: 1;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    box-sizing: border-box;
 }
 
+/* Hover state improvements */
 .category-button:hover {
-    background-color: rgba(60, 60, 60, 0.9);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    background-color: rgba(30, 30, 30, 0.9);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.5);
 }
 
+/* Active state with better visual indication */
 .category-button.active {
-    background-color: rgba(80, 80, 80, 0.9);
+    background-color: rgba(50, 50, 50, 0.9);
     color: #ffffff;
     border-color: #ffffff;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    transform: translateY(0);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Color-specific styling for each category button */
+/* Live Music - Magenta/Pink */
+.category-button[data-category="live-music"] {
+    border-color: #ff00ff;
+}
+.category-button[data-category="live-music"].active,
+.category-button[data-category="live-music"]:hover {
+    box-shadow: 0 0 10px #ff00ff, 0 0 20px rgba(255, 0, 255, 0.4);
+    border-color: #ff00ff;
+}
+
+/* Videography - Blue */
+.category-button[data-category="videography"] {
+    border-color: #00aaff;
+}
+.category-button[data-category="videography"].active,
+.category-button[data-category="videography"]:hover {
+    box-shadow: 0 0 10px #00aaff, 0 0 20px rgba(0, 170, 255, 0.4);
+    border-color: #00aaff;
+}
+
+/* Art - Green */
+.category-button[data-category="art"] {
+    border-color: #00ff8c;
+}
+.category-button[data-category="art"].active,
+.category-button[data-category="art"]:hover {
+    box-shadow: 0 0 10px #00ff8c, 0 0 20px rgba(0, 255, 140, 0.4);
+    border-color: #00ff8c;
+}
+
+/* Typography - Yellow */
+.category-button[data-category="typography"] {
+    border-color: #ffcc00;
+}
+.category-button[data-category="typography"].active,
+.category-button[data-category="typography"]:hover {
+    box-shadow: 0 0 10px #ffcc00, 0 0 20px rgba(255, 204, 0, 0.4);
+    border-color: #ffcc00;
+}
+
+/* Glitch Art - Red/Purple */
+.category-button[data-category="glitch-art"] {
+    border-color: #ff0066;
+}
+.category-button[data-category="glitch-art"].active,
+.category-button[data-category="glitch-art"]:hover {
+    box-shadow: 0 0 10px #ff0066, 0 0 20px rgba(255, 0, 102, 0.4);
+    border-color: #ff0066;
+}
+
+/* Liquid Lights - Cyan */
+.category-button[data-category="liquid-lights"] {
+    border-color: #00ffff;
+}
+.category-button[data-category="liquid-lights"].active,
+.category-button[data-category="liquid-lights"]:hover {
+    box-shadow: 0 0 10px #00ffff, 0 0 20px rgba(0, 255, 255, 0.4);
+    border-color: #00ffff;
 }
 
 .portfolio-section h3 {
@@ -565,8 +731,8 @@ section {
 /* Masonry-style image grid */
 .image-grid {
     /* Base styles for all grids */
-    width: 100%;
-    margin-bottom: 3rem;
+    width: 70%; /* Further reduced from 90% to 70% */
+    margin: 0 auto 1rem auto; /* Center the grid and maintain bottom margin */
     position: relative;
     z-index: 1; /* Above the background slideshow */
 }
@@ -590,12 +756,12 @@ section {
 
 /* Grid items for masonry layout */
 .image-grid .grid-item {
-    width: calc(33.333% - 10px); /* Three columns by default */
-    margin-bottom: 10px;
+    width: calc(33.333% - 4px); /* Three columns with minimal spacing */
+    margin-bottom: 4px; /* Reduced bottom margin */
     break-inside: avoid;
     position: relative;
     overflow: hidden;
-    border-radius: 4px;
+    border-radius: 2px; /* Smaller border radius */
 }
 
 /* Actual images inside grid items */

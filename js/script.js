@@ -227,28 +227,57 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Load Portfolio Images By Category --- //
+    // IMPORTANT: This is a complete rewrite of the image loading system to prevent duplicates
+    // Global registry contains ALL displayed images, regardless of category
+    const GLOBAL_IMAGE_REGISTRY = new Set();
+    
     function loadPortfolioImagesByCategory(category, gridElement) {
+        console.log(`Loading ${category} images - fixing duplicates issue`);
+        
         if (!gridElement) {
-            console.error('Target grid element not provided for category:', category);
+            console.error('Target grid element not provided');
             return;
         }
-
-        const imagePaths = portfolioImages[category];
-
-        if (!imagePaths || imagePaths.length === 0) {
-            console.warn(`No image paths found for category: ${category}. Update js/script.js.`);
+        
+        // Always start with a clean slate
+        gridElement.innerHTML = '';
+        
+        // Get images for this category
+        const imagePaths = portfolioImages[category] || [];
+        if (imagePaths.length === 0) {
             gridElement.innerHTML = `<p style="text-align: center;">No images found for ${category}.</p>`;
             return;
         }
+        
+        // Temporary set just for this function execution
+        const deduplicatedPaths = [];
+        const seenInThisRun = new Set();
+        
+        // Process each image
+        imagePaths.forEach(path => {
+            // Normalize path for consistent comparison
+            const normalizedPath = path.toLowerCase();
+            const basename = normalizedPath.split('/').pop();
+            
+            // Only include each image once, ever
+            if (!GLOBAL_IMAGE_REGISTRY.has(basename) && !seenInThisRun.has(basename)) {
+                deduplicatedPaths.push(path);
+                seenInThisRun.add(basename);
+                GLOBAL_IMAGE_REGISTRY.add(basename);
+            }
+        });
+        
+        console.log(`${category}: Using ${deduplicatedPaths.length} unique images from ${imagePaths.length} total`);
+        
+        // If we have no unique images left (all were duplicates), clear global registry and try again
+        if (deduplicatedPaths.length === 0 && imagePaths.length > 0) {
+            console.log('All images were duplicates - resetting registry and trying again');
+            GLOBAL_IMAGE_REGISTRY.clear();
+            return loadPortfolioImagesByCategory(category, gridElement); // Recursive call after reset
+        }
 
-        // Clear existing content (like 'Loading...')
-        gridElement.innerHTML = ''; 
-
-        // Get unique image paths using a Set
-        const uniqueImagePaths = [...new Set(imagePaths)];
-
-        // Shuffle the unique category's images
-        const shuffledPaths = [...uniqueImagePaths]; // Clone unique paths before shuffling
+        // Shuffle unique images for random display
+        const shuffledPaths = [...deduplicatedPaths];
         shuffleArray(shuffledPaths);
 
         // Create and append images with grid items for masonry layout
