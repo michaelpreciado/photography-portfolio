@@ -1,54 +1,107 @@
 // Fix for 100vh in iOS mobile Safari
+/**
+ * Mario Preciado Photography - Main JavaScript
+ * Optimized for performance and accessibility
+ * Version: 1.0.0
+ */
+
+// Check for reduced motion preference
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// Set CSS custom property for viewport height (iOS fix)
 function setVHVariable() {
     // First, get viewport height and multiply by 1% to get a value for 1vh unit
-    let vh = window.innerHeight * 0.01;
+    const vh = window.innerHeight * 0.01;
     // Then set the value in the --vh custom property to the root of the document
     document.documentElement.style.setProperty('--vh', `${vh}px`);
+    
+    // Apply safe area insets for notched iOS devices
+    const safeAreaTop = getComputedStyle(document.documentElement).getPropertyValue('--sat') || '0px';
+    const safeAreaBottom = getComputedStyle(document.documentElement).getPropertyValue('--sab') || '0px';
+    
+    document.documentElement.style.setProperty('--safe-area-top', safeAreaTop);
+    document.documentElement.style.setProperty('--safe-area-bottom', safeAreaBottom);
+}
+
+// Handle resize with improved performance using requestAnimationFrame
+function debounce(func, wait = 200) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
 }
 
 // Set the --vh variable initially
 setVHVariable();
 
-// Update the --vh variable on resize
-window.addEventListener('resize', () => {
-    // Avoid excessive updates during resize by debouncing
-    clearTimeout(window.resizeTimeout);
-    window.resizeTimeout = setTimeout(setVHVariable, 200);
-});
+// Update the --vh variable on resize with debounce
+window.addEventListener('resize', debounce(setVHVariable));
 
 // Update on orientation change for iOS
 window.addEventListener('orientationchange', setVHVariable);
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Cache DOM elements for better performance
     const backToTopButton = document.getElementById('back-to-top');
-    const portfolioDisplay = document.getElementById('portfolio-display'); // Get the portfolio display area
-    const categoryButtonsContainer = document.querySelector('.portfolio-categories'); // Get category buttons container
-    const slideshowContainer = document.querySelector('.slideshow-container'); // Get slideshow container for homepage
+    const portfolioDisplay = document.getElementById('portfolio-display'); 
+    const categoryButtonsContainer = document.querySelector('.portfolio-categories');
+    const slideshowContainer = document.querySelector('.slideshow-container');
     
     // Mobile menu elements
     const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
     const body = document.body;
+    const mobileNavOverlay = document.getElementById('mobile-nav');
     const mobileNavLinks = document.querySelectorAll('.mobile-nav a');
     
-    // Mobile menu toggle functionality
-    if (mobileMenuToggle) {
+    // Mobile menu toggle with improved accessibility
+    if (mobileMenuToggle && mobileNavOverlay) {
         mobileMenuToggle.addEventListener('click', () => {
+            const isExpanded = mobileMenuToggle.getAttribute('aria-expanded') === 'true';
+            
+            // Toggle menu state
+            mobileMenuToggle.setAttribute('aria-expanded', !isExpanded);
             body.classList.toggle('mobile-menu-active');
-            if (body.classList.contains('mobile-menu-active')) {
-                // Prevent scrolling when menu is open
+            mobileNavOverlay.setAttribute('aria-hidden', isExpanded);
+            
+            if (!isExpanded) {
+                // Opening menu - prevent scrolling
                 body.style.overflow = 'hidden';
-                // Ensure iOS devices handle this properly
+                
+                // iOS-specific fixes
                 if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
                     body.style.position = 'fixed';
                     body.style.width = '100%';
                 }
+                
+                // Focus trap for accessibility
+                setTimeout(() => {
+                    mobileNavLinks[0].focus();
+                }, 100);
+                
             } else {
-                // Allow scrolling when menu is closed
+                // Closing menu - restore scrolling
                 body.style.overflow = '';
+                
+                // iOS-specific fixes
                 if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
                     body.style.position = '';
                     body.style.width = '';
                 }
+                
+                // Return focus to toggle button
+                mobileMenuToggle.focus();
+            }
+        });
+        
+        // Close mobile menu when escape key is pressed
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && body.classList.contains('mobile-menu-active')) {
+                mobileMenuToggle.click();
             }
         });
         
@@ -56,6 +109,8 @@ document.addEventListener('DOMContentLoaded', () => {
         mobileNavLinks.forEach(link => {
             link.addEventListener('click', () => {
                 body.classList.remove('mobile-menu-active');
+                mobileMenuToggle.setAttribute('aria-expanded', 'false');
+                mobileNavOverlay.setAttribute('aria-hidden', 'true');
                 body.style.overflow = '';
                 if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
                     body.style.position = '';
@@ -748,10 +803,26 @@ document.addEventListener('DOMContentLoaded', () => {
             showImage(currentImageIndex);
             console.log('First image set to active: ' + images[currentImageIndex].src);
             
-            // Start the automatic slideshow
-            slideTimer = setInterval(showNextImage, slideInterval);
+            // Only start slideshow if reduced motion is not preferred
+            if (!prefersReducedMotion) {
+                slideTimer = setInterval(showNextImage, slideInterval);
+            } else {
+                // For users who prefer reduced motion, show static image
+                console.log('Reduced motion preference detected - static image mode');
+            }
         } else {
             console.log('No slideshow images found');
         }
     }
+    
+    // Listen for changes in reduced motion preference
+    window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', (e) => {
+        const shouldReduceMotion = e.matches;
+        if (shouldReduceMotion && slideTimer) {
+            clearInterval(slideTimer);
+            slideTimer = null;
+        } else if (!shouldReduceMotion && !slideTimer && slideshowContainer) {
+            slideTimer = setInterval(showNextImage, slideInterval);
+        }
+    });
 });

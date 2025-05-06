@@ -1,18 +1,105 @@
 /* Basic Reset & Global Styles */
+/* ===== DESIGN TOKENS ===== */
 :root {
-    /* Define CSS variables for consistent values throughout the site */
+    /* Color palette */
+    --color-black: #000000;
+    --color-white: #ffffff;
+    --color-gray-dark: #1a1a1a;
+    --color-gray-medium: #333333;
+    --color-gray-light: #666666;
+    
+    /* Neon colors */
+    --neon-pink: #ff00ff;
+    --neon-blue: #00ffff;
+    --neon-green: #00ff8c;
+    --neon-yellow: #ffcc00;
+    
+    /* Functional colors */
+    --text-color: var(--color-white);
+    --bg-color: var(--color-black);
+    --accent-color: var(--color-white);
+    
+    /* Spacing */
+    --space-xs: 0.25rem;
+    --space-sm: 0.5rem;
+    --space-md: 1rem;
+    --space-lg: 2rem;
+    --space-xl: 4rem;
+    
+    /* Typography */
+    --font-primary: 'VT323', monospace, -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-size-xs: 0.75rem;
+    --font-size-sm: 0.875rem;
+    --font-size-md: 1rem;
+    --font-size-lg: 1.25rem;
+    --font-size-xl: 1.5rem;
+    --font-size-xxl: 2rem;
+    --font-size-huge: 3rem;
+    
+    /* Borders */
+    --border-radius-sm: 2px;
+    --border-radius-md: 4px;
+    --border-radius-lg: 8px;
+    
+    /* Animations */
+    --transition-fast: 0.2s;
+    --transition-medium: 0.3s;
+    --transition-slow: 0.5s;
+    
+    /* Layout */
     --header-height: 70px;
-    --text-color: #ffffff;
-    --bg-color: #000000;
-    --accent-color: #ffffff;
-    --transition-speed: 0.3s;
-    --glow-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    
+    /* Effects */
+    --glow-subtle: 0 0 8px rgba(255, 255, 255, 0.3);
+    --glow-medium: 0 0 15px rgba(255, 255, 255, 0.6);
+    --glow-strong: 0 0 25px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.4);
+    
+    /* Category-specific glows */
+    --glow-live-music: 0 0 15px var(--neon-pink), 0 0 30px rgba(255, 0, 255, 0.4);
+    --glow-visuals: 0 0 15px var(--neon-blue), 0 0 30px rgba(0, 255, 255, 0.4);
+    --glow-art: 0 0 15px var(--neon-green), 0 0 30px rgba(0, 255, 140, 0.4);
+    --glow-typography: 0 0 15px var(--neon-yellow), 0 0 30px rgba(255, 204, 0, 0.4);
+    
+    /* Z-index layers */
+    --z-background: -1;
+    --z-base: 1;
+    --z-header: 100;
+    --z-modal: 200;
+    --z-overlay: 300;
+    --z-highest: 9999;
 }
 
 /* Apply smooth scrolling to everything except iOS devices with special needs */
 @media screen and (prefers-reduced-motion: no-preference) {
     html {
         scroll-behavior: smooth;
+    }
+}
+
+/* Skip to content link for accessibility */
+.skip-to-content {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--accent-color);
+    color: var(--bg-color);
+    padding: 8px;
+    z-index: 9999;
+    transition: top 0.3s;
+    text-decoration: none;
+    border: 2px solid transparent;
+    outline: none;
+}
+
+.skip-to-content:focus {
+    top: 0;
+    outline: 2px solid white;
+    border-color: var(--accent-color);
+}
+
+@media screen and (prefers-reduced-motion: reduce) {
+    .skip-to-content {
+        transition: none;
     }
 }
 

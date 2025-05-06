@@ -3,27 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mario Preciado Photography - Creative photography showcasing live music, visual art, and typography">
+    <meta name="theme-color" content="#000000">
     <title>Mario Preciado Photography</title>
+    
+    <!-- Preconnect for faster external resource loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    
+    <!-- Fonts with display=swap for better font loading performance -->
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome with integrity check -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <!-- Main stylesheet -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="home-page">
-    <div id="peace-background"></div> <!-- Container for floating peace signs -->
-    <header>
-        <!-- Mobile menu button (hamburger) -->
-        <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">
+    <!-- Skip to content link for accessibility -->
+    <a href="#home" class="skip-to-content">Skip to content</a>
+    
+    <div id="peace-background" aria-hidden="true"></div> <!-- Container for floating peace signs -->
+    <header role="banner">
+        <!-- Mobile menu button (hamburger) with improved accessibility -->
+        <button class="mobile-menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-nav">
             <span></span>
             <span></span>
             <span></span>
         </button>
         
-        <!-- Desktop navigation -->
-        <nav class="desktop-nav left-nav">
+        <!-- Desktop navigation with improved semantics -->
+        <nav class="desktop-nav left-nav" aria-label="Main navigation">
             <ul>
-                <li><a href="index.html" class="active">HOME</a></li>
+                <li><a href="index.html" class="active" aria-current="page">HOME</a></li>
                 <li><a href="portfolio.html">PORTFOLIO</a></li>
             </ul>
         </nav>
@@ -33,18 +47,18 @@
             <div class="header-title">MARIO PRECIADO</div>
         </div>
         
-        <nav class="desktop-nav right-nav">
+        <nav class="desktop-nav right-nav" aria-label="Secondary navigation">
             <ul>
                 <li><a href="about.html">ABOUT</a></li>
                 <li><a href="contact.html">CONTACT</a></li>
             </ul>
         </nav>
         
-        <!-- Mobile navigation overlay -->
-        <div class="mobile-nav-overlay">
-            <nav class="mobile-nav">
+        <!-- Mobile navigation overlay with improved accessibility -->
+        <div class="mobile-nav-overlay" id="mobile-nav" aria-hidden="true">
+            <nav class="mobile-nav" aria-label="Mobile navigation">
                 <ul>
-                    <li><a href="index.html" class="active">HOME</a></li>
+                    <li><a href="index.html" class="active" aria-current="page">HOME</a></li>
                     <li><a href="portfolio.html">PORTFOLIO</a></li>
                     <li><a href="about.html">ABOUT</a></li>
                     <li><a href="contact.html">CONTACT</a></li>
@@ -53,26 +67,27 @@
         </div>
     </header>
 
-    <main>
+    <main id="main-content">
         <!-- Full-screen background carousel -->
-        <div class="slideshow-container">
-            <img src="images/portfolio/live-music/portfolio_001.jpeg" alt="Live music performance" class="slideshow-image" loading="lazy">
-            <img src="images/portfolio/live-music/portfolio_002.jpeg" alt="Live music performance" class="slideshow-image" loading="lazy">
-            <img src="images/portfolio/live-music/portfolio_003.jpeg" alt="Live music performance" class="slideshow-image" loading="lazy">
-            <img src="images/portfolio/live-music/portfolio_004.jpg" alt="Live music performance" class="slideshow-image" loading="lazy">
-            <img src="images/portfolio/live-music/portfolio_005.jpeg" alt="Live music performance" class="slideshow-image" loading="lazy">
-            <img src="images/portfolio/live-music/portfolio_006.JPG" alt="Live music performance" class="slideshow-image" loading="lazy">
-            <img src="images/portfolio/live-music/portfolio_007.JPG" alt="Live music performance" class="slideshow-image" loading="lazy">
-            <img src="images/portfolio/live-music/portfolio_008.jpg" alt="Live music performance" class="slideshow-image" loading="lazy">
-            <img src="images/portfolio/live-music/portfolio_009.jpg" alt="Live music performance" class="slideshow-image" loading="lazy">
-            <img src="images/portfolio/live-music/portfolio_010.jpg" alt="Live music performance" class="slideshow-image" loading="lazy">
-            <img src="images/portfolio/live-music/portfolio_011.JPG" alt="Live music performance" class="slideshow-image" loading="lazy">
-            <img src="images/portfolio/live-music/portfolio_012.JPG" alt="Live music performance" class="slideshow-image" loading="lazy">
-            <img src="images/portfolio/live-music/portfolio_013.jpg" alt="Live music performance" class="slideshow-image" loading="lazy">
-            <img src="images/portfolio/live-music/portfolio_014.jpeg" alt="Live music performance" class="slideshow-image" loading="lazy">
-            <img src="images/portfolio/live-music/portfolio_015.jpeg" alt="Live music performance" class="slideshow-image">
-            <img src="images/portfolio/live-music/portfolio_016.jpeg" alt="Live music performance" class="slideshow-image" loading="lazy">
-            <img src="images/portfolio/live-music/portfolio_017.jpg" alt="Live music performance" class="slideshow-image" loading="lazy">
+        <div class="slideshow-container" aria-hidden="true">
+            <!-- First image loaded without lazy for immediate visibility -->
+            <img src="images/portfolio/live-music/portfolio_001.jpeg" alt="" class="slideshow-image">
+            <img src="images/portfolio/live-music/portfolio_002.jpeg" alt="" class="slideshow-image" loading="lazy">
+            <img src="images/portfolio/live-music/portfolio_003.jpeg" alt="" class="slideshow-image" loading="lazy">
+            <img src="images/portfolio/live-music/portfolio_004.jpg" alt="" class="slideshow-image" loading="lazy">
+            <img src="images/portfolio/live-music/portfolio_005.jpeg" alt="" class="slideshow-image" loading="lazy">
+            <img src="images/portfolio/live-music/portfolio_006.JPG" alt="" class="slideshow-image" loading="lazy">
+            <img src="images/portfolio/live-music/portfolio_007.JPG" alt="" class="slideshow-image" loading="lazy">
+            <img src="images/portfolio/live-music/portfolio_008.jpg" alt="" class="slideshow-image" loading="lazy">
+            <img src="images/portfolio/live-music/portfolio_009.jpg" alt="" class="slideshow-image" loading="lazy">
+            <img src="images/portfolio/live-music/portfolio_010.jpg" alt="" class="slideshow-image" loading="lazy">
+            <img src="images/portfolio/live-music/portfolio_011.JPG" alt="" class="slideshow-image" loading="lazy">
+            <img src="images/portfolio/live-music/portfolio_012.JPG" alt="" class="slideshow-image" loading="lazy">
+            <img src="images/portfolio/live-music/portfolio_013.jpg" alt="" class="slideshow-image" loading="lazy">
+            <img src="images/portfolio/live-music/portfolio_014.jpeg" alt="" class="slideshow-image" loading="lazy">
+            <img src="images/portfolio/live-music/portfolio_015.jpeg" alt="" class="slideshow-image" loading="lazy">
+            <img src="images/portfolio/live-music/portfolio_016.jpeg" alt="" class="slideshow-image" loading="lazy">
+            <img src="images/portfolio/live-music/portfolio_017.jpg" alt="" class="slideshow-image" loading="lazy">
         </div>
         
         <section id="home">
@@ -80,7 +95,7 @@
             <div class="welcome-overlay">
                 <div class="welcome-content">
                     <h1 class="welcome-title">MARIO PRECIADO</h1>
-                    <div class="welcome-subtitle">PHOTOGRAPHY & VISUALS</div>
+                    <p class="welcome-subtitle">PHOTOGRAPHY & VISUALS</p>
                     <div class="welcome-buttons">
                         <a href="portfolio.html" class="welcome-button">EXPLORE PORTFOLIO</a>
                     </div>
@@ -91,12 +106,27 @@
         
     </main>
 
-    <footer>
-        <!-- Footer content if needed -->
-        <p class="site-credit">Website designed by <a href="https://michael-preciado.com" target="_blank">MP</a></p>
-        <button id="back-to-top" title="Go to top">↑</button>
+    <footer role="contentinfo">
+        <!-- Footer content with improved accessibility -->
+        <p class="site-credit">Website designed by <a href="https://michael-preciado.com" target="_blank" rel="noopener">MP</a></p>
+        <button id="back-to-top" aria-label="Back to top" title="Go to top">↑</button>
     </footer>
 
-    <script src="js/script.js"></script>
+    <!-- Defer non-critical JavaScript for better page load performance -->
+    <script src="js/script.js" defer></script>
+    
+    <!-- Add structured data for better SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "PhotographerProfile",
+      "name": "Mario Preciado",
+      "url": "https://mariopreciado.photography",
+      "sameAs": [
+        "https://michael-preciado.com"
+      ],
+      "description": "Photography and Visuals - Showcasing live music, visual art, and typography"
+    }
+    </script>
 </body>
 </html> 
