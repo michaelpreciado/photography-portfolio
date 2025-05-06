@@ -525,42 +525,36 @@ header nav ul li a.active {
         border: 1px solid rgba(255, 255, 255, 0.2);
     }
     
-    /* Page-specific fixes to ensure menu button is consistent across all pages */
+    /* Page-specific adjustments for the mobile menu button */
     .portfolio-page .mobile-menu-toggle,
     .about-page .mobile-menu-toggle,
-    .contact-page .mobile-menu-toggle,
-    .home-page .mobile-menu-toggle {
-        position: fixed !important; /* Use fixed position on all pages */
-        top: 85px !important; /* Position from top of viewport - consistent with main rule */
-        left: 15px !important; /* Ensure consistent left position */
-        transform: none !important; /* Remove vertical centering */
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add shadow for better visibility */
-        /* Force the button to be in front of everything */
-        z-index: 99999 !important;
-        /* Maintain consistent size across all pages */
+    .contact-page .mobile-menu-toggle {
+        /* Ensure all pages have the same positioning */
+        top: 85px !important;
+        left: 15px !important;
         width: 45px !important;
         height: 45px !important;
         padding: 10px !important;
-        /* Subtle border for visibility */
+        background: rgba(0, 0, 0, 0.7) !important;
         border: 1px solid rgba(255, 255, 255, 0.2) !important;
     }
     
     /* iOS-specific fixes using CSS feature detection */
     @supports (-webkit-touch-callout: none) {
-        /* iOS-specific selector for all pages */
-        .mobile-menu-toggle {
-            /* Consistent iOS fixes for all pages */
+        /* iOS-specific selector */
+        .portfolio-page .mobile-menu-toggle {
+            /* Even more aggressive fixes for iOS */
             cursor: pointer;
             -webkit-tap-highlight-color: rgba(255, 255, 255, 0.5);
+            /* Make entire area clickable */
+            padding: 25px !important;
             /* Ensure iOS registers touch events */
             touch-action: manipulation;
             /* iOS Safari specific tweaks */
             -webkit-user-select: none;
             user-select: none;
-            /* Better visibility */
-            background: rgba(0, 0, 0, 0.85) !important;
-            /* iOS-specific positioning adjustment if needed */
-            top: 85px !important;
+            /* Even more visible contrast */
+            background: rgba(0, 0, 0, 0.9) !important;
         }
         
         /* Handle potential Safari conflicts */
