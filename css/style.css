@@ -525,19 +525,24 @@ header nav ul li a.active {
         border: 1px solid rgba(255, 255, 255, 0.2);
     }
     
-    /* Portfolio page specific fix to ensure menu button is tappable */
-    .portfolio-page .mobile-menu-toggle {
-        position: fixed !important; /* Use fixed position on portfolio page */
-        top: 15px !important; /* Position from top of viewport */
+    /* Page-specific fixes to ensure menu button is consistent across all pages */
+    .portfolio-page .mobile-menu-toggle,
+    .about-page .mobile-menu-toggle,
+    .contact-page .mobile-menu-toggle,
+    .home-page .mobile-menu-toggle {
+        position: fixed !important; /* Use fixed position on all pages */
+        top: 85px !important; /* Position from top of viewport - consistent with main rule */
         left: 15px !important; /* Ensure consistent left position */
         transform: none !important; /* Remove vertical centering */
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add shadow for better visibility */
         /* Force the button to be in front of everything */
         z-index: 99999 !important;
-        /* Create a larger hit area for iOS */
-        width: 70px !important;
-        height: 70px !important;
-        padding: 20px !important;
+        /* Maintain consistent size across all pages */
+        width: 45px !important;
+        height: 45px !important;
+        padding: 10px !important;
+        /* Subtle border for visibility */
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
     }
     
     /* iOS-specific fixes using CSS feature detection */
