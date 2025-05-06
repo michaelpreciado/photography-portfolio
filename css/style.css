@@ -131,14 +131,14 @@ header nav ul li {
 header nav ul li a {
     transition: color 0.3s ease, border-bottom 0.3s ease;
     align-items: center; /* Center items horizontally */
-    font-size: 1.2rem; /* Reduced font size for better fit */
+    font-size: 0.9rem; /* Much smaller font size so everything fits */
     color: #ffffff; /* White text */
     font-weight: bold; /* Bold text */
     text-transform: uppercase; /* Uppercase text */
-    padding: 0 10px 5px 10px; /* Added horizontal padding to create space between items */
-    border-bottom: 2px solid transparent; /* Transparent border for hover effect */
-    margin: 0 5px; /* Added margin to separate menu items */
-    letter-spacing: 0.5px; /* Add letter spacing for better readability */
+    padding: 0 6px 3px 6px; /* Reduced padding for more compact layout */
+    border-bottom: 1px solid transparent; /* Thinner border */
+    margin: 0 3px; /* Smaller margins to fit more text */
+    letter-spacing: 0.2px; /* Reduced letter spacing */
 }
 
 header nav ul li a:hover {
@@ -228,26 +228,33 @@ header nav ul li a.active {
     padding: 12px;
 }
 
-/* Mobile Navigation Overlay */
+/* Mobile Navigation Overlay - Improved for beautiful mobile experience */
 .mobile-nav-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.96);
+    background-color: rgba(0, 0, 0, 0.92);
     z-index: 1500;
     display: flex;
     justify-content: center;
     align-items: center;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.4s ease, visibility 0.4s ease;
+    transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1); /* Smoother animation */
     /* iOS height fixes */
     height: calc(var(--vh, 1vh) * 100);
     max-height: -webkit-fill-available;
     overflow-y: auto; /* Allow scrolling if needed */
     -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    /* Beautiful backdrop blur */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    /* Add subtle gradient overlay */
+    background-image: linear-gradient(to bottom, rgba(0,0,0,0.95), rgba(20,0,20,0.92));
+    /* Add subtle border */
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .mobile-menu-active .mobile-nav-overlay {
@@ -258,22 +265,32 @@ header nav ul li a.active {
 .mobile-nav {
     text-align: center;
     width: 100%;
-    padding: 2rem;
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .mobile-nav ul {
     list-style: none;
     padding: 0;
     margin: 0;
+    width: 90%;
+    max-width: 320px;
 }
 
 .mobile-nav ul li {
     opacity: 0;
     transform: translateY(10px);
-    transition: opacity 0.4s ease, transform 0.4s ease;
+    transition: opacity 0.5s ease, transform 0.5s ease;
     transition-delay: 0.1s;
-    margin: 2.5rem 0; /* Increased vertical spacing between items */
-    padding: 0.5rem 0; /* Additional padding */
+    margin: 1.2rem 0; /* Optimized spacing for mobile */
+    padding: 0.6rem 0; /* Increased tap target size */
+    position: relative;
+    border-radius: 8px;
+    /* Add subtle highlighting */
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
 /* Individual delays for menu items */
@@ -296,17 +313,17 @@ header nav ul li a.active {
 }
 
 .mobile-nav ul li a {
-    font-size: 1.5rem; /* Reduced font size */
+    font-size: 1.1rem; /* Further reduced font size */
     color: var(--text-color);
     text-decoration: none;
     text-transform: uppercase;
     font-weight: bold;
-    padding: 0.5rem 1rem; /* Added horizontal padding */
-    margin: 0.25rem 0; /* Added vertical margin */
+    padding: 0.4rem 0.7rem; /* Reduced padding for better fit */
+    margin: 0.2rem 0; /* Reduced vertical margin */
     display: inline-block;
     position: relative;
     transition: transform 0.3s ease, color 0.3s ease;
-    letter-spacing: 4px; /* Added letter spacing to separate letters */
+    letter-spacing: 2px; /* Reduced letter spacing */
 }
 
 .mobile-nav ul li a::after {
@@ -364,16 +381,53 @@ header nav ul li a.active {
     }
 }
 
-/* Very small screen adjustments - show hamburger menu */
+/* Mobile optimizations - create beautiful experience on smaller screens */
 @media (max-width: 600px) {
     /* Hide desktop navigation on mobile */
     .desktop-nav {
         display: none;
     }
     
-    /* Show hamburger menu on mobile */
+    /* Show hamburger menu on mobile and optimize positioning */
     .mobile-menu-toggle {
         display: block;
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        padding: 10px;
+        z-index: 1010;
+    }
+    
+    /* Optimize header for mobile */
+    header {
+        padding: 0.5rem 1rem;
+        height: 60px; /* Fixed height for consistency */
+        justify-content: center; /* Center logo on mobile */
+    }
+    
+    /* Ensure the logo is perfectly centered on mobile */
+    .header-logo-title {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0;
+    }
+    
+    /* Adjust logo size for mobile */
+    .header-decoration-image {
+        height: 22px;
+        margin-bottom: 2px;
+    }
+    
+    /* Make title text smaller and more balanced */
+    .header-title {
+        font-size: 0.8rem;
+        line-height: 1;
+        letter-spacing: 0.5px;
     }
 }
 
@@ -620,27 +674,6 @@ section {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
     grid-gap: 0.15rem;
-}
-
-.category-button {
-    background-color: rgba(10, 10, 10, 0.7);
-    border: 1px solid #333333;
-    color: #ffffff; /* White text */
-    padding: 0.25rem 0.4rem; /* Even smaller padding */
-    font-family: 'VT323', monospace;
-    font-size: 0.75rem; /* Smaller font size */
-    margin: 0;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border-radius: 2px;
-    text-transform: uppercase;
-    font-weight: bold;
-    letter-spacing: 0.5px; /* Slight letter spacing for readability */
-    position: relative;
-    z-index: 10;
-    white-space: nowrap;
-    line-height: 1;
-    width: 100%;
     height: auto;
     min-height: 0;
     box-sizing: border-box;
@@ -669,18 +702,20 @@ section {
 }
 .category-button[data-category="live-music"].active,
 .category-button[data-category="live-music"]:hover {
-    box-shadow: 0 0 10px #ff00ff, 0 0 20px rgba(255, 0, 255, 0.4);
+    box-shadow: 0 0 15px #ff00ff, 0 0 25px rgba(255, 0, 255, 0.6);
     border-color: #ff00ff;
+    text-shadow: 0 0 5px #ff00ff;
 }
 
-/* Videography - Blue */
-.category-button[data-category="videography"] {
-    border-color: #00aaff;
+/* Visuals - Cyan Blue */
+.category-button[data-category="visuals"] {
+    border-color: #00ffff;
 }
-.category-button[data-category="videography"].active,
-.category-button[data-category="videography"]:hover {
-    box-shadow: 0 0 10px #00aaff, 0 0 20px rgba(0, 170, 255, 0.4);
-    border-color: #00aaff;
+.category-button[data-category="visuals"].active,
+.category-button[data-category="visuals"]:hover {
+    box-shadow: 0 0 15px #00ffff, 0 0 25px rgba(0, 255, 255, 0.6);
+    border-color: #00ffff;
+    text-shadow: 0 0 5px #00ffff;
 }
 
 /* Art - Green */
@@ -689,8 +724,9 @@ section {
 }
 .category-button[data-category="art"].active,
 .category-button[data-category="art"]:hover {
-    box-shadow: 0 0 10px #00ff8c, 0 0 20px rgba(0, 255, 140, 0.4);
+    box-shadow: 0 0 15px #00ff8c, 0 0 25px rgba(0, 255, 140, 0.6);
     border-color: #00ff8c;
+    text-shadow: 0 0 5px #00ff8c;
 }
 
 /* Typography - Yellow */
@@ -699,29 +735,12 @@ section {
 }
 .category-button[data-category="typography"].active,
 .category-button[data-category="typography"]:hover {
-    box-shadow: 0 0 10px #ffcc00, 0 0 20px rgba(255, 204, 0, 0.4);
+    box-shadow: 0 0 15px #ffcc00, 0 0 25px rgba(255, 204, 0, 0.6);
     border-color: #ffcc00;
+    text-shadow: 0 0 5px #ffcc00;
 }
 
-/* Glitch Art - Red/Purple */
-.category-button[data-category="glitch-art"] {
-    border-color: #ff0066;
-}
-.category-button[data-category="glitch-art"].active,
-.category-button[data-category="glitch-art"]:hover {
-    box-shadow: 0 0 10px #ff0066, 0 0 20px rgba(255, 0, 102, 0.4);
-    border-color: #ff0066;
-}
-
-/* Liquid Lights - Cyan */
-.category-button[data-category="liquid-lights"] {
-    border-color: #00ffff;
-}
-.category-button[data-category="liquid-lights"].active,
-.category-button[data-category="liquid-lights"]:hover {
-    box-shadow: 0 0 10px #00ffff, 0 0 20px rgba(0, 255, 255, 0.4);
-    border-color: #00ffff;
-}
+/* Other category styles can be added here as needed */
 
 .portfolio-section h3 {
     margin-top: 2rem;
@@ -731,7 +750,7 @@ section {
 /* Masonry-style image grid */
 .image-grid {
     /* Base styles for all grids */
-    width: 70%; /* Further reduced from 90% to 70% */
+    width: 90%; /* Increased from 70% to 90% to reduce empty space on sides */
     margin: 0 auto 1rem auto; /* Center the grid and maintain bottom margin */
     position: relative;
     z-index: 1; /* Above the background slideshow */
@@ -746,42 +765,113 @@ section {
 
 /* Specific grid display rules (handled by JS adding .active) */
 #portfolio-display .live-music-grid.active,
-#portfolio-display .videography-grid.active,
+#portfolio-display .visuals-grid.active,
 #portfolio-display .art-grid.active,
-#portfolio-display .typography-grid.active,
-#portfolio-display .glitch-art-grid.active,
-#portfolio-display .liquid-lights-grid.active {
+#portfolio-display .typography-grid.active {
     display: block; /* Changed to block for Masonry */
 }
 
 /* Grid items for masonry layout */
 .image-grid .grid-item {
-    width: calc(33.333% - 4px); /* Three columns with minimal spacing */
+    width: calc(33.333% - 4px); /* Three columns with reduced spacing by default */
     margin-bottom: 4px; /* Reduced bottom margin */
+    padding: 2px; /* Reduced padding */
     break-inside: avoid;
     position: relative;
-    overflow: hidden;
-    border-radius: 2px; /* Smaller border radius */
+    overflow: visible; /* Allow glow to extend beyond boundaries */
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    background-color: rgba(0, 0, 0, 0.3);
 }
 
-/* Actual images inside grid items */
-.image-grid img {
+/* Add 4 columns on larger screens */
+@media (min-width: 992px) {
+    .image-grid .grid-item {
+        width: calc(25% - 4px); /* Four columns on larger screens */
+    }
+}
+
+/* Add 5 columns on extra large screens */
+@media (min-width: 1400px) {
+    .image-grid .grid-item {
+        width: calc(20% - 4px); /* Five columns on extra large screens */
+    }
+}
+
+/* Actual images and videos inside grid items */
+.image-grid .grid-item img, .image-grid .grid-item video {
     width: 100%;
     height: auto;
     display: block;
     border-radius: 4px;
     transition: all 0.4s ease;
+    cursor: pointer;
+    object-fit: cover; /* Ensures videos maintain proportions like images */
     opacity: 1;
     position: relative;
     z-index: 1;
-    /* Remove clip-path animation for smoother masonry layout */
+    /* Add subtle glow to all media items */
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
 }
 
-/* Hover effects */
-.image-grid .grid-item:hover img {
+/* Base hover effects for all portfolio media (images and videos) */
+.image-grid .grid-item:hover img,
+.image-grid .grid-item:hover video {
     transform: scale(1.03);
     filter: brightness(1.1) contrast(1.05);
-    box-shadow: 0 0 15px rgba(255, 0, 255, 0.5);
+}
+
+/* Category-specific glow effects that match category button colors */
+/* Live Music - Magenta/Pink */
+.live-music-grid .grid-item img,
+.live-music-grid .grid-item video {
+    box-shadow: 0 0 8px rgba(255, 0, 255, 0.3);
+}
+.live-music-grid .grid-item:hover img,
+.live-music-grid .grid-item:hover video {
+    box-shadow: 0 0 15px #ff00ff, 0 0 30px rgba(255, 0, 255, 0.4);
+}
+
+/* Visuals - Cyan Blue */
+.visuals-grid .grid-item img,
+.visuals-grid .grid-item video {
+    box-shadow: 0 0 8px rgba(0, 255, 255, 0.3);
+}
+.visuals-grid .grid-item:hover img,
+.visuals-grid .grid-item:hover video {
+    box-shadow: 0 0 15px #00ffff, 0 0 30px rgba(0, 255, 255, 0.4);
+}
+
+/* Art - Green */
+.art-grid .grid-item img {
+    box-shadow: 0 0 8px rgba(0, 255, 140, 0.3);
+}
+.art-grid .grid-item:hover img {
+    box-shadow: 0 0 15px #00ff8c, 0 0 30px rgba(0, 255, 140, 0.4);
+}
+
+/* Typography - Yellow */
+.typography-grid .grid-item img {
+    box-shadow: 0 0 8px rgba(255, 204, 0, 0.3);
+}
+.typography-grid .grid-item:hover img {
+    box-shadow: 0 0 15px #ffcc00, 0 0 30px rgba(255, 204, 0, 0.4);
+}
+
+/* Glitch Art - Red/Purple */
+.glitch-art-grid .grid-item img {
+    box-shadow: 0 0 8px rgba(255, 0, 102, 0.3);
+}
+.glitch-art-grid .grid-item:hover img {
+    box-shadow: 0 0 15px #ff0066, 0 0 30px rgba(255, 0, 102, 0.4);
+}
+
+/* Liquid Lights - Cyan */
+.liquid-lights-grid .grid-item img {
+    box-shadow: 0 0 8px rgba(0, 255, 255, 0.3);
+}
+.liquid-lights-grid .grid-item:hover img {
+    box-shadow: 0 0 15px #00ffff, 0 0 30px rgba(0, 255, 255, 0.4);
 }
 
 /* Responsive adjustments */
@@ -985,18 +1075,24 @@ footer {
 /* --- Image Modal Styles --- */
 .modal {
     display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1001; /* Sit on top (higher than header) */
+    position: fixed;
+    z-index: 1001; /* Above everything else */
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.95); /* Almost fully black */
+    backdrop-filter: blur(8px); /* Add blur for depth */
+    -webkit-backdrop-filter: blur(8px); /* Safari support */
     opacity: 0;
-    transition: opacity 0.5s ease-in-out; /* Fade transition */
+    transition: opacity 0.3s ease;
+    padding: 60px 0; /* Add vertical padding */
+    /* Theme-based glowing border at top and bottom */
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 40px rgba(255, 0, 255, 0.1) inset, 0 0 20px rgba(0, 255, 255, 0.1) inset;
     /* Add flexbox for centering */
-    display: none; /* Start hidden, but use flex when visible */
     justify-content: center;
     align-items: center;
 }
@@ -1016,9 +1112,14 @@ footer {
     animation-name: zoom;
     animation-duration: 0.6s;
     /* Add transition for fade effect */
-    transition: opacity 0.3s ease-in-out;
+    transition: all 0.4s ease-in-out;
     /* Additional padding to account for caption and close button */
     padding: 20px 0;
+    /* Add glow effect */
+    border-radius: 4px;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.25), 0 0 60px rgba(255, 0, 255, 0.15), 0 0 90px rgba(0, 255, 255, 0.1);
+    /* Add subtle border */
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* Add Animation */
@@ -1028,21 +1129,24 @@ footer {
 }
 
 /* The Close Button */
-.close-modal {
+.modal-close {
     position: absolute;
-    top: 15px;
-    right: 35px;
+    top: 20px;
+    right: 30px;
     color: #f1f1f1;
     font-size: 40px;
     font-weight: bold;
     transition: 0.3s;
-    cursor: pointer;
+    z-index: 1002; /* Above modal content */
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
 }
 
-.close-modal:hover,
-.close-modal:focus {
-    color: #bbb;
+.modal-close:hover,
+.modal-close:focus {
+    color: #fff;
     text-decoration: none;
+    cursor: pointer;
+    text-shadow: 0 0 15px rgba(255, 0, 255, 0.8), 0 0 25px rgba(0, 255, 255, 0.6);
 }
 
 /* Optional Caption */

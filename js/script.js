@@ -164,20 +164,19 @@ document.addEventListener('DOMContentLoaded', () => {
             'images/portfolio/live-music/portfolio_016.jpeg',
             'images/portfolio/live-music/portfolio_017.jpg',
         ],
-        'videography': [
-            // Add paths for Videography images here later
+        'visuals': [
+            // Combined category for Videography, Glitch Art, and Liquid Lights
+            'images/portfolio/Visuals/SF.mp4', // Video file
+            // Adding some images from live-music as placeholders for testing
+            'images/portfolio/live-music/portfolio_001.jpeg',
+            'images/portfolio/live-music/portfolio_005.jpeg',
+            'images/portfolio/live-music/portfolio_008.jpg',
         ],
         'art': [
             // Add paths for Art images here later
         ],
         'typography': [
             // Add paths for Typography images here later
-        ],
-        'glitch-art': [
-            // Add paths for Glitch Art images here later
-        ],
-        'liquid-lights': [
-            // Add paths for Liquid Lights images here later
         ]
     };
 
@@ -280,60 +279,127 @@ document.addEventListener('DOMContentLoaded', () => {
         const shuffledPaths = [...deduplicatedPaths];
         shuffleArray(shuffledPaths);
 
-        // Create and append images with grid items for masonry layout
-        const imageElements = [];
-        shuffledPaths.forEach(imgPath => {
-            // Create a grid item wrapper for each image
+        // Create and append media (images/videos) with grid items for masonry layout
+        const mediaElements = [];
+        shuffledPaths.forEach(mediaPath => {
+            // Create a grid item wrapper for each media item
             const gridItem = document.createElement('div');
             gridItem.className = 'grid-item';
             
-            // Create and configure the image
-            const img = document.createElement('img');
-            img.src = imgPath;
-            img.alt = `${category.replace('-', ' ')} photo`; // Dynamic alt text
-            img.classList.add('fade-in'); // Add class for scroll animation
+            // Check if the file is a video (mp4, webm, etc.)
+            const isVideo = /\.(mp4|webm|mov)$/i.test(mediaPath);
             
-            // Create a preloader to prevent reflow during masonry initialization
-            const imgLoader = new Image();
-            imgLoader.onload = function() {
-                // Once image is loaded, set proper dimensions
-                // For varied layouts, we can randomly adjust sizes for some images
-                if (Math.random() > 0.7) { // 30% of images will get special treatment
-                    if (imgLoader.width > imgLoader.height) {
-                        // Landscape image - can span 2 columns occasionally
-                        if (Math.random() > 0.5) {
-                            gridItem.style.width = 'calc(66.666% - 10px)'; // Two column width with gap
-                        }
-                    } else if (imgLoader.height > imgLoader.width * 1.5) {
-                        // Very tall portrait image - might need special handling
-                        img.style.maxHeight = '500px'; // Limit very tall images
+            if (isVideo) {
+                console.log('Loading video:', mediaPath); // Debug log
+                
+                // Create video element for video files
+                const video = document.createElement('video');
+                video.src = mediaPath;
+                video.autoplay = true;
+                video.loop = true;
+                video.muted = true;
+                video.playsInline = true;
+                video.preload = 'auto';
+                video.width = 320; // Set default width
+                video.height = 240; // Set default height
+                video.classList.add('fade-in');
+                video.setAttribute('disablePictureInPicture', '');
+                video.setAttribute('controlsList', 'nodownload');
+                
+                // Add error handling
+                video.addEventListener('error', function(e) {
+                    console.error('Video error:', e);
+                    console.error('Video error code:', video.error ? video.error.code : 'unknown');
+                });
+                
+                // Add loaded data event
+                video.addEventListener('loadeddata', function() {
+                    console.log('Video loaded successfully');
+                    if (gridElement.msnry) {
+                        gridElement.msnry.layout();
                     }
-                }
-            };
-            imgLoader.src = imgPath;
-            
-            // Add the image to the grid item
-            gridItem.appendChild(img);
-            
-            // Add the grid item to the grid
-            gridElement.appendChild(gridItem);
-            imageElements.push(img);
+                });
+                
+                // Prevent right-click menu
+                video.addEventListener('contextmenu', e => e.preventDefault());
+                
+                // Handle hardware acceleration
+                video.style.willChange = 'transform';
+                
+                // Add video to grid item
+                gridItem.appendChild(video);
+                mediaElements.push(video);
+                
+                // Add click event for showing video in modal
+                gridItem.addEventListener('click', function() {
+                    showModal(mediaPath, `${category.replace('-', ' ')} video`);
+                });
+                
+                // Add the grid item to the grid
+                gridElement.appendChild(gridItem);
+                
+                // Force video to play
+                setTimeout(() => {
+                    video.play().catch(e => console.error('Video play error:', e));
+                }, 100);
+                
+            } else {
+                // Create and configure the image as before
+                const img = document.createElement('img');
+                img.src = mediaPath;
+                img.alt = `${category.replace('-', ' ')} photo`; // Dynamic alt text
+                img.classList.add('fade-in'); // Add class for scroll animation
+                
+                // Create a preloader to prevent reflow during masonry initialization
+                const imgLoader = new Image();
+                imgLoader.onload = function() {
+                    // Once image is loaded, set proper dimensions
+                    // For varied layouts, we can randomly adjust sizes for some images
+                    if (Math.random() > 0.7) { // 30% of images will get special treatment
+                        if (imgLoader.width > imgLoader.height) {
+                            // Landscape image - can span 2 columns occasionally
+                            if (Math.random() > 0.5) {
+                                gridItem.style.width = 'calc(66.666% - 10px)'; // Two column width with gap
+                            }
+                        } else if (imgLoader.height > imgLoader.width * 1.5) {
+                            // Very tall portrait image - might need special handling
+                            img.style.maxHeight = '500px'; // Limit very tall images
+                        }
+                    }
+                };
+                imgLoader.src = mediaPath;
+                
+                // Add the image to the grid item
+                gridItem.appendChild(img);
+                mediaElements.push(img);
+                
+                // Add the grid item to the grid
+                gridElement.appendChild(gridItem);
+            }
         });
 
-        // Initialize Masonry layout once all images are added
+        // Initialize Masonry layout once all media items are added
         const msnry = new Masonry(gridElement, {
             itemSelector: '.grid-item',
             columnWidth: '.grid-item',
             percentPosition: true,
-            gutter: 10, // Space between items
+            gutter: 4, // Reduced space between items from 10px to 4px
             horizontalOrder: false, // For a more varied layout
-            transitionDuration: '0.4s' // Smooth transitions when filtering
+            transitionDuration: '0.3s' // Slightly faster transitions
         });
 
         // Use imagesLoaded to recalculate layout after all images have loaded
         imagesLoaded(gridElement).on('progress', function() {
             // Layout Masonry after each image loads
             msnry.layout();
+        });
+        
+        // For videos, ensure layout is refreshed once they're loaded
+        const videos = gridElement.querySelectorAll('video');
+        videos.forEach(video => {
+            video.addEventListener('loadeddata', function() {
+                msnry.layout();
+            });
         });
 
         // Observe newly added images for fade-in animation
@@ -351,6 +417,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const buttons = categoryButtonsContainer.querySelectorAll('.category-button');
         const grids = portfolioDisplay.querySelectorAll('.image-grid');
         const portfolioSection = document.getElementById('portfolio'); // Get the parent section
+        
+        // Preload all categories when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Preloading all portfolio categories');
+            // Load visuals category specifically to ensure video loads
+            const visualsGrid = portfolioDisplay.querySelector('.visuals-grid');
+            if (visualsGrid && !visualsGrid.dataset.loaded) {
+                console.log('Preloading visuals category');
+                loadPortfolioImagesByCategory('visuals', visualsGrid);
+            }
+        });
 
         buttons.forEach(button => {
             button.addEventListener('click', () => {
