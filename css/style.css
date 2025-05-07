@@ -702,7 +702,7 @@ header nav ul li a.active {
     .about-page .mobile-menu-toggle,
     .contact-page .mobile-menu-toggle {
         /* Ensure all pages have the same positioning */
-        top: 120px !important; /* Increased to account for larger header */
+        top: 70px !important; /* Moved higher to match other pages */
         left: 15px !important;
         width: 45px !important;
         height: 45px !important;
