@@ -719,7 +719,7 @@ header nav ul li a.active {
             cursor: pointer;
             -webkit-tap-highlight-color: rgba(255, 255, 255, 0.5);
             /* Make entire area clickable */
-            padding: 25px !important;
+            padding: 5px !important;
             /* Ensure iOS registers touch events */
             touch-action: manipulation;
             /* iOS Safari specific tweaks */
