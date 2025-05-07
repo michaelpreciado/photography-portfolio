@@ -358,56 +358,68 @@ header nav ul li a.active {
 
 /* Header decoration image styles */
 .header-decoration-image {
-    height: auto; /* Allow height to adjust based on width */
-    width: auto; /* Allow natural sizing */
-    max-height: 180px; /* Default max height (primarily for desktop) */
-    max-width: 180px; /* Default max width (primarily for desktop) */
-    margin-right: 0; /* Image is stacked, so no right margin */
-    margin-bottom: 0.5rem; /* Space below the image */
-    object-fit: contain; /* Ensure entire image is visible without cropping */
-    opacity: 1; /* Fully opaque for better visibility */
-    transition: transform 0.3s ease; /* Smooth transition for hover effects */
-    box-shadow: 0 0 8px rgba(255, 255, 255, 0.4); /* Subtle glow */
+    height: auto;
+    width: auto;
+    max-height: 180px;
+    max-width: 180px;
+    margin-right: 0;
+    margin-bottom: 0.5rem;
+    object-fit: contain;
+    opacity: 1;
+    transition: transform 0.3s ease;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
 /* Mobile Menu Toggle Button (Hamburger) */
 .mobile-menu-toggle {
-    display: none; /* Hidden by default on desktop */
-    background: rgba(0, 0, 0, 0.6);
+    display: flex; /* Flex for centering hamburger lines */
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.7);
     border: none;
-    width: 48px; /* Optimized touch target */
-    height: 48px; /* Optimized touch target */
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    min-height: 48px;
     cursor: pointer;
-    padding: 13px; /* Adjusted padding */
-    position: fixed; /* Fixed position */
-    top: 15px; /* Position at the top of the screen */
-    left: 15px; /* Position at the left of the screen */
-    z-index: 9999; /* Above everything else */
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    /* Improve iOS tap target */
+    padding: 0;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 9999;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5), 0 0 0 1.5px rgba(255,255,255,0.10);
+    transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
     -webkit-tap-highlight-color: transparent;
-    /* Add subtle border for visibility */
-    border-radius: 12px;
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12), 0 4px 8px rgba(0, 0, 0, 0.4);
-    /* Ensure there's no touch delay on iOS */
     touch-action: manipulation;
-    /* Performance optimizations */
-    transform: translate3d(0, 0, 0);
     will-change: transform, background-color, box-shadow;
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
 }
 
+.mobile-menu-toggle:focus {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+
+@media (max-width: 768px) {
+    .mobile-menu-toggle {
+        display: flex;
+    }
+}
+
+
 .mobile-menu-toggle span {
     display: block;
-    width: 100%;
-    height: 3px; /* Thicker lines for better visibility */
+    width: 26px;
+    height: 3px;
     background-color: var(--text-color);
-    margin: 7px 0; /* More spacing between lines */
-    transition: transform 0.3s ease, opacity 0.3s ease;
-    /* Add glow effect for better visibility */
-    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
-    border-radius: 1px;
+    margin: 4px 0;
+    border-radius: 2px;
+    transition: transform 0.3s, opacity 0.3s;
+    box-shadow: 0 0 4px rgba(255,255,255,0.25);
 }
 
 /* Hamburger menu animation */
@@ -593,6 +605,18 @@ header nav ul li a.active {
 .mobile-nav ul li a.active::after {
     width: 100%;
     left: 0;
+}
+
+/* Desktop adjustments for header spacing and hamburger menu */
+@media (min-width: 769px) {
+    /* Move the header title up and add space below for desktop */
+    .header-title {
+        margin-bottom: 5rem !important; /* Generous space below title for guaranteed separation */
+    }
+    /* Hide hamburger menu on desktop */
+    .mobile-menu-toggle {
+        display: none !important;
+    }
 }
 
 /* Media query for smaller screens */
