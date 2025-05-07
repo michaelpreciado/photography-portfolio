@@ -1109,7 +1109,7 @@ section {
     flex-wrap: wrap;
     justify-content: center;
     gap: 0.15rem; /* Ultra minimal gap */
-    margin: -10px auto 1rem auto; /* Negative top margin to move it higher */
+    margin: 1.5rem auto 1rem auto; /* Add vertical space below header */
     padding: 0.2rem; /* Reduced padding */
     position: relative;
     z-index: 10;
