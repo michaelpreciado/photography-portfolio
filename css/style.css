@@ -53,6 +53,7 @@
     --glow-subtle: 0 0 8px rgba(255, 255, 255, 0.3);
     --glow-medium: 0 0 15px rgba(255, 255, 255, 0.6);
     --glow-strong: 0 0 25px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.4);
+    --glow-white: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #fff;
     
     /* Category-specific glows */
     --glow-live-music: 0 0 15px var(--neon-pink), 0 0 30px rgba(255, 0, 255, 0.4);
@@ -67,6 +68,12 @@
     --z-modal: 200;
     --z-overlay: 300;
     --z-highest: 9999;
+}
+
+/* Utility classes */
+.glow-white {
+    text-shadow: var(--glow-white);
+    color: var(--color-white);
 }
 
 /* Apply smooth scrolling to everything except iOS devices with special needs */
@@ -776,9 +783,62 @@ header nav ul li a.active {
 /* End of mobile media query styles */
 
 /* Additional media query for very small screens (e.g., mobile portrait) */
+/* Photography Grid - Two columns on desktop, one on mobile */
+.image-grid.live-music-grid {
+    grid-template-columns: 1fr; /* Default single column on mobile */
+    gap: 1rem; /* Consistent gap */
+}
+
+@media (min-width: 768px) {
+    .image-grid.live-music-grid {
+        grid-template-columns: repeat(2, 1fr); /* Two-column grid on desktop as per client feedback */
+    }
+}
+
+/* Visuals Grid - Always single column */
+.image-grid.visuals-grid {
+    grid-template-columns: 1fr; /* Force single column for visuals */
+}
+
+/* Video placeholder styling */
+.video-placeholder {
+    position: relative;
+    filter: brightness(0.85) contrast(1.2); /* Add video-like filter */
+}
+
+.grid-item {
+    position: relative; /* For absolute positioning of the play icon */
+}
+
+.play-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3rem;
+    color: var(--color-white);
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.9;
+    cursor: pointer;
+    box-shadow: var(--glow-visuals);
+    text-shadow: 0 0 10px var(--neon-blue);
+    transition: all 0.3s ease;
+}
+
+.play-icon:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+    opacity: 1;
+    box-shadow: 0 0 20px var(--neon-blue), 0 0 40px rgba(0, 255, 255, 0.4);
+}
+
 @media (max-width: 600px) {
     .image-grid {
-        grid-template-columns: 1fr; /* Switch to single column */
         gap: 0.8rem; /* Adjust gap for single column */
     }
 
@@ -853,7 +913,7 @@ header nav ul li a.active {
 main {
     position: relative; /* Establish positioning context */
     z-index: 1; /* Above the background carousel */
-    padding-top: 60px; /* Add padding to account for fixed header */
+    padding-top: 120px; /* Add padding to account for fixed header */
 }
 
 section {
@@ -1037,122 +1097,133 @@ section {
 }
 
 /* Slide navigation arrows */
-.slide-arrow {
-    position: fixed;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 50px;
-    height: 50px;
-    background-color: rgba(0, 0, 0, 0.6);
-    color: white;
-    font-size: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 1010; /* Higher z-index to ensure clickability */
-    border-radius: 50%;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    pointer-events: auto; /* Ensure click events work */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add shadow for visibility */
-}
-
-.slide-arrow:hover {
-    background-color: rgba(0, 0, 0, 0.8);
-    transform: translateY(-50%) scale(1.1);
-    color: #fff;
-}
-
-.slide-arrow.prev {
-    left: 20px;
-}
-
-.slide-arrow.next {
-    right: 20px;
-}
-
-/* Make sure the icons inside the arrows are clickable too */
-.slide-arrow i {
-    pointer-events: none; /* This ensures clicks pass through to the parent */
-}
-
-/* REMOVE Staggered animation delays */
-/* .slideshow-image:nth-child(1) { animation-delay: 0s; } */
-/* .slideshow-image:nth-child(2) { animation-delay: 6s; } */
-/* .slideshow-image:nth-child(3) { animation-delay: 12s; } */
-/* .slideshow-image:nth-child(4) { animation-delay: 18s; } */
-/* .slideshow-image:nth-child(5) { animation-delay: 24s; } */
-/* .slideshow-image:nth-child(6) { animation-delay: 30s; } */
-/* .slideshow-image:nth-child(7) { animation-delay: 36s; } */
-/* .slideshow-image:nth-child(8) { animation-delay: 42s; } */
-
-/* REMOVE fadeCycle keyframes */
-/* @keyframes fadeCycle { */
-    /* Each image cycle: Fade in (2%), Display (10.5%), Fade out (2%) = 14.5% total */
-    /* 100% / 8 images = 12.5% duration per image */
-/*    0%   { opacity: 0; } */
-/*    2%   { opacity: 1; } */ /* Fade in for 2% of total duration (approx 1s) */
-/*    10.5% { opacity: 1; } */ /* Stay visible */
-/*    12.5% { opacity: 0; } */ /* Fade out (starts slightly before next image fades in) */
-/*    100% { opacity: 0; } */
-/* } */
-
-/* Original full-width-image style (can be removed if only used for slideshow now) */
-/* #home .full-width-image { */
-/*     width: 100%; */
-/* } */
 
 /* Portfolio Section */
+.portfolio-heading {
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+    letter-spacing: 3px;
+}
+
+/* Portfolio Categories Section */
 .portfolio-categories {
     text-align: center;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.15rem; /* Ultra minimal gap */
-    margin: 1.5rem auto 1rem auto; /* Add vertical space below header */
-    padding: 0.2rem; /* Reduced padding */
+    margin: 0 auto 2rem;
+    padding: 1rem;
     position: relative;
     z-index: 10;
-    background-color: rgba(0, 0, 0, 0.4); /* More transparent background */
-    border-radius: 3px; /* Smaller border radius */
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4); /* Enhanced shadow */
-    /* More compact width */
-    max-width: 40%; /* Further reduced width */
-    /* Grid layout for more compact arrangement */
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-    grid-gap: 0.15rem;
-    height: auto;
-    min-height: 0;
+    background-color: transparent;
+    width: 100%;
+    max-width: 50%; /* Set to 50% as per client requirements */
     box-sizing: border-box;
 }
 
-/* Hover state improvements */
+/* Filters List */
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin: 0;
+    padding: 0 0.5rem;
+    list-style: none;
+}
+
+.filters li {
+    margin: 0;
+    padding: 0;
+}
+
+/* Mobile styles for category filters */
+@media (max-width: 767px) {
+    .portfolio-categories {
+        max-width: 100%;
+        width: 90%; /* Allow it to take most of the screen width */
+        margin-bottom: 1.5rem;
+    }
+    
+    .filters {
+        display: grid; /* Use CSS grid for better layout control */
+        grid-template-columns: repeat(2, 1fr); /* Two buttons per row */
+        gap: 8px; /* Small gap between buttons */
+        width: 100%;
+        padding: 0.5rem;
+    }
+    
+    /* Remove the scrolling indicators as we're now using a grid */
+    .portfolio-categories::after {
+        display: none;
+    }
+    
+    .filters::-webkit-scrollbar {
+        display: none; /* Hide scrollbar in Chrome/Safari */
+    }
+    
+    .filters li {
+        flex: 0 0 auto; /* Prevent shrinking */
+    }
+    
+    .category-button {
+        width: auto;
+        padding: 8px 8px; /* Reduced horizontal padding */
+        font-size: 0.75rem; /* Smaller font */
+        letter-spacing: 1px;
+        white-space: nowrap;
+        min-width: 70px; /* Reduce minimum width on mobile */
+    }
+}
+
+/* Category Button Styling */
+.category-button {
+    background-color: var(--color-black);
+    color: var(--color-white);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 8px 15px;
+    margin: 0;
+    border-radius: 0;
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    min-width: 100px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
+    position: relative;
+    outline: none;
+}
+
 .category-button:hover {
-    background-color: rgba(30, 30, 30, 0.9);
+    background-color: var(--color-black);
     transform: translateY(-1px);
-    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 10px var(--color-white);
+    text-shadow: 0 0 5px var(--color-white);
 }
 
-/* Active state with better visual indication */
-.category-button.active {
-    background-color: rgba(50, 50, 50, 0.9);
-    color: #ffffff;
-    border-color: #ffffff;
+.category-button.active,
+.category-button[data-active="true"] {
+    background-color: var(--color-black);
+    color: var(--color-white);
+    box-shadow: 0 0 5px var(--color-white), 0 0 10px var(--color-white);
     transform: translateY(0);
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    text-shadow: 0 0 5px var(--color-white), 0 0 10px var(--color-white);
 }
 
-/* Color-specific styling for each category button */
+/* Category-specific styles */
 /* Live Music - Magenta/Pink */
 .category-button[data-category="live-music"] {
     border-color: #ff00ff;
 }
+
 .category-button[data-category="live-music"].active,
 .category-button[data-category="live-music"]:hover {
     box-shadow: 0 0 15px #ff00ff, 0 0 30px rgba(255, 0, 255, 0.6);
     border-color: #ff00ff;
     text-shadow: 0 0 5px #ff00ff;
+    color: #ff00ff;
 }
 
 /* Visuals - Cyan Blue */
@@ -1164,6 +1235,7 @@ section {
     box-shadow: 0 0 15px #00ffff, 0 0 30px rgba(0, 255, 255, 0.6);
     border-color: #00ffff;
     text-shadow: 0 0 5px #00ffff;
+    color: #00ffff;
 }
 
 /* Art - Green */
@@ -1175,6 +1247,7 @@ section {
     box-shadow: 0 0 15px #00ff8c, 0 0 30px rgba(0, 255, 140, 0.6);
     border-color: #00ff8c;
     text-shadow: 0 0 5px #00ff8c;
+    color: #00ff8c;
 }
 
 /* Typography - Yellow */
@@ -1186,7 +1259,10 @@ section {
     box-shadow: 0 0 15px #ffcc00, 0 0 30px rgba(255, 204, 0, 0.6);
     border-color: #ffcc00;
     text-shadow: 0 0 5px #ffcc00;
+    color: #ffcc00;
 }
+
+
 
 /* Other category styles can be added here as needed */
 
@@ -1198,10 +1274,16 @@ section {
 /* Masonry-style image grid */
 .image-grid {
     /* Base styles for all grids */
-    width: 90%; /* Increased from 70% to 90% to reduce empty space on sides */
+    width: 80%; /* Wider container for better layout */
     margin: 0 auto 1rem auto; /* Center the grid and maintain bottom margin */
     position: relative;
     z-index: 1; /* Above the background slideshow */
+    display: flex; /* Use flexbox for more reliable layout */
+    flex-wrap: wrap; /* Allow items to wrap */
+    justify-content: space-between; /* Space items evenly across the container */
+    box-shadow: none !important; /* Prevent box-shadow on container */
+    overflow: visible; /* Allow items to have overflowing effects */
+    isolation: isolate; /* Create stacking context */
 }
 
 /* Hide category grids by default (JS will show the active one) */
@@ -1216,48 +1298,47 @@ section {
 #portfolio-display .visuals-grid.active,
 #portfolio-display .art-grid.active,
 #portfolio-display .typography-grid.active {
-    display: block; /* Changed to block for Masonry */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 0 auto; /* Center the entire grid */
 }
 
 /* Grid items for masonry layout */
 .image-grid .grid-item {
-    width: calc(33.333% - 4px); /* Three columns with reduced spacing by default */
-    margin-bottom: 4px; /* Reduced bottom margin */
-    padding: 2px; /* Reduced padding */
-    break-inside: avoid;
+    width: 48%; /* Set to slightly under 50% to account for spacing */
+    margin-bottom: 20px; /* Add vertical spacing between rows */
+    padding: 2px;
     position: relative;
     overflow: visible; /* Allow glow to extend beyond boundaries */
     border-radius: 4px;
     transition: all 0.3s ease;
     background-color: rgba(0, 0, 0, 0.3);
+    display: block;
 }
 
-/* Add 4 columns on larger screens */
+/* Always maintain two columns */
 @media (min-width: 992px) {
-    .image-grid .grid-item {
-        width: calc(25% - 4px); /* Four columns on larger screens */
-    }
-}
-
-/* Add 5 columns on extra large screens */
-@media (min-width: 1400px) {
-    .image-grid .grid-item {
-        width: calc(20% - 4px); /* Five columns on extra large screens */
+    .image-grid {
+        width: 70%; /* Maintain consistent width */
+        grid-gap: 1.5rem; /* Slightly larger gap on bigger screens */
     }
 }
 
 /* Actual images and videos inside grid items */
 .image-grid .grid-item img, .image-grid .grid-item video {
     width: 100%;
-    height: auto;
+    height: auto; /* Allow natural height */
     display: block;
     border-radius: 4px;
     transition: all 0.4s ease;
     cursor: pointer;
     object-fit: cover; /* Ensures videos maintain proportions like images */
+    object-position: center; /* Added to center the image/video */
     opacity: 1;
     position: relative;
     z-index: 1;
+    max-width: 100%; /* Ensure images don't exceed container */
     /* Add subtle glow to all media items */
     box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
 }
@@ -1324,21 +1405,42 @@ section {
 
 /* Responsive adjustments */
 @media (max-width: 1200px) {
+    .image-grid {
+        grid-template-columns: repeat(2, 1fr); /* Two columns */
+    }
     .image-grid .grid-item {
-        width: calc(50% - 10px); /* Two columns */
+        width: 100%; /* Full width within its grid cell */
     }
 }
 
 @media (max-width: 768px) {
+    .image-grid {
+        width: 90%; /* Use more screen width on mobile */
+    }
     .image-grid .grid-item {
-        width: calc(50% - 8px); /* Two columns with smaller gap */
-        margin-bottom: 8px;
+        width: 48%; /* Keep consistent two-column layout */
+        margin-bottom: 15px;
     }
 }
 
 @media (max-width: 480px) {
+    .image-grid {
+        width: 95%; /* Use even more screen width on very small devices */
+    }
     .image-grid .grid-item {
-        width: 100%; /* Single column */
+        width: 48%; /* Keep consistent two-column layout */
+        margin-bottom: 10px;
+    }
+    
+    #portfolio-display {
+        max-width: 90%; /* Portfolio container width */
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column; /* Stack contents vertically */
+        box-shadow: none !important; /* Prevent any box-shadow from being applied to the container */
+        background-color: transparent !important; /* Ensure background is transparent */
     }
 }
 

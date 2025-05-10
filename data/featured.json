@@ -1,0 +1,16 @@
+{
+  "heroImages": [
+    {
+      "path": "images/portfolio/live-music/portfolio_001.jpeg",
+      "alt": "Featured live music photography"
+    },
+    {
+      "path": "images/portfolio/live-music/portfolio_002.jpeg",
+      "alt": "Featured live music photography"
+    },
+    {
+      "path": "images/portfolio/live-music/portfolio_014.jpeg",
+      "alt": "Featured live music photography"
+    }
+  ]
+}
