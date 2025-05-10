@@ -455,6 +455,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 img.alt = `${category.replace('-', ' ')} photo`; // Dynamic alt text
                 img.classList.add('fade-in'); // Add class for scroll animation
                 
+                // Add error handling for images that fail to load
+                img.onerror = function() {
+                    console.error(`Failed to load image: ${mediaPath}`);
+                    gridItem.remove(); // Remove the grid item if image fails to load
+                    if (gridElement.msnry) {
+                        gridElement.msnry.layout(); // Re-layout the grid
+                    }
+                };
+                
                 // Create a preloader to prevent reflow during masonry initialization
                 const imgLoader = new Image();
                 imgLoader.onload = function() {
