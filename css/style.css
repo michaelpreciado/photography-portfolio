@@ -913,11 +913,11 @@ header nav ul li a.active {
 main {
     position: relative; /* Establish positioning context */
     z-index: 1; /* Above the background carousel */
-    padding-top: 120px; /* Add padding to account for fixed header */
+    padding-top: 50px; /* Significantly reduced padding to move content higher */
 }
 
 section {
-    padding: 2rem;
+    padding: 1rem 2rem; /* Reduced top/bottom padding */
     min-height: 100vh; /* Full viewport height sections */
     position: relative; /* Ensure proper stacking */
     z-index: 1; /* Above the background slideshow */
@@ -1110,8 +1110,8 @@ section {
 /* Portfolio Categories Section */
 .portfolio-categories {
     text-align: center;
-    margin: 0 auto 2rem;
-    padding: 1rem;
+    margin: 0 auto 1rem; /* Reduced bottom margin */
+    padding: 0.5rem; /* Reduced padding */
     position: relative;
     z-index: 10;
     background-color: transparent;
@@ -1126,9 +1126,9 @@ section {
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 1rem;
+    gap: 0.5rem; /* Reduced gap between filter buttons */
     margin: 0;
-    padding: 0 0.5rem;
+    padding: 0;
     list-style: none;
 }
 
@@ -1275,7 +1275,7 @@ section {
 .image-grid {
     /* Base styles for all grids */
     width: 80%; /* Wider container for better layout */
-    margin: 0 auto 1rem auto; /* Center the grid and maintain bottom margin */
+    margin: 0 auto 0.5rem auto; /* Reduced bottom margin */
     position: relative;
     z-index: 1; /* Above the background slideshow */
     display: flex; /* Use flexbox for more reliable layout */
@@ -1284,6 +1284,7 @@ section {
     box-shadow: none !important; /* Prevent box-shadow on container */
     overflow: visible; /* Allow items to have overflowing effects */
     isolation: isolate; /* Create stacking context */
+    padding-top: 0; /* Remove any top padding */
 }
 
 /* Hide category grids by default (JS will show the active one) */
