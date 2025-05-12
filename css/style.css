@@ -329,17 +329,18 @@ header nav ul li a.active {
     flex-direction: column; /* Stack image and title vertically for all sizes */
     align-items: center; /* Center items vertically */
     justify-content: center;
-    z-index: 10; /* Ensure it's above other elements */
+    z-index: 5; /* Lower z-index so it doesn't capture clicks meant for category buttons */
     transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     /* Use absolute positioning to center in the header per user preference */
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    top: 50%; /* Center vertically */
-    margin-top: -3px; /* Fine-tune vertical alignment */
+    top: 0; /* Align to top instead of vertical center */
     /* Add subtle hover effect optimization */
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
+    /* Ensure clickable area is properly contained */
+    pointer-events: none; /* Make the container non-interactive */
 }
 
 .header-logo-link:hover .header-logo-title {
@@ -348,10 +349,10 @@ header nav ul li a.active {
 }
 
 .header-title {
-    font-size: 2.8rem; /* Adjusted size for better proportions */
+    font-size: 2.5rem; /* Slightly reduced size */
     font-weight: bold;
     white-space: nowrap; /* Prevent wrapping */
-    margin: 0; /* Remove default margins */
+    margin: 0 0 15px 0; /* Add bottom margin to create space between title and categories */
     /* Enhanced rainbow gradient effect */
     background: linear-gradient(to right, var(--neon-pink), var(--neon-blue), var(--neon-green), var(--neon-yellow)); 
     -webkit-background-clip: text;
@@ -361,14 +362,15 @@ header nav ul li a.active {
     letter-spacing: 2px; /* Increased letter spacing for better readability */
     font-family: var(--font-primary); /* Use our design token */
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.2); /* Enhanced glow effect */
+    pointer-events: auto; /* Make the text clickable */
 }
 
 /* Header decoration image styles */
 .header-decoration-image {
     height: auto;
     width: auto;
-    max-height: 180px;
-    max-width: 180px;
+    max-height: 2.5rem; /* Match the font size of the title (2.5rem) */
+    max-width: 100%; /* Allow width to adjust proportionally */
     margin-right: 0;
     margin-bottom: 0.5rem;
     object-fit: contain;
@@ -377,6 +379,7 @@ header nav ul li a.active {
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
+    pointer-events: auto; /* Make the image clickable */
 }
 
 /* Mobile Menu Toggle Button (Hamburger) */
@@ -1110,26 +1113,29 @@ section {
 /* Portfolio Categories Section */
 .portfolio-categories {
     text-align: center;
-    margin: 0 auto 1rem; /* Reduced bottom margin */
-    padding: 0.5rem; /* Reduced padding */
+    margin: 1rem auto 2rem auto;
+    padding: 0.5rem;
     position: relative;
     z-index: 10;
     background-color: transparent;
-    width: 100%;
-    max-width: 50%; /* Set to 50% as per client requirements */
+    width: 50%;
+    max-width: 800px;
     box-sizing: border-box;
 }
 
 /* Filters List */
 .filters {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
-    align-items: center;
-    gap: 0.5rem; /* Reduced gap between filter buttons */
-    margin: 0;
-    padding: 0;
-    list-style: none;
+    flex-wrap: wrap;
+    gap: 1rem;
+    width: 100%;
+    padding-top: 1rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    position: relative;
 }
 
 .filters li {
@@ -1140,36 +1146,24 @@ section {
 /* Mobile styles for category filters */
 @media (max-width: 767px) {
     .portfolio-categories {
-        max-width: 100%;
-        width: 90%; /* Allow it to take most of the screen width */
-        margin-bottom: 1.5rem;
+        width: 95%;
+        padding: 0 0.5rem;
+        margin-top: 2rem;
     }
     
     .filters {
-        display: grid; /* Use CSS grid for better layout control */
-        grid-template-columns: repeat(2, 1fr); /* Two buttons per row */
-        gap: 8px; /* Small gap between buttons */
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        gap: 12px;
         width: 100%;
         padding: 0.5rem;
     }
     
-    /* Remove the scrolling indicators as we're now using a grid */
-    .portfolio-categories::after {
-        display: none;
-    }
-    
-    .filters::-webkit-scrollbar {
-        display: none; /* Hide scrollbar in Chrome/Safari */
-    }
-    
     .filters li {
-        flex: 0 0 auto; /* Prevent shrinking */
-    }
-    
-    .category-button {
-        width: auto;
-        padding: 8px 8px; /* Reduced horizontal padding */
-        font-size: 0.75rem; /* Smaller font */
+        flex: 0 0 auto;
+        margin: 0 4px;
+        position: relative;
+        z-index: 10;
         letter-spacing: 1px;
         white-space: nowrap;
         min-width: 70px; /* Reduce minimum width on mobile */
@@ -1181,9 +1175,9 @@ section {
     background-color: var(--color-black);
     color: var(--color-white);
     border: 1px solid rgba(255, 255, 255, 0.3);
-    padding: 8px 15px;
-    margin: 0;
-    border-radius: 0;
+    padding: 10px 20px; /* Increased padding for larger click target */
+    margin: 4px 4px; /* Added margin around buttons */
+    border-radius: 4px; /* Added slight border radius */
     font-family: var(--font-primary);
     font-size: 1rem;
     cursor: pointer;
@@ -1194,6 +1188,7 @@ section {
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
     position: relative;
     outline: none;
+    z-index: 10; /* Ensure buttons are clickable */
 }
 
 .category-button:hover {
