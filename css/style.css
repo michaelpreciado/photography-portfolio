@@ -2063,3 +2063,29 @@ body.portfolio-page::after {
     width: 100% !important;
   }
 }
+
+/* --- Header responsive tweaks for medium-width screens (tablets / small laptops) --- */
+@media (max-width: 1100px) and (min-width: 769px) {
+    /* Give header a bit more breathing room horizontally */
+    .header-container {
+        width: 90%; /* Was 80% – use more width so nav items shift outward */
+    }
+
+    /* Scale down the vinyl-disc graphic so it doesn't cover nav items */
+    .header-decoration-image {
+        max-height: 2rem; /* ~32px */
+    }
+
+    /* Slightly smaller rainbow name */
+    .header-title {
+        font-size: 2rem;
+    }
+
+    /* Compress desktop-nav typography & spacing */
+    .desktop-nav ul li a {
+        font-size: 1rem; /* Was 1.2rem */
+        margin: 0 4px;
+        padding: 0 6px 2px;
+        letter-spacing: 0.5px;
+    }
+}
