@@ -335,7 +335,7 @@ header nav ul li a.active {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    top: 0; /* Align to top instead of vertical center */
+    top: 35px; /* push below nav row */
     /* Add subtle hover effect optimization */
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
@@ -767,6 +767,7 @@ header nav ul li a.active {
         flex-direction: column;
         align-items: center;
         margin: 0;
+        top: 60px; /* push further on small screens */
     }
     
     /* Adjust logo size for mobile */
