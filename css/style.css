@@ -2007,47 +2007,54 @@ body.portfolio-page::after {
 
 /* === Mobile layout fixes === */
 @media (max-width: 600px) {
-  /* Two-column grid for images */
-  .image-grid {
-    display: grid !important; /* override flex */
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem; /* Increased padding between images */
-    justify-items: center;
+  /* Center the portfolio display container */
+  #portfolio-display {
+    width: 95%;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 1rem 0;
   }
-  .image-grid .grid-item,
-  .image-grid.active .grid-item { /* Override global style for active items */
-    width: 100% !important; /* let grid control item width */
-    margin-bottom: 0; /* gap now handled by grid */
+
+  /* Two-column grid for images with proper spacing */
+  .image-grid.active {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem; /* Increased gap to prevent overlap */
+    justify-content: center;
+    width: 100%;
+    margin: 0 auto;
+  }
+  
+  /* Hide inactive grids */
+  .image-grid:not(.active) {
+    display: none !important;
+  }
+  
+  .image-grid.active .grid-item {
+    width: 100% !important; /* Full width within grid cell */
+    margin-bottom: 0; /* Remove margin, use grid gap */
+    padding: 0; /* Remove any padding that might cause overlap */
+  }
+
+  /* Ensure images fit properly within their containers */
+  .image-grid.active .grid-item img,
+  .image-grid.active .grid-item video {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    display: block;
   }
 
   /* Tidy up category filters */
-  .portfolio-categories .filters {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.5rem;
-  }
-  .portfolio-categories .filters li {
-    flex: 0 1 45%; /* roughly two per row */
-  }
-  .portfolio-categories .filters li .category-button {
-    width: 100%;
-  }
-}
-
-/* === Extra polish for narrow portrait (≤600px) === */
-@media (max-width: 600px) {
-  /* Center the entire categories block */
   .portfolio-categories {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 1.5rem auto;
-    width: 100%;
+    margin: 1.5rem auto 2rem;
+    width: 95%;
     max-width: 400px;
   }
-
-  /* Align filter buttons in two neat columns */
+  
   .portfolio-categories .filters {
     display: flex;
     flex-wrap: wrap;
@@ -2055,27 +2062,21 @@ body.portfolio-page::after {
     gap: 0.75rem;
     width: 100%;
   }
+  
   .portfolio-categories .filters li {
     flex: 0 1 48%;
     display: flex;
     justify-content: center;
   }
+  
   .portfolio-categories .filters li .category-button {
     width: 100%;
-    min-width: 0; /* allow shrink */
+    min-width: 0;
     padding: 0.55rem 0.8rem;
   }
-
-  /* Keep image grids nicely centered */
-  #portfolio-display {
-    width: 100%;
-    max-width: 480px;
-    margin: 0 auto;
-  }
-  .image-grid {
-    width: 100% !important;
-  }
 }
+
+
 
 /* --- Header responsive tweaks for medium-width screens (tablets / small laptops) --- */
 @media (max-width: 1100px) and (min-width: 769px) {
@@ -2109,13 +2110,4 @@ body.portfolio-page::after {
 }
 #portfolio-display .image-grid.active {
     display: grid !important; /* visible grid */
-}
-.image-grid.active {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.6rem;
-    justify-items: center;
-}
-.image-grid.active .grid-item {
-    width: 48% !important; /* two columns */
-    margin-bottom: 0; /* gap now handled by grid */
 }
