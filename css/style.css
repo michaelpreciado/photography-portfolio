@@ -1322,9 +1322,7 @@ section {
 
 /* Specific grid display rules (handled by JS adding .active) */
 #portfolio-display .live-music-grid.active,
-#portfolio-display .visuals-grid.active,
-#portfolio-display .art-grid.active,
-#portfolio-display .typography-grid.active {
+#portfolio-display .visuals-grid.active {
     display: grid; /* Use grid instead of flex */
     grid-template-columns: repeat(2, 1fr); /* Always 2 columns */
     gap: 2.5rem; /* Increased spacing */
@@ -1400,21 +1398,7 @@ section {
     box-shadow: 0 0 15px #00ffff, 0 0 30px rgba(0, 255, 255, 0.4);
 }
 
-/* Art - Green */
-.art-grid .grid-item img {
-    box-shadow: 0 0 8px rgba(0, 255, 140, 0.3);
-}
-.art-grid .grid-item:hover img {
-    box-shadow: 0 0 15px #00ff8c, 0 0 30px rgba(0, 255, 140, 0.4);
-}
 
-/* Typography - Yellow */
-.typography-grid .grid-item img {
-    box-shadow: 0 0 8px rgba(255, 204, 0, 0.3);
-}
-.typography-grid .grid-item:hover img {
-    box-shadow: 0 0 15px #ffcc00, 0 0 30px rgba(255, 204, 0, 0.4);
-}
 
 /* Glitch Art - Red/Purple */
 .glitch-art-grid .grid-item img {
@@ -2003,8 +1987,6 @@ header {
 /* Category-specific glow variables */
 .live-music-grid .grid-item { --glowColor: #ff00ff; }
 .visuals-grid    .grid-item { --glowColor: #00ffff; }
-.art-grid        .grid-item { --glowColor: #00ff8c; }
-.typography-grid .grid-item { --glowColor: #ffcc00; }
 
 /* Ambient colourful backdrop that mimics gallery lighting */
 body.portfolio-page::after {

@@ -258,14 +258,18 @@ document.addEventListener('DOMContentLoaded', () => {
             'images/portfolio/live-music/portfolio_004.jpg',
             'images/portfolio/live-music/portfolio_005.jpeg',
             'images/portfolio/live-music/portfolio_007.JPG',
+            'images/portfolio/live-music/portfolio_008.jpg', // Moved from Art
             'images/portfolio/live-music/portfolio_009.jpg',
+            'images/portfolio/live-music/portfolio_010.jpg', // Moved from Typography
             'images/portfolio/live-music/portfolio_011.JPG',
             'images/portfolio/live-music/portfolio_012.JPG',
+            'images/portfolio/live-music/portfolio_013.jpg', // Moved from Art
+            'images/portfolio/live-music/portfolio_015.jpeg', // Moved from Typography
             'images/portfolio/live-music/portfolio_016.jpeg',
             'images/portfolio/live-music/portfolio_017.jpg',
         ],
         'visuals': [
-            // Only keep videos that are under GitHub’s 100 MB limit and exist in the repo
+            // Only keep videos that are under GitHub's 100 MB limit and exist in the repo
             'images/portfolio/Visuals/01.mp4',
             'images/portfolio/Visuals/02.mp4',
             'images/portfolio/Visuals/03.mp4',
@@ -276,14 +280,6 @@ document.addEventListener('DOMContentLoaded', () => {
             'images/portfolio/Visuals/15.mp4',
             'images/portfolio/Visuals/16.mp4',
             'images/portfolio/Visuals/17.mp4',
-        ],
-        'art': [
-            'images/portfolio/live-music/portfolio_008.jpg',
-            'images/portfolio/live-music/portfolio_013.jpg',
-        ],
-        'typography': [
-            'images/portfolio/live-music/portfolio_010.jpg',
-            'images/portfolio/live-music/portfolio_015.jpeg',
         ]
     };
 
