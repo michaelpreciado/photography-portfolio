@@ -1280,9 +1280,10 @@ section {
     margin: 0 auto 0.5rem auto; /* Reduced bottom margin */
     position: relative;
     z-index: 1; /* Above the background slideshow */
-    display: flex; /* Use flexbox for more reliable layout */
-    flex-wrap: wrap; /* Allow items to wrap */
-    justify-content: space-between; /* Space items evenly across the container */
+    display: grid; /* Always use grid layout */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive columns with minimum 2 */
+    gap: 1.5rem; /* Consistent spacing */
+    justify-content: center;
     box-shadow: none !important; /* Prevent box-shadow on container */
     overflow: visible; /* Allow items to have overflowing effects */
     isolation: isolate; /* Create stacking context */
@@ -1290,6 +1291,22 @@ section {
     opacity: 0;
     transition: opacity 0.5s ease;
 }
+
+/* Ensure minimum 2 columns on larger screens */
+@media (min-width: 768px) {
+    .image-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        min-grid-template-columns: repeat(2, 1fr); /* Force minimum 2 columns */
+    }
+}
+
+/* Force exactly 2 columns on all screens */
+@media (min-width: 480px) {
+    .image-grid {
+        grid-template-columns: repeat(2, 1fr); /* Always 2 columns */
+    }
+}
+
 .image-grid.loaded {
     opacity: 1;
 }
@@ -1306,16 +1323,17 @@ section {
 #portfolio-display .visuals-grid.active,
 #portfolio-display .art-grid.active,
 #portfolio-display .typography-grid.active {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    display: grid; /* Use grid instead of flex */
+    grid-template-columns: repeat(2, 1fr); /* Always 2 columns */
+    gap: 1.5rem;
+    justify-content: center;
     margin: 0 auto; /* Center the entire grid */
 }
 
 /* Grid items for masonry layout */
 .image-grid .grid-item {
-    width: 48%; /* Set to slightly under 50% to account for spacing */
-    margin-bottom: 20px; /* Add vertical spacing between rows */
+    width: 100%; /* Full width within grid cell */
+    margin-bottom: 0; /* Remove margin, use grid gap */
     padding: 2px;
     position: relative;
     overflow: visible; /* Allow glow to extend beyond boundaries */
@@ -1329,7 +1347,8 @@ section {
 @media (min-width: 992px) {
     .image-grid {
         width: 70%; /* Maintain consistent width */
-        grid-gap: 1.5rem; /* Slightly larger gap on bigger screens */
+        grid-template-columns: repeat(2, 1fr); /* Always 2 columns */
+        gap: 1.5rem; /* Slightly larger gap on bigger screens */
     }
 }
 
@@ -1415,9 +1434,11 @@ section {
 @media (max-width: 1200px) {
     .image-grid {
         grid-template-columns: repeat(2, 1fr); /* Two columns */
+        gap: 1.5rem;
+        width: 80%;
     }
     .image-grid .grid-item {
-        width: 48%; /* Two-column flex layout */
+        width: 100%; /* Full width within grid cell */
     }
 }
 
@@ -1426,7 +1447,7 @@ section {
         width: 90%; /* Use more screen width on mobile */
         grid-template-columns: repeat(2, 1fr); /* Enforce two columns */
         display: grid; /* Use grid for consistent layout */
-        gap: 15px; /* Add spacing between items */
+        gap: 1.5rem; /* Consistent spacing */
         margin: 0 auto; /* Center the grid */
     }
     .image-grid .grid-item {
@@ -1438,7 +1459,8 @@ section {
 @media (max-width: 480px) {
     .image-grid {
         width: 95%; /* Use even more screen width on very small devices */
-        gap: 10px; /* Adjust gap for smaller screens */
+        grid-template-columns: repeat(2, 1fr); /* Always 2 columns even on small screens */
+        gap: 1.5rem; /* Consistent spacing */
     }
     .image-grid .grid-item {
         width: 100%; /* Let grid control the width */
