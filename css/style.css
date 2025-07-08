@@ -2019,7 +2019,7 @@ body.portfolio-page::after {
   .image-grid.active {
     display: grid !important;
     grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem; /* Increased gap for more space between images */
+    gap: 2rem; /* Increased gap for maximum space between images */
     justify-content: center;
     width: 100%;
     margin: 0 auto;
