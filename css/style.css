@@ -1229,6 +1229,7 @@ section {
 .category-button[data-category="visuals"]:hover {
     box-shadow: 0 0 15px #00ffff, 0 0 30px rgba(0, 255, 255, 0.6);
     border-color: #00ffff;
+    background-color: rgba(0, 255, 255, 0.12); /* subtle cyan fill */
     text-shadow: 0 0 5px #00ffff;
     color: #00ffff;
 }
