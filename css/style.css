@@ -1410,7 +1410,7 @@ section {
         grid-template-columns: repeat(2, 1fr); /* Two columns */
     }
     .image-grid .grid-item {
-        width: 100%; /* Full width within its grid cell */
+        width: 48%; /* Two-column flex layout */
     }
 }
 
