@@ -536,6 +536,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Store masonry instance for future reference (may be null on mobile)
         gridElement.msnry = msnry;
+
+        // Relayout on window resize (once per grid)
+        if (!gridElement.dataset.resizeBound) {
+            window.addEventListener('resize', debounce(() => {
+                msnry.layout();
+            }, 150));
+            gridElement.dataset.resizeBound = 'true';
+        }
         
         // Mark grid as loaded
         gridElement.dataset.loaded = true;
