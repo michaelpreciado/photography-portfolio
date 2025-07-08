@@ -2105,6 +2105,6 @@ body.portfolio-page::after {
     justify-items: center;
 }
 .image-grid.active .grid-item {
-    width: 100% !important; /* full width inside the grid cell */
+    width: 48% !important; /* two columns */
     margin-bottom: 0; /* gap now handled by grid */
 }
