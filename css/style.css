@@ -1426,20 +1426,23 @@ section {
         width: 90%; /* Use more screen width on mobile */
         grid-template-columns: repeat(2, 1fr); /* Enforce two columns */
         display: grid; /* Use grid for consistent layout */
+        gap: 15px; /* Add spacing between items */
+        margin: 0 auto; /* Center the grid */
     }
     .image-grid .grid-item {
         width: 100%; /* Let grid control the width */
-        margin-bottom: 15px;
+        margin-bottom: 0; /* Remove bottom margin as gap is used now */
     }
 }
 
 @media (max-width: 480px) {
     .image-grid {
         width: 95%; /* Use even more screen width on very small devices */
+        gap: 10px; /* Adjust gap for smaller screens */
     }
     .image-grid .grid-item {
         width: 100%; /* Let grid control the width */
-        margin-bottom: 10px;
+        margin-bottom: 0; /* Remove bottom margin */
     }
     
     #portfolio-display {
@@ -2008,11 +2011,12 @@ body.portfolio-page::after {
   .image-grid {
     display: grid !important; /* override flex */
     grid-template-columns: repeat(2, 1fr);
-    gap: 0.6rem;
+    gap: 1rem; /* Increased padding between images */
     justify-items: center;
   }
-  .image-grid .grid-item {
-    width: 100% !important; /* full width inside the grid cell */
+  .image-grid .grid-item,
+  .image-grid.active .grid-item { /* Override global style for active items */
+    width: 100% !important; /* let grid control item width */
     margin-bottom: 0; /* gap now handled by grid */
   }
 
