@@ -505,31 +505,23 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Initialize Masonry layout on larger screens only
-        let msnry = null;
-        if (!isSmallScreen) {
-            msnry = new Masonry(gridElement, {
-                itemSelector: '.grid-item',
-                columnWidth: '.grid-item',
-                percentPosition: true,
-                gutter: 16,
-                horizontalOrder: false,
-                transitionDuration: '0.3s'
-            });
+        // Initialize Masonry layout on all screens (previously skipped on small)
+        const msnry = new Masonry(gridElement, {
+            itemSelector: '.grid-item',
+            columnWidth: '.grid-item',
+            percentPosition: true,
+            gutter: 16,
+            horizontalOrder: false,
+            transitionDuration: '0.3s'
+        });
 
-            // Recalculate layout after images load
-            imagesLoaded(gridElement).on('always', function() {
-                msnry.layout();
-                gridElement.classList.add('loaded');
-            }).on('progress', function() {
-                msnry.layout();
-            });
-        } else {
-            // Simple fade-in once images are loaded (no Masonry)
-            imagesLoaded(gridElement).on('always', function() {
-                gridElement.classList.add('loaded');
-            });
-        }
+        // Recalculate layout after images (or videos) load
+        imagesLoaded(gridElement).on('always', function() {
+            msnry.layout();
+            gridElement.classList.add('loaded');
+        }).on('progress', function() {
+            msnry.layout();
+        });
         
         // For videos, ensure layout is refreshed once they're loaded
         const videos = gridElement.querySelectorAll('video');
