@@ -425,9 +425,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Add loaded data event
                 video.addEventListener('loadeddata', function() {
                     console.log('Video loaded successfully');
-                    if (gridElement.msnry) {
-                        gridElement.msnry.layout();
-                    }
+                    // CSS Grid handles layout automatically
                 });
                 
                 // Prevent right-click menu
@@ -472,29 +470,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 img.onerror = function() {
                     console.error(`Failed to load image: ${mediaPath}`);
                     gridItem.remove(); // Remove the grid item if image fails to load
-                    if (gridElement.msnry) {
-                        gridElement.msnry.layout(); // Re-layout the grid
-                    }
+                    // CSS Grid handles layout automatically
                 };
                 
-                // Create a preloader to prevent reflow during masonry initialization
-                const imgLoader = new Image();
-                imgLoader.onload = function() {
-                    // Once image is loaded, set proper dimensions
-                    // For varied layouts, we can randomly adjust sizes for some images
-                    if (Math.random() > 0.7) { // 30% of images will get special treatment
-                        if (imgLoader.width > imgLoader.height) {
-                            // Landscape image - can span 2 columns occasionally
-                            if (Math.random() > 0.5) {
-                                gridItem.style.width = 'calc(66.666% - 10px)'; // Two column width with gap
-                            }
-                        } else if (imgLoader.height > imgLoader.width * 1.5) {
-                            // Very tall portrait image - might need special handling
-                            img.style.maxHeight = '500px'; // Limit very tall images
-                        }
-                    }
-                };
-                imgLoader.src = mediaPath;
+                // Let CSS Grid handle all sizing and positioning
+                // No need for manual width adjustments
                 
                 // Add the image to the grid item
                 gridItem.appendChild(img);
@@ -505,46 +485,23 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Initialize Masonry layout on all screens (previously skipped on small)
-        const msnry = new Masonry(gridElement, {
-            itemSelector: '.grid-item',
-            columnWidth: '.grid-item',
-            percentPosition: true,
-            gutter: 16,
-            horizontalOrder: false,
-            transitionDuration: '0.3s'
-        });
-
-        // Recalculate layout after images (or videos) load
-        imagesLoaded(gridElement).on('always', function() {
-            msnry.layout();
-            gridElement.classList.add('loaded');
-        }).on('progress', function() {
-            msnry.layout();
-        });
+        // Don't initialize Masonry - use pure CSS Grid instead
+        // The CSS Grid layout will handle the two-column display
         
-        // For videos, ensure layout is refreshed once they're loaded
-        const videos = gridElement.querySelectorAll('video');
-        videos.forEach(video => {
-            video.addEventListener('loadeddata', function() {
-                msnry.layout();
-            });
-        });
+        // Simply mark as loaded and trigger fade-in
+        gridElement.classList.add('loaded');
 
         // Observe newly added images for fade-in animation
         observeFadeInElements();
 
-        // Store masonry instance for future reference (may be null on mobile)
-        gridElement.msnry = msnry;
+        // For videos, ensure they start playing if appropriate
+        const videos = gridElement.querySelectorAll('video');
+        videos.forEach(video => {
+            video.addEventListener('loadeddata', function() {
+                // No need to call masonry layout since we're using CSS Grid
+            });
+        });
 
-        // Relayout on window resize (once per grid)
-        if (!gridElement.dataset.resizeBound) {
-            window.addEventListener('resize', debounce(() => {
-                msnry.layout();
-            }, 150));
-            gridElement.dataset.resizeBound = 'true';
-        }
-        
         // Mark grid as loaded
         gridElement.dataset.loaded = true;
     }
