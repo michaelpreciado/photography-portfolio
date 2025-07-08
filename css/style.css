@@ -920,6 +920,11 @@ main {
     padding-top: 50px; /* Significantly reduced padding to move content higher */
 }
 
+/* Ensure content begins below the logo on all inner pages */
+body:not(.home-page) main {
+    padding-top: 150px; /* header (70) + logo offset (35)+ some margin */
+}
+
 section {
     padding: 1rem 2rem; /* Reduced top/bottom padding */
     min-height: 100vh; /* Full viewport height sections */
