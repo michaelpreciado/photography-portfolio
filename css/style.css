@@ -2090,3 +2090,20 @@ body.portfolio-page::after {
         letter-spacing: 0.5px;
     }
 }
+
+/* Hide all grids by default, show only active */
+#portfolio-display .image-grid {
+    display: none !important;
+}
+#portfolio-display .image-grid.active {
+    display: grid !important; /* visible grid */
+}
+.image-grid.active {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.6rem;
+    justify-items: center;
+}
+.image-grid.active .grid-item {
+    width: 100% !important; /* full width inside the grid cell */
+    margin-bottom: 0; /* gap now handled by grid */
+}
