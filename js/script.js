@@ -7,6 +7,8 @@
 
 // Check for reduced motion preference
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+// Detect small (mobile) screens – iPhone 12 Pro is 390 px wide in portrait, 844 px tall
+const isSmallScreen = window.matchMedia('(max-width: 767px)').matches;
 
 // Set CSS custom property for viewport height (iOS fix)
 function setVHVariable() {
@@ -253,10 +255,10 @@ document.addEventListener('DOMContentLoaded', () => {
         'live-music': [
             'images/portfolio/live-music/portfolio_001.jpeg',
             'images/portfolio/live-music/portfolio_002.jpeg',
-            'images/portfolio/live-music/portfolio_003.jpeg',
+            // Removed 003 – file not present
             'images/portfolio/live-music/portfolio_004.jpg',
             'images/portfolio/live-music/portfolio_005.jpeg',
-            'images/portfolio/live-music/portfolio_006.JPG',
+            // Removed 006 – file not present
             'images/portfolio/live-music/portfolio_007.JPG',
             'images/portfolio/live-music/portfolio_008.jpg',
             'images/portfolio/live-music/portfolio_009.jpg',
@@ -264,18 +266,29 @@ document.addEventListener('DOMContentLoaded', () => {
             'images/portfolio/live-music/portfolio_011.JPG',
             'images/portfolio/live-music/portfolio_012.JPG',
             'images/portfolio/live-music/portfolio_013.jpg',
-            'images/portfolio/live-music/portfolio_014.jpeg',
+            // Removed 014 – file not present
             'images/portfolio/live-music/portfolio_015.jpeg',
             'images/portfolio/live-music/portfolio_016.jpeg',
             'images/portfolio/live-music/portfolio_017.jpg',
         ],
         'visuals': [
-            // Combined category for Videography, Glitch Art, and Liquid Lights
-            'images/portfolio/Visuals/SF.mp4', // Video file
-            // Adding some images from live-music as placeholders for testing
-            'images/portfolio/live-music/portfolio_001.jpeg',
-            'images/portfolio/live-music/portfolio_005.jpeg',
-            'images/portfolio/live-music/portfolio_008.jpg',
+            'images/portfolio/Visuals/01.mp4',
+            'images/portfolio/Visuals/02.mp4',
+            'images/portfolio/Visuals/03.mp4',
+            'images/portfolio/Visuals/04.mp4',
+            'images/portfolio/Visuals/05.mp4',
+            'images/portfolio/Visuals/06.mp4',
+            'images/portfolio/Visuals/07.mp4',
+            'images/portfolio/Visuals/08.mp4',
+            'images/portfolio/Visuals/09.mp4',
+            'images/portfolio/Visuals/10.mp4',
+            'images/portfolio/Visuals/11.mp4',
+            'images/portfolio/Visuals/12.mp4',
+            'images/portfolio/Visuals/13.mp4',
+            'images/portfolio/Visuals/14.mp4',
+            'images/portfolio/Visuals/15.mp4',
+            'images/portfolio/Visuals/16.mp4',
+            'images/portfolio/Visuals/17.mp4',
         ],
         'art': [
             // Add paths for Art images here later
@@ -400,11 +413,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Create video element for video files
                 const video = document.createElement('video');
                 video.src = mediaPath;
-                video.autoplay = true;
+                // On small screens, avoid heavy autoplay to save battery & CPU
+                if (!isSmallScreen) {
+                    video.autoplay = true;
+                }
                 video.loop = true;
                 video.muted = true;
                 video.playsInline = true;
-                video.preload = 'auto';
+                video.preload = isSmallScreen ? 'metadata' : 'auto';
                 video.width = 320; // Set default width
                 video.height = 240; // Set default height
                 video.classList.add('fade-in');
@@ -434,7 +450,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Add video to grid item
                 gridItem.appendChild(video);
                 mediaElements.push(video);
-                
+
+                // Observe for play/pause based on viewport visibility
+                initVideoObserver();
+                videoObserver.observe(video);
+
                 // Add click event for showing video in modal
                 gridItem.addEventListener('click', function() {
                     showModal(mediaPath, `${category.replace('-', ' ')} video`);
@@ -443,15 +463,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Add the grid item to the grid
                 gridElement.appendChild(gridItem);
                 
-                // Force video to play
-                setTimeout(() => {
-                    video.play().catch(e => console.error('Video play error:', e));
-                }, 100);
+                // Force video to play only on larger screens
+                if (!isSmallScreen) {
+                    setTimeout(() => {
+                        video.play().catch(e => console.error('Video play error:', e));
+                    }, 100);
+                }
                 
             } else {
                 // Create and configure the image as before
                 const img = document.createElement('img');
                 img.src = mediaPath;
+                img.loading = 'lazy';
+                img.fetchPriority = 'low';
                 img.alt = `${category.replace('-', ' ')} photo`; // Dynamic alt text
                 img.classList.add('fade-in'); // Add class for scroll animation
                 
@@ -492,21 +516,31 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Initialize Masonry layout once all media items are added
-        const msnry = new Masonry(gridElement, {
-            itemSelector: '.grid-item',
-            columnWidth: '.grid-item',
-            percentPosition: true,
-            gutter: 4, // Reduced space between items from 10px to 4px
-            horizontalOrder: false, // For a more varied layout
-            transitionDuration: '0.3s' // Slightly faster transitions
-        });
+        // Initialize Masonry layout on larger screens only
+        let msnry = null;
+        if (!isSmallScreen) {
+            msnry = new Masonry(gridElement, {
+                itemSelector: '.grid-item',
+                columnWidth: '.grid-item',
+                percentPosition: true,
+                gutter: 16,
+                horizontalOrder: false,
+                transitionDuration: '0.3s'
+            });
 
-        // Use imagesLoaded to recalculate layout after all images have loaded
-        imagesLoaded(gridElement).on('progress', function() {
-            // Layout Masonry after each image loads
-            msnry.layout();
-        });
+            // Recalculate layout after images load
+            imagesLoaded(gridElement).on('always', function() {
+                msnry.layout();
+                gridElement.classList.add('loaded');
+            }).on('progress', function() {
+                msnry.layout();
+            });
+        } else {
+            // Simple fade-in once images are loaded (no Masonry)
+            imagesLoaded(gridElement).on('always', function() {
+                gridElement.classList.add('loaded');
+            });
+        }
         
         // For videos, ensure layout is refreshed once they're loaded
         const videos = gridElement.querySelectorAll('video');
@@ -519,7 +553,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Observe newly added images for fade-in animation
         observeFadeInElements();
 
-        // Store masonry instance for future reference
+        // Store masonry instance for future reference (may be null on mobile)
         gridElement.msnry = msnry;
         
         // Mark grid as loaded
@@ -715,16 +749,30 @@ document.addEventListener('DOMContentLoaded', () => {
             modalNextButton.style.display = 'none'; // Hide buttons
             activeCategoryImages = []; // Clear the array when modal closes
             currentModalImageIndex = -1;
+            const videoEl = document.getElementById('modalVideo');
+            if (videoEl) {
+                videoEl.pause();
+                videoEl.src = '';
+                videoEl.style.display = 'none';
+            }
+            modalImage.style.display = 'block';
         });
 
-        // Close modal when clicking outside the image content
+        // Close modal when clicking outside the image/content area
         modal.addEventListener('click', (event) => {
-            if (event.target === modal) { // Only close if the click is on the modal background itself
+            if (event.target === modal) {
                 modal.classList.remove('visible');
-                modalPrevButton.style.display = 'none'; // Hide buttons
-                modalNextButton.style.display = 'none'; // Hide buttons
-                activeCategoryImages = []; // Clear the array when modal closes
+                modalPrevButton.style.display = 'none';
+                modalNextButton.style.display = 'none';
+                activeCategoryImages = [];
                 currentModalImageIndex = -1;
+                const videoEl = document.getElementById('modalVideo');
+                if (videoEl) {
+                    videoEl.pause();
+                    videoEl.src = '';
+                    videoEl.style.display = 'none';
+                }
+                modalImage.style.display = 'block';
             }
         });
 
@@ -885,3 +933,54 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+// --- Helper: Modal for videos --- //
+function showModal(mediaPath, altText = '') {
+    if (!modal) return;
+    // Hide image element, show / create video element
+    let videoEl = document.getElementById('modalVideo');
+    if (!videoEl) {
+        videoEl = document.createElement('video');
+        videoEl.id = 'modalVideo';
+        videoEl.className = 'modal-content';
+        videoEl.controls = true;
+        videoEl.autoplay = true;
+        videoEl.loop = true;
+        videoEl.muted = false; // allow audio in modal
+        videoEl.style.maxWidth = '90vw';
+        videoEl.style.maxHeight = '90vh';
+        modal.insertBefore(videoEl, captionText); // place before caption
+    }
+    modalImage.style.display = 'none';
+    videoEl.style.display = 'block';
+    videoEl.src = mediaPath;
+    captionText.textContent = altText;
+
+    modalPrevButton.style.display = 'none';
+    modalNextButton.style.display = 'none';
+    modal.classList.add('visible');
+}
+
+// --- Global video IntersectionObserver --- //
+let videoObserver;
+function initVideoObserver() {
+    if (videoObserver) return; // Already created
+    videoObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const vid = entry.target;
+            if (entry.intersectionRatio > 0.6) {
+                // Play when mostly in view
+                if (vid.paused) {
+                    vid.play().catch(() => {/* ignore */});
+                }
+            } else {
+                // Pause when out of view to save resources
+                if (!vid.paused) {
+                    vid.pause();
+                }
+            }
+        });
+    }, {
+        threshold: [0, 0.6, 1]
+    });
+}
