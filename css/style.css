@@ -1424,9 +1424,11 @@ section {
 @media (max-width: 768px) {
     .image-grid {
         width: 90%; /* Use more screen width on mobile */
+        grid-template-columns: repeat(2, 1fr); /* Enforce two columns */
+        display: grid; /* Use grid for consistent layout */
     }
     .image-grid .grid-item {
-        width: 48%; /* Keep consistent two-column layout */
+        width: 100%; /* Let grid control the width */
         margin-bottom: 15px;
     }
 }
@@ -1436,7 +1438,7 @@ section {
         width: 95%; /* Use even more screen width on very small devices */
     }
     .image-grid .grid-item {
-        width: 48%; /* Keep consistent two-column layout */
+        width: 100%; /* Let grid control the width */
         margin-bottom: 10px;
     }
     
