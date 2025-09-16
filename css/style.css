@@ -123,6 +123,16 @@ body, html {
     height: 100%; /* Ensure full height */
 }
 
+body.portfolio-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+body.portfolio-page main {
+    flex-grow: 1;
+}
+
 /* Special styling for the home page only */
 body.home-page {
     overflow: hidden; /* Prevent scrolling on home page */
@@ -136,6 +146,17 @@ body:not(.home-page) {
     overflow-y: auto; /* Allow vertical scrolling */
     height: auto; /* Auto height */
     position: relative; /* Normal positioning */
+}
+
+/* Ensure portfolio page allows scrolling */
+body.portfolio-page {
+    overflow-y: auto !important;
+    height: auto !important;
+}
+
+/* Add padding to main content to ensure footer visibility */
+body.portfolio-page main {
+    padding-bottom: 6rem; /* Space for footer */
 }
 
 /* Subtle Background Animation */
@@ -927,7 +948,6 @@ body:not(.home-page) main {
 
 section {
     padding: 1rem 2rem; /* Reduced top/bottom padding */
-    min-height: 100vh; /* Full viewport height sections */
     position: relative; /* Ensure proper stacking */
     z-index: 1; /* Above the background slideshow */
 }
@@ -1080,7 +1100,12 @@ section {
     z-index: 0; /* Changed from -1 to 0 so elements inside can receive clicks */
     overflow: hidden; /* Hide parts of images that might overflow */
     background-color: var(--bg-color);
-    will-change: transform; /* GPU acceleration hint */
+    /* Enhanced GPU acceleration for 120fps */
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    contain: layout style paint;
 }
 
 .slideshow-image {
@@ -1091,18 +1116,23 @@ section {
     height: 100%;
     object-fit: cover;
     opacity: 0;
-    transition: opacity 1.5s ease-in-out, transform 8s ease-in-out;
-    z-index: -1;
-    transform: scale(1.05);
+    /* Optimized transitions for 120fps - use only GPU-accelerated properties */
+    transition: opacity 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    z-index: 0; /* Ensure image is painted above container background */
+    transform: scale3d(1.05, 1.05, 1) translate3d(0, 0, 0);
     filter: brightness(0.9) contrast(1.1);
-    backface-visibility: hidden; /* Prevent flickering on some browsers */
+    /* Enhanced GPU acceleration */
+    backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
+    will-change: opacity, transform;
+    contain: layout style paint;
 }
 
 /* Add rule for the active image */
 .slideshow-image.active {
     opacity: 1; /* Show the active image */
-    display: block; /* Make the active image visible */
+    transform: scale3d(1, 1, 1) translate3d(0, 0, 0); /* Reset scale for active image */
+    will-change: auto; /* Reset will-change when animation is done */
 }
 
 /* Slide navigation arrows */
@@ -1296,7 +1326,6 @@ section {
 @media (min-width: 768px) {
     .image-grid {
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        min-grid-template-columns: repeat(2, 1fr); /* Force minimum 2 columns */
         gap: 2.5rem; /* Increased spacing */
     }
 }
@@ -1318,6 +1347,7 @@ section {
     display: none;
     position: relative; /* Ensure proper stacking context */
     z-index: 1; /* Above the background slideshow */
+    margin-bottom: 4rem; /* Add space before footer */
 }
 
 /* Specific grid display rules (handled by JS adding .active) */
@@ -1672,9 +1702,9 @@ footer {
 
 /* --- Image Modal Styles --- */
 .modal {
-    display: none; /* Hidden by default */
+    display: none;
     position: fixed;
-    z-index: 1001; /* Above everything else */
+    z-index: 1001;
     left: 0;
     top: 0;
     width: 100%;
@@ -1684,19 +1714,21 @@ footer {
     backdrop-filter: blur(8px); /* Add blur for depth */
     -webkit-backdrop-filter: blur(8px); /* Safari support */
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     padding: 60px 0; /* Add vertical padding */
-    /* Theme-based glowing border at top and bottom */
     border-top: 1px solid rgba(255, 255, 255, 0.2);
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 0 40px rgba(255, 0, 255, 0.1) inset, 0 0 20px rgba(0, 255, 255, 0.1) inset;
-    /* Add flexbox for centering */
     justify-content: center;
     align-items: center;
+    will-change: opacity;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 .modal.visible {
-    display: flex; /* Make visible as flex container */
+    display: flex;
     opacity: 1;
 }
 
@@ -1706,11 +1738,10 @@ footer {
     display: block;
     max-width: 80%;
     max-height: 80vh;
-    /* Animation */
-    animation-name: zoom;
-    animation-duration: 0.6s;
-    /* Add transition for fade effect */
-    transition: all 0.4s ease-in-out;
+    /* Optimized animation for 120fps */
+    animation: zoomIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    /* Optimized transitions for smooth interactions */
+    transition: opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     /* Additional padding to account for caption and close button */
     padding: 20px 0;
     /* Add glow effect */
@@ -1718,12 +1749,35 @@ footer {
     box-shadow: 0 0 30px rgba(255, 255, 255, 0.25), 0 0 60px rgba(255, 0, 255, 0.15), 0 0 90px rgba(0, 255, 255, 0.1);
     /* Add subtle border */
     border: 1px solid rgba(255, 255, 255, 0.1);
+    /* Enhanced GPU acceleration */
+    will-change: transform, opacity;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    contain: layout style paint;
 }
 
-/* Add Animation */
-@keyframes zoom {
-    from {transform:scale(0)}
-    to {transform:scale(1)}
+/* Optimized keyframes for 120fps */
+@keyframes zoomIn {
+    from {
+        transform: scale3d(0.3, 0.3, 1) translate3d(0, 0, 0);
+        opacity: 0;
+    }
+    to {
+        transform: scale3d(1, 1, 1) translate3d(0, 0, 0);
+        opacity: 1;
+    }
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .modal-content {
+        animation: none;
+        transition: opacity 0.2s ease;
+    }
+    .slideshow-image {
+        transition: opacity 0.3s ease;
+    }
 }
 
 /* The Close Button */
@@ -2011,6 +2065,33 @@ body.portfolio-page::after {
     100% {transform: translate3d(0,0,0) scale(1);} 
 } 
 
+/* === Masonry layout for active portfolio grids (global) === */
+.image-grid.active {
+  display: block !important; /* Use block with CSS columns for masonry */
+  column-count: 2;
+  column-gap: 3rem;
+  margin: 0 auto;
+  width: 70%;
+}
+
+.image-grid.active .grid-item {
+  display: inline-block;
+  width: 100% !important;
+  margin: 0 0 3rem 0;
+  padding: 0;
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.image-grid.active .grid-item img,
+.image-grid.active .grid-item video {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  display: block;
+}
+
 /* === Mobile layout fixes === */
 @media (max-width: 600px) {
   /* Center the portfolio display container */
@@ -2021,28 +2102,31 @@ body.portfolio-page::after {
     padding: 1rem 0;
   }
 
-  /* Two-column grid for images with proper spacing */
+  /* Two-column masonry layout for images with proper spacing */
   .image-grid.active {
-    display: grid !important;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 3rem; /* Much larger gap for maximum separation */
-    justify-content: center;
-    width: 100%;
-    margin: 0 auto;
+    /* Switch to masonry using CSS columns so leftover space falls to the bottom */
+    display: block !important; /* Override any grid display */
+    column-count: 2; /* Two columns across breakpoints */
+    column-gap: 3rem; /* Match previous visual spacing */
+    margin: 0 auto; /* Center the grid */
+    width: 70%; /* Keep consistent width across breakpoints */
   }
-  
   /* Hide inactive grids */
   .image-grid:not(.active) {
     display: none !important;
   }
   
   .image-grid.active .grid-item {
-    width: 100% !important; /* Full width within grid cell */
-    margin-bottom: 0; /* Remove margin, use grid gap */
-    padding: 0; /* Remove any padding that might cause overlap */
+    /* Masonry item rules */
+    display: inline-block; /* Allow items to flow within columns */
+    width: 100% !important;
+    margin: 0 0 3rem 0; /* Space between stacked items (matches column-gap visually) */
+    padding: 0;
+    break-inside: avoid; /* Prevent items from splitting between columns */
+    -webkit-column-break-inside: avoid;
+    page-break-inside: avoid;
   }
 
-  /* Ensure images fit properly within their containers */
   .image-grid.active .grid-item img,
   .image-grid.active .grid-item video {
     width: 100%;
@@ -2115,5 +2199,5 @@ body.portfolio-page::after {
     display: none !important;
 }
 #portfolio-display .image-grid.active {
-    display: grid !important; /* visible grid */
+    display: block !important; /* visible masonry (columns) */
 }

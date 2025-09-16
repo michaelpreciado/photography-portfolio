@@ -47,6 +47,256 @@ window.addEventListener('resize', debounce(setVHVariable));
 // Update on orientation change for iOS
 window.addEventListener('orientationchange', setVHVariable);
 
+// Advanced lazy loading with LQIP support for 120fps performance
+class LazyImageLoader {
+    constructor() {
+        this.imageManifest = null;
+        this.observer = null;
+        this.init();
+    }
+
+    async init() {
+        try {
+            // Load image manifest for LQIP data
+            const response = await fetch('images/optimized/manifest.json');
+            this.imageManifest = await response.json();
+            
+            // Set up IntersectionObserver for lazy loading
+            this.setupIntersectionObserver();
+            
+            // Process existing images
+            this.processImages();
+        } catch (error) {
+            console.warn('Failed to load image manifest, falling back to basic lazy loading:', error);
+            this.setupBasicLazyLoading();
+        }
+    }
+
+    setupIntersectionObserver() {
+        const options = {
+            root: null,
+            rootMargin: '50px', // Start loading 50px before entering viewport
+            threshold: 0.01 // Trigger when 1% is visible
+        };
+
+        this.observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    this.loadImage(entry.target);
+                    this.observer.unobserve(entry.target);
+                }
+            });
+        }, options);
+    }
+
+    processImages() {
+        // Process all lazy images
+        const lazyImages = document.querySelectorAll('img[loading="lazy"], picture');
+        lazyImages.forEach(element => {
+            if (element.tagName === 'PICTURE') {
+                const img = element.querySelector('img');
+                if (img && img.loading === 'lazy') {
+                    this.setupLQIP(element, img);
+                    this.observer.observe(element);
+                }
+            } else if (element.loading === 'lazy') {
+                this.setupLQIP(null, element);
+                this.observer.observe(element);
+            }
+        });
+    }
+
+    setupLQIP(picture, img) {
+        // Find LQIP data from manifest
+        const src = img.src || img.dataset.src;
+        if (!src || !this.imageManifest) return;
+
+        // Do not add LQIP placeholders for fullscreen slideshow images
+        if (img.classList && img.classList.contains('slideshow-image')) {
+            return;
+        }
+
+        // Extract filename from src
+        const filename = src.split('/').pop().split('-')[0];
+        const imageData = this.imageManifest.images.find(item => 
+            item.original.includes(filename)
+        );
+
+        if (imageData && imageData.lqip) {
+            // Create LQIP placeholder
+            const placeholder = new Image();
+            placeholder.src = imageData.lqip;
+            placeholder.className = 'lqip-placeholder';
+            placeholder.style.cssText = `
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                filter: blur(8px);
+                transition: opacity 0.3s ease;
+                /* Keep placeholder behind real image to avoid covering it */
+                z-index: -2;
+            `;
+
+            // Add placeholder to container
+            const container = picture || img.parentElement;
+            if (container) {
+                container.style.position = 'relative';
+                container.insertBefore(placeholder, picture || img);
+                
+                // Store reference for cleanup
+                img.dataset.placeholder = 'true';
+            }
+        }
+    }
+
+    loadImage(element) {
+        const img = element.tagName === 'PICTURE' ? element.querySelector('img') : element;
+        
+        if (!img) return;
+
+        // Create a new image to preload
+        const imageLoader = new Image();
+        
+        imageLoader.onload = () => {
+            // Image loaded successfully
+            this.revealImage(element, img);
+        };
+
+        imageLoader.onerror = () => {
+            // Fallback on error
+            console.warn('Failed to load image:', img.src);
+            this.revealImage(element, img);
+        };
+
+        // Start loading the full image
+        if (img.dataset.src) {
+            imageLoader.src = img.dataset.src;
+            img.src = img.dataset.src;
+        } else {
+            imageLoader.src = img.src;
+        }
+
+        // Load srcset if available
+        if (img.dataset.srcset) {
+            img.srcset = img.dataset.srcset;
+        }
+    }
+
+    revealImage(container, img) {
+        // Add loaded class for CSS animations
+        img.classList.add('lazy-loaded');
+        
+        // Remove LQIP placeholder with fade out
+        const placeholder = container.querySelector('.lqip-placeholder');
+        if (placeholder) {
+            placeholder.style.opacity = '0';
+            setTimeout(() => {
+                if (placeholder.parentNode) {
+                    placeholder.parentNode.removeChild(placeholder);
+                }
+            }, 300);
+        }
+
+        // Trigger any additional animations
+        if (typeof window.triggerImageLoadAnimation === 'function') {
+            window.triggerImageLoadAnimation(img);
+        }
+    }
+
+    setupBasicLazyLoading() {
+        // Fallback lazy loading without LQIP
+        const options = {
+            root: null,
+            rootMargin: '50px',
+            threshold: 0.01
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target.tagName === 'PICTURE' 
+                        ? entry.target.querySelector('img') 
+                        : entry.target;
+                    
+                    if (img.dataset.src) {
+                        img.src = img.dataset.src;
+                    }
+                    if (img.dataset.srcset) {
+                        img.srcset = img.dataset.srcset;
+                    }
+                    
+                    img.classList.add('lazy-loaded');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, options);
+
+        const lazyImages = document.querySelectorAll('img[loading="lazy"], picture');
+        lazyImages.forEach(img => observer.observe(img));
+    }
+}
+
+// Performance monitoring for 120fps target
+class PerformanceMonitor {
+    constructor() {
+        this.frameCount = 0;
+        this.lastTime = performance.now();
+        this.fps = 0;
+        this.init();
+    }
+
+    init() {
+        if (window.location.search.includes('debug=fps')) {
+            this.createFPSCounter();
+            this.startMonitoring();
+        }
+    }
+
+    createFPSCounter() {
+        const fpsCounter = document.createElement('div');
+        fpsCounter.id = 'fps-counter';
+        fpsCounter.style.cssText = `
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #00ff00;
+            padding: 5px 10px;
+            font-family: monospace;
+            font-size: 12px;
+            z-index: 10000;
+            border-radius: 3px;
+        `;
+        document.body.appendChild(fpsCounter);
+    }
+
+    startMonitoring() {
+        const measure = (currentTime) => {
+            this.frameCount++;
+            
+            if (currentTime - this.lastTime >= 1000) {
+                this.fps = Math.round((this.frameCount * 1000) / (currentTime - this.lastTime));
+                
+                const counter = document.getElementById('fps-counter');
+                if (counter) {
+                    counter.textContent = `FPS: ${this.fps}`;
+                    counter.style.color = this.fps >= 60 ? '#00ff00' : this.fps >= 30 ? '#ffff00' : '#ff0000';
+                }
+                
+                this.frameCount = 0;
+                this.lastTime = currentTime;
+            }
+            
+            requestAnimationFrame(measure);
+        };
+        
+        requestAnimationFrame(measure);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // Cache DOM elements for better performance
     const backToTopButton = document.getElementById('back-to-top');
@@ -280,6 +530,12 @@ document.addEventListener('DOMContentLoaded', () => {
             'images/portfolio/Visuals/15.mp4',
             'images/portfolio/Visuals/16.mp4',
             'images/portfolio/Visuals/17.mp4',
+            'images/portfolio/Visuals/18.mp4',
+            'images/portfolio/Visuals/19.mp4',
+            'images/portfolio/Visuals/20.mp4',
+            'images/portfolio/Visuals/21.mp4',
+            'images/portfolio/Visuals/22.mp4',
+            'images/portfolio/Visuals/23.mp4',
         ]
     };
 
@@ -415,18 +671,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Add error handling
                 video.addEventListener('error', function(e) {
                     console.error('Video error:', e);
-                    console.error('Video error code:', video.error ? video.error.code : 'unknown');
                 });
-                
-                // Add loaded data event
-                video.addEventListener('loadeddata', function() {
-                    console.log('Video loaded successfully');
-                    // CSS Grid handles layout automatically
-                });
-                
-                // Prevent right-click menu
-                video.addEventListener('contextmenu', e => e.preventDefault());
-                
+
                 // Handle hardware acceleration
                 video.style.willChange = 'transform';
                 
@@ -545,6 +791,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     portfolioSection.classList.add(`theme-${category}`);
                 }
                 // --- End Theme Switching --- //
+
+                // Ensure body scrolling is enabled
+                body.style.overflow = 'auto';
 
                 // Update active button
                 buttons.forEach(btn => btn.classList.remove('active'));

@@ -1,0 +1,25 @@
+{
+  "name": "mario-preciado-photography",
+  "version": "1.0.0",
+  "description": "High-performance photography portfolio optimized for 120fps",
+  "scripts": {
+    "images": "node scripts/optimize-images.js",
+    "build": "npm run images",
+    "dev": "npm run images && python3 -m http.server 8000",
+    "serve": "python3 -m http.server 8000"
+  },
+  "devDependencies": {
+    "sharp": "^0.33.0",
+    "glob": "^10.3.0",
+    "crypto": "^1.0.1"
+  },
+  "keywords": [
+    "photography",
+    "portfolio",
+    "performance",
+    "120fps",
+    "responsive-images"
+  ],
+  "author": "Mario Preciado",
+  "license": "MIT"
+}

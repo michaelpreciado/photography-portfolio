@@ -1,0 +1,539 @@
+{
+  "generated": "2025-09-16T03:33:42.827Z",
+  "config": {
+    "inputDir": "images/portfolio",
+    "outputDir": "images/optimized",
+    "sizes": [
+      320,
+      640,
+      960,
+      1280,
+      1600,
+      2048
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpeg"
+    ],
+    "quality": {
+      "avif": 60,
+      "webp": 80,
+      "jpeg": 85
+    },
+    "lqipSize": 20,
+    "maxConcurrency": 4
+  },
+  "images": [
+    {
+      "original": "images/portfolio/rainbow-star.png",
+      "formats": {
+        "avif": {
+          "320": "rainbow-star-320-5d59a107.avif",
+          "640": "rainbow-star-640-5d59a107.avif",
+          "960": "rainbow-star-960-5d59a107.avif",
+          "1280": "rainbow-star-1280-5d59a107.avif",
+          "1600": "rainbow-star-1600-5d59a107.avif",
+          "2048": "rainbow-star-2048-5d59a107.avif"
+        },
+        "webp": {
+          "320": "rainbow-star-320-5d59a107.webp",
+          "640": "rainbow-star-640-5d59a107.webp",
+          "960": "rainbow-star-960-5d59a107.webp",
+          "1280": "rainbow-star-1280-5d59a107.webp",
+          "1600": "rainbow-star-1600-5d59a107.webp",
+          "2048": "rainbow-star-2048-5d59a107.webp"
+        },
+        "jpeg": {
+          "320": "rainbow-star-320-5d59a107.jpeg",
+          "640": "rainbow-star-640-5d59a107.jpeg",
+          "960": "rainbow-star-960-5d59a107.jpeg",
+          "1280": "rainbow-star-1280-5d59a107.jpeg",
+          "1600": "rainbow-star-1600-5d59a107.jpeg",
+          "2048": "rainbow-star-2048-5d59a107.jpeg"
+        }
+      },
+      "lqip": "data:image/jpeg;base64,/9j/2wBDABsSFBcUERsXFhceHBsgKEIrKCUlKFE6PTBCYFVlZF9VXVtqeJmBanGQc1tdhbWGkJ6jq62rZ4C8ybqmx5moq6T/2wBDARweHigjKE4rK06kbl1upKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKT/wAARCAALABQDASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAAAAQCA//EABwQAAIDAAMBAAAAAAAAAAAAAAABAgMRBAUxI//EABcBAAMBAAAAAAAAAAAAAAAAAAIDBAX/xAAbEQACAgMBAAAAAAAAAAAAAAAAAQIDBBESFP/aAAwDAQACEQMRAD8A4O1JaxR2nzcVBp76SWN4Zr8G24kJrbBwa11tlUuZJvQTAk88TZ5R/9k="
+    },
+    {
+      "original": "images/portfolio/header.jpeg",
+      "formats": {
+        "avif": {
+          "320": "header-320-d83b2721.avif",
+          "640": "header-640-d83b2721.avif",
+          "960": "header-960-d83b2721.avif",
+          "1280": "header-1280-d83b2721.avif",
+          "1600": "header-1600-d83b2721.avif",
+          "2048": "header-2048-d83b2721.avif"
+        },
+        "webp": {
+          "320": "header-320-d83b2721.webp",
+          "640": "header-640-d83b2721.webp",
+          "960": "header-960-d83b2721.webp",
+          "1280": "header-1280-d83b2721.webp",
+          "1600": "header-1600-d83b2721.webp",
+          "2048": "header-2048-d83b2721.webp"
+        },
+        "jpeg": {
+          "320": "header-320-d83b2721.jpeg",
+          "640": "header-640-d83b2721.jpeg",
+          "960": "header-960-d83b2721.jpeg",
+          "1280": "header-1280-d83b2721.jpeg",
+          "1600": "header-1600-d83b2721.jpeg",
+          "2048": "header-2048-d83b2721.jpeg"
+        }
+      },
+      "lqip": "data:image/jpeg;base64,/9j/2wBDABsSFBcUERsXFhceHBsgKEIrKCUlKFE6PTBCYFVlZF9VXVtqeJmBanGQc1tdhbWGkJ6jq62rZ4C8ybqmx5moq6T/2wBDARweHigjKE4rK06kbl1upKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKT/wAARCAAHABQDASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAME/8QAHhAAAQMFAQEAAAAAAAAAAAAAAAEDEQIEEyFBEnH/xAAXAQADAQAAAAAAAAAAAAAAAAAAAQID/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAEDESExM//aAAwDAQACEQMRAD8AjTcMK2nlmE+jOzj0zruwCZNIF0oyOrZLXMVpPAAM3brB/9k="
+    },
+    {
+      "original": "images/portfolio/live-music/portfolio_017.jpg",
+      "formats": {
+        "avif": {
+          "320": "portfolio_017-320-74635fdc.avif",
+          "640": "portfolio_017-640-74635fdc.avif",
+          "960": "portfolio_017-960-74635fdc.avif",
+          "1280": "portfolio_017-1280-74635fdc.avif",
+          "1600": "portfolio_017-1600-74635fdc.avif",
+          "2048": "portfolio_017-2048-74635fdc.avif"
+        },
+        "webp": {
+          "320": "portfolio_017-320-74635fdc.webp",
+          "640": "portfolio_017-640-74635fdc.webp",
+          "960": "portfolio_017-960-74635fdc.webp",
+          "1280": "portfolio_017-1280-74635fdc.webp",
+          "1600": "portfolio_017-1600-74635fdc.webp",
+          "2048": "portfolio_017-2048-74635fdc.webp"
+        },
+        "jpeg": {
+          "320": "portfolio_017-320-74635fdc.jpeg",
+          "640": "portfolio_017-640-74635fdc.jpeg",
+          "960": "portfolio_017-960-74635fdc.jpeg",
+          "1280": "portfolio_017-1280-74635fdc.jpeg",
+          "1600": "portfolio_017-1600-74635fdc.jpeg",
+          "2048": "portfolio_017-2048-74635fdc.jpeg"
+        }
+      },
+      "lqip": "data:image/jpeg;base64,/9j/2wBDABsSFBcUERsXFhceHBsgKEIrKCUlKFE6PTBCYFVlZF9VXVtqeJmBanGQc1tdhbWGkJ6jq62rZ4C8ybqmx5moq6T/2wBDARweHigjKE4rK06kbl1upKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKT/wAARCAAUAA0DASIAAhEBAxEB/8QAGAAAAwEBAAAAAAAAAAAAAAAAAAMEAQX/xAAbEAADAQADAQAAAAAAAAAAAAAAAQIRAyExIv/EABYBAQEBAAAAAAAAAAAAAAAAAAMBAv/EABYRAQEBAAAAAAAAAAAAAAAAAAABAv/aAAwDAQACEQMRAD8A4j1piH6XfMcblz2Scmb5geaLLbuqet9i6esALGo//9k="
+    },
+    {
+      "original": "images/portfolio/live-music/portfolio_016.jpeg",
+      "formats": {
+        "avif": {
+          "320": "portfolio_016-320-e6412b59.avif",
+          "640": "portfolio_016-640-e6412b59.avif",
+          "960": "portfolio_016-960-e6412b59.avif",
+          "1280": "portfolio_016-1280-e6412b59.avif",
+          "1600": "portfolio_016-1600-e6412b59.avif",
+          "2048": "portfolio_016-2048-e6412b59.avif"
+        },
+        "webp": {
+          "320": "portfolio_016-320-e6412b59.webp",
+          "640": "portfolio_016-640-e6412b59.webp",
+          "960": "portfolio_016-960-e6412b59.webp",
+          "1280": "portfolio_016-1280-e6412b59.webp",
+          "1600": "portfolio_016-1600-e6412b59.webp",
+          "2048": "portfolio_016-2048-e6412b59.webp"
+        },
+        "jpeg": {
+          "320": "portfolio_016-320-e6412b59.jpeg",
+          "640": "portfolio_016-640-e6412b59.jpeg",
+          "960": "portfolio_016-960-e6412b59.jpeg",
+          "1280": "portfolio_016-1280-e6412b59.jpeg",
+          "1600": "portfolio_016-1600-e6412b59.jpeg",
+          "2048": "portfolio_016-2048-e6412b59.jpeg"
+        }
+      },
+      "lqip": "data:image/jpeg;base64,/9j/2wBDABsSFBcUERsXFhceHBsgKEIrKCUlKFE6PTBCYFVlZF9VXVtqeJmBanGQc1tdhbWGkJ6jq62rZ4C8ybqmx5moq6T/2wBDARweHigjKE4rK06kbl1upKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKT/wAARCAAPABQDASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAAIDBP/EACAQAAICAQMFAAAAAAAAAAAAAAECAAMRBBIhEzFBUVL/xAAVAQEBAAAAAAAAAAAAAAAAAAACBP/EABkRAAIDAQAAAAAAAAAAAAAAAAABESFRMf/aAAwDAQACEQMRAD8AwWFuAWBB9Sl3SVRUKSDjvJCta03t4ii0EgnLNJYT4UiAP9QjDUIvBTMIrwNaf//Z"
+    },
+    {
+      "original": "images/portfolio/live-music/portfolio_015.jpeg",
+      "formats": {
+        "avif": {
+          "320": "portfolio_015-320-67183579.avif",
+          "640": "portfolio_015-640-67183579.avif",
+          "960": "portfolio_015-960-67183579.avif",
+          "1280": "portfolio_015-1280-67183579.avif",
+          "1600": "portfolio_015-1600-67183579.avif",
+          "2048": "portfolio_015-2048-67183579.avif"
+        },
+        "webp": {
+          "320": "portfolio_015-320-67183579.webp",
+          "640": "portfolio_015-640-67183579.webp",
+          "960": "portfolio_015-960-67183579.webp",
+          "1280": "portfolio_015-1280-67183579.webp",
+          "1600": "portfolio_015-1600-67183579.webp",
+          "2048": "portfolio_015-2048-67183579.webp"
+        },
+        "jpeg": {
+          "320": "portfolio_015-320-67183579.jpeg",
+          "640": "portfolio_015-640-67183579.jpeg",
+          "960": "portfolio_015-960-67183579.jpeg",
+          "1280": "portfolio_015-1280-67183579.jpeg",
+          "1600": "portfolio_015-1600-67183579.jpeg",
+          "2048": "portfolio_015-2048-67183579.jpeg"
+        }
+      },
+      "lqip": "data:image/jpeg;base64,/9j/2wBDABsSFBcUERsXFhceHBsgKEIrKCUlKFE6PTBCYFVlZF9VXVtqeJmBanGQc1tdhbWGkJ6jq62rZ4C8ybqmx5moq6T/2wBDARweHigjKE4rK06kbl1upKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKT/wAARCAAUAA8DASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAABQAE/8QAHxAAAgICAwADAAAAAAAAAAAAAQIAAxESBCFBI1Fx/8QAFQEBAQAAAAAAAAAAAAAAAAAABAX/xAAaEQACAwEBAAAAAAAAAAAAAAAAAQIDESES/9oADAMBAAIRAxEAPwDFXctOE1yWOOptcagDyD12V6q+SHU+xSq1+RXsy6gffsDZHOlKuevoAD8g/YhxeVaX1LdSlEWJYFqb9H//2Q=="
+    },
+    {
+      "original": "images/portfolio/live-music/portfolio_013.jpg",
+      "formats": {
+        "avif": {
+          "320": "portfolio_013-320-b6ed6401.avif",
+          "640": "portfolio_013-640-b6ed6401.avif",
+          "960": "portfolio_013-960-b6ed6401.avif",
+          "1280": "portfolio_013-1280-b6ed6401.avif",
+          "1600": "portfolio_013-1600-b6ed6401.avif",
+          "2048": "portfolio_013-2048-b6ed6401.avif"
+        },
+        "webp": {
+          "320": "portfolio_013-320-b6ed6401.webp",
+          "640": "portfolio_013-640-b6ed6401.webp",
+          "960": "portfolio_013-960-b6ed6401.webp",
+          "1280": "portfolio_013-1280-b6ed6401.webp",
+          "1600": "portfolio_013-1600-b6ed6401.webp",
+          "2048": "portfolio_013-2048-b6ed6401.webp"
+        },
+        "jpeg": {
+          "320": "portfolio_013-320-b6ed6401.jpeg",
+          "640": "portfolio_013-640-b6ed6401.jpeg",
+          "960": "portfolio_013-960-b6ed6401.jpeg",
+          "1280": "portfolio_013-1280-b6ed6401.jpeg",
+          "1600": "portfolio_013-1600-b6ed6401.jpeg",
+          "2048": "portfolio_013-2048-b6ed6401.jpeg"
+        }
+      },
+      "lqip": "data:image/jpeg;base64,/9j/2wBDABsSFBcUERsXFhceHBsgKEIrKCUlKFE6PTBCYFVlZF9VXVtqeJmBanGQc1tdhbWGkJ6jq62rZ4C8ybqmx5moq6T/2wBDARweHigjKE4rK06kbl1upKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKT/wAARCAAUAA4DASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAAIEAf/EAB0QAAMAAgIDAAAAAAAAAAAAAAABAgMhESIEE1H/xAAWAQEBAQAAAAAAAAAAAAAAAAABAwT/xAAZEQEAAgMAAAAAAAAAAAAAAAAAASECMUH/2gAMAwEAAhEDEQA/AIcb7IqnIuCfxpapt64HuHN6M96WxouB9vprb9tbAB6Yf//Z"
+    },
+    {
+      "original": "images/portfolio/live-music/portfolio_012.JPG",
+      "formats": {
+        "avif": {
+          "320": "portfolio_012-320-acbaaf1e.avif",
+          "640": "portfolio_012-640-acbaaf1e.avif",
+          "960": "portfolio_012-960-acbaaf1e.avif",
+          "1280": "portfolio_012-1280-acbaaf1e.avif",
+          "1600": "portfolio_012-1600-acbaaf1e.avif",
+          "2048": "portfolio_012-2048-acbaaf1e.avif"
+        },
+        "webp": {
+          "320": "portfolio_012-320-acbaaf1e.webp",
+          "640": "portfolio_012-640-acbaaf1e.webp",
+          "960": "portfolio_012-960-acbaaf1e.webp",
+          "1280": "portfolio_012-1280-acbaaf1e.webp",
+          "1600": "portfolio_012-1600-acbaaf1e.webp",
+          "2048": "portfolio_012-2048-acbaaf1e.webp"
+        },
+        "jpeg": {
+          "320": "portfolio_012-320-acbaaf1e.jpeg",
+          "640": "portfolio_012-640-acbaaf1e.jpeg",
+          "960": "portfolio_012-960-acbaaf1e.jpeg",
+          "1280": "portfolio_012-1280-acbaaf1e.jpeg",
+          "1600": "portfolio_012-1600-acbaaf1e.jpeg",
+          "2048": "portfolio_012-2048-acbaaf1e.jpeg"
+        }
+      },
+      "lqip": "data:image/jpeg;base64,/9j/2wBDABsSFBcUERsXFhceHBsgKEIrKCUlKFE6PTBCYFVlZF9VXVtqeJmBanGQc1tdhbWGkJ6jq62rZ4C8ybqmx5moq6T/2wBDARweHigjKE4rK06kbl1upKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKT/wAARCAAUAA8DASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAME/8QAGxAAAgMBAQEAAAAAAAAAAAAAAQIAAwQxIRH/xAAWAQEBAQAAAAAAAAAAAAAAAAAEAQP/xAAbEQABBAMAAAAAAAAAAAAAAAAAARESIQIyQf/aAAwDAQACEQMRAD8AzixaK2dh5Jki4Bq+GT3XhKDWPhLRjcLmUMJm1AWWM+mPX6oJ7LZXY0gHgiJMtRaJR//Z"
+    },
+    {
+      "original": "images/portfolio/live-music/portfolio_011.JPG",
+      "formats": {
+        "avif": {
+          "320": "portfolio_011-320-66a1e26f.avif",
+          "640": "portfolio_011-640-66a1e26f.avif",
+          "960": "portfolio_011-960-66a1e26f.avif",
+          "1280": "portfolio_011-1280-66a1e26f.avif",
+          "1600": "portfolio_011-1600-66a1e26f.avif",
+          "2048": "portfolio_011-2048-66a1e26f.avif"
+        },
+        "webp": {
+          "320": "portfolio_011-320-66a1e26f.webp",
+          "640": "portfolio_011-640-66a1e26f.webp",
+          "960": "portfolio_011-960-66a1e26f.webp",
+          "1280": "portfolio_011-1280-66a1e26f.webp",
+          "1600": "portfolio_011-1600-66a1e26f.webp",
+          "2048": "portfolio_011-2048-66a1e26f.webp"
+        },
+        "jpeg": {
+          "320": "portfolio_011-320-66a1e26f.jpeg",
+          "640": "portfolio_011-640-66a1e26f.jpeg",
+          "960": "portfolio_011-960-66a1e26f.jpeg",
+          "1280": "portfolio_011-1280-66a1e26f.jpeg",
+          "1600": "portfolio_011-1600-66a1e26f.jpeg",
+          "2048": "portfolio_011-2048-66a1e26f.jpeg"
+        }
+      },
+      "lqip": "data:image/jpeg;base64,/9j/2wBDABsSFBcUERsXFhceHBsgKEIrKCUlKFE6PTBCYFVlZF9VXVtqeJmBanGQc1tdhbWGkJ6jq62rZ4C8ybqmx5moq6T/2wBDARweHigjKE4rK06kbl1upKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKT/wAARCAAPABQDASIAAhEBAxEB/8QAGAAAAgMAAAAAAAAAAAAAAAAAAAQBAwX/xAAiEAACAgEDBAMAAAAAAAAAAAABAgADEQQSIQUTFTEzQVH/xAAXAQADAQAAAAAAAAAAAAAAAAABAgMF/8QAGhEBAQACAwAAAAAAAAAAAAAAAQACAxExQf/aAAwDAQACEQMRAD8AyqCQoyuY5q6kFYasg8cqIt5FQm1agJNPUVqPx7s/s0na+UsRe5K1cP7hL7tXVZYW7WM/UIjsjw3/2Q=="
+    },
+    {
+      "original": "images/portfolio/live-music/portfolio_010.jpg",
+      "formats": {
+        "avif": {
+          "320": "portfolio_010-320-759aa6ca.avif",
+          "640": "portfolio_010-640-759aa6ca.avif",
+          "960": "portfolio_010-960-759aa6ca.avif",
+          "1280": "portfolio_010-1280-759aa6ca.avif",
+          "1600": "portfolio_010-1600-759aa6ca.avif",
+          "2048": "portfolio_010-2048-759aa6ca.avif"
+        },
+        "webp": {
+          "320": "portfolio_010-320-759aa6ca.webp",
+          "640": "portfolio_010-640-759aa6ca.webp",
+          "960": "portfolio_010-960-759aa6ca.webp",
+          "1280": "portfolio_010-1280-759aa6ca.webp",
+          "1600": "portfolio_010-1600-759aa6ca.webp",
+          "2048": "portfolio_010-2048-759aa6ca.webp"
+        },
+        "jpeg": {
+          "320": "portfolio_010-320-759aa6ca.jpeg",
+          "640": "portfolio_010-640-759aa6ca.jpeg",
+          "960": "portfolio_010-960-759aa6ca.jpeg",
+          "1280": "portfolio_010-1280-759aa6ca.jpeg",
+          "1600": "portfolio_010-1600-759aa6ca.jpeg",
+          "2048": "portfolio_010-2048-759aa6ca.jpeg"
+        }
+      },
+      "lqip": "data:image/jpeg;base64,/9j/2wBDABsSFBcUERsXFhceHBsgKEIrKCUlKFE6PTBCYFVlZF9VXVtqeJmBanGQc1tdhbWGkJ6jq62rZ4C8ybqmx5moq6T/2wBDARweHigjKE4rK06kbl1upKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKT/wAARCAAUAA8DASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAAIEA//EAB0QAAEFAQADAAAAAAAAAAAAAAEAAgMEERIFQWH/xAAVAQEBAAAAAAAAAAAAAAAAAAADBP/EABkRAQEBAAMAAAAAAAAAAAAAAAEAAgMRMf/aAAwDAQACEQMRAD8Ahp0XWQXdBrR7Ke34wxR9MnY/4CsY7XFeSLc0KMv0jXHEOXS1/I9eMhKUoQkp2//Z"
+    },
+    {
+      "original": "images/portfolio/live-music/portfolio_009.jpg",
+      "formats": {
+        "avif": {
+          "320": "portfolio_009-320-867fd519.avif",
+          "640": "portfolio_009-640-867fd519.avif",
+          "960": "portfolio_009-960-867fd519.avif",
+          "1280": "portfolio_009-1280-867fd519.avif",
+          "1600": "portfolio_009-1600-867fd519.avif",
+          "2048": "portfolio_009-2048-867fd519.avif"
+        },
+        "webp": {
+          "320": "portfolio_009-320-867fd519.webp",
+          "640": "portfolio_009-640-867fd519.webp",
+          "960": "portfolio_009-960-867fd519.webp",
+          "1280": "portfolio_009-1280-867fd519.webp",
+          "1600": "portfolio_009-1600-867fd519.webp",
+          "2048": "portfolio_009-2048-867fd519.webp"
+        },
+        "jpeg": {
+          "320": "portfolio_009-320-867fd519.jpeg",
+          "640": "portfolio_009-640-867fd519.jpeg",
+          "960": "portfolio_009-960-867fd519.jpeg",
+          "1280": "portfolio_009-1280-867fd519.jpeg",
+          "1600": "portfolio_009-1600-867fd519.jpeg",
+          "2048": "portfolio_009-2048-867fd519.jpeg"
+        }
+      },
+      "lqip": "data:image/jpeg;base64,/9j/2wBDABsSFBcUERsXFhceHBsgKEIrKCUlKFE6PTBCYFVlZF9VXVtqeJmBanGQc1tdhbWGkJ6jq62rZ4C8ybqmx5moq6T/2wBDARweHigjKE4rK06kbl1upKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKT/wAARCAAUAA8DASIAAhEBAxEB/8QAGAAAAgMAAAAAAAAAAAAAAAAAAAECAwX/xAAbEAACAwEBAQAAAAAAAAAAAAAAAQIRMQMSQf/EABUBAQEAAAAAAAAAAAAAAAAAAAIB/8QAGBEAAwEBAAAAAAAAAAAAAAAAAAERITH/2gAMAwEAAhEDEQA/AMJQco2lmiSJ8ZVa+MU69PzhLo2sorws4wU07ABPgWf/2Q=="
+    },
+    {
+      "original": "images/portfolio/live-music/portfolio_008.jpg",
+      "formats": {
+        "avif": {
+          "320": "portfolio_008-320-60552f04.avif",
+          "640": "portfolio_008-640-60552f04.avif",
+          "960": "portfolio_008-960-60552f04.avif",
+          "1280": "portfolio_008-1280-60552f04.avif",
+          "1600": "portfolio_008-1600-60552f04.avif",
+          "2048": "portfolio_008-2048-60552f04.avif"
+        },
+        "webp": {
+          "320": "portfolio_008-320-60552f04.webp",
+          "640": "portfolio_008-640-60552f04.webp",
+          "960": "portfolio_008-960-60552f04.webp",
+          "1280": "portfolio_008-1280-60552f04.webp",
+          "1600": "portfolio_008-1600-60552f04.webp",
+          "2048": "portfolio_008-2048-60552f04.webp"
+        },
+        "jpeg": {
+          "320": "portfolio_008-320-60552f04.jpeg",
+          "640": "portfolio_008-640-60552f04.jpeg",
+          "960": "portfolio_008-960-60552f04.jpeg",
+          "1280": "portfolio_008-1280-60552f04.jpeg",
+          "1600": "portfolio_008-1600-60552f04.jpeg",
+          "2048": "portfolio_008-2048-60552f04.jpeg"
+        }
+      },
+      "lqip": "data:image/jpeg;base64,/9j/2wBDABsSFBcUERsXFhceHBsgKEIrKCUlKFE6PTBCYFVlZF9VXVtqeJmBanGQc1tdhbWGkJ6jq62rZ4C8ybqmx5moq6T/2wBDARweHigjKE4rK06kbl1upKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKT/wAARCAAUAA8DASIAAhEBAxEB/8QAGAAAAgMAAAAAAAAAAAAAAAAAAAEDBAb/xAAdEAEBAAEEAwAAAAAAAAAAAAABAAIDESExEkFC/8QAFgEBAQEAAAAAAAAAAAAAAAAAAQAC/8QAFxEBAQEBAAAAAAAAAAAAAAAAAAERAv/aAAwDAQACEQMRAD8Azp3WM+dMJaYHicb+2WeXydV1MrVmIzJGQu8RIf/Z"
+    },
+    {
+      "original": "images/portfolio/live-music/portfolio_007.JPG",
+      "formats": {
+        "avif": {
+          "320": "portfolio_007-320-06da9a1b.avif",
+          "640": "portfolio_007-640-06da9a1b.avif",
+          "960": "portfolio_007-960-06da9a1b.avif",
+          "1280": "portfolio_007-1280-06da9a1b.avif",
+          "1600": "portfolio_007-1600-06da9a1b.avif",
+          "2048": "portfolio_007-2048-06da9a1b.avif"
+        },
+        "webp": {
+          "320": "portfolio_007-320-06da9a1b.webp",
+          "640": "portfolio_007-640-06da9a1b.webp",
+          "960": "portfolio_007-960-06da9a1b.webp",
+          "1280": "portfolio_007-1280-06da9a1b.webp",
+          "1600": "portfolio_007-1600-06da9a1b.webp",
+          "2048": "portfolio_007-2048-06da9a1b.webp"
+        },
+        "jpeg": {
+          "320": "portfolio_007-320-06da9a1b.jpeg",
+          "640": "portfolio_007-640-06da9a1b.jpeg",
+          "960": "portfolio_007-960-06da9a1b.jpeg",
+          "1280": "portfolio_007-1280-06da9a1b.jpeg",
+          "1600": "portfolio_007-1600-06da9a1b.jpeg",
+          "2048": "portfolio_007-2048-06da9a1b.jpeg"
+        }
+      },
+      "lqip": "data:image/jpeg;base64,/9j/2wBDABsSFBcUERsXFhceHBsgKEIrKCUlKFE6PTBCYFVlZF9VXVtqeJmBanGQc1tdhbWGkJ6jq62rZ4C8ybqmx5moq6T/2wBDARweHigjKE4rK06kbl1upKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKT/wAARCAAUAA8DASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAAAAIBBf/EABwQAAICAgMAAAAAAAAAAAAAAAABAhEhMQMSgf/EABcBAAMBAAAAAAAAAAAAAAAAAAECAwT/xAAaEQACAgMAAAAAAAAAAAAAAAAAASEyAhGR/9oADAMBAAIRAxEAPwDhptrJUEnevTeN3GiJXHQu5k3VxTCwoibfYAJF14f/2Q=="
+    },
+    {
+      "original": "images/portfolio/live-music/portfolio_005.jpeg",
+      "formats": {
+        "avif": {
+          "320": "portfolio_005-320-c81839a9.avif",
+          "640": "portfolio_005-640-c81839a9.avif",
+          "960": "portfolio_005-960-c81839a9.avif",
+          "1280": "portfolio_005-1280-c81839a9.avif",
+          "1600": "portfolio_005-1600-c81839a9.avif",
+          "2048": "portfolio_005-2048-c81839a9.avif"
+        },
+        "webp": {
+          "320": "portfolio_005-320-c81839a9.webp",
+          "640": "portfolio_005-640-c81839a9.webp",
+          "960": "portfolio_005-960-c81839a9.webp",
+          "1280": "portfolio_005-1280-c81839a9.webp",
+          "1600": "portfolio_005-1600-c81839a9.webp",
+          "2048": "portfolio_005-2048-c81839a9.webp"
+        },
+        "jpeg": {
+          "320": "portfolio_005-320-c81839a9.jpeg",
+          "640": "portfolio_005-640-c81839a9.jpeg",
+          "960": "portfolio_005-960-c81839a9.jpeg",
+          "1280": "portfolio_005-1280-c81839a9.jpeg",
+          "1600": "portfolio_005-1600-c81839a9.jpeg",
+          "2048": "portfolio_005-2048-c81839a9.jpeg"
+        }
+      },
+      "lqip": "data:image/jpeg;base64,/9j/2wBDABsSFBcUERsXFhceHBsgKEIrKCUlKFE6PTBCYFVlZF9VXVtqeJmBanGQc1tdhbWGkJ6jq62rZ4C8ybqmx5moq6T/2wBDARweHigjKE4rK06kbl1upKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKT/wAARCAAPABQDASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAIF/8QAHBAAAgIDAQEAAAAAAAAAAAAAAAECEQMhMRJR/8QAFQEBAQAAAAAAAAAAAAAAAAAAAgP/xAAYEQEBAAMAAAAAAAAAAAAAAAABAAIRIf/aAAwDAQACEQMRAD8AwsdRdETk/T+CORJ2+EOVybroiS8mwUpaBQxIbb//2Q=="
+    },
+    {
+      "original": "images/portfolio/live-music/portfolio_004.jpg",
+      "formats": {
+        "avif": {
+          "320": "portfolio_004-320-4ed4c03c.avif",
+          "640": "portfolio_004-640-4ed4c03c.avif",
+          "960": "portfolio_004-960-4ed4c03c.avif",
+          "1280": "portfolio_004-1280-4ed4c03c.avif",
+          "1600": "portfolio_004-1600-4ed4c03c.avif",
+          "2048": "portfolio_004-2048-4ed4c03c.avif"
+        },
+        "webp": {
+          "320": "portfolio_004-320-4ed4c03c.webp",
+          "640": "portfolio_004-640-4ed4c03c.webp",
+          "960": "portfolio_004-960-4ed4c03c.webp",
+          "1280": "portfolio_004-1280-4ed4c03c.webp",
+          "1600": "portfolio_004-1600-4ed4c03c.webp",
+          "2048": "portfolio_004-2048-4ed4c03c.webp"
+        },
+        "jpeg": {
+          "320": "portfolio_004-320-4ed4c03c.jpeg",
+          "640": "portfolio_004-640-4ed4c03c.jpeg",
+          "960": "portfolio_004-960-4ed4c03c.jpeg",
+          "1280": "portfolio_004-1280-4ed4c03c.jpeg",
+          "1600": "portfolio_004-1600-4ed4c03c.jpeg",
+          "2048": "portfolio_004-2048-4ed4c03c.jpeg"
+        }
+      },
+      "lqip": "data:image/jpeg;base64,/9j/2wBDABsSFBcUERsXFhceHBsgKEIrKCUlKFE6PTBCYFVlZF9VXVtqeJmBanGQc1tdhbWGkJ6jq62rZ4C8ybqmx5moq6T/2wBDARweHigjKE4rK06kbl1upKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKT/wAARCAAUAA8DASIAAhEBAxEB/8QAGAAAAwEBAAAAAAAAAAAAAAAAAAIEAQX/xAAdEAACAgMBAQEAAAAAAAAAAAABAgADBBESIiGR/8QAFQEBAQAAAAAAAAAAAAAAAAAAAwT/xAAYEQEBAQEBAAAAAAAAAAAAAAABAAIRQf/aAAwDAQACEQMRAD8A5GOBz0F+ynHatuu1/ZJWH5ArB2YpLISCTqXY7kldAlteRap8tqI9jOfRhCJ5Bf/Z"
+    },
+    {
+      "original": "images/portfolio/live-music/portfolio_002.jpeg",
+      "formats": {
+        "avif": {
+          "320": "portfolio_002-320-c76ecc57.avif",
+          "640": "portfolio_002-640-c76ecc57.avif",
+          "960": "portfolio_002-960-c76ecc57.avif",
+          "1280": "portfolio_002-1280-c76ecc57.avif",
+          "1600": "portfolio_002-1600-c76ecc57.avif",
+          "2048": "portfolio_002-2048-c76ecc57.avif"
+        },
+        "webp": {
+          "320": "portfolio_002-320-c76ecc57.webp",
+          "640": "portfolio_002-640-c76ecc57.webp",
+          "960": "portfolio_002-960-c76ecc57.webp",
+          "1280": "portfolio_002-1280-c76ecc57.webp",
+          "1600": "portfolio_002-1600-c76ecc57.webp",
+          "2048": "portfolio_002-2048-c76ecc57.webp"
+        },
+        "jpeg": {
+          "320": "portfolio_002-320-c76ecc57.jpeg",
+          "640": "portfolio_002-640-c76ecc57.jpeg",
+          "960": "portfolio_002-960-c76ecc57.jpeg",
+          "1280": "portfolio_002-1280-c76ecc57.jpeg",
+          "1600": "portfolio_002-1600-c76ecc57.jpeg",
+          "2048": "portfolio_002-2048-c76ecc57.jpeg"
+        }
+      },
+      "lqip": "data:image/jpeg;base64,/9j/2wBDABsSFBcUERsXFhceHBsgKEIrKCUlKFE6PTBCYFVlZF9VXVtqeJmBanGQc1tdhbWGkJ6jq62rZ4C8ybqmx5moq6T/2wBDARweHigjKE4rK06kbl1upKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKT/wAARCAAPABQDASIAAhEBAxEB/8QAGAAAAwEBAAAAAAAAAAAAAAAAAAIEAQP/xAAdEAADAQABBQAAAAAAAAAAAAAAAQIRAwQUIjFC/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAH/xAAWEQEBAQAAAAAAAAAAAAAAAAAAAQL/2gAMAwEAAhEDEQA/AIO/5H0z4flkNxTWmzSaGppeO+xauMRwxoBqvGAR/9k="
+    },
+    {
+      "original": "images/portfolio/live-music/portfolio_001.jpeg",
+      "formats": {
+        "avif": {
+          "320": "portfolio_001-320-64a4d39d.avif",
+          "640": "portfolio_001-640-64a4d39d.avif",
+          "960": "portfolio_001-960-64a4d39d.avif",
+          "1280": "portfolio_001-1280-64a4d39d.avif",
+          "1600": "portfolio_001-1600-64a4d39d.avif",
+          "2048": "portfolio_001-2048-64a4d39d.avif"
+        },
+        "webp": {
+          "320": "portfolio_001-320-64a4d39d.webp",
+          "640": "portfolio_001-640-64a4d39d.webp",
+          "960": "portfolio_001-960-64a4d39d.webp",
+          "1280": "portfolio_001-1280-64a4d39d.webp",
+          "1600": "portfolio_001-1600-64a4d39d.webp",
+          "2048": "portfolio_001-2048-64a4d39d.webp"
+        },
+        "jpeg": {
+          "320": "portfolio_001-320-64a4d39d.jpeg",
+          "640": "portfolio_001-640-64a4d39d.jpeg",
+          "960": "portfolio_001-960-64a4d39d.jpeg",
+          "1280": "portfolio_001-1280-64a4d39d.jpeg",
+          "1600": "portfolio_001-1600-64a4d39d.jpeg",
+          "2048": "portfolio_001-2048-64a4d39d.jpeg"
+        }
+      },
+      "lqip": "data:image/jpeg;base64,/9j/2wBDABsSFBcUERsXFhceHBsgKEIrKCUlKFE6PTBCYFVlZF9VXVtqeJmBanGQc1tdhbWGkJ6jq62rZ4C8ybqmx5moq6T/2wBDARweHigjKE4rK06kbl1upKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKT/wAARCAAUAA8DASIAAhEBAxEB/8QAGAAAAgMAAAAAAAAAAAAAAAAAAAIBAwX/xAAdEAEAAgICAwAAAAAAAAAAAAABABECAwQhEzFB/8QAFQEBAQAAAAAAAAAAAAAAAAAAAQL/xAAZEQEAAwEBAAAAAAAAAAAAAAABAAIRElH/2gAMAwEAAhEDEQA/AM/wa1fsY4+NB1cnWWdlMXLcYbKWyNU3GV3V0JULkY5q3cXae2EJPkKhjP/Z"
+    },
+    {
+      "original": "images/portfolio/live-music/disc.png",
+      "formats": {
+        "avif": {
+          "320": "disc-320-5e55f7d3.avif",
+          "640": "disc-640-5e55f7d3.avif",
+          "960": "disc-960-5e55f7d3.avif",
+          "1280": "disc-1280-5e55f7d3.avif",
+          "1600": "disc-1600-5e55f7d3.avif",
+          "2048": "disc-2048-5e55f7d3.avif"
+        },
+        "webp": {
+          "320": "disc-320-5e55f7d3.webp",
+          "640": "disc-640-5e55f7d3.webp",
+          "960": "disc-960-5e55f7d3.webp",
+          "1280": "disc-1280-5e55f7d3.webp",
+          "1600": "disc-1600-5e55f7d3.webp",
+          "2048": "disc-2048-5e55f7d3.webp"
+        },
+        "jpeg": {
+          "320": "disc-320-5e55f7d3.jpeg",
+          "640": "disc-640-5e55f7d3.jpeg",
+          "960": "disc-960-5e55f7d3.jpeg",
+          "1280": "disc-1280-5e55f7d3.jpeg",
+          "1600": "disc-1600-5e55f7d3.jpeg",
+          "2048": "disc-2048-5e55f7d3.jpeg"
+        }
+      },
+      "lqip": "data:image/jpeg;base64,/9j/2wBDABsSFBcUERsXFhceHBsgKEIrKCUlKFE6PTBCYFVlZF9VXVtqeJmBanGQc1tdhbWGkJ6jq62rZ4C8ybqmx5moq6T/2wBDARweHigjKE4rK06kbl1upKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKT/wAARCAAUABQDASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAAAAQFBv/EACIQAAICAgEDBQAAAAAAAAAAAAECAAQDERIFEyEiMTNBQv/EABgBAAIDAAAAAAAAAAAAAAAAAAEDAAIE/8QAGxEBAQADAAMAAAAAAAAAAAAAAQACAxETITH/2gAMAwEAAhEDEQA/AJKnS2FE5whbIfCiT2q1yqgazj2hleDqzV8uDl8AHnUvSzSsg1hlbKMh5Hf5gn5ZOKg3NvVYneMekjYiat6xgxWWRNcV8CIOs3xa32tk1XJPbbRU/RljgVUL4RxYj3iJH7HUdw62a7M7FmOyYiJaxt//2Q=="
+    }
+  ]
+}
