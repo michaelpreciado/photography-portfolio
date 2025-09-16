@@ -8,3 +8,9 @@ images/portfolio/Visuals/09.mp4
 images/portfolio/Visuals/10.mp4
 images/portfolio/Visuals/11.mp4
 images/portfolio/Visuals/12.mp4
+
+# Node dependencies
+node_modules/
+
+# macOS artifacts
+.DS_Store
