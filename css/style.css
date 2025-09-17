@@ -1306,7 +1306,7 @@ section {
 /* Masonry-style image grid */
 .image-grid {
     /* Base styles for all grids */
-    width: 80%; /* Wider container for better layout */
+    width: min(100%, 1100px); /* Allow images to use more horizontal space */
     margin: 0 auto 0.5rem auto; /* Reduced bottom margin */
     position: relative;
     z-index: 1; /* Above the background slideshow */
@@ -1354,7 +1354,7 @@ section {
 #portfolio-display .live-music-grid.active,
 #portfolio-display .visuals-grid.active {
     display: grid; /* Use grid instead of flex */
-    grid-template-columns: repeat(2, 1fr); /* Always 2 columns */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive column sizing */
     gap: 2.5rem; /* Increased spacing */
     justify-content: center;
     margin: 0 auto; /* Center the entire grid */
@@ -1376,7 +1376,7 @@ section {
 /* Always maintain two columns */
 @media (min-width: 992px) {
     .image-grid {
-        width: 70%; /* Maintain consistent width */
+        width: min(95%, 1100px); /* Use more available space on larger screens */
         grid-template-columns: repeat(2, 1fr); /* Always 2 columns */
         gap: 2.5rem; /* Increased spacing for better separation */
     }
@@ -1473,9 +1473,9 @@ section {
 /* Responsive adjustments */
 @media (max-width: 1200px) {
     .image-grid {
-        grid-template-columns: repeat(2, 1fr); /* Two columns */
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive columns */
         gap: 2.5rem; /* Increased spacing */
-        width: 80%;
+        width: min(95%, 900px);
     }
     .image-grid .grid-item {
         width: 100%; /* Full width within grid cell */
@@ -1484,31 +1484,35 @@ section {
 
 @media (max-width: 768px) {
     .image-grid {
-        width: 90%; /* Use more screen width on mobile */
-        grid-template-columns: repeat(2, 1fr); /* Enforce two columns */
+        width: 95%; /* Use more screen width on mobile */
+        grid-template-columns: 1fr; /* Display items in a single column */
         display: grid; /* Use grid for consistent layout */
-        gap: 2.5rem; /* Increased spacing to prevent overlap */
+        gap: 2rem; /* Comfortable spacing for larger images */
         margin: 0 auto; /* Center the grid */
     }
     .image-grid .grid-item {
         width: 100%; /* Let grid control the width */
         margin-bottom: 0; /* Remove bottom margin as gap is used now */
     }
+    #portfolio-display .live-music-grid.active,
+    #portfolio-display .visuals-grid.active {
+        grid-template-columns: 1fr; /* Ensure single column in active grids */
+    }
 }
 
 @media (max-width: 480px) {
     .image-grid {
-        width: 95%; /* Use even more screen width on very small devices */
-        grid-template-columns: repeat(2, 1fr); /* Always 2 columns even on small screens */
-        gap: 2.5rem; /* Increased spacing to prevent overlap */
+        width: 100%; /* Allow images to stretch edge-to-edge */
+        grid-template-columns: 1fr; /* Single column on compact screens */
+        gap: 1.75rem; /* Slightly tighter gap for narrow viewports */
     }
     .image-grid .grid-item {
         width: 100%; /* Let grid control the width */
         margin-bottom: 0; /* Remove bottom margin */
     }
-    
+
     #portfolio-display {
-        max-width: 90%; /* Portfolio container width */
+        max-width: 100%; /* Portfolio container width */
         margin: 0 auto;
         display: flex;
         justify-content: center;
@@ -1516,6 +1520,11 @@ section {
         flex-direction: column; /* Stack contents vertically */
         box-shadow: none !important; /* Prevent any box-shadow from being applied to the container */
         background-color: transparent !important; /* Ensure background is transparent */
+        padding: 0 1rem; /* Provide subtle breathing room */
+    }
+    #portfolio-display .live-music-grid.active,
+    #portfolio-display .visuals-grid.active {
+        gap: 1.75rem;
     }
 }
 
