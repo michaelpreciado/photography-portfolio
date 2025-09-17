@@ -10,6 +10,111 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 // Detect small (mobile) screens – iPhone 12 Pro is 390 px wide in portrait, 844 px tall
 const isSmallScreen = window.matchMedia('(max-width: 767px)').matches;
 
+// Optimized image manifest support
+const OPTIMIZED_MANIFEST_URL = 'images/optimized/manifest.json';
+let optimizedManifestPromise = null;
+let optimizedManifestData = null;
+const optimizedImageCache = new Map();
+
+function loadOptimizedManifest() {
+    if (!optimizedManifestPromise) {
+        optimizedManifestPromise = fetch(OPTIMIZED_MANIFEST_URL)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Failed to load manifest: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                optimizedManifestData = data;
+                return data;
+            })
+            .catch(error => {
+                console.warn('Unable to load optimized manifest, falling back to original assets.', error);
+                optimizedManifestData = null;
+                return null;
+            });
+    }
+    return optimizedManifestPromise;
+}
+
+function resolveOptimizedPath(entry, format, size) {
+    if (!entry?.formats?.[format]?.[size]) return null;
+    return `images/optimized/${entry.formats[format][size]}`;
+}
+
+function buildSrcSet(formatData, allowedSizes = ['320', '640', '960', '1280']) {
+    if (!formatData) return null;
+    const parts = allowedSizes
+        .filter(size => formatData[size])
+        .map(size => `images/optimized/${formatData[size]} ${size}w`);
+    return parts.length ? parts.join(', ') : null;
+}
+
+async function getOptimizedImageAsset(originalPath) {
+    if (!originalPath) return null;
+
+    if (optimizedImageCache.has(originalPath)) {
+        return optimizedImageCache.get(originalPath);
+    }
+
+    if (!optimizedManifestData) {
+        await loadOptimizedManifest();
+    }
+
+    if (!optimizedManifestData) {
+        optimizedImageCache.set(originalPath, null);
+        return null;
+    }
+
+    const manifestEntry = optimizedManifestData.images.find(item => item.original === originalPath);
+
+    if (!manifestEntry) {
+        optimizedImageCache.set(originalPath, null);
+        return null;
+    }
+
+    const bestFullSize = resolveOptimizedPath(manifestEntry, 'jpeg', '2048')
+        || resolveOptimizedPath(manifestEntry, 'jpeg', '1600')
+        || resolveOptimizedPath(manifestEntry, 'webp', '2048')
+        || resolveOptimizedPath(manifestEntry, 'webp', '1600')
+        || originalPath;
+
+    const displaySource = resolveOptimizedPath(manifestEntry, 'webp', '640')
+        || resolveOptimizedPath(manifestEntry, 'jpeg', '640')
+        || resolveOptimizedPath(manifestEntry, 'webp', '320')
+        || resolveOptimizedPath(manifestEntry, 'jpeg', '320')
+        || originalPath;
+
+    const thumbnailSource = resolveOptimizedPath(manifestEntry, 'webp', '320')
+        || resolveOptimizedPath(manifestEntry, 'jpeg', '320')
+        || displaySource;
+
+    const imageData = {
+        original: originalPath,
+        placeholder: manifestEntry.lqip || '',
+        full: bestFullSize,
+        display: displaySource,
+        thumbnail: thumbnailSource,
+        sources: []
+    };
+
+    const avifSrcSet = buildSrcSet(manifestEntry.formats.avif);
+    if (avifSrcSet) {
+        imageData.sources.push({ type: 'image/avif', srcset: avifSrcSet });
+    }
+
+    const webpSrcSet = buildSrcSet(manifestEntry.formats.webp);
+    if (webpSrcSet) {
+        imageData.sources.push({ type: 'image/webp', srcset: webpSrcSet });
+    }
+
+    imageData.fallbackSrcSet = buildSrcSet(manifestEntry.formats.jpeg);
+
+    optimizedImageCache.set(originalPath, imageData);
+    return imageData;
+}
+
 // Set CSS custom property for viewport height (iOS fix)
 function setVHVariable() {
     // First, get viewport height and multiply by 1% to get a value for 1vh unit
@@ -449,10 +554,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add refs for nav buttons
     const modalPrevButton = document.querySelector('.modal-prev');
     const modalNextButton = document.querySelector('.modal-next');
+    let modalVideo = document.getElementById('modalVideo');
 
     // --- State for Modal Swipe Navigation --- //
     let currentModalImageIndex = -1;
-    let activeCategoryImages = []; // Array of {src: '', alt: ''}
+    let activeCategoryMedia = []; // Array of media objects for the active category
+    let modalContentRequestId = 0;
     let touchStartX = 0;
     let touchEndX = 0;
     let touchStartY = 0; // To prevent scroll hijacking
@@ -539,49 +646,138 @@ document.addEventListener('DOMContentLoaded', () => {
         ]
     };
 
-    // --- Update Modal Content --- //
-    function updateModalContent(index) {
-        if (index >= 0 && index < activeCategoryImages.length) {
-            currentModalImageIndex = index;
-            const imageData = activeCategoryImages[index];
-
-            // Fade out the current image
-            modalImage.style.opacity = '0';
-
-            // Wait for fade out, then change src and fade in
-            setTimeout(() => {
-                modalImage.src = imageData.src;
-                captionText.innerHTML = imageData.alt;
-                // Preload next and previous images for smoother transition
-                preloadAdjacentImages(index);
-                // Fade in the new image
-                modalImage.style.opacity = '1';
-            }, 300); // Should match the CSS transition duration
-
-            // Show/hide nav buttons based on image count
-            if (activeCategoryImages.length > 1) {
-                modalPrevButton.style.display = 'block';
-                modalNextButton.style.display = 'block';
-            } else {
-                modalPrevButton.style.display = 'none';
-                modalNextButton.style.display = 'none';
-            }
+    // --- Modal Helpers --- //
+    function ensureModalVideoElement() {
+        if (!modal) return null;
+        if (!modalVideo) {
+            modalVideo = document.createElement('video');
+            modalVideo.id = 'modalVideo';
+            modalVideo.className = 'modal-content';
+            modalVideo.controls = true;
+            modalVideo.playsInline = true;
+            modalVideo.style.display = 'none';
+            modalVideo.setAttribute('preload', 'auto');
+            modal.insertBefore(modalVideo, captionText);
         }
+        return modalVideo;
     }
 
-    // --- Preload Adjacent Images --- //
-    function preloadAdjacentImages(index) {
-        const prevIndex = (index - 1 + activeCategoryImages.length) % activeCategoryImages.length;
-        const nextIndex = (index + 1) % activeCategoryImages.length;
+    function toggleModalNavigation(shouldShow) {
+        if (!modalPrevButton || !modalNextButton) return;
+        const displayValue = shouldShow ? 'block' : 'none';
+        modalPrevButton.style.display = displayValue;
+        modalNextButton.style.display = displayValue;
+    }
 
-        if (prevIndex !== index && activeCategoryImages[prevIndex]) {
-            const prevImage = new Image();
-            prevImage.src = activeCategoryImages[prevIndex].src;
+    // --- Update Modal Content --- //
+    function updateModalContent(index) {
+        if (index < 0 || index >= activeCategoryMedia.length) {
+            return;
         }
-        if (nextIndex !== index && activeCategoryImages[nextIndex]) {
-            const nextImage = new Image();
-            nextImage.src = activeCategoryImages[nextIndex].src;
+
+        currentModalImageIndex = index;
+        modalContentRequestId += 1;
+        const requestId = modalContentRequestId;
+
+        const mediaData = activeCategoryMedia[index] || {};
+        toggleModalNavigation(activeCategoryMedia.length > 1);
+        if (captionText) {
+            captionText.textContent = mediaData.alt || '';
         }
+
+        preloadAdjacentMedia(index);
+
+        const videoEl = ensureModalVideoElement();
+
+        if (mediaData.type === 'video') {
+            if (modalImage) {
+                modalImage.style.opacity = '0';
+                modalImage.style.display = 'none';
+                modalImage.style.backgroundImage = '';
+            }
+            if (videoEl) {
+                const requiresNewSource = videoEl.src !== mediaData.src;
+                if (requiresNewSource) {
+                    videoEl.pause();
+                    videoEl.src = mediaData.src;
+                    videoEl.load();
+                }
+                videoEl.loop = true;
+                videoEl.muted = false;
+                videoEl.controls = true;
+                videoEl.style.display = 'block';
+                videoEl.play().catch(() => { /* Autoplay restrictions are fine */ });
+            }
+            return;
+        }
+
+        if (videoEl) {
+            videoEl.pause();
+            videoEl.removeAttribute('src');
+            videoEl.load();
+            videoEl.style.display = 'none';
+        }
+
+        if (!modalImage) {
+            return;
+        }
+
+        modalImage.style.display = 'block';
+        modalImage.alt = mediaData.alt || '';
+
+        if (mediaData.placeholder) {
+            modalImage.style.backgroundImage = `url(${mediaData.placeholder})`;
+            modalImage.style.backgroundSize = 'cover';
+            modalImage.style.backgroundPosition = 'center';
+        } else {
+            modalImage.style.backgroundImage = '';
+        }
+
+        const previewSrc = mediaData.preview || mediaData.display || mediaData.src || mediaData.full;
+        const fullSrc = mediaData.full || mediaData.src || previewSrc;
+
+        if (previewSrc) {
+            modalImage.src = previewSrc;
+        }
+
+        modalImage.style.opacity = '0';
+        requestAnimationFrame(() => {
+            if (requestId === modalContentRequestId) {
+                modalImage.style.opacity = '1';
+            }
+        });
+
+        if (!fullSrc || fullSrc === previewSrc) {
+            return;
+        }
+
+        const loader = new Image();
+        loader.onload = () => {
+            if (requestId !== modalContentRequestId) return;
+            modalImage.src = fullSrc;
+        };
+        loader.src = fullSrc;
+    }
+
+    // --- Preload Adjacent Media --- //
+    function preloadAdjacentMedia(index) {
+        if (!activeCategoryMedia.length) return;
+        const total = activeCategoryMedia.length;
+        const neighbours = [
+            (index - 1 + total) % total,
+            (index + 1) % total
+        ];
+
+        neighbours.forEach(neighbourIndex => {
+            if (neighbourIndex === index) return;
+            const neighbour = activeCategoryMedia[neighbourIndex];
+            if (!neighbour || neighbour.type !== 'image') return;
+            if (neighbour.preloaded || !neighbour.full) return;
+
+            const preloader = new Image();
+            preloader.src = neighbour.full;
+            neighbour.preloaded = true;
+        });
     }
 
     // --- Load Portfolio Images By Category --- //
@@ -589,163 +785,138 @@ document.addEventListener('DOMContentLoaded', () => {
     // Global registry contains ALL displayed images, regardless of category
     const GLOBAL_IMAGE_REGISTRY = new Set();
     
-    function loadPortfolioImagesByCategory(category, gridElement) {
-        console.log(`Loading ${category} images - fixing duplicates issue`);
-        
+    async function loadPortfolioImagesByCategory(category, gridElement) {
         if (!gridElement) {
             console.error('Target grid element not provided');
             return;
         }
-        
-        // Always start with a clean slate
+
+        gridElement.classList.add('loading');
         gridElement.innerHTML = '';
-        
-        // Get images for this category
-        const imagePaths = portfolioImages[category] || [];
-        if (imagePaths.length === 0) {
-            gridElement.innerHTML = `<p style="text-align: center;">No images found for ${category}.</p>`;
+        gridElement.dataset.category = category;
+
+        const mediaPaths = portfolioImages[category] || [];
+        if (mediaPaths.length === 0) {
+            gridElement.innerHTML = `<p style="text-align: center;">No media found for ${category}.</p>`;
+            gridElement.dataset.loaded = true;
+            gridElement.classList.remove('loading');
             return;
         }
-        
-        // Temporary set just for this function execution
+
         const deduplicatedPaths = [];
         const seenInThisRun = new Set();
-        
-        // Process each image
-        imagePaths.forEach(path => {
-            // Normalize path for consistent comparison
+
+        mediaPaths.forEach(path => {
             const normalizedPath = path.toLowerCase();
             const basename = normalizedPath.split('/').pop();
-            
-            // Only include each image once, ever
+
             if (!GLOBAL_IMAGE_REGISTRY.has(basename) && !seenInThisRun.has(basename)) {
                 deduplicatedPaths.push(path);
                 seenInThisRun.add(basename);
                 GLOBAL_IMAGE_REGISTRY.add(basename);
             }
         });
-        
-        console.log(`${category}: Using ${deduplicatedPaths.length} unique images from ${imagePaths.length} total`);
-        
-        // If we have no unique images left (all were duplicates), clear global registry and try again
-        if (deduplicatedPaths.length === 0 && imagePaths.length > 0) {
-            console.log('All images were duplicates - resetting registry and trying again');
+
+        if (deduplicatedPaths.length === 0 && mediaPaths.length > 0) {
             GLOBAL_IMAGE_REGISTRY.clear();
-            return loadPortfolioImagesByCategory(category, gridElement); // Recursive call after reset
+            gridElement.classList.remove('loading');
+            return loadPortfolioImagesByCategory(category, gridElement);
         }
 
-        // Shuffle unique images for random display
         const shuffledPaths = [...deduplicatedPaths];
         shuffleArray(shuffledPaths);
 
-        // Create and append media (images/videos) with grid items for masonry layout
-        const mediaElements = [];
-        shuffledPaths.forEach(mediaPath => {
-            // Create a grid item wrapper for each media item
+        await loadOptimizedManifest();
+
+        for (const mediaPath of shuffledPaths) {
             const gridItem = document.createElement('div');
-            gridItem.className = 'grid-item';
-            
-            // Check if the file is a video (mp4, webm, etc.)
+            gridItem.className = 'grid-item fade-in';
+
             const isVideo = /\.(mp4|webm|mov)$/i.test(mediaPath);
-            
+
             if (isVideo) {
-                console.log('Loading video:', mediaPath); // Debug log
-                
-                // Create video element for video files
                 const video = document.createElement('video');
-                video.src = mediaPath;
-                // On small screens, avoid heavy autoplay to save battery & CPU
-                if (!isSmallScreen) {
-                    video.autoplay = true;
-                }
+                video.dataset.src = mediaPath;
+                video.dataset.full = mediaPath;
+                video.dataset.mediaType = 'video';
+                video.dataset.caption = `${category.replace('-', ' ')} video`;
+                video.dataset.loaded = 'false';
                 video.loop = true;
                 video.muted = true;
                 video.playsInline = true;
-                video.preload = isSmallScreen ? 'metadata' : 'auto';
-                video.width = 320; // Set default width
-                video.height = 240; // Set default height
-                video.classList.add('fade-in');
+                video.preload = 'none';
                 video.setAttribute('disablePictureInPicture', '');
                 video.setAttribute('controlsList', 'nodownload');
-                
-                // Add error handling
-                video.addEventListener('error', function(e) {
-                    console.error('Video error:', e);
+                video.tabIndex = 0;
+                video.style.backgroundColor = '#000';
+
+                const source = document.createElement('source');
+                source.type = 'video/mp4';
+                source.dataset.src = mediaPath;
+                video.appendChild(source);
+
+                video.addEventListener('error', (event) => {
+                    console.error('Video error:', event);
                 });
 
-                // Handle hardware acceleration
-                video.style.willChange = 'transform';
-                
-                // Add video to grid item
                 gridItem.appendChild(video);
-                mediaElements.push(video);
+                gridElement.appendChild(gridItem);
 
-                // Observe for play/pause based on viewport visibility
                 initVideoObserver();
                 videoObserver.observe(video);
-
-                // Add click event for showing video in modal
-                gridItem.addEventListener('click', function() {
-                    showModal(mediaPath, `${category.replace('-', ' ')} video`);
-                });
-                
-                // Add the grid item to the grid
-                gridElement.appendChild(gridItem);
-                
-                // Force video to play only on larger screens
-                if (!isSmallScreen) {
-                    setTimeout(() => {
-                        video.play().catch(e => console.error('Video play error:', e));
-                    }, 100);
-                }
-                
-            } else {
-                // Create and configure the image as before
-                const img = document.createElement('img');
-                img.src = mediaPath;
-                img.loading = 'lazy';
-                img.fetchPriority = 'low';
-                img.alt = `${category.replace('-', ' ')} photo`; // Dynamic alt text
-                img.classList.add('fade-in'); // Add class for scroll animation
-                
-                // Add error handling for images that fail to load
-                img.onerror = function() {
-                    console.error(`Failed to load image: ${mediaPath}`);
-                    gridItem.remove(); // Remove the grid item if image fails to load
-                    // CSS Grid handles layout automatically
-                };
-                
-                // Let CSS Grid handle all sizing and positioning
-                // No need for manual width adjustments
-                
-                // Add the image to the grid item
-                gridItem.appendChild(img);
-                mediaElements.push(img);
-                
-                // Add the grid item to the grid
-                gridElement.appendChild(gridItem);
+                continue;
             }
-        });
 
-        // Don't initialize Masonry - use pure CSS Grid instead
-        // The CSS Grid layout will handle the two-column display
-        
-        // Simply mark as loaded and trigger fade-in
-        gridElement.classList.add('loaded');
+            const optimizedData = await getOptimizedImageAsset(mediaPath);
+            const picture = document.createElement('picture');
+            picture.classList.add('portfolio-picture');
 
-        // Observe newly added images for fade-in animation
-        observeFadeInElements();
+            if (optimizedData?.sources) {
+                optimizedData.sources.forEach(sourceData => {
+                    const sourceEl = document.createElement('source');
+                    sourceEl.type = sourceData.type;
+                    sourceEl.srcset = sourceData.srcset;
+                    picture.appendChild(sourceEl);
+                });
+            }
 
-        // For videos, ensure they start playing if appropriate
-        const videos = gridElement.querySelectorAll('video');
-        videos.forEach(video => {
-            video.addEventListener('loadeddata', function() {
-                // No need to call masonry layout since we're using CSS Grid
+            const img = document.createElement('img');
+            img.loading = 'lazy';
+            img.decoding = 'async';
+            img.fetchPriority = 'low';
+            img.alt = `${category.replace('-', ' ')} photo`;
+            img.dataset.mediaType = 'image';
+            img.dataset.full = optimizedData?.full || mediaPath;
+            img.dataset.preview = optimizedData?.display || optimizedData?.thumbnail || mediaPath;
+            img.dataset.original = mediaPath;
+            if (optimizedData?.placeholder) {
+                img.dataset.placeholder = optimizedData.placeholder;
+                img.style.backgroundImage = `url(${optimizedData.placeholder})`;
+                img.style.backgroundSize = 'cover';
+                img.style.backgroundPosition = 'center';
+                img.classList.add('with-lqip');
+            }
+            if (optimizedData?.fallbackSrcSet) {
+                img.srcset = optimizedData.fallbackSrcSet;
+            }
+            img.sizes = '(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33vw';
+            img.src = optimizedData?.thumbnail || mediaPath;
+
+            img.addEventListener('error', () => {
+                console.error(`Failed to load image: ${mediaPath}`);
+                gridItem.remove();
             });
-        });
 
-        // Mark grid as loaded
+            picture.appendChild(img);
+            gridItem.appendChild(picture);
+            gridElement.appendChild(gridItem);
+        }
+
+        gridElement.classList.remove('loading');
+        gridElement.classList.add('loaded');
         gridElement.dataset.loaded = true;
+
+        observeFadeInElements();
     }
 
     // --- Portfolio Category Switching Logic --- //
@@ -754,17 +925,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const grids = portfolioDisplay.querySelectorAll('.image-grid');
         const portfolioSection = document.getElementById('portfolio'); // Get the parent section
         
-        // Preload all categories when the page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Preloading all portfolio categories');
-            // Load visuals category specifically to ensure video loads
-            const visualsGrid = portfolioDisplay.querySelector('.visuals-grid');
-            if (visualsGrid && !visualsGrid.dataset.loaded) {
-                console.log('Preloading visuals category');
-                loadPortfolioImagesByCategory('visuals', visualsGrid);
-            }
-        });
-
         buttons.forEach(button => {
             button.addEventListener('click', () => {
                 const category = button.dataset.category;
@@ -907,80 +1067,128 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Modal Event Listeners --- //
     if (modal && modalImage && closeModal && portfolioDisplay) {
-        // Open modal when an image inside portfolio display is clicked
+        // Open modal when an image or video inside portfolio display is clicked
         portfolioDisplay.addEventListener('click', (event) => {
-            if (event.target.tagName === 'IMG') {
-                // Populate activeCategoryImages based on the currently visible grid
-                const activeGrid = portfolioDisplay.querySelector('.image-grid.active');
-                if (activeGrid) {
-                    activeCategoryImages = Array.from(activeGrid.querySelectorAll('img')).map((img, index) => {
-                        // Find the index of the clicked image
-                        if (img.src === event.target.src) {
-                            currentModalImageIndex = index;
-                        }
-                        return { src: img.src, alt: img.alt };
-                    });
-
-                    if (currentModalImageIndex !== -1) {
-                        modal.classList.add('visible'); // Use class to trigger CSS transition
-                        updateModalContent(currentModalImageIndex); // Use the new function
-                    } else {
-                         console.error("Clicked image not found in active category array.");
-                    }
-                } else {
-                    console.error("Could not determine active image grid.");
-                }
+            const mediaTarget = event.target.closest('img, video');
+            if (!mediaTarget) {
+                return;
             }
+
+            const activeGrid = portfolioDisplay.querySelector('.image-grid.active');
+            if (!activeGrid) {
+                console.error('Could not determine active image grid.');
+                return;
+            }
+
+            const mediaElements = Array.from(activeGrid.querySelectorAll('img, video'));
+            const clickedIndex = mediaElements.indexOf(mediaTarget);
+            if (clickedIndex === -1) {
+                console.error('Clicked media not found in active category array.');
+                return;
+            }
+
+            activeCategoryMedia = mediaElements.map(element => {
+                if (element.tagName === 'IMG') {
+                    const altText = element.alt || '';
+                    const placeholder = element.dataset.placeholder || '';
+                    const previewSrc = element.dataset.preview || element.currentSrc || element.src;
+                    const fullSrc = element.dataset.full || element.currentSrc || element.src;
+                    return {
+                        type: 'image',
+                        element,
+                        alt: altText,
+                        placeholder,
+                        preview: previewSrc,
+                        display: element.currentSrc || previewSrc,
+                        full: fullSrc
+                    };
+                }
+
+                const caption = element.dataset.caption
+                    || element.getAttribute('aria-label')
+                    || element.getAttribute('title')
+                    || `${activeGrid.dataset.category || 'portfolio'} video`;
+                const sourceEl = element.querySelector('source');
+                const videoSrc = element.dataset.full
+                    || element.dataset.src
+                    || (sourceEl ? sourceEl.currentSrc || sourceEl.src || sourceEl.dataset.src : '')
+                    || element.currentSrc
+                    || element.src;
+
+                return {
+                    type: 'video',
+                    element,
+                    alt: caption,
+                    src: videoSrc
+                };
+            });
+
+            currentModalImageIndex = clickedIndex;
+            modal.classList.add('visible');
+            document.body.style.overflow = 'hidden';
+            updateModalContent(clickedIndex);
         });
+
+        function resetModalState() {
+            modal.classList.remove('visible');
+            document.body.style.overflow = '';
+            toggleModalNavigation(false);
+            activeCategoryMedia = [];
+            currentModalImageIndex = -1;
+            if (modalVideo) {
+                modalVideo.pause();
+                modalVideo.removeAttribute('src');
+                modalVideo.load();
+                modalVideo.style.display = 'none';
+            }
+            if (modalImage) {
+                modalImage.style.display = 'block';
+                modalImage.style.opacity = '1';
+                modalImage.style.backgroundImage = '';
+            }
+        }
 
         // Close modal when the close button is clicked
-        closeModal.addEventListener('click', () => {
-            modal.classList.remove('visible');
-            modalPrevButton.style.display = 'none'; // Hide buttons
-            modalNextButton.style.display = 'none'; // Hide buttons
-            activeCategoryImages = []; // Clear the array when modal closes
-            currentModalImageIndex = -1;
-            const videoEl = document.getElementById('modalVideo');
-            if (videoEl) {
-                videoEl.pause();
-                videoEl.src = '';
-                videoEl.style.display = 'none';
-            }
-            modalImage.style.display = 'block';
-        });
+        closeModal.addEventListener('click', resetModalState);
 
         // Close modal when clicking outside the image/content area
         modal.addEventListener('click', (event) => {
             if (event.target === modal) {
-                modal.classList.remove('visible');
-                modalPrevButton.style.display = 'none';
-                modalNextButton.style.display = 'none';
-                activeCategoryImages = [];
-                currentModalImageIndex = -1;
-                const videoEl = document.getElementById('modalVideo');
-                if (videoEl) {
-                    videoEl.pause();
-                    videoEl.src = '';
-                    videoEl.style.display = 'none';
-                }
-                modalImage.style.display = 'block';
+                resetModalState();
             }
         });
 
         // --- Click Listeners for Modal Navigation Buttons --- //
         if (modalPrevButton && modalNextButton) {
             modalPrevButton.addEventListener('click', () => {
-                if (currentModalImageIndex === -1 || activeCategoryImages.length <= 1) return;
-                const prevIndex = (currentModalImageIndex - 1 + activeCategoryImages.length) % activeCategoryImages.length;
+                if (currentModalImageIndex === -1 || activeCategoryMedia.length <= 1) return;
+                const prevIndex = (currentModalImageIndex - 1 + activeCategoryMedia.length) % activeCategoryMedia.length;
                 updateModalContent(prevIndex);
             });
 
             modalNextButton.addEventListener('click', () => {
-                if (currentModalImageIndex === -1 || activeCategoryImages.length <= 1) return;
-                const nextIndex = (currentModalImageIndex + 1) % activeCategoryImages.length;
+                if (currentModalImageIndex === -1 || activeCategoryMedia.length <= 1) return;
+                const nextIndex = (currentModalImageIndex + 1) % activeCategoryMedia.length;
                 updateModalContent(nextIndex);
             });
         }
+
+        document.addEventListener('keydown', (event) => {
+            if (!modal.classList.contains('visible')) return;
+
+            if (event.key === 'Escape') {
+                event.preventDefault();
+                resetModalState();
+            } else if (event.key === 'ArrowRight' && activeCategoryMedia.length > 1) {
+                event.preventDefault();
+                const nextIndex = (currentModalImageIndex + 1) % activeCategoryMedia.length;
+                updateModalContent(nextIndex);
+            } else if (event.key === 'ArrowLeft' && activeCategoryMedia.length > 1) {
+                event.preventDefault();
+                const prevIndex = (currentModalImageIndex - 1 + activeCategoryMedia.length) % activeCategoryMedia.length;
+                updateModalContent(prevIndex);
+            }
+        });
 
         // --- Touch Swipe Listeners for Modal Image --- //
         modalImage.addEventListener('touchstart', (event) => {
@@ -1011,7 +1219,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
         modalImage.addEventListener('touchend', () => {
-            if (currentModalImageIndex === -1 || activeCategoryImages.length <= 1) {
+            if (currentModalImageIndex === -1 || activeCategoryMedia.length <= 1) {
                 return; // No swipe needed if only one image or index is invalid
             }
 
@@ -1021,11 +1229,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (Math.abs(deltaX) > swipeThreshold && isSwiping) { // Check isSwiping flag
                 if (deltaX < 0) {
                     // Swiped Left (Next Image)
-                    const nextIndex = (currentModalImageIndex + 1) % activeCategoryImages.length;
+                    const nextIndex = (currentModalImageIndex + 1) % activeCategoryMedia.length;
                     updateModalContent(nextIndex);
                 } else {
                     // Swiped Right (Previous Image)
-                    const prevIndex = (currentModalImageIndex - 1 + activeCategoryImages.length) % activeCategoryImages.length;
+                    const prevIndex = (currentModalImageIndex - 1 + activeCategoryMedia.length) % activeCategoryMedia.length;
                     updateModalContent(prevIndex);
                 }
             }
@@ -1125,33 +1333,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// --- Helper: Modal for videos --- //
-function showModal(mediaPath, altText = '') {
-    if (!modal) return;
-    // Hide image element, show / create video element
-    let videoEl = document.getElementById('modalVideo');
-    if (!videoEl) {
-        videoEl = document.createElement('video');
-        videoEl.id = 'modalVideo';
-        videoEl.className = 'modal-content';
-        videoEl.controls = true;
-        videoEl.autoplay = true;
-        videoEl.loop = true;
-        videoEl.muted = false; // allow audio in modal
-        videoEl.style.maxWidth = '90vw';
-        videoEl.style.maxHeight = '90vh';
-        modal.insertBefore(videoEl, captionText); // place before caption
-    }
-    modalImage.style.display = 'none';
-    videoEl.style.display = 'block';
-    videoEl.src = mediaPath;
-    captionText.textContent = altText;
-
-    modalPrevButton.style.display = 'none';
-    modalNextButton.style.display = 'none';
-    modal.classList.add('visible');
-}
-
 // --- Global video IntersectionObserver --- //
 let videoObserver;
 function initVideoObserver() {
@@ -1159,19 +1340,31 @@ function initVideoObserver() {
     videoObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             const vid = entry.target;
-            if (entry.intersectionRatio > 0.6) {
-                // Play when mostly in view
-                if (vid.paused) {
-                    vid.play().catch(() => {/* ignore */});
+            if (entry.intersectionRatio > 0.1 && vid.dataset.loaded !== 'true') {
+                const sourceEl = vid.querySelector('source');
+                if (sourceEl && sourceEl.dataset.src) {
+                    sourceEl.src = sourceEl.dataset.src;
+                    delete sourceEl.dataset.src;
                 }
-            } else {
-                // Pause when out of view to save resources
+                if (vid.dataset.src) {
+                    vid.src = vid.dataset.src;
+                    delete vid.dataset.src;
+                }
+                vid.load();
+                vid.dataset.loaded = 'true';
+            }
+
+            if (entry.intersectionRatio > 0.6) {
+                if (vid.paused) {
+                    vid.play().catch(() => {/* Ignore autoplay restrictions */});
+                }
+            } else if (entry.intersectionRatio < 0.2) {
                 if (!vid.paused) {
                     vid.pause();
                 }
             }
         });
     }, {
-        threshold: [0, 0.6, 1]
+        threshold: [0, 0.1, 0.6, 1]
     });
 }

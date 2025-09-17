@@ -1361,7 +1361,7 @@ section {
 }
 
 /* Grid items for masonry layout */
-.image-grid .grid-item {
+.image-grid .grid-item { 
     width: 100%; /* Full width within grid cell */
     margin-bottom: 0; /* Remove margin, use grid gap */
     padding: 0; /* Remove padding to prevent overlap */
@@ -1383,6 +1383,10 @@ section {
 }
 
 /* Actual images and videos inside grid items */
+.image-grid .grid-item picture {
+    display: block;
+}
+
 .image-grid .grid-item img, .image-grid .grid-item video {
     width: 100%;
     height: auto; /* Allow natural height */
@@ -1416,6 +1420,26 @@ section {
 .live-music-grid .grid-item:hover img,
 .live-music-grid .grid-item:hover video {
     box-shadow: 0 0 15px #ff00ff, 0 0 30px rgba(255, 0, 255, 0.4);
+}
+
+.image-grid .grid-item img.with-lqip {
+    background-color: rgba(255, 255, 255, 0.05);
+    filter: saturate(0.95);
+}
+
+.grid-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 220px;
+    border-radius: 4px;
+    border: 1px dashed rgba(255, 255, 255, 0.25);
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.9rem;
+    background: rgba(255, 255, 255, 0.04);
+    padding: 1.5rem;
 }
 
 /* Visuals - Cyan Blue */
