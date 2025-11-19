@@ -1551,24 +1551,33 @@ section {
     transform: scale(1.2);
 }
 
-/* Font Awesome Icon Styling */
+/* SVG Icon Styling */
 .social-links a {
-    display: inline-block; /* Allows setting width/height/padding */
+    display: inline-flex; /* Use flexbox for perfect centering */
+    align-items: center;
+    justify-content: center;
     background-color: #333; /* Dark gray background */
-    color: #fff; /* White icon color */
     border-radius: 50%; /* Make it circular */
     width: 45px; /* Size of the circle */
     height: 45px;
-    line-height: 45px; /* Vertically center icon */
-    text-align: center; /* Horizontally center icon */
     margin: 0 0.5rem; /* Spacing between icons */
-    font-size: 1.2rem; /* Icon size */
     transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.social-links svg.icon {
+    fill: #fff; /* White icon color */
+    width: 22px; /* Icon size */
+    height: 22px;
+    transition: fill 0.3s ease;
 }
 
 .social-links a:hover {
     background-color: #ff00ff; /* Pink background on hover */
     transform: scale(1.1); /* Slight scale effect on hover */
+}
+
+.social-links a:hover svg.icon {
+    fill: #fff; /* Keep white on hover */
 }
 
 /* Contact Section */

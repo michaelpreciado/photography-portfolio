@@ -1,7 +1,33 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
 # Use Git LFS for large media
 *.mp4 filter=lfs diff=lfs merge=lfs -text
 *.mov filter=lfs diff=lfs merge=lfs -text
+*.webm filter=lfs diff=lfs merge=lfs -text
 
 # Optional: raw camera formats (uncomment if needed)
 # *.CR2 filter=lfs diff=lfs merge=lfs -text
 # *.NEF filter=lfs diff=lfs merge=lfs -text
+
+# Images
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.gif binary
+*.webp binary
+*.avif binary
+*.svg text
+*.ico binary
+
+# Source maps and minified files - mark as generated
+*.map linguist-generated=true
+*.min.css linguist-generated=true
+*.min.js linguist-generated=true
+
+# Web files
+*.html text
+*.css text
+*.js text
+*.json text
+*.md text
