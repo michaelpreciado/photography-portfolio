@@ -4,14 +4,20 @@
   "description": "High-performance photography portfolio optimized for 120fps",
   "scripts": {
     "images": "node scripts/optimize-images.js",
-    "build": "npm run images",
-    "dev": "npm run images && python3 -m http.server 8000",
+    "minify:css": "csso css/style.css --output css/style.min.css --source-map file",
+    "minify:js": "terser js/script.js -o js/script.min.js --compress --mangle --source-map \"content=inline\"",
+    "minify": "npm run minify:css && npm run minify:js",
+    "build": "npm run images && npm run minify",
+    "dev": "npm run build && python3 -m http.server 8000",
     "serve": "python3 -m http.server 8000"
   },
   "devDependencies": {
     "sharp": "^0.33.0",
     "glob": "^10.3.0",
-    "crypto": "^1.0.1"
+    "crypto": "^1.0.1",
+    "terser": "^5.31.0",
+    "csso-cli": "^4.0.2",
+    "html-minifier-terser": "^7.2.0"
   },
   "keywords": [
     "photography",

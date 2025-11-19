@@ -20,19 +20,21 @@
     <meta property="og:url" content="https://mariopreciado.photography">
     <meta name="twitter:card" content="summary_large_image">
     
+    <!-- Preload critical assets for faster initial render -->
+    <link rel="preload" as="style" href="css/style.min.css">
+    <link rel="preload" as="image" href="images/optimized/portfolio_001-1280-64a4d39d.avif" type="image/avif">
+    <link rel="preload" as="image" href="images/optimized/header-640-d83b2721.avif" type="image/avif">
+
     <!-- Preconnect for faster external resource loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+
     <!-- Fonts with display=swap for better font loading performance -->
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome with integrity check -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
 
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.min.css">
 </head>
 <body class="home-page">
     <!-- Skip to content link for accessibility -->
@@ -187,7 +189,10 @@
     </footer>
 
     <!-- Defer non-critical JavaScript for better page load performance -->
-    <script src="js/script.js" defer></script>
+    <script src="js/script.min.js" defer></script>
+
+    <!-- Service Worker registration for offline support and caching -->
+    <script src="js/sw-register.js" defer></script>
     
     <!-- Add structured data for better SEO -->
     <script type="application/ld+json">
