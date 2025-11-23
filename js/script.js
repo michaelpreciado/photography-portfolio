@@ -121,11 +121,11 @@ function setVHVariable() {
     const vh = window.innerHeight * 0.01;
     // Then set the value in the --vh custom property to the root of the document
     document.documentElement.style.setProperty('--vh', `${vh}px`);
-    
+
     // Apply safe area insets for notched iOS devices
     const safeAreaTop = getComputedStyle(document.documentElement).getPropertyValue('--sat') || '0px';
     const safeAreaBottom = getComputedStyle(document.documentElement).getPropertyValue('--sab') || '0px';
-    
+
     document.documentElement.style.setProperty('--safe-area-top', safeAreaTop);
     document.documentElement.style.setProperty('--safe-area-bottom', safeAreaBottom);
 }
@@ -165,10 +165,10 @@ class LazyImageLoader {
             // Load image manifest for LQIP data
             const response = await fetch('images/optimized/manifest.json');
             this.imageManifest = await response.json();
-            
+
             // Set up IntersectionObserver for lazy loading
             this.setupIntersectionObserver();
-            
+
             // Process existing images
             this.processImages();
         } catch (error) {
@@ -223,7 +223,7 @@ class LazyImageLoader {
 
         // Extract filename from src
         const filename = src.split('/').pop().split('-')[0];
-        const imageData = this.imageManifest.images.find(item => 
+        const imageData = this.imageManifest.images.find(item =>
             item.original.includes(filename)
         );
 
@@ -250,7 +250,7 @@ class LazyImageLoader {
             if (container) {
                 container.style.position = 'relative';
                 container.insertBefore(placeholder, picture || img);
-                
+
                 // Store reference for cleanup
                 img.dataset.placeholder = 'true';
             }
@@ -259,12 +259,12 @@ class LazyImageLoader {
 
     loadImage(element) {
         const img = element.tagName === 'PICTURE' ? element.querySelector('img') : element;
-        
+
         if (!img) return;
 
         // Create a new image to preload
         const imageLoader = new Image();
-        
+
         imageLoader.onload = () => {
             // Image loaded successfully
             this.revealImage(element, img);
@@ -293,7 +293,7 @@ class LazyImageLoader {
     revealImage(container, img) {
         // Add loaded class for CSS animations
         img.classList.add('lazy-loaded');
-        
+
         // Remove LQIP placeholder with fade out
         const placeholder = container.querySelector('.lqip-placeholder');
         if (placeholder) {
@@ -322,17 +322,17 @@ class LazyImageLoader {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    const img = entry.target.tagName === 'PICTURE' 
-                        ? entry.target.querySelector('img') 
+                    const img = entry.target.tagName === 'PICTURE'
+                        ? entry.target.querySelector('img')
                         : entry.target;
-                    
+
                     if (img.dataset.src) {
                         img.src = img.dataset.src;
                     }
                     if (img.dataset.srcset) {
                         img.srcset = img.dataset.srcset;
                     }
-                    
+
                     img.classList.add('lazy-loaded');
                     observer.unobserve(entry.target);
                 }
@@ -341,8 +341,20 @@ class LazyImageLoader {
 
         const lazyImages = document.querySelectorAll('img[loading="lazy"], picture');
         lazyImages.forEach(img => observer.observe(img));
+        this.observer = observer; // Keep reference
+    }
+
+    // Allow observing new elements dynamically
+    observe(element) {
+        if (this.observer) {
+            this.observer.observe(element);
+        }
     }
 }
+
+// Initialize and expose globally
+const lazyLoader = new LazyImageLoader();
+window.lazyImageLoader = lazyLoader;
 
 // Performance monitoring for 120fps target
 class PerformanceMonitor {
@@ -381,23 +393,23 @@ class PerformanceMonitor {
     startMonitoring() {
         const measure = (currentTime) => {
             this.frameCount++;
-            
+
             if (currentTime - this.lastTime >= 1000) {
                 this.fps = Math.round((this.frameCount * 1000) / (currentTime - this.lastTime));
-                
+
                 const counter = document.getElementById('fps-counter');
                 if (counter) {
                     counter.textContent = `FPS: ${this.fps}`;
                     counter.style.color = this.fps >= 60 ? '#00ff00' : this.fps >= 30 ? '#ffff00' : '#ff0000';
                 }
-                
+
                 this.frameCount = 0;
                 this.lastTime = currentTime;
             }
-            
+
             requestAnimationFrame(measure);
         };
-        
+
         requestAnimationFrame(measure);
     }
 }
@@ -405,70 +417,70 @@ class PerformanceMonitor {
 document.addEventListener('DOMContentLoaded', () => {
     // Cache DOM elements for better performance
     const backToTopButton = document.getElementById('back-to-top');
-    const portfolioDisplay = document.getElementById('portfolio-display'); 
+    const portfolioDisplay = document.getElementById('portfolio-display');
     const categoryButtonsContainer = document.querySelector('.portfolio-categories');
     const slideshowContainer = document.querySelector('.slideshow-container');
-    
+
     // Mobile menu elements
     const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
     const body = document.body;
     const mobileNavOverlay = document.getElementById('mobile-nav');
     const mobileNavLinks = document.querySelectorAll('.mobile-nav a');
     const headerLogoTitle = document.querySelector('.header-logo-title'); // Added this line
-    
+
     // Mobile menu toggle with improved accessibility
     if (mobileMenuToggle && mobileNavOverlay) {
         mobileMenuToggle.addEventListener('click', () => {
             const isExpanded = mobileMenuToggle.getAttribute('aria-expanded') === 'true';
-            
+
             // Toggle menu state
             mobileMenuToggle.setAttribute('aria-expanded', !isExpanded);
             body.classList.toggle('mobile-menu-active');
             mobileNavOverlay.setAttribute('aria-hidden', isExpanded);
-            
+
             if (!isExpanded) {
                 // Opening menu - prevent scrolling
                 body.style.overflow = 'hidden';
                 if (headerLogoTitle) { // Added this block
                     headerLogoTitle.classList.add('fade-out');
                 }
-                
+
                 // iOS-specific fixes
                 if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
                     body.style.position = 'fixed';
                     body.style.width = '100%';
                 }
-                
+
                 // Focus trap for accessibility
                 setTimeout(() => {
                     mobileNavLinks[0].focus();
                 }, 100);
-                
+
             } else {
                 // Closing menu - restore scrolling
                 body.style.overflow = '';
                 if (headerLogoTitle) { // Added this block
                     headerLogoTitle.classList.remove('fade-out');
                 }
-                
+
                 // iOS-specific fixes
                 if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
                     body.style.position = '';
                     body.style.width = '';
                 }
-                
+
                 // Return focus to toggle button
                 mobileMenuToggle.focus();
             }
         });
-        
+
         // Close mobile menu when escape key is pressed
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && body.classList.contains('mobile-menu-active')) {
                 mobileMenuToggle.click();
             }
         });
-        
+
         // Close menu when a link is clicked
         mobileNavLinks.forEach(link => {
             link.addEventListener('click', () => {
@@ -486,30 +498,25 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
-    
+
     // Enhanced header scroll behavior with smart hiding
     const header = document.querySelector('header');
     if (header) {
         let lastScrollTop = 0;
-        let scrollTimer = null;
         let isScrolling = false;
         const scrollThreshold = 10; // Minimum scroll amount to trigger hide/show
-        
-        const handleScroll = () => {
-            if (scrollTimer !== null) {
-                clearTimeout(scrollTimer);
-            }
-            
+
+        const updateHeaderState = () => {
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
             const scrollDelta = scrollTop - lastScrollTop;
-            
+
             // Apply scrolled class for styling
             if (scrollTop > 20) {
                 header.classList.add('header-scrolled');
             } else {
                 header.classList.remove('header-scrolled');
             }
-            
+
             // Smart hide/show header based on scroll direction
             if (!prefersReducedMotion) { // Skip animation if user prefers reduced motion
                 // Only apply on pages that aren't the home page (which has fixed positioning)
@@ -517,7 +524,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Scrolling down and past threshold - hide header
                     if (scrollDelta > scrollThreshold && scrollTop > 100) {
                         header.classList.add('header-hidden');
-                    } 
+                    }
                     // Scrolling up - show header
                     else if (scrollDelta < -scrollThreshold) {
                         header.classList.remove('header-hidden');
@@ -528,22 +535,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             }
-            
+
             lastScrollTop = scrollTop;
-            isScrolling = true;
-            
-            // Reset scrolling state after scrolling stops
-            scrollTimer = setTimeout(() => {
-                isScrolling = false;
-                // Always show header when user stops scrolling
-                if (scrollTop < 300) { // Only auto-show near top of page
-                    header.classList.remove('header-hidden');
-                }
-            }, 150);
+            isScrolling = false;
         };
-        
+
+        const onScroll = () => {
+            if (!isScrolling) {
+                requestAnimationFrame(updateHeaderState);
+                isScrolling = true;
+            }
+        };
+
         // Use passive event listener for better scroll performance
-        window.addEventListener('scroll', handleScroll, { passive: true });
+        window.addEventListener('scroll', onScroll, { passive: true });
     }
 
     // --- Modal Elements --- //
@@ -587,8 +592,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Optional: Unobserve after animation to save resources
                 // observer.unobserve(entry.target);
             } else {
-                 // Optional: Remove class if you want animation to repeat on scroll up
-                 // entry.target.classList.remove('visible');
+                // Optional: Remove class if you want animation to repeat on scroll up
+                // entry.target.classList.remove('visible');
             }
         });
     };
@@ -597,11 +602,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Helper function to observe elements (Defined BEFORE use)
     function observeFadeInElements() {
-         document.querySelectorAll('.fade-in').forEach(el => {
+        document.querySelectorAll('.fade-in').forEach(el => {
             // Check if already observed to avoid duplicates if called multiple times
             if (!el.dataset.observed) {
-                 scrollObserver.observe(el);
-                 el.dataset.observed = true; // Mark as observed
+                scrollObserver.observe(el);
+                el.dataset.observed = true; // Mark as observed
             }
         });
     }
@@ -784,7 +789,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // IMPORTANT: This is a complete rewrite of the image loading system to prevent duplicates
     // Global registry contains ALL displayed images, regardless of category
     const GLOBAL_IMAGE_REGISTRY = new Set();
-    
+
     async function loadPortfolioImagesByCategory(category, gridElement) {
         if (!gridElement) {
             console.error('Target grid element not provided');
@@ -886,9 +891,15 @@ document.addEventListener('DOMContentLoaded', () => {
             img.fetchPriority = 'low';
             img.alt = `${category.replace('-', ' ')} photo`;
             img.dataset.mediaType = 'image';
+
+            // Set dataset.src for LazyImageLoader to pick up the high-quality version
+            img.dataset.src = optimizedData?.display || optimizedData?.full || mediaPath;
+            img.dataset.srcset = optimizedData?.fallbackSrcSet || '';
+
             img.dataset.full = optimizedData?.full || mediaPath;
             img.dataset.preview = optimizedData?.display || optimizedData?.thumbnail || mediaPath;
             img.dataset.original = mediaPath;
+
             if (optimizedData?.placeholder) {
                 img.dataset.placeholder = optimizedData.placeholder;
                 img.style.backgroundImage = `url(${optimizedData.placeholder})`;
@@ -896,11 +907,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 img.style.backgroundPosition = 'center';
                 img.classList.add('with-lqip');
             }
-            if (optimizedData?.fallbackSrcSet) {
-                img.srcset = optimizedData.fallbackSrcSet;
-            }
+
             img.sizes = '(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33vw';
-            img.src = optimizedData?.thumbnail || mediaPath;
+            // Start with thumbnail or placeholder to prevent layout shift
+            img.src = optimizedData?.thumbnail || optimizedData?.placeholder || 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 
             img.addEventListener('error', () => {
                 console.error(`Failed to load image: ${mediaPath}`);
@@ -910,6 +920,11 @@ document.addEventListener('DOMContentLoaded', () => {
             picture.appendChild(img);
             gridItem.appendChild(picture);
             gridElement.appendChild(gridItem);
+
+            // Register with LazyImageLoader if available
+            if (window.lazyImageLoader) {
+                window.lazyImageLoader.observe(img);
+            }
         }
 
         gridElement.classList.remove('loading');
@@ -924,7 +939,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const buttons = categoryButtonsContainer.querySelectorAll('.category-button');
         const grids = portfolioDisplay.querySelectorAll('.image-grid');
         const portfolioSection = document.getElementById('portfolio'); // Get the parent section
-        
+
         buttons.forEach(button => {
             button.addEventListener('click', () => {
                 const category = button.dataset.category;
@@ -976,15 +991,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const initialCategory = initialActiveButton.dataset.category;
             const initialGrid = portfolioDisplay.querySelector(`.${initialCategory}-grid`);
             if (initialGrid) {
-                 initialGrid.classList.add('active'); // Ensure initial grid is visible
-                 // Apply initial theme class
-                 portfolioSection.classList.add(`theme-${initialCategory}`);
-                 loadPortfolioImagesByCategory(initialCategory, initialGrid);
+                initialGrid.classList.add('active'); // Ensure initial grid is visible
+                // Apply initial theme class
+                portfolioSection.classList.add(`theme-${initialCategory}`);
+                loadPortfolioImagesByCategory(initialCategory, initialGrid);
             } else {
                 console.error("Initial portfolio grid not found for active button.");
             }
         } else {
-             console.warn("No active category button found on initial load.");
+            console.warn("No active category button found on initial load.");
         }
 
     } else {
@@ -993,20 +1008,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Back to Top Button Logic --- //
-    window.addEventListener('scroll', () => {
+    let isBackToTopScrolling = false;
+
+    const updateBackToTop = () => {
         if (window.pageYOffset > 300) { // Show button after scrolling 300px
             backToTopButton.style.display = 'block';
-            backToTopButton.style.opacity = '1';
+            // Use a small timeout to allow display:block to apply before opacity transition
+            requestAnimationFrame(() => {
+                backToTopButton.style.opacity = '1';
+            });
         } else {
             backToTopButton.style.opacity = '0';
             // Use setTimeout to hide only after fade out transition completes
             setTimeout(() => {
                 if (window.pageYOffset <= 300) { // Re-check condition
-                     backToTopButton.style.display = 'none';
+                    backToTopButton.style.display = 'none';
                 }
             }, 300); // Match CSS transition duration
         }
-    });
+        isBackToTopScrolling = false;
+    };
+
+    window.addEventListener('scroll', () => {
+        if (!isBackToTopScrolling) {
+            requestAnimationFrame(updateBackToTop);
+            isBackToTopScrolling = true;
+        }
+    }, { passive: true });
 
     backToTopButton.addEventListener('click', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1034,7 +1062,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Initial observation for non-portfolio elements (if any) ---
     // Observe static fade-in elements present on page load (like sections in about/contact)
-    observeFadeInElements(); 
+    observeFadeInElements();
 
     // --- Create Floating Peace Signs --- //
     function createPeaceSigns(count) {
@@ -1056,6 +1084,7 @@ document.addEventListener('DOMContentLoaded', () => {
             sign.style.animationDuration = `${randomDuration}s`;
             sign.style.animationDelay = `${randomDelay}s`;
             sign.style.fontSize = `${randomSize}rem`;
+            sign.style.willChange = 'transform'; // Optimize for GPU
 
             background.appendChild(sign);
         }
@@ -1210,7 +1239,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 isSwiping = true;
                 // event.preventDefault(); // Uncomment if needed, but may block pinch-zoom. Test on device.
             }
-             // If actively swiping horizontally, prevent vertical scroll
+            // If actively swiping horizontally, prevent vertical scroll
             if (isSwiping) {
                 // event.preventDefault(); // Might be needed here too. Test required.
             }
@@ -1237,7 +1266,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     updateModalContent(prevIndex);
                 }
             }
-             // Reset variables after swipe attempt
+            // Reset variables after swipe attempt
             touchStartX = 0;
             touchEndX = 0;
             touchStartY = 0;
@@ -1253,21 +1282,21 @@ document.addEventListener('DOMContentLoaded', () => {
         let slideInterval = 7000; // Time each image is displayed (increased to 7 seconds)
         let slideTimer; // Variable to store the interval timer
         let isTransitioning = false; // Flag to prevent transition issues
-        
+
         console.log('Found ' + images.length + ' slideshow images');
 
         // Function to show a specific image
         function showImage(index) {
             if (isTransitioning) return; // Prevent rapid transitions
             isTransitioning = true;
-            
+
             // Remove active class from all images
             images.forEach(img => img.classList.remove('active'));
-            
+
             // Add active class to the target image
             images[index].classList.add('active');
             console.log('Showing image index:', index);
-            
+
             // Reset transition lock after transition completes
             setTimeout(() => {
                 isTransitioning = false;
@@ -1304,11 +1333,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Initialize the slideshow
         if (images.length > 0) {
             console.log('Initializing slideshow with ' + images.length + ' images');
-            
+
             // Show the first image immediately without any delay
             showImage(currentImageIndex);
             console.log('First image set to active: ' + images[currentImageIndex].src);
-            
+
             // Only start slideshow if reduced motion is not preferred
             if (!prefersReducedMotion) {
                 slideTimer = setInterval(showNextImage, slideInterval);
@@ -1320,7 +1349,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('No slideshow images found');
         }
     }
-    
+
     // Listen for changes in reduced motion preference
     window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', (e) => {
         const shouldReduceMotion = e.matches;
@@ -1356,7 +1385,7 @@ function initVideoObserver() {
 
             if (entry.intersectionRatio > 0.6) {
                 if (vid.paused) {
-                    vid.play().catch(() => {/* Ignore autoplay restrictions */});
+                    vid.play().catch(() => {/* Ignore autoplay restrictions */ });
                 }
             } else if (entry.intersectionRatio < 0.2) {
                 if (!vid.paused) {

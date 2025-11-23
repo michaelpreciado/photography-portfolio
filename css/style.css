@@ -7,25 +7,25 @@
     --color-gray-dark: #1a1a1a;
     --color-gray-medium: #333333;
     --color-gray-light: #666666;
-    
+
     /* Neon colors */
     --neon-pink: #ff00ff;
     --neon-blue: #00ffff;
     --neon-green: #00ff8c;
     --neon-yellow: #ffcc00;
-    
+
     /* Functional colors */
     --text-color: var(--color-white);
     --bg-color: var(--color-black);
     --accent-color: var(--color-white);
-    
+
     /* Spacing */
     --space-xs: 0.25rem;
     --space-sm: 0.5rem;
     --space-md: 1rem;
     --space-lg: 2rem;
     --space-xl: 4rem;
-    
+
     /* Typography */
     --font-primary: 'VT323', monospace, -apple-system, BlinkMacSystemFont, sans-serif;
     --font-size-xs: 0.75rem;
@@ -35,32 +35,32 @@
     --font-size-xl: 1.5rem;
     --font-size-xxl: 2rem;
     --font-size-huge: 3rem;
-    
+
     /* Borders */
     --border-radius-sm: 2px;
     --border-radius-md: 4px;
     --border-radius-lg: 8px;
-    
+
     /* Animations */
     --transition-fast: 0.2s;
     --transition-medium: 0.3s;
     --transition-slow: 0.5s;
-    
+
     /* Layout */
     --header-height: 70px;
-    
+
     /* Effects */
     --glow-subtle: 0 0 8px rgba(255, 255, 255, 0.3);
     --glow-medium: 0 0 15px rgba(255, 255, 255, 0.6);
     --glow-strong: 0 0 25px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.4);
     --glow-white: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #fff;
-    
+
     /* Category-specific glows */
     --glow-live-music: 0 0 15px var(--neon-pink), 0 0 30px rgba(255, 0, 255, 0.4);
     --glow-visuals: 0 0 15px var(--neon-blue), 0 0 30px rgba(0, 255, 255, 0.4);
     --glow-art: 0 0 15px var(--neon-green), 0 0 30px rgba(0, 255, 140, 0.4);
     --glow-typography: 0 0 15px var(--neon-yellow), 0 0 30px rgba(255, 204, 0, 0.4);
-    
+
     /* Z-index layers */
     --z-background: -1;
     --z-base: 1;
@@ -110,17 +110,21 @@
     }
 }
 
-body, html {
+body,
+html {
     margin: 0;
     padding: 0;
-    font-family: 'VT323', monospace, -apple-system, BlinkMacSystemFont, sans-serif; /* Added system fonts as fallbacks */
+    font-family: 'VT323', monospace, -apple-system, BlinkMacSystemFont, sans-serif;
+    /* Added system fonts as fallbacks */
     background-color: var(--bg-color);
     color: var(--text-color);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    -webkit-tap-highlight-color: transparent; /* Remove tap highlight on iOS */
-    height: 100%; /* Ensure full height */
+    -webkit-tap-highlight-color: transparent;
+    /* Remove tap highlight on iOS */
+    height: 100%;
+    /* Ensure full height */
 }
 
 body.portfolio-page {
@@ -135,17 +139,24 @@ body.portfolio-page main {
 
 /* Special styling for the home page only */
 body.home-page {
-    overflow: hidden; /* Prevent scrolling on home page */
-    height: 100vh; /* Full viewport height */
-    width: 100vw; /* Full viewport width */
-    position: fixed; /* Fix the body in place */
+    overflow: hidden;
+    /* Prevent scrolling on home page */
+    height: 100vh;
+    /* Full viewport height */
+    width: 100vw;
+    /* Full viewport width */
+    position: fixed;
+    /* Fix the body in place */
 }
 
 /* Enable scrolling on all other pages */
 body:not(.home-page) {
-    overflow-y: auto; /* Allow vertical scrolling */
-    height: auto; /* Auto height */
-    position: relative; /* Normal positioning */
+    overflow-y: auto;
+    /* Allow vertical scrolling */
+    height: auto;
+    /* Auto height */
+    position: relative;
+    /* Normal positioning */
 }
 
 /* Ensure portfolio page allows scrolling */
@@ -156,37 +167,46 @@ body.portfolio-page {
 
 /* Add padding to main content to ensure footer visibility */
 body.portfolio-page main {
-    padding-bottom: 6rem; /* Space for footer */
+    padding-bottom: 6rem;
+    /* Space for footer */
 }
 
 /* Subtle Background Animation */
 body::before {
     content: "";
-    position: fixed; /* Cover the whole viewport */
+    position: fixed;
+    /* Cover the whole viewport */
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1; /* Place it behind everything */
+    z-index: -1;
+    /* Place it behind everything */
     background:
         linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
         linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.03));
-    background-size: 100px 100px, 100px 100px; /* Adjust size for desired noise scale */
-    opacity: 0.1; /* Make it very subtle */
+    background-size: 100px 100px, 100px 100px;
+    /* Adjust size for desired noise scale */
+    opacity: 0.1;
+    /* Make it very subtle */
     animation: subtleNoise 20s linear infinite alternate;
+    will-change: background-position;
 }
 
 @keyframes subtleNoise {
     0% {
         background-position: 0 0, 0 0;
     }
+
     100% {
-        background-position: 100px 200px, -100px -200px; /* Move the noise patterns */
+        background-position: 100px 200px, -100px -200px;
+        /* Move the noise patterns */
     }
 }
 
 a {
-    color: #ffffff; /* Match base text color (white) */
+    color: #ffffff;
+    /* Match base text color (white) */
     text-decoration: none;
 }
 
@@ -199,45 +219,57 @@ ul {
 img {
     max-width: 100%;
     height: auto;
-    display: block; /* Remove extra space below images */
+    display: block;
+    /* Remove extra space below images */
 }
 
-h2, h3 {
+h2,
+h3 {
     text-align: center;
     text-transform: uppercase;
     margin-top: 4rem;
     margin-bottom: 2rem;
     letter-spacing: 2px;
-    font-family: 'VT323', monospace; /* Ensure headers use the font too */
-    transition: color 0.3s ease-in-out; /* Add transition for color change */
+    font-family: 'VT323', monospace;
+    /* Ensure headers use the font too */
+    transition: color 0.3s ease-in-out;
+    /* Add transition for color change */
 }
 
 /* Header - Floating on top of carousel */
 header {
-    position: fixed; /* Sticky header */
+    position: fixed;
+    /* Sticky header */
     top: 0;
     left: 0;
     width: 100%;
-    height: auto; /* Allow height to adjust based on content */
-    min-height: var(--header-height); /* Minimum height */
-    padding: 10px 0; /* Add some vertical padding */
-    box-sizing: border-box; /* Include padding in width */
+    height: auto;
+    /* Allow height to adjust based on content */
+    min-height: var(--header-height);
+    /* Minimum height */
+    padding: 10px 0;
+    /* Add some vertical padding */
+    box-sizing: border-box;
+    /* Include padding in width */
     z-index: var(--z-header);
-    transition: background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
-                backdrop-filter 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
-                transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+        backdrop-filter 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 
     /* Glass morphism effect with optimized opacity */
-    background-color: rgba(0, 0, 0, 0.75); 
-    backdrop-filter: blur(12px); /* Increased blur for more modern look */
-    -webkit-backdrop-filter: blur(12px); /* Safari prefix */
-    
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(12px);
+    /* Increased blur for more modern look */
+    -webkit-backdrop-filter: blur(12px);
+    /* Safari prefix */
+
     /* Subtle highlight for depth */
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     box-shadow: 0 1px 8px rgba(0, 0, 0, 0.2);
-    
+
     /* Performance optimizations */
-    transform: translate3d(0, 0, 0); /* Force hardware acceleration */
+    transform: translate3d(0, 0, 0);
+    /* Force hardware acceleration */
     will-change: transform, background-color, backdrop-filter;
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
@@ -261,13 +293,16 @@ header.header-scrolled {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 80%; /* Slightly wider for better balance */
+    width: 80%;
+    /* Slightly wider for better balance */
     height: 100%;
     padding: 0.75rem 0;
     max-width: 1400px;
     margin: 0 auto;
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
-    position: relative; /* For absolute positioning of logo */
+    flex-wrap: wrap;
+    /* Allow wrapping on smaller screens */
+    position: relative;
+    /* For absolute positioning of logo */
 }
 
 /* Make logo clickable */
@@ -281,8 +316,10 @@ header.header-scrolled {
 
 .header-logo-title {
     display: flex;
-    align-items: center; /* Vertically center the image and text */
-    flex-direction: column; /* Stack image and title vertically for all sizes */
+    align-items: center;
+    /* Vertically center the image and text */
+    flex-direction: column;
+    /* Stack image and title vertically for all sizes */
     /* Added transition for opacity */
     transition: opacity 0.3s ease-in-out;
 }
@@ -290,7 +327,7 @@ header.header-scrolled {
 .header-logo-title.fade-out {
     opacity: 0;
     /* Optional: to remove from layout and prevent interaction after fade */
-    /* visibility: hidden; */ 
+    /* visibility: hidden; */
 }
 
 /* Style individual navs if needed, e.g., ensure flex display */
@@ -300,32 +337,48 @@ header nav ul {
 
 /* Adjust list item margins */
 header nav.left-nav ul li {
-    margin-right: 1rem; /* Reduced spacing */
-    padding-right: 0.25rem; /* Reduced padding */
+    margin-right: 1rem;
+    /* Reduced spacing */
+    padding-right: 0.25rem;
+    /* Reduced padding */
 }
+
 header nav.right-nav ul li {
-    margin-left: 1rem; /* Reduced spacing */
-    padding-left: 0.25rem; /* Reduced padding */
+    margin-left: 1rem;
+    /* Reduced spacing */
+    padding-left: 0.25rem;
+    /* Reduced padding */
 }
 
 header nav ul li {
-    margin: 0 0.25rem; /* Reduced horizontal margins */
-    position: relative; /* For potential separators */
+    margin: 0 0.25rem;
+    /* Reduced horizontal margins */
+    position: relative;
+    /* For potential separators */
 }
 
 header nav ul li a {
-    transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
-              border-bottom 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-              text-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    align-items: center; /* Center items horizontally */
-    font-size: 1.2rem; /* Restored to user preference for desktop nav (1.2rem) */
-    color: #ffffff; /* White text */
-    font-weight: bold; /* Bold text */
-    text-transform: uppercase; /* Uppercase text */
-    padding: 0 10px 3px 10px; /* Balanced padding for clean look and spacing */
-    border-bottom: 1px solid transparent; /* Thinner border */
-    margin: 0 8px; /* Balanced spacing between items */
-    letter-spacing: 1px; /* Restored to user preference */
+    transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+        border-bottom 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+        text-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    align-items: center;
+    /* Center items horizontally */
+    font-size: 1.2rem;
+    /* Restored to user preference for desktop nav (1.2rem) */
+    color: #ffffff;
+    /* White text */
+    font-weight: bold;
+    /* Bold text */
+    text-transform: uppercase;
+    /* Uppercase text */
+    padding: 0 10px 3px 10px;
+    /* Balanced padding for clean look and spacing */
+    border-bottom: 1px solid transparent;
+    /* Thinner border */
+    margin: 0 8px;
+    /* Balanced spacing between items */
+    letter-spacing: 1px;
+    /* Restored to user preference */
     /* Performance optimizations */
     transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
@@ -333,65 +386,89 @@ header nav ul li a {
 }
 
 header nav ul li a:hover {
-    color: #ffffff; /* Stay white on hover */
-    border-bottom: 2px solid #ffffff; /* White underline on hover */
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.5); /* Subtle glow effect */
-    transform: translate3d(0, -1px, 0); /* Subtle lift effect */
+    color: #ffffff;
+    /* Stay white on hover */
+    border-bottom: 2px solid #ffffff;
+    /* White underline on hover */
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+    /* Subtle glow effect */
+    transform: translate3d(0, -1px, 0);
+    /* Subtle lift effect */
 }
 
 header nav ul li a.active {
-    border-bottom: 2px solid #ffffff; /* White underline for active page */
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.4); /* Slight glow for active page */
+    border-bottom: 2px solid #ffffff;
+    /* White underline for active page */
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+    /* Slight glow for active page */
 }
 
 /* New wrapper for logo and title */
 .header-logo-title {
     display: flex;
-    flex-direction: column; /* Stack image and title vertically for all sizes */
-    align-items: center; /* Center items vertically */
+    flex-direction: column;
+    /* Stack image and title vertically for all sizes */
+    align-items: center;
+    /* Center items vertically */
     justify-content: center;
-    z-index: 5; /* Lower z-index so it doesn't capture clicks meant for category buttons */
+    z-index: 5;
+    /* Lower z-index so it doesn't capture clicks meant for category buttons */
     transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     /* Use absolute positioning to center in the header per user preference */
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    top: 35px; /* push below nav row */
+    top: 35px;
+    /* push below nav row */
     /* Add subtle hover effect optimization */
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     /* Ensure clickable area is properly contained */
-    pointer-events: none; /* Make the container non-interactive */
+    pointer-events: none;
+    /* Make the container non-interactive */
 }
 
 .header-logo-link:hover .header-logo-title {
-    transform: translateX(-50%) scale(1.03); /* Maintain centering while adding scale effect */
-    filter: brightness(1.15); /* Subtle brightness boost on hover */
+    transform: translateX(-50%) scale(1.03);
+    /* Maintain centering while adding scale effect */
+    filter: brightness(1.15);
+    /* Subtle brightness boost on hover */
 }
 
 .header-title {
-    font-size: 2.5rem; /* Slightly reduced size */
+    font-size: 2.5rem;
+    /* Slightly reduced size */
     font-weight: bold;
-    white-space: nowrap; /* Prevent wrapping */
-    margin: 0 0 15px 0; /* Add bottom margin to create space between title and categories */
+    white-space: nowrap;
+    /* Prevent wrapping */
+    margin: 0 0 15px 0;
+    /* Add bottom margin to create space between title and categories */
     /* Enhanced rainbow gradient effect */
-    background: linear-gradient(to right, var(--neon-pink), var(--neon-blue), var(--neon-green), var(--neon-yellow)); 
+    background: linear-gradient(to right, var(--neon-pink), var(--neon-blue), var(--neon-green), var(--neon-yellow));
     -webkit-background-clip: text;
     background-clip: text;
-    color: transparent; /* Make the original text color transparent */
-    padding: 0 5px; /* Add slight padding so gradient doesn't clip */
-    letter-spacing: 2px; /* Increased letter spacing for better readability */
-    font-family: var(--font-primary); /* Use our design token */
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.2); /* Enhanced glow effect */
-    pointer-events: auto; /* Make the text clickable */
+    color: transparent;
+    /* Make the original text color transparent */
+    padding: 0 5px;
+    /* Add slight padding so gradient doesn't clip */
+    letter-spacing: 2px;
+    /* Increased letter spacing for better readability */
+    font-family: var(--font-primary);
+    /* Use our design token */
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    /* Enhanced glow effect */
+    pointer-events: auto;
+    /* Make the text clickable */
 }
 
 /* Header decoration image styles */
 .header-decoration-image {
     height: auto;
     width: auto;
-    max-height: 2.5rem; /* Match the font size of the title (2.5rem) */
-    max-width: 100%; /* Allow width to adjust proportionally */
+    max-height: 2.5rem;
+    /* Match the font size of the title (2.5rem) */
+    max-width: 100%;
+    /* Allow width to adjust proportionally */
     margin-right: 0;
     margin-bottom: 0.5rem;
     object-fit: contain;
@@ -400,12 +477,14 @@ header nav ul li a.active {
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
-    pointer-events: auto; /* Make the image clickable */
+    pointer-events: auto;
+    /* Make the image clickable */
 }
 
 /* Mobile Menu Toggle Button (Hamburger) */
 .mobile-menu-toggle {
-    display: flex; /* Flex for centering hamburger lines */
+    display: flex;
+    /* Flex for centering hamburger lines */
     align-items: center;
     justify-content: center;
     background: rgba(0, 0, 0, 0.7);
@@ -421,7 +500,7 @@ header nav ul li a.active {
     left: 20px;
     z-index: 9999;
     border-radius: 50%;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.5), 0 0 0 1.5px rgba(255,255,255,0.10);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5), 0 0 0 1.5px rgba(255, 255, 255, 0.10);
     transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
@@ -450,7 +529,7 @@ header nav ul li a.active {
     margin: 4px 0;
     border-radius: 2px;
     transition: transform 0.3s, opacity 0.3s;
-    box-shadow: 0 0 4px rgba(255,255,255,0.25);
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0.25);
 }
 
 /* Hamburger menu animation */
@@ -469,7 +548,8 @@ header nav ul li a.active {
 /* Adjust position of mobile menu toggle when active */
 .mobile-menu-active .mobile-menu-toggle {
     position: fixed;
-    top: 70px; /* Moved down from 20px to 70px to avoid overlapping with navigation */
+    top: 70px;
+    /* Moved down from 20px to 70px to avoid overlapping with navigation */
     right: 20px;
     background-color: rgba(0, 0, 0, 0.7);
     border-radius: 50%;
@@ -490,17 +570,20 @@ header nav ul li a.active {
     align-items: center;
     opacity: 0;
     visibility: hidden;
-    transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1); /* Smoother animation */
+    transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+    /* Smoother animation */
     /* iOS height fixes */
     height: calc(var(--vh, 1vh) * 100);
     max-height: -webkit-fill-available;
-    overflow-y: auto; /* Allow scrolling if needed */
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    overflow-y: auto;
+    /* Allow scrolling if needed */
+    -webkit-overflow-scrolling: touch;
+    /* Smooth scrolling on iOS */
     /* Beautiful backdrop blur */
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     /* Add subtle gradient overlay */
-    background-image: linear-gradient(to bottom, rgba(0,0,0,0.95), rgba(20,0,20,0.92));
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.95), rgba(20, 0, 20, 0.92));
     /* Add subtle border */
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -531,17 +614,21 @@ header nav ul li a.active {
 .mobile-nav ul li {
     opacity: 0;
     transform: translateY(10px);
-    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
-               transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     transition-delay: 0.1s;
-    margin: 2.5rem 0; /* Increased vertical spacing per user preference */
-    padding: 0.8rem 0; /* Larger tap target for better mobile experience */
+    margin: 2.5rem 0;
+    /* Increased vertical spacing per user preference */
+    padding: 0.8rem 0;
+    /* Larger tap target for better mobile experience */
     position: relative;
-    border-radius: 12px; /* Slightly more rounded corners */
+    border-radius: 12px;
+    /* Slightly more rounded corners */
     /* Enhanced subtle highlighting with hardware acceleration */
     background-color: rgba(255, 255, 255, 0.05);
     /* Performance optimizations */
-    transform: translate3d(0, 10px, 0); /* Modified for hardware acceleration */
+    transform: translate3d(0, 10px, 0);
+    /* Modified for hardware acceleration */
     will-change: opacity, transform;
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
@@ -551,63 +638,80 @@ header nav ul li a.active {
 .mobile-menu-active .mobile-nav ul li:nth-child(1) {
     transition-delay: 0.1s;
 }
+
 .mobile-menu-active .mobile-nav ul li:nth-child(2) {
     transition-delay: 0.2s;
 }
+
 .mobile-menu-active .mobile-nav ul li:nth-child(3) {
     transition-delay: 0.3s;
 }
+
 .mobile-menu-active .mobile-nav ul li:nth-child(4) {
     transition-delay: 0.4s;
 }
 
 .mobile-menu-active .mobile-nav ul li {
     opacity: 1;
-    transform: translate3d(0, 0, 0); /* Fixed for hardware acceleration */
+    transform: translate3d(0, 0, 0);
+    /* Fixed for hardware acceleration */
 }
 
 /* Extra small devices - specific optimizations */
 @media (max-width: 375px) {
+
     /* Extremely small screens need even smaller fonts */
     .mobile-nav ul li a {
-        font-size: 0.95rem; /* Even smaller font */
-        letter-spacing: 1px; /* Minimal letter spacing */
-        padding: 0.35rem 0.6rem; /* Smaller padding but still touch-friendly */
+        font-size: 0.95rem;
+        /* Even smaller font */
+        letter-spacing: 1px;
+        /* Minimal letter spacing */
+        padding: 0.35rem 0.6rem;
+        /* Smaller padding but still touch-friendly */
     }
-    
+
     /* Add more horizontal spacing for menu items by reducing menu width */
     .mobile-nav ul {
         width: 85%;
-        max-width: 280px; /* Narrower menu */
+        max-width: 280px;
+        /* Narrower menu */
     }
-    
+
     /* Smaller logo with better spacing */
     .header-decoration-image {
-        max-height: 30px; /* Even smaller image */
-        margin-right: 0; /* Image is stacked */
-        margin-bottom: 0.2rem; /* Space below image on extra small screens */
+        max-height: 30px;
+        /* Even smaller image */
+        margin-right: 0;
+        /* Image is stacked */
+        margin-bottom: 0.2rem;
+        /* Space below image on extra small screens */
     }
-    
+
     .header-title {
-        font-size: 1.2rem; /* Smaller font */
+        font-size: 1.2rem;
+        /* Smaller font */
         letter-spacing: 0.5px;
     }
 }
 
 .mobile-nav ul li a {
-    font-size: 1.1rem; /* Reduced font size to fit better on mobile */
+    font-size: 1.1rem;
+    /* Reduced font size to fit better on mobile */
     color: var(--text-color);
     text-decoration: none;
     text-transform: uppercase;
     font-weight: bold;
-    padding: 0.4rem 0.8rem; /* Slightly reduced padding */
-    margin: 0.3rem 0; /* Adjusted vertical margin */
+    padding: 0.4rem 0.8rem;
+    /* Slightly reduced padding */
+    margin: 0.3rem 0;
+    /* Adjusted vertical margin */
     display: inline-block;
     position: relative;
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
-               color 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
-               text-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    letter-spacing: 2px; /* Reduced letter spacing for better fit */
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+        color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+        text-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    letter-spacing: 2px;
+    /* Reduced letter spacing for better fit */
     /* Performance optimization */
     transform: translate3d(0, 0, 0);
     will-change: transform, color;
@@ -640,10 +744,13 @@ header nav ul li a.active {
 
 /* Desktop adjustments for header spacing and hamburger menu */
 @media (min-width: 769px) {
+
     /* Move the header title up and add space below for desktop */
     .header-title {
-        margin-bottom: 5rem !important; /* Generous space below title for guaranteed separation */
+        margin-bottom: 5rem !important;
+        /* Generous space below title for guaranteed separation */
     }
+
     /* Hide hamburger menu on desktop */
     .mobile-menu-toggle {
         display: none !important;
@@ -653,68 +760,85 @@ header nav ul li a.active {
 /* Media query for smaller screens */
 @media (max-width: 768px) {
     header {
-        padding: 0.5rem 0.8rem; /* Reduced padding for smaller screens */
+        padding: 0.5rem 0.8rem;
+        /* Reduced padding for smaller screens */
     }
-    
+
     /* Adjust desktop navigation for smaller screens - maintain visibility in medium screens */
     .desktop-nav ul {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
     }
-    
+
     .desktop-nav ul li {
-        margin: 0 0.3rem; /* Reduced horizontal margins */
+        margin: 0 0.3rem;
+        /* Reduced horizontal margins */
     }
-    
+
     .desktop-nav ul li a {
-        font-size: 0.85rem; /* Smaller font size for better fit */
+        font-size: 0.85rem;
+        /* Smaller font size for better fit */
         padding: 0.15rem 0;
-        letter-spacing: 0.5px; /* Reduced letter spacing */
-        margin: 0 5px; /* Reduced margins */
+        letter-spacing: 0.5px;
+        /* Reduced letter spacing */
+        margin: 0 5px;
+        /* Reduced margins */
     }
-    
+
     .header-title {
-        font-size: 1.8rem; /* Smaller title */
+        font-size: 1.8rem;
+        /* Smaller title */
     }
-    
+
     .header-decoration-image {
-        height: 50px; /* Make image smaller */
-        margin-right: 0; /* Image is stacked */
-        margin-bottom: 0.3rem; /* Space below image on smaller screens */
+        height: 50px;
+        /* Make image smaller */
+        margin-right: 0;
+        /* Image is stacked */
+        margin-bottom: 0.3rem;
+        /* Space below image on smaller screens */
     }
 }
 
 /* Mobile optimizations - create beautiful experience on smaller screens */
 @media (max-width: 600px) {
+
     /* Hide desktop navigation on mobile */
     .desktop-nav {
         display: none;
     }
-    
+
     /* Further reduced font sizes for very small screens */
     .header-title {
-        font-size: 1.2rem; /* Even smaller title for mobile */
-        letter-spacing: 1px; /* Reduced letter spacing */
+        font-size: 1.2rem;
+        /* Even smaller title for mobile */
+        letter-spacing: 1px;
+        /* Reduced letter spacing */
     }
-    
+
     /* Optimize navigation spacing */
     header nav.desktop-nav ul li a {
-        font-size: 0.75rem; /* Very small font for narrow mobile screens */
+        font-size: 0.75rem;
+        /* Very small font for narrow mobile screens */
         padding: 0.1rem 0.3rem;
         margin: 0 2px;
         letter-spacing: 0px;
     }
-    
+
     /* Show hamburger menu on mobile and optimize positioning */
     .mobile-menu-toggle {
         display: block;
-        position: fixed !important; /* Keep it fixed at the viewport */
+        position: fixed !important;
+        /* Keep it fixed at the viewport */
         left: 15px !important;
-        top: 85px !important; /* Move down below header text */
-        transform: none !important; /* Remove vertical centering */
+        top: 85px !important;
+        /* Move down below header text */
+        transform: none !important;
+        /* Remove vertical centering */
         padding: 10px;
-        z-index: 99999 !important; /* Ensure it's above everything */
+        z-index: 99999 !important;
+        /* Ensure it's above everything */
         /* More compact but still tappable size */
         width: 45px;
         height: 45px;
@@ -727,13 +851,14 @@ header nav ul li a.active {
         /* Add subtle border for visibility */
         border: 1px solid rgba(255, 255, 255, 0.2);
     }
-    
+
     /* Page-specific adjustments for the mobile menu button */
     .portfolio-page .mobile-menu-toggle,
     .about-page .mobile-menu-toggle,
     .contact-page .mobile-menu-toggle {
         /* Ensure all pages have the same positioning */
-        top: 70px !important; /* Moved higher to match other pages */
+        top: 70px !important;
+        /* Moved higher to match other pages */
         left: 15px !important;
         width: 45px !important;
         height: 45px !important;
@@ -741,9 +866,10 @@ header nav ul li a.active {
         background: rgba(0, 0, 0, 0.7) !important;
         border: 1px solid rgba(255, 255, 255, 0.2) !important;
     }
-    
+
     /* iOS-specific fixes using CSS feature detection */
     @supports (-webkit-touch-callout: none) {
+
         /* iOS-specific selector */
         .portfolio-page .mobile-menu-toggle {
             /* Even more aggressive fixes for iOS */
@@ -759,26 +885,28 @@ header nav ul li a.active {
             /* Even more visible contrast */
             background: rgba(0, 0, 0, 0.9) !important;
         }
-        
+
         /* Handle potential Safari conflicts */
         .portfolio-page * {
             pointer-events: auto;
         }
-        
+
         /* Target the problematic elements that might overlay the button */
         .portfolio-page #peace-background,
-        .portfolio-page header > *:not(.mobile-menu-toggle) {
+        .portfolio-page header>*:not(.mobile-menu-toggle) {
             pointer-events: none;
         }
     }
-    
+
     /* Optimize header for mobile */
     header {
         padding: 0.5rem 1rem;
-        height: 60px; /* Fixed height for consistency */
-        justify-content: center; /* Center logo on mobile */
+        height: 60px;
+        /* Fixed height for consistency */
+        justify-content: center;
+        /* Center logo on mobile */
     }
-    
+
     /* Ensure the logo is perfectly centered on mobile */
     .header-logo-title {
         position: absolute;
@@ -788,15 +916,16 @@ header nav ul li a.active {
         flex-direction: column;
         align-items: center;
         margin: 0;
-        top: 60px; /* push further on small screens */
+        top: 60px;
+        /* push further on small screens */
     }
-    
+
     /* Adjust logo size for mobile */
     .header-decoration-image {
         height: 50px;
         margin-bottom: 2px;
     }
-    
+
     /* Make title text smaller and more balanced */
     .header-title {
         font-size: 1.2rem;
@@ -810,29 +939,35 @@ header nav ul li a.active {
 /* Additional media query for very small screens (e.g., mobile portrait) */
 /* Photography Grid - Two columns on desktop, one on mobile */
 .image-grid.live-music-grid {
-    grid-template-columns: 1fr; /* Default single column on mobile */
-    gap: 1rem; /* Consistent gap */
+    grid-template-columns: 1fr;
+    /* Default single column on mobile */
+    gap: 1rem;
+    /* Consistent gap */
 }
 
 @media (min-width: 768px) {
     .image-grid.live-music-grid {
-        grid-template-columns: repeat(2, 1fr); /* Two-column grid on desktop as per client feedback */
+        grid-template-columns: repeat(2, 1fr);
+        /* Two-column grid on desktop as per client feedback */
     }
 }
 
 /* Visuals Grid - Always single column */
 .image-grid.visuals-grid {
-    grid-template-columns: 1fr; /* Force single column for visuals */
+    grid-template-columns: 1fr;
+    /* Force single column for visuals */
 }
 
 /* Video placeholder styling */
 .video-placeholder {
     position: relative;
-    filter: brightness(0.85) contrast(1.2); /* Add video-like filter */
+    filter: brightness(0.85) contrast(1.2);
+    /* Add video-like filter */
 }
 
 .grid-item {
-    position: relative; /* For absolute positioning of the play icon */
+    position: relative;
+    /* For absolute positioning of the play icon */
 }
 
 .play-icon {
@@ -864,61 +999,76 @@ header nav ul li a.active {
 
 @media (max-width: 600px) {
     .image-grid {
-        gap: 0.8rem; /* Adjust gap for single column */
+        gap: 0.8rem;
+        /* Adjust gap for single column */
     }
 
     section {
-        padding: 1rem; /* Reduce section padding */
+        padding: 1rem;
+        /* Reduce section padding */
     }
 
-    h2, h3 {
+    h2,
+    h3 {
         margin-top: 2rem;
         margin-bottom: 1rem;
-        font-size: 1.5rem; /* Adjust heading size */
+        font-size: 1.5rem;
+        /* Adjust heading size */
     }
 
     #contact form {
-        max-width: 95%; /* Allow form to take more width */
+        max-width: 95%;
+        /* Allow form to take more width */
     }
 
     .portfolio-categories {
-        gap: 0.1rem; /* Minimal gap between buttons */
+        gap: 0.1rem;
+        /* Minimal gap between buttons */
         padding: 0.25rem;
         max-width: 90%;
-        display: grid; /* Use grid layout for X pattern */
-        grid-template-columns: 1fr 1fr; /* Two columns */
-        grid-template-rows: auto auto auto; /* Three rows */
+        display: grid;
+        /* Use grid layout for X pattern */
+        grid-template-columns: 1fr 1fr;
+        /* Two columns */
+        grid-template-rows: auto auto auto;
+        /* Three rows */
         margin-top: 0.25rem;
         margin-bottom: 0.25rem;
     }
-    
+
     /* X pattern arrangement */
-    .portfolio-categories button:nth-child(1) { /* Live Music */
+    .portfolio-categories button:nth-child(1) {
+        /* Live Music */
         grid-column: 1;
         grid-row: 1;
     }
-    
-    .portfolio-categories button:nth-child(2) { /* Videography */
+
+    .portfolio-categories button:nth-child(2) {
+        /* Videography */
         grid-column: 2;
         grid-row: 1;
     }
-    
-    .portfolio-categories button:nth-child(3) { /* Art */
+
+    .portfolio-categories button:nth-child(3) {
+        /* Art */
         grid-column: 1;
         grid-row: 2;
     }
-    
-    .portfolio-categories button:nth-child(4) { /* Typography */
+
+    .portfolio-categories button:nth-child(4) {
+        /* Typography */
         grid-column: 2;
         grid-row: 2;
     }
-    
-    .portfolio-categories button:nth-child(5) { /* Glitch Art */
+
+    .portfolio-categories button:nth-child(5) {
+        /* Glitch Art */
         grid-column: 1;
         grid-row: 3;
     }
-    
-    .portfolio-categories button:nth-child(6) { /* Liquid Lights */
+
+    .portfolio-categories button:nth-child(6) {
+        /* Liquid Lights */
         grid-column: 2;
         grid-row: 3;
     }
@@ -927,7 +1077,8 @@ header nav ul li a.active {
         padding: 0.2rem 0.4rem;
         font-size: 0.7rem;
         margin: 0.1rem;
-        width: calc(100% - 0.2rem); /* Fill available space */
+        width: calc(100% - 0.2rem);
+        /* Fill available space */
         line-height: 1;
         min-height: 0;
         letter-spacing: 0;
@@ -936,20 +1087,27 @@ header nav ul li a.active {
 
 /* Main Content */
 main {
-    position: relative; /* Establish positioning context */
-    z-index: 1; /* Above the background carousel */
-    padding-top: 50px; /* Significantly reduced padding to move content higher */
+    position: relative;
+    /* Establish positioning context */
+    z-index: 1;
+    /* Above the background carousel */
+    padding-top: 50px;
+    /* Significantly reduced padding to move content higher */
 }
 
 /* Ensure content begins below the logo on all inner pages */
 body:not(.home-page) main {
-    padding-top: 150px; /* header (70) + logo offset (35)+ some margin */
+    padding-top: 150px;
+    /* header (70) + logo offset (35)+ some margin */
 }
 
 section {
-    padding: 1rem 2rem; /* Reduced top/bottom padding */
-    position: relative; /* Ensure proper stacking */
-    z-index: 1; /* Above the background slideshow */
+    padding: 1rem 2rem;
+    /* Reduced top/bottom padding */
+    position: relative;
+    /* Ensure proper stacking */
+    z-index: 1;
+    /* Above the background slideshow */
 }
 
 /* Home section specific styles */
@@ -961,7 +1119,8 @@ section {
     padding: 0;
     overflow: hidden;
     position: relative;
-    z-index: 2; /* Above the slideshow */
+    z-index: 2;
+    /* Above the slideshow */
 }
 
 /* Welcome Overlay */
@@ -974,8 +1133,10 @@ section {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgba(0, 0, 0, 0.3); /* Semi-transparent overlay */
-    backdrop-filter: blur(3px); /* Subtle blur effect */
+    background: rgba(0, 0, 0, 0.3);
+    /* Semi-transparent overlay */
+    backdrop-filter: blur(3px);
+    /* Subtle blur effect */
     z-index: 3;
 }
 
@@ -1054,6 +1215,7 @@ section {
         opacity: 0;
         transform: translateY(30px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -1064,6 +1226,7 @@ section {
     0% {
         text-shadow: 0 0 10px rgba(255, 255, 255, 0.6), 0 0 20px rgba(255, 255, 255, 0.4);
     }
+
     100% {
         text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.6), 0 0 45px rgba(255, 255, 255, 0.4);
     }
@@ -1071,34 +1234,48 @@ section {
 
 /* Portfolio section specific styles */
 #portfolio {
-    background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+    background-color: rgba(0, 0, 0, 0.8);
+    /* Semi-transparent background */
     position: relative;
-    z-index: 2; /* Ensure portfolio content is above the slideshow */
-    padding-top: 80px; /* Reduced padding to minimize space */
-    padding-bottom: 0; /* Remove bottom padding */
+    z-index: 2;
+    /* Ensure portfolio content is above the slideshow */
+    padding-top: 80px;
+    /* Reduced padding to minimize space */
+    padding-bottom: 0;
+    /* Remove bottom padding */
 }
 
 /* Portfolio heading */
 #portfolio h2 {
-    margin-top: 0; /* Remove default top margin */
-    color: #ffffff; /* Ensure text is white */
-    font-size: 2.5rem; /* Larger font size */
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add text shadow for better visibility */
+    margin-top: 0;
+    /* Remove default top margin */
+    color: #ffffff;
+    /* Ensure text is white */
+    font-size: 2.5rem;
+    /* Larger font size */
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    /* Add text shadow for better visibility */
 }
 
 /* Home Section */
 /* Full-screen background carousel */
 /* iOS-friendly full viewport container */
 .slideshow-container {
-    position: fixed; /* Fixed position to cover entire viewport */
+    position: fixed;
+    /* Fixed position to cover entire viewport */
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vh; /* Full viewport height */
-    height: calc(var(--vh, 1vh) * 100); /* Custom vh calculation for iOS - will be set by JS */
-    max-height: -webkit-fill-available; /* iOS Safari workaround */
-    z-index: 0; /* Changed from -1 to 0 so elements inside can receive clicks */
-    overflow: hidden; /* Hide parts of images that might overflow */
+    height: 100vh;
+    /* Full viewport height */
+    height: calc(var(--vh, 1vh) * 100);
+    /* Custom vh calculation for iOS - will be set by JS */
+    max-height: -webkit-fill-available;
+    /* iOS Safari workaround */
+    z-index: 0;
+    /* Changed from -1 to 0 so elements inside can receive clicks */
+    overflow: hidden;
+    /* Hide parts of images that might overflow */
     background-color: var(--bg-color);
     /* Enhanced GPU acceleration for 120fps */
     will-change: transform;
@@ -1118,7 +1295,8 @@ section {
     opacity: 0;
     /* Optimized transitions for 120fps - use only GPU-accelerated properties */
     transition: opacity 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    z-index: 0; /* Ensure image is painted above container background */
+    z-index: 0;
+    /* Ensure image is painted above container background */
     transform: scale3d(1.05, 1.05, 1) translate3d(0, 0, 0);
     filter: brightness(0.9) contrast(1.1);
     /* Enhanced GPU acceleration */
@@ -1130,9 +1308,12 @@ section {
 
 /* Add rule for the active image */
 .slideshow-image.active {
-    opacity: 1; /* Show the active image */
-    transform: scale3d(1, 1, 1) translate3d(0, 0, 0); /* Reset scale for active image */
-    will-change: auto; /* Reset will-change when animation is done */
+    opacity: 1;
+    /* Show the active image */
+    transform: scale3d(1, 1, 1) translate3d(0, 0, 0);
+    /* Reset scale for active image */
+    will-change: auto;
+    /* Reset will-change when animation is done */
 }
 
 /* Slide navigation arrows */
@@ -1149,7 +1330,8 @@ section {
 /* Portfolio Categories Section */
 .portfolio-categories {
     text-align: center;
-    margin: 0.2rem auto 2rem auto; /* Reduced top margin from 1rem to 0.2rem */
+    margin: 0.2rem auto 2rem auto;
+    /* Reduced top margin from 1rem to 0.2rem */
     padding: 0.5rem;
     position: relative;
     z-index: 10;
@@ -1184,9 +1366,10 @@ section {
     .portfolio-categories {
         width: 95%;
         padding: 0 0.5rem;
-        margin-top: 0.5rem; /* Reduced from 2rem to 0.5rem */
+        margin-top: 0.5rem;
+        /* Reduced from 2rem to 0.5rem */
     }
-    
+
     .filters {
         flex-wrap: nowrap;
         justify-content: flex-start;
@@ -1194,7 +1377,7 @@ section {
         width: 100%;
         padding: 0.5rem;
     }
-    
+
     .filters li {
         flex: 0 0 auto;
         margin: 0 4px;
@@ -1202,7 +1385,8 @@ section {
         z-index: 10;
         letter-spacing: 1px;
         white-space: nowrap;
-        min-width: 70px; /* Reduce minimum width on mobile */
+        min-width: 70px;
+        /* Reduce minimum width on mobile */
     }
 }
 
@@ -1211,9 +1395,12 @@ section {
     background-color: var(--color-black);
     color: var(--color-white);
     border: 1px solid rgba(255, 255, 255, 0.3);
-    padding: 10px 20px; /* Increased padding for larger click target */
-    margin: 4px 4px; /* Added margin around buttons */
-    border-radius: 4px; /* Added slight border radius */
+    padding: 10px 20px;
+    /* Increased padding for larger click target */
+    margin: 4px 4px;
+    /* Added margin around buttons */
+    border-radius: 4px;
+    /* Added slight border radius */
     font-family: var(--font-primary);
     font-size: 1rem;
     cursor: pointer;
@@ -1224,7 +1411,8 @@ section {
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
     position: relative;
     outline: none;
-    z-index: 10; /* Ensure buttons are clickable */
+    z-index: 10;
+    /* Ensure buttons are clickable */
 }
 
 .category-button:hover {
@@ -1261,11 +1449,13 @@ section {
 .category-button[data-category="visuals"] {
     border-color: #00ffff;
 }
+
 .category-button[data-category="visuals"].active,
 .category-button[data-category="visuals"]:hover {
     box-shadow: 0 0 15px #00ffff, 0 0 30px rgba(0, 255, 255, 0.6);
     border-color: #00ffff;
-    background-color: rgba(0, 255, 255, 0.12); /* subtle cyan fill */
+    background-color: rgba(0, 255, 255, 0.12);
+    /* subtle cyan fill */
     text-shadow: 0 0 5px #00ffff;
     color: #00ffff;
 }
@@ -1274,6 +1464,7 @@ section {
 .category-button[data-category="art"] {
     border-color: #00ff8c;
 }
+
 .category-button[data-category="art"].active,
 .category-button[data-category="art"]:hover {
     box-shadow: 0 0 15px #00ff8c, 0 0 30px rgba(0, 255, 140, 0.6);
@@ -1286,6 +1477,7 @@ section {
 .category-button[data-category="typography"] {
     border-color: #ffcc00;
 }
+
 .category-button[data-category="typography"].active,
 .category-button[data-category="typography"]:hover {
     box-shadow: 0 0 15px #ffcc00, 0 0 30px rgba(255, 204, 0, 0.6);
@@ -1306,18 +1498,28 @@ section {
 /* Masonry-style image grid */
 .image-grid {
     /* Base styles for all grids */
-    width: min(100%, 1100px); /* Allow images to use more horizontal space */
-    margin: 0 auto 0.5rem auto; /* Reduced bottom margin */
+    width: min(100%, 1100px);
+    /* Allow images to use more horizontal space */
+    margin: 0 auto 0.5rem auto;
+    /* Reduced bottom margin */
     position: relative;
-    z-index: 1; /* Above the background slideshow */
-    display: grid; /* Always use grid layout */
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive columns with minimum 2 */
-    gap: 2.5rem; /* Increased spacing to prevent overlap */
+    z-index: 1;
+    /* Above the background slideshow */
+    display: grid;
+    /* Always use grid layout */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    /* Responsive columns with minimum 2 */
+    gap: 2.5rem;
+    /* Increased spacing to prevent overlap */
     justify-content: center;
-    box-shadow: none !important; /* Prevent box-shadow on container */
-    overflow: visible; /* Allow items to have overflowing effects */
-    isolation: isolate; /* Create stacking context */
-    padding-top: 0; /* Remove any top padding */
+    box-shadow: none !important;
+    /* Prevent box-shadow on container */
+    overflow: visible;
+    /* Allow items to have overflowing effects */
+    isolation: isolate;
+    /* Create stacking context */
+    padding-top: 0;
+    /* Remove any top padding */
     opacity: 0;
     transition: opacity 0.5s ease;
 }
@@ -1326,15 +1528,18 @@ section {
 @media (min-width: 768px) {
     .image-grid {
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 2.5rem; /* Increased spacing */
+        gap: 2.5rem;
+        /* Increased spacing */
     }
 }
 
 /* Force exactly 2 columns on all screens */
 @media (min-width: 480px) {
     .image-grid {
-        grid-template-columns: repeat(2, 1fr); /* Always 2 columns */
-        gap: 2.5rem; /* Increased spacing */
+        grid-template-columns: repeat(2, 1fr);
+        /* Always 2 columns */
+        gap: 2.5rem;
+        /* Increased spacing */
     }
 }
 
@@ -1345,28 +1550,39 @@ section {
 /* Hide category grids by default (JS will show the active one) */
 #portfolio-display .image-grid {
     display: none;
-    position: relative; /* Ensure proper stacking context */
-    z-index: 1; /* Above the background slideshow */
-    margin-bottom: 4rem; /* Add space before footer */
+    position: relative;
+    /* Ensure proper stacking context */
+    z-index: 1;
+    /* Above the background slideshow */
+    margin-bottom: 4rem;
+    /* Add space before footer */
 }
 
 /* Specific grid display rules (handled by JS adding .active) */
 #portfolio-display .live-music-grid.active,
 #portfolio-display .visuals-grid.active {
-    display: grid; /* Use grid instead of flex */
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive column sizing */
-    gap: 2.5rem; /* Increased spacing */
+    display: grid;
+    /* Use grid instead of flex */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    /* Responsive column sizing */
+    gap: 2.5rem;
+    /* Increased spacing */
     justify-content: center;
-    margin: 0 auto; /* Center the entire grid */
+    margin: 0 auto;
+    /* Center the entire grid */
 }
 
 /* Grid items for masonry layout */
-.image-grid .grid-item { 
-    width: 100%; /* Full width within grid cell */
-    margin-bottom: 0; /* Remove margin, use grid gap */
-    padding: 0; /* Remove padding to prevent overlap */
+.image-grid .grid-item {
+    width: 100%;
+    /* Full width within grid cell */
+    margin-bottom: 0;
+    /* Remove margin, use grid gap */
+    padding: 0;
+    /* Remove padding to prevent overlap */
     position: relative;
-    overflow: visible; /* Allow glow to extend beyond boundaries */
+    overflow: visible;
+    /* Allow glow to extend beyond boundaries */
     border-radius: 4px;
     transition: all 0.3s ease;
     background-color: rgba(0, 0, 0, 0.3);
@@ -1376,9 +1592,12 @@ section {
 /* Always maintain two columns */
 @media (min-width: 992px) {
     .image-grid {
-        width: min(95%, 1100px); /* Use more available space on larger screens */
-        grid-template-columns: repeat(2, 1fr); /* Always 2 columns */
-        gap: 2.5rem; /* Increased spacing for better separation */
+        width: min(95%, 1100px);
+        /* Use more available space on larger screens */
+        grid-template-columns: repeat(2, 1fr);
+        /* Always 2 columns */
+        gap: 2.5rem;
+        /* Increased spacing for better separation */
     }
 }
 
@@ -1387,19 +1606,24 @@ section {
     display: block;
 }
 
-.image-grid .grid-item img, .image-grid .grid-item video {
+.image-grid .grid-item img,
+.image-grid .grid-item video {
     width: 100%;
-    height: auto; /* Allow natural height */
+    height: auto;
+    /* Allow natural height */
     display: block;
     border-radius: 4px;
     transition: all 0.4s ease;
     cursor: pointer;
-    object-fit: cover; /* Ensures videos maintain proportions like images */
-    object-position: center; /* Added to center the image/video */
+    object-fit: cover;
+    /* Ensures videos maintain proportions like images */
+    object-position: center;
+    /* Added to center the image/video */
     opacity: 1;
     position: relative;
     z-index: 1;
-    max-width: 100%; /* Ensure images don't exceed container */
+    max-width: 100%;
+    /* Ensure images don't exceed container */
     /* Add subtle glow to all media items */
     box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
 }
@@ -1417,6 +1641,7 @@ section {
 .live-music-grid .grid-item video {
     box-shadow: 0 0 8px rgba(255, 0, 255, 0.3);
 }
+
 .live-music-grid .grid-item:hover img,
 .live-music-grid .grid-item:hover video {
     box-shadow: 0 0 15px #ff00ff, 0 0 30px rgba(255, 0, 255, 0.4);
@@ -1447,6 +1672,7 @@ section {
 .visuals-grid .grid-item video {
     box-shadow: 0 0 8px rgba(0, 255, 255, 0.3);
 }
+
 .visuals-grid .grid-item:hover img,
 .visuals-grid .grid-item:hover video {
     box-shadow: 0 0 15px #00ffff, 0 0 30px rgba(0, 255, 255, 0.4);
@@ -1458,6 +1684,7 @@ section {
 .glitch-art-grid .grid-item img {
     box-shadow: 0 0 8px rgba(255, 0, 102, 0.3);
 }
+
 .glitch-art-grid .grid-item:hover img {
     box-shadow: 0 0 15px #ff0066, 0 0 30px rgba(255, 0, 102, 0.4);
 }
@@ -1466,6 +1693,7 @@ section {
 .liquid-lights-grid .grid-item img {
     box-shadow: 0 0 8px rgba(0, 255, 255, 0.3);
 }
+
 .liquid-lights-grid .grid-item:hover img {
     box-shadow: 0 0 15px #00ffff, 0 0 30px rgba(0, 255, 255, 0.4);
 }
@@ -1473,55 +1701,81 @@ section {
 /* Responsive adjustments */
 @media (max-width: 1200px) {
     .image-grid {
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive columns */
-        gap: 2.5rem; /* Increased spacing */
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        /* Responsive columns */
+        gap: 2.5rem;
+        /* Increased spacing */
         width: min(95%, 900px);
     }
+
     .image-grid .grid-item {
-        width: 100%; /* Full width within grid cell */
+        width: 100%;
+        /* Full width within grid cell */
     }
 }
 
 @media (max-width: 768px) {
     .image-grid {
-        width: 95%; /* Use more screen width on mobile */
-        grid-template-columns: 1fr; /* Display items in a single column */
-        display: grid; /* Use grid for consistent layout */
-        gap: 2rem; /* Comfortable spacing for larger images */
-        margin: 0 auto; /* Center the grid */
+        width: 95%;
+        /* Use more screen width on mobile */
+        grid-template-columns: 1fr;
+        /* Display items in a single column */
+        display: grid;
+        /* Use grid for consistent layout */
+        gap: 2rem;
+        /* Comfortable spacing for larger images */
+        margin: 0 auto;
+        /* Center the grid */
     }
+
     .image-grid .grid-item {
-        width: 100%; /* Let grid control the width */
-        margin-bottom: 0; /* Remove bottom margin as gap is used now */
+        width: 100%;
+        /* Let grid control the width */
+        margin-bottom: 0;
+        /* Remove bottom margin as gap is used now */
     }
+
     #portfolio-display .live-music-grid.active,
     #portfolio-display .visuals-grid.active {
-        grid-template-columns: 1fr; /* Ensure single column in active grids */
+        grid-template-columns: 1fr;
+        /* Ensure single column in active grids */
     }
 }
 
 @media (max-width: 480px) {
     .image-grid {
-        width: 100%; /* Allow images to stretch edge-to-edge */
-        grid-template-columns: 1fr; /* Single column on compact screens */
-        gap: 1.75rem; /* Slightly tighter gap for narrow viewports */
+        width: 100%;
+        /* Allow images to stretch edge-to-edge */
+        grid-template-columns: 1fr;
+        /* Single column on compact screens */
+        gap: 1.75rem;
+        /* Slightly tighter gap for narrow viewports */
     }
+
     .image-grid .grid-item {
-        width: 100%; /* Let grid control the width */
-        margin-bottom: 0; /* Remove bottom margin */
+        width: 100%;
+        /* Let grid control the width */
+        margin-bottom: 0;
+        /* Remove bottom margin */
     }
 
     #portfolio-display {
-        max-width: 100%; /* Portfolio container width */
+        max-width: 100%;
+        /* Portfolio container width */
         margin: 0 auto;
         display: flex;
         justify-content: center;
         align-items: center;
-        flex-direction: column; /* Stack contents vertically */
-        box-shadow: none !important; /* Prevent any box-shadow from being applied to the container */
-        background-color: transparent !important; /* Ensure background is transparent */
-        padding: 0 1rem; /* Provide subtle breathing room */
+        flex-direction: column;
+        /* Stack contents vertically */
+        box-shadow: none !important;
+        /* Prevent any box-shadow from being applied to the container */
+        background-color: transparent !important;
+        /* Ensure background is transparent */
+        padding: 0 1rem;
+        /* Provide subtle breathing room */
     }
+
     #portfolio-display .live-music-grid.active,
     #portfolio-display .visuals-grid.active {
         gap: 1.75rem;
@@ -1541,7 +1795,8 @@ section {
 }
 
 .social-links img {
-    width: 40px; /* Adjust icon size */
+    width: 40px;
+    /* Adjust icon size */
     height: 40px;
     margin: 0 1rem;
     transition: transform 0.3s ease;
@@ -1553,31 +1808,41 @@ section {
 
 /* SVG Icon Styling */
 .social-links a {
-    display: inline-flex; /* Use flexbox for perfect centering */
+    display: inline-flex;
+    /* Use flexbox for perfect centering */
     align-items: center;
     justify-content: center;
-    background-color: #333; /* Dark gray background */
-    border-radius: 50%; /* Make it circular */
-    width: 45px; /* Size of the circle */
+    background-color: #333;
+    /* Dark gray background */
+    border-radius: 50%;
+    /* Make it circular */
+    width: 45px;
+    /* Size of the circle */
     height: 45px;
-    margin: 0 0.5rem; /* Spacing between icons */
+    margin: 0 0.5rem;
+    /* Spacing between icons */
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .social-links svg.icon {
-    fill: #fff; /* White icon color */
-    width: 22px; /* Icon size */
+    fill: #fff;
+    /* White icon color */
+    width: 22px;
+    /* Icon size */
     height: 22px;
     transition: fill 0.3s ease;
 }
 
 .social-links a:hover {
-    background-color: #ff00ff; /* Pink background on hover */
-    transform: scale(1.1); /* Slight scale effect on hover */
+    background-color: #ff00ff;
+    /* Pink background on hover */
+    transform: scale(1.1);
+    /* Slight scale effect on hover */
 }
 
 .social-links a:hover svg.icon {
-    fill: #fff; /* Keep white on hover */
+    fill: #fff;
+    /* Keep white on hover */
 }
 
 /* Contact Section */
@@ -1589,12 +1854,15 @@ section {
 
 /* Add rule to control spacing of form field paragraphs */
 #contact form p {
-    margin: 0 0 1.5rem 0; /* Reset default margins, add bottom margin for spacing */
+    margin: 0 0 1.5rem 0;
+    /* Reset default margins, add bottom margin for spacing */
 }
 
 #contact label {
-    display: block; /* Make labels stack above inputs */
-    margin-bottom: 0.5rem; /* Space between label and input */
+    display: block;
+    /* Make labels stack above inputs */
+    margin-bottom: 0.5rem;
+    /* Space between label and input */
     font-size: 0.9rem;
     text-align: left;
     /* margin-top: 1rem; Removed */
@@ -1602,30 +1870,39 @@ section {
 
 #contact input,
 #contact textarea {
-    background-color: transparent; /* Make background transparent */
-    border: 1px solid #555555; /* Keep existing border */
-    color: #ffffff; /* Keep existing text color */
+    background-color: transparent;
+    /* Make background transparent */
+    border: 1px solid #555555;
+    /* Keep existing border */
+    color: #ffffff;
+    /* Keep existing text color */
     padding: 0.8rem;
     font-family: 'VT323', monospace;
     font-size: 1rem;
     /* margin-bottom: 1rem; Removed, handled by parent p tag */
     border-radius: 4px;
-    width: 100%; /* Make inputs fill container width */
-    box-sizing: border-box; /* Include padding/border in width calculation */
+    width: 100%;
+    /* Make inputs fill container width */
+    box-sizing: border-box;
+    /* Include padding/border in width calculation */
 }
 
 #contact textarea {
-    min-height: 200px; /* Increased height */
+    min-height: 200px;
+    /* Increased height */
     resize: vertical;
 }
 
 #contact button {
-    background-color: #555555; /* Darker button background */
-    color: #ffffff; /* White text */
+    background-color: #555555;
+    /* Darker button background */
+    color: #ffffff;
+    /* White text */
     border: none;
     padding: 1rem;
     /* font-family inherit removed as explicitly set above */
-    font-size: 1.2rem; /* Slightly larger button text */
+    font-size: 1.2rem;
+    /* Slightly larger button text */
     text-transform: uppercase;
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease;
@@ -1634,8 +1911,10 @@ section {
 }
 
 #contact button:hover {
-    background-color: #ff00ff; /* Bright pink hover */
-    color: #ffffff; /* White text */
+    background-color: #ff00ff;
+    /* Bright pink hover */
+    color: #ffffff;
+    /* White text */
 }
 
 /* Back to Top Button */
@@ -1643,28 +1922,33 @@ section {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background-color: rgba(255, 0, 255, 0.7); /* Semi-transparent pink */
-    color: #ffffff; /* Changed to white */
+    background-color: rgba(255, 0, 255, 0.7);
+    /* Semi-transparent pink */
+    color: #ffffff;
+    /* Changed to white */
     border: none;
     border-radius: 50%;
     width: 50px;
     height: 50px;
     font-size: 1.5rem;
     cursor: pointer;
-    display: none; /* Hidden by default */
+    display: none;
+    /* Hidden by default */
     z-index: 999;
     transition: opacity 0.3s ease, background-color 0.3s ease;
 }
 
 #back-to-top:hover {
-    background-color: rgba(255, 0, 255, 1); /* Solid pink on hover */
+    background-color: rgba(255, 0, 255, 1);
+    /* Solid pink on hover */
 }
 
 /* Footer */
 footer {
     text-align: center;
     padding: 1rem 0;
-    margin-top: 2rem; /* Add some space above the footer */
+    margin-top: 2rem;
+    /* Add some space above the footer */
 }
 
 /* Slideshow Container */
@@ -1689,7 +1973,7 @@ footer {
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.6) 100%);
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.6) 100%);
     z-index: 1;
     pointer-events: none;
 }
@@ -1701,30 +1985,43 @@ footer {
     left: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden; /* Hide signs that float off-screen */
-    z-index: -1; /* Place it behind all other content */
-    pointer-events: none; /* Allow clicks to pass through */
+    overflow: hidden;
+    /* Hide signs that float off-screen */
+    z-index: -1;
+    /* Place it behind all other content */
+    pointer-events: none;
+    /* Allow clicks to pass through */
 }
 
 .peace-sign {
     position: absolute;
-    bottom: -50px; /* Start below the screen */
-    font-size: 2rem; /* Adjust size as needed */
-    color: rgba(255, 255, 255, 0.08); /* Changed to faint white */
+    bottom: -50px;
+    /* Start below the screen */
+    font-size: 2rem;
+    /* Adjust size as needed */
+    color: rgba(255, 255, 255, 0.08);
+    /* Changed to faint white */
     user-select: none;
     animation-name: floatUp;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
+    will-change: transform;
+    transform: translateZ(0);
+    /* Force GPU layer */
 }
 
 @keyframes floatUp {
     0% {
         transform: translateY(0);
-        opacity: 1; /* Constant opacity */
+        opacity: 1;
+        /* Constant opacity */
     }
+
     100% {
-        transform: translateY(-110vh); /* Move up well past the top */
-        opacity: 1; /* Constant opacity */
+        transform: translateY(-110vh);
+        /* Move up well past the top */
+        opacity: 1;
+        /* Constant opacity */
     }
 }
 
@@ -1752,12 +2049,16 @@ footer {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    background-color: rgba(0, 0, 0, 0.95); /* Almost fully black */
-    backdrop-filter: blur(8px); /* Add blur for depth */
-    -webkit-backdrop-filter: blur(8px); /* Safari support */
+    background-color: rgba(0, 0, 0, 0.95);
+    /* Almost fully black */
+    backdrop-filter: blur(8px);
+    /* Add blur for depth */
+    -webkit-backdrop-filter: blur(8px);
+    /* Safari support */
     opacity: 0;
     transition: opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    padding: 60px 0; /* Add vertical padding */
+    padding: 60px 0;
+    /* Add vertical padding */
     border-top: 1px solid rgba(255, 255, 255, 0.2);
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 0 40px rgba(255, 0, 255, 0.1) inset, 0 0 20px rgba(0, 255, 255, 0.1) inset;
@@ -1776,7 +2077,8 @@ footer {
 
 /* Modal Content (Image) */
 .modal-content {
-    margin: 0; /* Remove auto margin as flex handles centering */
+    margin: 0;
+    /* Remove auto margin as flex handles centering */
     display: block;
     max-width: 80%;
     max-height: 80vh;
@@ -1805,6 +2107,7 @@ footer {
         transform: scale3d(0.3, 0.3, 1) translate3d(0, 0, 0);
         opacity: 0;
     }
+
     to {
         transform: scale3d(1, 1, 1) translate3d(0, 0, 0);
         opacity: 1;
@@ -1817,6 +2120,7 @@ footer {
         animation: none;
         transition: opacity 0.2s ease;
     }
+
     .slideshow-image {
         transition: opacity 0.3s ease;
     }
@@ -1831,7 +2135,8 @@ footer {
     font-size: 40px;
     font-weight: bold;
     transition: 0.3s;
-    z-index: 1002; /* Above modal content */
+    z-index: 1002;
+    /* Above modal content */
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
 }
 
@@ -1858,10 +2163,11 @@ footer {
 }
 
 /* Responsive adjustments for smaller screens */
-@media (max-width: 700px){
+@media (max-width: 700px) {
     .modal-content {
         max-width: 95%;
     }
+
     #caption {
         width: 95%;
     }
@@ -1876,21 +2182,27 @@ footer {
     top: 50%;
     width: auto;
     padding: 16px;
-    margin-top: -22px; /* Adjust vertically to center */
+    margin-top: -22px;
+    /* Adjust vertically to center */
     color: white;
     font-weight: bold;
     font-size: 24px;
     transition: 0.3s ease;
-    border-radius: 0 3px 3px 0; /* Slight rounding */
+    border-radius: 0 3px 3px 0;
+    /* Slight rounding */
     user-select: none;
-    background-color: rgba(0,0,0,0.3); /* Semi-transparent background */
-    display: none; /* Hidden by default, shown by JS */
-    z-index: 1002; /* Above image but below close button? Maybe 1000 if image is 1001*/
+    background-color: rgba(0, 0, 0, 0.3);
+    /* Semi-transparent background */
+    display: none;
+    /* Hidden by default, shown by JS */
+    z-index: 1002;
+    /* Above image but below close button? Maybe 1000 if image is 1001*/
 }
 
 .modal-prev {
     left: 0;
-    border-radius: 3px 0 0 3px; /* Adjust rounding for left button */
+    border-radius: 3px 0 0 3px;
+    /* Adjust rounding for left button */
 }
 
 .modal-next {
@@ -1899,26 +2211,34 @@ footer {
 }
 
 .modal-nav:hover {
-    background-color: rgba(255, 0, 255, 0.8); /* Pink hover */
+    background-color: rgba(255, 0, 255, 0.8);
+    /* Pink hover */
 }
 
 /* --- End Modal Navigation Arrows --- */
 
 /* Site Credit */
 .site-credit {
-    font-size: 0.8rem; /* Smaller font size */
-    color: #aaa; /* Dimmed color */
-    margin-top: 1rem; /* Add some space above */
-    text-align: center; /* Center the text */
+    font-size: 0.8rem;
+    /* Smaller font size */
+    color: #aaa;
+    /* Dimmed color */
+    margin-top: 1rem;
+    /* Add some space above */
+    text-align: center;
+    /* Center the text */
 }
 
 .site-credit a {
-    color: #ccc; /* Slightly brighter link color */
-    text-decoration: underline; /* Add underline for clarity */
+    color: #ccc;
+    /* Slightly brighter link color */
+    text-decoration: underline;
+    /* Add underline for clarity */
 }
 
 .site-credit a:hover {
-    color: #fff; /* White on hover */
+    color: #fff;
+    /* White on hover */
 }
 
 /* --- Theme Colors for Portfolio Section --- */
@@ -1929,8 +2249,10 @@ footer {
 }
 
 #portfolio h2 {
-    color: #ff00ff; /* Default to pink if no theme */
+    color: #ff00ff;
+    /* Default to pink if no theme */
 }
+
 #portfolio .category-button.active {
     background-color: #ff00ff;
     border-color: #ff00ff;
@@ -1940,9 +2262,11 @@ footer {
 #portfolio.theme-live-music {
     box-shadow: 0 0 40px 5px rgba(255, 0, 255, 0.4);
 }
+
 #portfolio.theme-live-music h2 {
     color: #ff00ff;
 }
+
 #portfolio.theme-live-music .category-button.active {
     background-color: #ff00ff;
     border-color: #ff00ff;
@@ -1953,35 +2277,43 @@ footer {
 #portfolio.theme-videography {
     box-shadow: 0 0 40px 5px rgba(0, 255, 255, 0.4);
 }
+
 #portfolio.theme-videography h2 {
     color: #00ffff;
 }
+
 #portfolio.theme-videography .category-button.active {
     background-color: #00ffff;
     border-color: #00ffff;
-    color: #000000; /* Black text for contrast */
+    color: #000000;
+    /* Black text for contrast */
 }
 
 /* Art Theme (Yellow) */
 #portfolio.theme-art {
     box-shadow: 0 0 40px 5px rgba(255, 255, 0, 0.4);
 }
+
 #portfolio.theme-art h2 {
     color: #ffff00;
 }
+
 #portfolio.theme-art .category-button.active {
     background-color: #ffff00;
     border-color: #ffff00;
-    color: #000000; /* Black text for contrast */
+    color: #000000;
+    /* Black text for contrast */
 }
 
 /* Typography Theme (Orange) */
 #portfolio.theme-typography {
     box-shadow: 0 0 40px 5px rgba(255, 165, 0, 0.4);
 }
+
 #portfolio.theme-typography h2 {
     color: #ffa500;
 }
+
 #portfolio.theme-typography .category-button.active {
     background-color: #ffa500;
     border-color: #ffa500;
@@ -1992,28 +2324,34 @@ footer {
 #portfolio.theme-glitch-art {
     box-shadow: 0 0 40px 5px rgba(0, 255, 0, 0.4);
 }
+
 #portfolio.theme-glitch-art h2 {
     color: #00ff00;
 }
+
 #portfolio.theme-glitch-art .category-button.active {
     background-color: #00ff00;
     border-color: #00ff00;
-    color: #000000; /* Black text for contrast */
+    color: #000000;
+    /* Black text for contrast */
 }
 
 /* Liquid Lights Theme (BlueViolet) */
 #portfolio.theme-liquid-lights {
     box-shadow: 0 0 40px 5px rgba(138, 43, 226, 0.4);
 }
+
 #portfolio.theme-liquid-lights h2 {
     color: #8a2be2;
 }
+
 #portfolio.theme-liquid-lights .category-button.active {
     background-color: #8a2be2;
     border-color: #8a2be2;
     color: #ffffff;
 }
-/* --- End Theme Colors --- */ 
+
+/* --- End Theme Colors --- */
 
 /* =========================
    Standardize Header Styles
@@ -2021,12 +2359,14 @@ footer {
 /* Always show desktop navigation and hide the mobile-specific menu so the same
    header is used across every viewport width. */
 .desktop-nav {
-    display: flex !important; /* keep nav visible on all devices */
+    display: flex !important;
+    /* keep nav visible on all devices */
 }
 
 .mobile-menu-toggle,
 .mobile-nav-overlay {
-    display: none !important; /* remove hamburger and overlay */
+    display: none !important;
+    /* remove hamburger and overlay */
 }
 
 /* Revert any mobile-specific header adjustments so layout matches desktop */
@@ -2034,28 +2374,32 @@ header {
     padding: 0.75rem 0 !important;
     height: auto !important;
     justify-content: space-between !important;
-} 
+}
 
 /* Increase grid gap for better spacing */
 .image-grid {
     grid-gap: 2rem !important;
 }
+
 @media (max-width: 1200px) {
     .image-grid {
         grid-gap: 1.5rem !important;
     }
 }
+
 @media (max-width: 768px) {
     .image-grid {
         grid-gap: 1rem !important;
     }
-} 
+}
 
 /* === Portfolio Art Gallery Enhancements === */
 /* Radial glow around each image that blends into the page background */
 .image-grid .grid-item {
-    position: relative; /* ensure ::before is positioned correctly */
-    z-index: 1; /* keep above global background */
+    position: relative;
+    /* ensure ::before is positioned correctly */
+    z-index: 1;
+    /* keep above global background */
 }
 
 .image-grid .grid-item::before {
@@ -2067,12 +2411,13 @@ header {
     height: 115%;
     transform: translate(-50%, -50%);
     border-radius: inherit;
-    background: radial-gradient(circle at center, var(--glowColor) 0%, rgba(0,0,0,0) 70%);
+    background: radial-gradient(circle at center, var(--glowColor) 0%, rgba(0, 0, 0, 0) 70%);
     opacity: 0.6;
     filter: blur(18px) saturate(150%);
     transition: opacity var(--transition-medium) ease, transform var(--transition-medium) ease;
     pointer-events: none;
-    z-index: -1; /* sit behind the actual media */
+    z-index: -1;
+    /* sit behind the actual media */
 }
 
 .image-grid .grid-item:hover::before {
@@ -2081,8 +2426,13 @@ header {
 }
 
 /* Category-specific glow variables */
-.live-music-grid .grid-item { --glowColor: #ff00ff; }
-.visuals-grid    .grid-item { --glowColor: #00ffff; }
+.live-music-grid .grid-item {
+    --glowColor: #ff00ff;
+}
+
+.visuals-grid .grid-item {
+    --glowColor: #00ffff;
+}
 
 /* Ambient colourful backdrop that mimics gallery lighting */
 body.portfolio-page::after {
@@ -2094,132 +2444,157 @@ body.portfolio-page::after {
     height: 100%;
     z-index: var(--z-background);
     pointer-events: none;
-    background: radial-gradient(circle at 20% 30%, rgba(255,0,255,0.10) 0%, transparent 60%),
-                radial-gradient(circle at 80% 75%, rgba(0,255,255,0.08) 0%, transparent 60%),
-                radial-gradient(circle at 50% 50%, rgba(255,204,0,0.06) 0%, transparent 60%);
+    background: radial-gradient(circle at 20% 30%, rgba(255, 0, 255, 0.10) 0%, transparent 60%),
+        radial-gradient(circle at 80% 75%, rgba(0, 255, 255, 0.08) 0%, transparent 60%),
+        radial-gradient(circle at 50% 50%, rgba(255, 204, 0, 0.06) 0%, transparent 60%);
     animation: galleryGlow 25s ease-in-out infinite;
     filter: blur(100px) saturate(120%);
+    will-change: background-position;
+    transform: translateZ(0);
 }
 
 @keyframes galleryGlow {
-    0%   {transform: translate3d(0,0,0) scale(1);} 
-    50%  {transform: translate3d(0,-2%,0) scale(1.05);} 
-    100% {transform: translate3d(0,0,0) scale(1);} 
-} 
+    0% {
+        transform: translate3d(0, 0, 0) scale(1);
+    }
+
+    50% {
+        transform: translate3d(0, -2%, 0) scale(1.05);
+    }
+
+    100% {
+        transform: translate3d(0, 0, 0) scale(1);
+    }
+}
 
 /* === Masonry layout for active portfolio grids (global) === */
 .image-grid.active {
-  display: block !important; /* Use block with CSS columns for masonry */
-  column-count: 2;
-  column-gap: 3rem;
-  margin: 0 auto;
-  width: 70%;
+    display: block !important;
+    /* Use block with CSS columns for masonry */
+    column-count: 2;
+    column-gap: 3rem;
+    margin: 0 auto;
+    width: 70%;
 }
 
 .image-grid.active .grid-item {
-  display: inline-block;
-  width: 100% !important;
-  margin: 0 0 3rem 0;
-  padding: 0;
-  break-inside: avoid;
-  -webkit-column-break-inside: avoid;
-  page-break-inside: avoid;
+    display: inline-block;
+    width: 100% !important;
+    margin: 0 0 3rem 0;
+    padding: 0;
+    break-inside: avoid;
+    -webkit-column-break-inside: avoid;
+    page-break-inside: avoid;
 }
 
 .image-grid.active .grid-item img,
 .image-grid.active .grid-item video {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-  display: block;
-}
-
-/* === Mobile layout fixes === */
-@media (max-width: 600px) {
-  /* Center the portfolio display container */
-  #portfolio-display {
-    width: 95%;
-    max-width: 480px;
-    margin: 0 auto;
-    padding: 1rem 0;
-  }
-
-  /* Two-column masonry layout for images with proper spacing */
-  .image-grid.active {
-    /* Switch to masonry using CSS columns so leftover space falls to the bottom */
-    display: block !important; /* Override any grid display */
-    column-count: 2; /* Two columns across breakpoints */
-    column-gap: 3rem; /* Match previous visual spacing */
-    margin: 0 auto; /* Center the grid */
-    width: 70%; /* Keep consistent width across breakpoints */
-  }
-  /* Hide inactive grids */
-  .image-grid:not(.active) {
-    display: none !important;
-  }
-  
-  .image-grid.active .grid-item {
-    /* Masonry item rules */
-    display: inline-block; /* Allow items to flow within columns */
-    width: 100% !important;
-    margin: 0 0 3rem 0; /* Space between stacked items (matches column-gap visually) */
-    padding: 0;
-    break-inside: avoid; /* Prevent items from splitting between columns */
-    -webkit-column-break-inside: avoid;
-    page-break-inside: avoid;
-  }
-
-  .image-grid.active .grid-item img,
-  .image-grid.active .grid-item video {
     width: 100%;
     height: auto;
     border-radius: 8px;
     display: block;
-  }
+}
 
-  /* Tidy up category filters */
-  .portfolio-categories {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 0.5rem auto 2rem; /* Reduced top margin from 1.5rem to 0.5rem */
-    width: 95%;
-    max-width: 400px;
-  }
-  
-  .portfolio-categories .filters {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.75rem;
-    width: 100%;
-  }
-  
-  .portfolio-categories .filters li {
-    flex: 0 1 48%;
-    display: flex;
-    justify-content: center;
-  }
-  
-  .portfolio-categories .filters li .category-button {
-    width: 100%;
-    min-width: 0;
-    padding: 0.55rem 0.8rem;
-  }
+/* === Mobile layout fixes === */
+@media (max-width: 600px) {
+
+    /* Center the portfolio display container */
+    #portfolio-display {
+        width: 95%;
+        max-width: 480px;
+        margin: 0 auto;
+        padding: 1rem 0;
+    }
+
+    /* Two-column masonry layout for images with proper spacing */
+    .image-grid.active {
+        /* Switch to masonry using CSS columns so leftover space falls to the bottom */
+        display: block !important;
+        /* Override any grid display */
+        column-count: 2;
+        /* Two columns across breakpoints */
+        column-gap: 3rem;
+        /* Match previous visual spacing */
+        margin: 0 auto;
+        /* Center the grid */
+        width: 70%;
+        /* Keep consistent width across breakpoints */
+    }
+
+    /* Hide inactive grids */
+    .image-grid:not(.active) {
+        display: none !important;
+    }
+
+    .image-grid.active .grid-item {
+        /* Masonry item rules */
+        display: inline-block;
+        /* Allow items to flow within columns */
+        width: 100% !important;
+        margin: 0 0 3rem 0;
+        /* Space between stacked items (matches column-gap visually) */
+        padding: 0;
+        break-inside: avoid;
+        /* Prevent items from splitting between columns */
+        -webkit-column-break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    .image-grid.active .grid-item img,
+    .image-grid.active .grid-item video {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        display: block;
+    }
+
+    /* Tidy up category filters */
+    .portfolio-categories {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0.5rem auto 2rem;
+        /* Reduced top margin from 1.5rem to 0.5rem */
+        width: 95%;
+        max-width: 400px;
+    }
+
+    .portfolio-categories .filters {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.75rem;
+        width: 100%;
+    }
+
+    .portfolio-categories .filters li {
+        flex: 0 1 48%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .portfolio-categories .filters li .category-button {
+        width: 100%;
+        min-width: 0;
+        padding: 0.55rem 0.8rem;
+    }
 }
 
 
 
 /* --- Header responsive tweaks for medium-width screens (tablets / small laptops) --- */
 @media (max-width: 1100px) and (min-width: 769px) {
+
     /* Give header a bit more breathing room horizontally */
     .header-container {
-        width: 90%; /* Was 80% – use more width so nav items shift outward */
+        width: 90%;
+        /* Was 80% – use more width so nav items shift outward */
     }
 
     /* Scale down the vinyl-disc graphic so it doesn't cover nav items */
     .header-decoration-image {
-        max-height: 2rem; /* ~32px */
+        max-height: 2rem;
+        /* ~32px */
     }
 
     /* Slightly smaller rainbow name */
@@ -2229,7 +2604,8 @@ body.portfolio-page::after {
 
     /* Compress desktop-nav typography & spacing */
     .desktop-nav ul li a {
-        font-size: 1rem; /* Was 1.2rem */
+        font-size: 1rem;
+        /* Was 1.2rem */
         margin: 0 4px;
         padding: 0 6px 2px;
         letter-spacing: 0.5px;
@@ -2240,6 +2616,8 @@ body.portfolio-page::after {
 #portfolio-display .image-grid {
     display: none !important;
 }
+
 #portfolio-display .image-grid.active {
-    display: block !important; /* visible masonry (columns) */
+    display: block !important;
+    /* visible masonry (columns) */
 }
