@@ -3,7 +3,7 @@
  * Network-aware caching with safe defaults and graceful fallbacks.
  */
 
-const CACHE_VERSION = 'v1.1.0';
+const CACHE_VERSION = 'v1.1.1';
 const CACHE_NAME = `mario-preciado-${CACHE_VERSION}`;
 const SW_DEBUG = false;
 
@@ -61,6 +61,13 @@ self.addEventListener('fetch', (event) => {
 
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) {
+    return;
+  }
+
+  // Video playback commonly relies on byte-range requests.
+  // Returning cached full responses for ranged requests can break media rendering.
+  if (request.headers.has('range')) {
+    event.respondWith(fetch(request));
     return;
   }
 
