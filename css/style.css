@@ -1917,6 +1917,26 @@ section {
     /* White text */
 }
 
+#contact button[disabled] {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+#contact .form-feedback {
+    min-height: 1.25rem;
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    text-align: left;
+}
+
+#contact .form-feedback[data-state="success"] {
+    color: #00ff8c;
+}
+
+#contact .form-feedback[data-state="error"] {
+    color: #ff7a7a;
+}
+
 /* Back to Top Button */
 #back-to-top {
     position: fixed;

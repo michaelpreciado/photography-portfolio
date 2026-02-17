@@ -985,37 +985,228 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Back to Top Button Logic --- //
-    let isBackToTopScrolling = false;
+    if (backToTopButton) {
+        let isBackToTopScrolling = false;
 
-    const updateBackToTop = () => {
-        if (window.pageYOffset > 300) { // Show button after scrolling 300px
-            backToTopButton.style.display = 'block';
-            // Use a small timeout to allow display:block to apply before opacity transition
-            requestAnimationFrame(() => {
-                backToTopButton.style.opacity = '1';
+        const updateBackToTop = () => {
+            if (window.pageYOffset > 300) { // Show button after scrolling 300px
+                backToTopButton.style.display = 'block';
+                // Use a small timeout to allow display:block to apply before opacity transition
+                requestAnimationFrame(() => {
+                    backToTopButton.style.opacity = '1';
+                });
+            } else {
+                backToTopButton.style.opacity = '0';
+                // Use setTimeout to hide only after fade out transition completes
+                setTimeout(() => {
+                    if (window.pageYOffset <= 300) { // Re-check condition
+                        backToTopButton.style.display = 'none';
+                    }
+                }, 300); // Match CSS transition duration
+            }
+            isBackToTopScrolling = false;
+        };
+
+        window.addEventListener('scroll', () => {
+            if (!isBackToTopScrolling) {
+                requestAnimationFrame(updateBackToTop);
+                isBackToTopScrolling = true;
+            }
+        }, { passive: true });
+
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+
+    function getContactFormUtils() {
+        const utils = window.ContactFormUtils;
+        if (!utils) return null;
+        if (typeof utils.validateContactPayload !== 'function') return null;
+        if (typeof utils.encodeContactPayload !== 'function') return null;
+        if (typeof utils.getStatusMessage !== 'function') return null;
+        if (typeof utils.getValidationMessage !== 'function') return null;
+        return utils;
+    }
+
+    function ensureContactFeedbackElement(form) {
+        let feedback = form.querySelector('.form-feedback');
+        if (!feedback) {
+            feedback = document.createElement('p');
+            feedback.className = 'form-feedback';
+            feedback.setAttribute('role', 'status');
+            feedback.setAttribute('aria-live', 'polite');
+            feedback.setAttribute('aria-atomic', 'true');
+            form.appendChild(feedback);
+        }
+        return feedback;
+    }
+
+    function setContactFeedback(feedbackElement, message, state) {
+        if (!feedbackElement) return;
+        feedbackElement.textContent = message;
+        feedbackElement.dataset.state = state;
+    }
+
+    function setSubmitButtonState(submitButton, isSubmitting) {
+        if (!submitButton) return;
+        if (!submitButton.dataset.defaultText) {
+            submitButton.dataset.defaultText = submitButton.textContent || 'Send Message';
+        }
+        submitButton.disabled = isSubmitting;
+        submitButton.setAttribute('aria-busy', String(isSubmitting));
+        submitButton.textContent = isSubmitting
+            ? 'Sending...'
+            : submitButton.dataset.defaultText;
+    }
+
+    function findFieldElement(form, fieldName) {
+        const field = form.elements.namedItem(fieldName);
+        if (typeof RadioNodeList !== 'undefined' && field instanceof RadioNodeList) {
+            return field[0];
+        }
+        return field;
+    }
+
+    function setupContactFormSubmission() {
+        const contactForm = document.querySelector('form[name="contact"]');
+        if (!contactForm) return;
+
+        const contactUtils = getContactFormUtils();
+        if (!contactUtils) {
+            logger.warn('Contact form utilities are missing; falling back to default form submission.');
+            return;
+        }
+
+        const submitButton = contactForm.querySelector('button[type="submit"]');
+        const feedbackElement = ensureContactFeedbackElement(contactForm);
+        let submissionInFlight = false;
+
+        contactForm.addEventListener('input', (event) => {
+            const input = event.target;
+            if (input && typeof input.setCustomValidity === 'function') {
+                input.setCustomValidity('');
+            }
+        });
+
+        contactForm.addEventListener('submit', async (event) => {
+            if (!window.fetch || typeof FormData === 'undefined' || typeof URLSearchParams === 'undefined') {
+                return;
+            }
+
+            event.preventDefault();
+
+            if (submissionInFlight) {
+                setContactFeedback(feedbackElement, contactUtils.getStatusMessage('duplicate'), 'info');
+                return;
+            }
+
+            const formData = new FormData(contactForm);
+            const validation = contactUtils.validateContactPayload({
+                name: formData.get('name'),
+                email: formData.get('email'),
+                message: formData.get('message'),
+                botField: formData.get('bot-field')
             });
-        } else {
-            backToTopButton.style.opacity = '0';
-            // Use setTimeout to hide only after fade out transition completes
-            setTimeout(() => {
-                if (window.pageYOffset <= 300) { // Re-check condition
-                    backToTopButton.style.display = 'none';
+
+            const nameField = findFieldElement(contactForm, 'name');
+            const emailField = findFieldElement(contactForm, 'email');
+            const messageField = findFieldElement(contactForm, 'message');
+            [nameField, emailField, messageField].forEach((field) => {
+                if (field && typeof field.setCustomValidity === 'function') {
+                    field.setCustomValidity('');
                 }
-            }, 300); // Match CSS transition duration
-        }
-        isBackToTopScrolling = false;
-    };
+            });
 
-    window.addEventListener('scroll', () => {
-        if (!isBackToTopScrolling) {
-            requestAnimationFrame(updateBackToTop);
-            isBackToTopScrolling = true;
-        }
-    }, { passive: true });
+            if (nameField && 'value' in nameField) {
+                nameField.value = validation.sanitized.name;
+            }
+            if (emailField && 'value' in emailField) {
+                emailField.value = validation.sanitized.email;
+            }
+            if (messageField && 'value' in messageField) {
+                messageField.value = validation.sanitized.message;
+            }
 
-    backToTopButton.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+            if (validation.isBot) {
+                contactForm.reset();
+                setContactFeedback(feedbackElement, contactUtils.getStatusMessage('success'), 'success');
+                return;
+            }
+
+            if (!validation.isValid) {
+                const fieldOrder = ['name', 'email', 'message'];
+                let firstInvalidField = null;
+                let firstMessage = contactUtils.getStatusMessage('server');
+
+                fieldOrder.forEach((fieldName) => {
+                    const errorCode = validation.errors[fieldName];
+                    if (!errorCode) return;
+                    const fieldElement = findFieldElement(contactForm, fieldName);
+                    const message = contactUtils.getValidationMessage(errorCode);
+
+                    if (!firstInvalidField && fieldElement) {
+                        firstInvalidField = fieldElement;
+                        firstMessage = message;
+                    }
+                    if (fieldElement && typeof fieldElement.setCustomValidity === 'function') {
+                        fieldElement.setCustomValidity(message);
+                    }
+                });
+
+                setContactFeedback(feedbackElement, firstMessage, 'error');
+                if (firstInvalidField && typeof firstInvalidField.reportValidity === 'function') {
+                    firstInvalidField.reportValidity();
+                }
+                if (firstInvalidField && typeof firstInvalidField.focus === 'function') {
+                    firstInvalidField.focus();
+                }
+                return;
+            }
+
+            submissionInFlight = true;
+            setSubmitButtonState(submitButton, true);
+            setContactFeedback(feedbackElement, contactUtils.getStatusMessage('sending'), 'info');
+
+            const abortController = typeof AbortController === 'function' ? new AbortController() : null;
+            const timeoutId = abortController
+                ? window.setTimeout(() => abortController.abort(), 12000)
+                : null;
+
+            try {
+                const action = contactForm.getAttribute('action') || window.location.pathname || '/';
+                const response = await fetch(action, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        Accept: 'text/html'
+                    },
+                    body: contactUtils.encodeContactPayload(validation.sanitized),
+                    signal: abortController ? abortController.signal : undefined
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Form submission failed with status ${response.status}`);
+                }
+
+                contactForm.reset();
+                setContactFeedback(feedbackElement, contactUtils.getStatusMessage('success'), 'success');
+            } catch (error) {
+                logger.error('Contact form submission failed', error);
+                const isAbortError = error && typeof error === 'object' && error.name === 'AbortError';
+                const messageCode = isAbortError ? 'timeout' : 'network';
+                setContactFeedback(feedbackElement, contactUtils.getStatusMessage(messageCode), 'error');
+            } finally {
+                if (timeoutId) {
+                    window.clearTimeout(timeoutId);
+                }
+                submissionInFlight = false;
+                setSubmitButtonState(submitButton, false);
+            }
+        });
+    }
+
+    setupContactFormSubmission();
 
     // --- Smooth Scrolling for Nav Links --- //
     document.querySelectorAll('header nav a[href^="#"]').forEach(anchor => {
@@ -1252,12 +1443,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Slideshow Logic (Homepage) --- //
+    let slideTimer = null;
     if (slideshowContainer) {
         logger.info('Initializing slideshow');
         const images = slideshowContainer.querySelectorAll('.slideshow-image');
         let currentImageIndex = 0; // Start with the first image
-        let slideInterval = 7000; // Time each image is displayed (increased to 7 seconds)
-        let slideTimer; // Variable to store the interval timer
+        const slideInterval = 7000; // Time each image is displayed (increased to 7 seconds)
         let isTransitioning = false; // Flag to prevent transition issues
 
         logger.info('Found slideshow images', { count: images.length });
@@ -1325,18 +1516,18 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             logger.warn('No slideshow images found');
         }
-    }
 
-    // Listen for changes in reduced motion preference
-    window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', (e) => {
-        const shouldReduceMotion = e.matches;
-        if (shouldReduceMotion && slideTimer) {
-            clearInterval(slideTimer);
-            slideTimer = null;
-        } else if (!shouldReduceMotion && !slideTimer && slideshowContainer) {
-            slideTimer = setInterval(showNextImage, slideInterval);
-        }
-    });
+        // Listen for changes in reduced motion preference
+        window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', (e) => {
+            const shouldReduceMotion = e.matches;
+            if (shouldReduceMotion && slideTimer) {
+                clearInterval(slideTimer);
+                slideTimer = null;
+            } else if (!shouldReduceMotion && !slideTimer) {
+                slideTimer = setInterval(showNextImage, slideInterval);
+            }
+        });
+    }
 });
 
 // --- Global video IntersectionObserver --- //

@@ -1,5 +1,5 @@
 {
-  "generated": "2025-09-16T03:33:42.827Z",
+  "generated": "2026-02-17T05:56:02.309Z",
   "config": {
     "inputDir": "images/portfolio",
     "outputDir": "images/optimized",
@@ -25,36 +25,6 @@
     "maxConcurrency": 4
   },
   "images": [
-    {
-      "original": "images/portfolio/rainbow-star.png",
-      "formats": {
-        "avif": {
-          "320": "rainbow-star-320-5d59a107.avif",
-          "640": "rainbow-star-640-5d59a107.avif",
-          "960": "rainbow-star-960-5d59a107.avif",
-          "1280": "rainbow-star-1280-5d59a107.avif",
-          "1600": "rainbow-star-1600-5d59a107.avif",
-          "2048": "rainbow-star-2048-5d59a107.avif"
-        },
-        "webp": {
-          "320": "rainbow-star-320-5d59a107.webp",
-          "640": "rainbow-star-640-5d59a107.webp",
-          "960": "rainbow-star-960-5d59a107.webp",
-          "1280": "rainbow-star-1280-5d59a107.webp",
-          "1600": "rainbow-star-1600-5d59a107.webp",
-          "2048": "rainbow-star-2048-5d59a107.webp"
-        },
-        "jpeg": {
-          "320": "rainbow-star-320-5d59a107.jpeg",
-          "640": "rainbow-star-640-5d59a107.jpeg",
-          "960": "rainbow-star-960-5d59a107.jpeg",
-          "1280": "rainbow-star-1280-5d59a107.jpeg",
-          "1600": "rainbow-star-1600-5d59a107.jpeg",
-          "2048": "rainbow-star-2048-5d59a107.jpeg"
-        }
-      },
-      "lqip": "data:image/jpeg;base64,/9j/2wBDABsSFBcUERsXFhceHBsgKEIrKCUlKFE6PTBCYFVlZF9VXVtqeJmBanGQc1tdhbWGkJ6jq62rZ4C8ybqmx5moq6T/2wBDARweHigjKE4rK06kbl1upKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKT/wAARCAALABQDASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAAAAQCA//EABwQAAIDAAMBAAAAAAAAAAAAAAABAgMRBAUxI//EABcBAAMBAAAAAAAAAAAAAAAAAAIDBAX/xAAbEQACAgMBAAAAAAAAAAAAAAAAAQIDBBESFP/aAAwDAQACEQMRAD8A4O1JaxR2nzcVBp76SWN4Zr8G24kJrbBwa11tlUuZJvQTAk88TZ5R/9k="
-    },
     {
       "original": "images/portfolio/header.jpeg",
       "formats": {
