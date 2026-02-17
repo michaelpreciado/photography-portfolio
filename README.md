@@ -76,7 +76,8 @@ This repository includes `vercel.json` with:
 - `npm ci` install command
 - `npm run build` build command
 - clean route rewrites for `/about`, `/portfolio`, and `/contact`
-- cache headers for HTML, assets, and `sw.js`
+- cache headers for HTML, assets, `sw.js`, and API responses
+- a Vercel serverless endpoint at `api/contact.js` for contact form submissions
 
 Deploy steps:
 
@@ -93,7 +94,14 @@ Deploy steps:
    npx vercel --prod
    ```
 
-Important: the contact page currently uses a Netlify form attribute (`data-netlify="true"`). On Vercel, submissions will need a replacement backend (for example, a Vercel Serverless Function) if you want messages delivered.
+Contact form environment variables (Vercel Project Settings -> Environment Variables):
+
+- `RESEND_API_KEY`: Resend API key used for delivery
+- `CONTACT_TO_EMAIL`: destination inbox for contact submissions
+- `CONTACT_FROM_EMAIL` (optional): sender identity (defaults to `onboarding@resend.dev`)
+- `CONTACT_SUBJECT` (optional): custom email subject line
+
+If `RESEND_API_KEY` or `CONTACT_TO_EMAIL` is missing, the API returns `503` so submissions are not silently dropped.
 
 ## CI/CD
 

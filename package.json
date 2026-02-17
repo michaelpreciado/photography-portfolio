@@ -8,7 +8,7 @@
     "minify:js": "terser js/script.js -o js/script.min.js --compress --mangle --source-map \"content=inline\"",
     "minify": "npm run minify:css && npm run minify:js",
     "build": "npm run images && npm run minify",
-    "lint": "node --check js/script.js && node --check js/sw-register.js && node --check sw.js && node --check scripts/optimize-images.js",
+    "lint": "node --check js/script.js && node --check js/sw-register.js && node --check sw.js && node --check scripts/optimize-images.js && node --check api/contact.js",
     "test": "npm run lint",
     "ci": "npm run lint && npm run build",
     "dev": "npm run build && python3 -m http.server 8000",

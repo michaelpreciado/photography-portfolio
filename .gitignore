@@ -19,3 +19,6 @@ npm-debug.log*
 # Environment files
 .env
 .env.local
+
+# Vercel local/project artifacts
+.vercel

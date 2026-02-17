@@ -1206,20 +1206,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 : null;
 
             try {
-                const action = contactForm.getAttribute('action') || window.location.pathname || '/';
+                const action = contactForm.getAttribute('action') || '/api/contact';
                 const response = await fetch(action, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
-                        Accept: 'text/html'
+                        Accept: 'application/json, text/html'
                     },
                     body: contactUtils.encodeContactPayload(validation.sanitized),
                     signal: abortController ? abortController.signal : undefined
                 });
 
                 if (!response.ok) {
-                    const submitError = new Error(`Form submission failed with status ${response.status}`);
+                    const isJsonResponse = (response.headers.get('Content-Type') || '').includes('application/json');
+                    const responsePayload = isJsonResponse
+                        ? await response.json().catch(() => null)
+                        : null;
+
+                    const submitErrorMessage = responsePayload && typeof responsePayload.message === 'string'
+                        ? responsePayload.message
+                        : `Form submission failed with status ${response.status}`;
+                    const submitError = new Error(submitErrorMessage);
                     submitError.status = response.status;
+                    if (responsePayload && typeof responsePayload.message === 'string') {
+                        submitError.userMessage = responsePayload.message;
+                    }
                     throw submitError;
                 }
 
@@ -1237,6 +1248,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     messageCode = 'timeout';
                 } else if (isOffline) {
                     messageCode = 'offline';
+                } else if (hasStatusCode && error.userMessage) {
+                    setContactFeedback(feedbackElement, error.userMessage, 'error');
+                    return;
                 } else if (hasStatusCode) {
                     messageCode = 'server';
                 }
