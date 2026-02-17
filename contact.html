@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com data:; media-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
     <meta name="theme-color" content="#9900cc">
     <!-- Favicon -->
     <link rel="icon" href="images/portfolio/live-music/disc.png" type="image/png">
@@ -71,18 +72,23 @@
         <section id="contact">
             <h2>CONTACT</h2>
             <!-- Replace the existing form with the new Netlify form -->
-            <form name="contact" method="POST" data-netlify="true">
+            <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+              <input type="hidden" name="form-name" value="contact">
+              <p hidden>
+                <label for="bot-field">Do not fill this out:</label>
+                <input id="bot-field" name="bot-field" type="text" tabindex="-1" autocomplete="off">
+              </p>
               <p>
                 <label for="name">Your Name:</label>
-                <input type="text" id="name" name="name" placeholder="Enter your name" required />
+                <input type="text" id="name" name="name" placeholder="Enter your name" minlength="2" maxlength="100" required />
               </p>
               <p>
                 <label for="email">Your Email:</label>
-                <input type="email" id="email" name="email" placeholder="your.email@example.com" required />
+                <input type="email" id="email" name="email" placeholder="your.email@example.com" maxlength="254" required />
               </p>
               <p>
                 <label for="message">Message:</label>
-                <textarea id="message" name="message" placeholder="Write your message here..." required></textarea>
+                <textarea id="message" name="message" placeholder="Write your message here..." minlength="10" maxlength="3000" required></textarea>
               </p>
               <p>
                 <button type="submit">Send Message</button>
@@ -95,7 +101,7 @@
         <!-- Footer content if needed -->
         <div class="social-links">
             <!-- Add actual links -->
-            <a href="https://www.instagram.com/mariopreciado.art" target="_blank" aria-label="Instagram">
+            <a href="https://www.instagram.com/mariopreciado.art" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
                 <svg class="icon icon-instagram" width="45" height="45" aria-hidden="true">
                     <use href="images/icons.svg#icon-instagram"></use>
                 </svg>
@@ -106,11 +112,11 @@
                 </svg>
             </a>
         </div>
-        <p class="site-credit">Website designed by <a href="https://michael-preciado.com" target="_blank">MP</a></p>
+        <p class="site-credit">Website designed by <a href="https://michael-preciado.com" target="_blank" rel="noopener noreferrer">MP</a></p>
         <button id="back-to-top" title="Go to top">↑</button>
     </footer>
 
     <script src="js/script.min.js" defer></script>
-    <script src="js/sw-register.js"></script>
+    <script src="js/sw-register.js" defer></script>
 </body>
 </html> 

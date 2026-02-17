@@ -11,6 +11,11 @@ images/portfolio/Visuals/12.mp4
 
 # Node dependencies
 node_modules/
+npm-debug.log*
 
 # macOS artifacts
 .DS_Store
+
+# Environment files
+.env
+.env.local

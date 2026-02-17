@@ -8,13 +8,19 @@
     "minify:js": "terser js/script.js -o js/script.min.js --compress --mangle --source-map \"content=inline\"",
     "minify": "npm run minify:css && npm run minify:js",
     "build": "npm run images && npm run minify",
+    "lint": "node --check js/script.js && node --check js/sw-register.js && node --check sw.js && node --check scripts/optimize-images.js",
+    "test": "npm run lint",
+    "ci": "npm run lint && npm run build",
     "dev": "npm run build && python3 -m http.server 8000",
-    "serve": "python3 -m http.server 8000"
+    "serve": "python3 -m http.server 8000",
+    "start": "python3 -m http.server 8000"
+  },
+  "engines": {
+    "node": ">=20.11.0"
   },
   "devDependencies": {
     "sharp": "^0.33.0",
     "glob": "^10.3.0",
-    "crypto": "^1.0.1",
     "terser": "^5.31.0",
     "csso-cli": "^4.0.2",
     "html-minifier-terser": "^7.2.0"

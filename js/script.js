@@ -1,3 +1,4 @@
+// @ts-check
 // Fix for 100vh in iOS mobile Safari
 /**
  * Mario Preciado Photography - Main JavaScript
@@ -5,10 +6,22 @@
  * Version: 1.0.0
  */
 
+const APP_DEBUG = window.location.search.includes('debug=true');
+const logger = {
+    info(message, meta) {
+        if (!APP_DEBUG) return;
+        console.info('[site]', message, meta || '');
+    },
+    warn(message, meta) {
+        console.warn('[site]', message, meta || '');
+    },
+    error(message, meta) {
+        console.error('[site]', message, meta || '');
+    }
+};
+
 // Check for reduced motion preference
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-// Detect small (mobile) screens – iPhone 12 Pro is 390 px wide in portrait, 844 px tall
-const isSmallScreen = window.matchMedia('(max-width: 767px)').matches;
 
 // Optimized image manifest support
 const OPTIMIZED_MANIFEST_URL = 'images/optimized/manifest.json';
@@ -30,7 +43,7 @@ function loadOptimizedManifest() {
                 return data;
             })
             .catch(error => {
-                console.warn('Unable to load optimized manifest, falling back to original assets.', error);
+                logger.warn('Unable to load optimized manifest, falling back to original assets.', error);
                 optimizedManifestData = null;
                 return null;
             });
@@ -172,7 +185,7 @@ class LazyImageLoader {
             // Process existing images
             this.processImages();
         } catch (error) {
-            console.warn('Failed to load image manifest, falling back to basic lazy loading:', error);
+            logger.warn('Failed to load image manifest, falling back to basic lazy loading:', error);
             this.setupBasicLazyLoading();
         }
     }
@@ -272,7 +285,7 @@ class LazyImageLoader {
 
         imageLoader.onerror = () => {
             // Fallback on error
-            console.warn('Failed to load image:', img.src);
+            logger.warn('Failed to load image', { src: img.src });
             this.revealImage(element, img);
         };
 
@@ -355,64 +368,6 @@ class LazyImageLoader {
 // Initialize and expose globally
 const lazyLoader = new LazyImageLoader();
 window.lazyImageLoader = lazyLoader;
-
-// Performance monitoring for 120fps target
-class PerformanceMonitor {
-    constructor() {
-        this.frameCount = 0;
-        this.lastTime = performance.now();
-        this.fps = 0;
-        this.init();
-    }
-
-    init() {
-        if (window.location.search.includes('debug=fps')) {
-            this.createFPSCounter();
-            this.startMonitoring();
-        }
-    }
-
-    createFPSCounter() {
-        const fpsCounter = document.createElement('div');
-        fpsCounter.id = 'fps-counter';
-        fpsCounter.style.cssText = `
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            background: rgba(0, 0, 0, 0.8);
-            color: #00ff00;
-            padding: 5px 10px;
-            font-family: monospace;
-            font-size: 12px;
-            z-index: 10000;
-            border-radius: 3px;
-        `;
-        document.body.appendChild(fpsCounter);
-    }
-
-    startMonitoring() {
-        const measure = (currentTime) => {
-            this.frameCount++;
-
-            if (currentTime - this.lastTime >= 1000) {
-                this.fps = Math.round((this.frameCount * 1000) / (currentTime - this.lastTime));
-
-                const counter = document.getElementById('fps-counter');
-                if (counter) {
-                    counter.textContent = `FPS: ${this.fps}`;
-                    counter.style.color = this.fps >= 60 ? '#00ff00' : this.fps >= 30 ? '#ffff00' : '#ff0000';
-                }
-
-                this.frameCount = 0;
-                this.lastTime = currentTime;
-            }
-
-            requestAnimationFrame(measure);
-        };
-
-        requestAnimationFrame(measure);
-    }
-}
 
 document.addEventListener('DOMContentLoaded', () => {
     // Cache DOM elements for better performance
@@ -650,6 +605,13 @@ document.addEventListener('DOMContentLoaded', () => {
             'images/portfolio/Visuals/23.mp4',
         ]
     };
+    const VALID_CATEGORIES = new Set(Object.keys(portfolioImages));
+
+    function isValidCategory(category) {
+        return typeof category === 'string'
+            && VALID_CATEGORIES.has(category)
+            && /^[a-z0-9-]+$/.test(category);
+    }
 
     // --- Modal Helpers --- //
     function ensureModalVideoElement() {
@@ -792,17 +754,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function loadPortfolioImagesByCategory(category, gridElement) {
         if (!gridElement) {
-            console.error('Target grid element not provided');
+            logger.error('Target grid element not provided');
+            return;
+        }
+        if (!isValidCategory(category)) {
+            logger.warn('Ignoring invalid category request', { category });
             return;
         }
 
         gridElement.classList.add('loading');
-        gridElement.innerHTML = '';
+        gridElement.replaceChildren();
         gridElement.dataset.category = category;
 
         const mediaPaths = portfolioImages[category] || [];
         if (mediaPaths.length === 0) {
-            gridElement.innerHTML = `<p style="text-align: center;">No media found for ${category}.</p>`;
+            const emptyState = document.createElement('p');
+            emptyState.style.textAlign = 'center';
+            emptyState.textContent = `No media found for ${category}.`;
+            gridElement.appendChild(emptyState);
             gridElement.dataset.loaded = true;
             gridElement.classList.remove('loading');
             return;
@@ -861,7 +830,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 video.appendChild(source);
 
                 video.addEventListener('error', (event) => {
-                    console.error('Video error:', event);
+                    logger.error('Video error', event);
                 });
 
                 gridItem.appendChild(video);
@@ -913,7 +882,7 @@ document.addEventListener('DOMContentLoaded', () => {
             img.src = optimizedData?.thumbnail || optimizedData?.placeholder || 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 
             img.addEventListener('error', () => {
-                console.error(`Failed to load image: ${mediaPath}`);
+                logger.error('Failed to load image', { mediaPath });
                 gridItem.remove();
             });
 
@@ -943,10 +912,14 @@ document.addEventListener('DOMContentLoaded', () => {
         buttons.forEach(button => {
             button.addEventListener('click', () => {
                 const category = button.dataset.category;
+                if (!isValidCategory(category)) {
+                    logger.warn('Ignoring click for invalid category', { category });
+                    return;
+                }
                 const targetGrid = portfolioDisplay.querySelector(`.${category}-grid`);
 
                 if (!targetGrid) {
-                    console.error(`Grid for category '${category}' not found.`);
+                    logger.error('Target grid not found for category', { category });
                     return;
                 }
 
@@ -989,17 +962,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const initialActiveButton = categoryButtonsContainer.querySelector('.category-button.active');
         if (initialActiveButton && portfolioSection) { // Also check for portfolioSection
             const initialCategory = initialActiveButton.dataset.category;
-            const initialGrid = portfolioDisplay.querySelector(`.${initialCategory}-grid`);
-            if (initialGrid) {
-                initialGrid.classList.add('active'); // Ensure initial grid is visible
-                // Apply initial theme class
-                portfolioSection.classList.add(`theme-${initialCategory}`);
-                loadPortfolioImagesByCategory(initialCategory, initialGrid);
+            if (!isValidCategory(initialCategory)) {
+                logger.warn('Skipping initial invalid category', { initialCategory });
             } else {
-                console.error("Initial portfolio grid not found for active button.");
+                const initialGrid = portfolioDisplay.querySelector(`.${initialCategory}-grid`);
+                if (initialGrid) {
+                    initialGrid.classList.add('active'); // Ensure initial grid is visible
+                    // Apply initial theme class
+                    portfolioSection.classList.add(`theme-${initialCategory}`);
+                    loadPortfolioImagesByCategory(initialCategory, initialGrid);
+                } else {
+                    logger.error('Initial portfolio grid not found.');
+                }
             }
         } else {
-            console.warn("No active category button found on initial load.");
+            logger.warn('No active category button found on initial load.');
         }
 
     } else {
@@ -1091,7 +1068,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Initialize --- //
-    console.log('Site script initializing.');
+    logger.info('Site script initializing');
     createPeaceSigns(10); // Create fewer: 10 peace signs
 
     // --- Modal Event Listeners --- //
@@ -1105,14 +1082,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const activeGrid = portfolioDisplay.querySelector('.image-grid.active');
             if (!activeGrid) {
-                console.error('Could not determine active image grid.');
+                logger.error('Could not determine active image grid.');
                 return;
             }
 
             const mediaElements = Array.from(activeGrid.querySelectorAll('img, video'));
             const clickedIndex = mediaElements.indexOf(mediaTarget);
             if (clickedIndex === -1) {
-                console.error('Clicked media not found in active category array.');
+                logger.error('Clicked media not found in active category array.');
                 return;
             }
 
@@ -1276,14 +1253,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Slideshow Logic (Homepage) --- //
     if (slideshowContainer) {
-        console.log('Initializing slideshow');
+        logger.info('Initializing slideshow');
         const images = slideshowContainer.querySelectorAll('.slideshow-image');
         let currentImageIndex = 0; // Start with the first image
         let slideInterval = 7000; // Time each image is displayed (increased to 7 seconds)
         let slideTimer; // Variable to store the interval timer
         let isTransitioning = false; // Flag to prevent transition issues
 
-        console.log('Found ' + images.length + ' slideshow images');
+        logger.info('Found slideshow images', { count: images.length });
 
         // Function to show a specific image
         function showImage(index) {
@@ -1295,7 +1272,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Add active class to the target image
             images[index].classList.add('active');
-            console.log('Showing image index:', index);
+            logger.info('Showing slideshow image', { index });
 
             // Reset transition lock after transition completes
             setTimeout(() => {
@@ -1332,21 +1309,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Initialize the slideshow
         if (images.length > 0) {
-            console.log('Initializing slideshow with ' + images.length + ' images');
+            logger.info('Initializing slideshow image set', { count: images.length });
 
             // Show the first image immediately without any delay
             showImage(currentImageIndex);
-            console.log('First image set to active: ' + images[currentImageIndex].src);
+            logger.info('Initial slideshow image ready', { src: images[currentImageIndex].src });
 
             // Only start slideshow if reduced motion is not preferred
             if (!prefersReducedMotion) {
                 slideTimer = setInterval(showNextImage, slideInterval);
             } else {
                 // For users who prefer reduced motion, show static image
-                console.log('Reduced motion preference detected - static image mode');
+                logger.info('Reduced motion enabled; slideshow auto-advance disabled');
             }
         } else {
-            console.log('No slideshow images found');
+            logger.warn('No slideshow images found');
         }
     }
 

@@ -1,12 +1,12 @@
 /**
  * Service Worker for Mario Preciado Photography
- * Provides offline support and aggressive caching for optimal performance
+ * Network-aware caching with safe defaults and graceful fallbacks.
  */
 
-const CACHE_VERSION = 'v1.0.0';
+const CACHE_VERSION = 'v1.1.0';
 const CACHE_NAME = `mario-preciado-${CACHE_VERSION}`;
+const SW_DEBUG = false;
 
-// Core assets to cache immediately
 const CORE_ASSETS = [
   '/',
   '/index.html',
@@ -15,228 +15,169 @@ const CORE_ASSETS = [
   '/contact.html',
   '/css/style.min.css',
   '/js/script.min.js',
+  '/js/sw-register.js',
+  '/images/optimized/manifest.json',
   '/images/portfolio/header.jpeg'
 ];
 
-// Cache strategies
-const CACHE_STRATEGIES = {
-  cacheFirst: ['css', 'js', 'woff2', 'woff', 'ttf', 'eot'],
-  networkFirst: ['html'],
-  cacheOnly: ['jpg', 'jpeg', 'png', 'gif', 'webp', 'avif', 'svg', 'mp4', 'webm']
+const logger = {
+  info(message, meta) {
+    if (!SW_DEBUG) return;
+    console.info('[sw]', message, meta || '');
+  },
+  warn(message, meta) {
+    console.warn('[sw]', message, meta || '');
+  }
 };
 
-/**
- * Install event - cache core assets
- */
 self.addEventListener('install', (event) => {
-  console.log('[ServiceWorker] Installing...');
-
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => {
-        console.log('[ServiceWorker] Caching core assets');
-        return cache.addAll(CORE_ASSETS);
-      })
-      .then(() => {
-        console.log('[ServiceWorker] Core assets cached successfully');
-        return self.skipWaiting(); // Activate immediately
-      })
-      .catch((error) => {
-        console.error('[ServiceWorker] Failed to cache core assets:', error);
-      })
-  );
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE_NAME);
+    await cache.addAll(CORE_ASSETS);
+    await self.skipWaiting();
+    logger.info('Install complete');
+  })());
 });
 
-/**
- * Activate event - clean up old caches
- */
 self.addEventListener('activate', (event) => {
-  console.log('[ServiceWorker] Activating...');
-
-  event.waitUntil(
-    caches.keys()
-      .then((cacheNames) => {
-        return Promise.all(
-          cacheNames
-            .filter((cacheName) => {
-              return cacheName.startsWith('mario-preciado-') && cacheName !== CACHE_NAME;
-            })
-            .map((cacheName) => {
-              console.log('[ServiceWorker] Deleting old cache:', cacheName);
-              return caches.delete(cacheName);
-            })
-        );
-      })
-      .then(() => {
-        console.log('[ServiceWorker] Claiming clients');
-        return self.clients.claim(); // Take control immediately
-      })
-  );
+  event.waitUntil((async () => {
+    const cacheNames = await caches.keys();
+    await Promise.all(
+      cacheNames
+        .filter((name) => name.startsWith('mario-preciado-') && name !== CACHE_NAME)
+        .map((name) => caches.delete(name))
+    );
+    await self.clients.claim();
+    logger.info('Activate complete');
+  })());
 });
 
-/**
- * Fetch event - implement caching strategies
- */
 self.addEventListener('fetch', (event) => {
   const { request } = event;
-  const url = new URL(request.url);
 
-  // Skip non-GET requests
   if (request.method !== 'GET') {
     return;
   }
 
-  // Skip cross-origin requests (CDNs, external resources)
-  if (url.origin !== location.origin) {
+  const url = new URL(request.url);
+  if (url.origin !== self.location.origin) {
     return;
   }
 
-  event.respondWith(handleFetch(request));
+  event.respondWith(routeRequest(request));
 });
 
-/**
- * Handle fetch with appropriate caching strategy
- */
-async function handleFetch(request) {
-  const url = new URL(request.url);
-  const extension = url.pathname.split('.').pop().toLowerCase();
-
-  // Determine strategy based on file type
-  if (CACHE_STRATEGIES.cacheFirst.includes(extension)) {
-    return cacheFirst(request);
-  } else if (CACHE_STRATEGIES.networkFirst.includes(extension)) {
-    return networkFirst(request);
-  } else if (CACHE_STRATEGIES.cacheOnly.includes(extension)) {
-    return cacheOnly(request);
-  }
-
-  // Default to network first for unknown types
-  return networkFirst(request);
+function isCacheableResponse(response) {
+  return Boolean(response) && (response.ok || response.type === 'opaque');
 }
 
-/**
- * Cache-first strategy - check cache, fallback to network
- * Best for: Static assets (CSS, JS, fonts)
- */
+async function routeRequest(request) {
+  if (request.mode === 'navigate') {
+    return networkFirst(request, '/index.html');
+  }
+
+  switch (request.destination) {
+    case 'style':
+    case 'script':
+    case 'font':
+      return staleWhileRevalidate(request);
+    case 'image':
+    case 'video':
+    case 'audio':
+      return cacheFirst(request);
+    default:
+      return networkFirst(request);
+  }
+}
+
 async function cacheFirst(request) {
   const cache = await caches.open(CACHE_NAME);
   const cached = await cache.match(request);
-
   if (cached) {
     return cached;
   }
 
   try {
     const response = await fetch(request);
-
-    // Cache successful responses
-    if (response && response.status === 200) {
-      cache.put(request, response.clone());
+    if (isCacheableResponse(response)) {
+      await cache.put(request, response.clone());
     }
-
     return response;
   } catch (error) {
-    console.error('[ServiceWorker] Fetch failed:', error);
+    logger.warn('cacheFirst fetch failed', { url: request.url, error: String(error) });
     throw error;
   }
 }
 
-/**
- * Network-first strategy - try network, fallback to cache
- * Best for: HTML pages that may update
- */
-async function networkFirst(request) {
+async function networkFirst(request, fallbackPath) {
   const cache = await caches.open(CACHE_NAME);
 
   try {
     const response = await fetch(request);
-
-    // Cache successful responses
-    if (response && response.status === 200) {
-      cache.put(request, response.clone());
+    if (isCacheableResponse(response)) {
+      await cache.put(request, response.clone());
     }
-
     return response;
   } catch (error) {
-    console.log('[ServiceWorker] Network failed, using cache:', request.url);
     const cached = await cache.match(request);
-
     if (cached) {
       return cached;
     }
 
+    if (fallbackPath) {
+      const fallback = await cache.match(fallbackPath);
+      if (fallback) {
+        return fallback;
+      }
+    }
+
+    logger.warn('networkFirst fallback failed', { url: request.url, error: String(error) });
     throw error;
   }
 }
 
-/**
- * Cache-only strategy - serve from cache, fetch in background
- * Best for: Images and media (large files that rarely change)
- */
-async function cacheOnly(request) {
+async function staleWhileRevalidate(request) {
   const cache = await caches.open(CACHE_NAME);
   const cached = await cache.match(request);
 
-  if (cached) {
-    // Update cache in background
-    fetch(request)
-      .then((response) => {
-        if (response && response.status === 200) {
-          cache.put(request, response);
-        }
-      })
-      .catch(() => {
-        // Silently fail background updates
-      });
+  const fetchPromise = fetch(request)
+    .then(async (response) => {
+      if (isCacheableResponse(response)) {
+        await cache.put(request, response.clone());
+      }
+      return response;
+    })
+    .catch((error) => {
+      logger.warn('staleWhileRevalidate fetch failed', { url: request.url, error: String(error) });
+      return null;
+    });
 
+  if (cached) {
     return cached;
   }
 
-  // First time seeing this resource - fetch and cache
-  try {
-    const response = await fetch(request);
-
-    if (response && response.status === 200) {
-      cache.put(request, response.clone());
-    }
-
-    return response;
-  } catch (error) {
-    console.error('[ServiceWorker] Failed to fetch and cache:', error);
-    throw error;
+  const fresh = await fetchPromise;
+  if (fresh) {
+    return fresh;
   }
+
+  throw new Error(`Failed to fetch resource: ${request.url}`);
 }
 
-/**
- * Background sync for offline submissions
- */
-self.addEventListener('sync', (event) => {
-  if (event.tag === 'sync-forms') {
-    event.waitUntil(syncForms());
-  }
-});
-
-/**
- * Sync form submissions when back online
- */
-async function syncForms() {
-  // Placeholder for future form sync functionality
-  console.log('[ServiceWorker] Syncing forms...');
-}
-
-/**
- * Handle messages from clients
- */
 self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
+  if (!event.data || typeof event.data !== 'object') {
+    return;
+  }
+
+  if (event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
   }
 
-  if (event.data && event.data.type === 'CACHE_URLS') {
-    event.waitUntil(
-      caches.open(CACHE_NAME).then((cache) => {
-        return cache.addAll(event.data.urls);
-      })
-    );
+  if (event.data.type === 'CACHE_URLS' && Array.isArray(event.data.urls)) {
+    event.waitUntil((async () => {
+      const cache = await caches.open(CACHE_NAME);
+      const safeUrls = event.data.urls.filter((value) => typeof value === 'string' && value.startsWith('/'));
+      await cache.addAll(safeUrls);
+    })());
   }
 });

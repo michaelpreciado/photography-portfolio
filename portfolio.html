@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com data:; media-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
     <meta name="theme-color" content="#9900cc">
     <!-- Favicon -->
     <link rel="icon" href="images/portfolio/live-music/disc.png" type="image/png">
@@ -155,7 +156,7 @@
 
     <footer>
         <!-- Footer content if needed -->
-        <p class="site-credit">Website designed by <a href="https://michael-preciado.com" target="_blank">MP</a></p>
+        <p class="site-credit">Website designed by <a href="https://michael-preciado.com" target="_blank" rel="noopener noreferrer">MP</a></p>
         <button id="back-to-top" title="Go to top">↑</button>
     </footer>
 
@@ -170,9 +171,6 @@
         <div id="caption"></div> <!-- Optional: for alt text or descriptions -->
     </div>
 
-    <!-- Masonry.js for Pinterest-style grid layout -->
-    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
-    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
     <script src="js/script.min.js" defer></script>
     <script src="js/sw-register.js" defer></script>
 </body>
