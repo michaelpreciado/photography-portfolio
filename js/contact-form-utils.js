@@ -14,6 +14,7 @@
         success: 'Thanks. Your message was sent successfully.',
         network: 'We could not send your message. Check your connection and try again.',
         timeout: 'The request took too long. Please try again.',
+        offline: 'You appear to be offline. Reconnect and try again.',
         server: 'We could not save your message right now. Please try again in a moment.',
         duplicate: 'Your message is already being sent. Please wait.'
     });
@@ -23,6 +24,7 @@
         name_too_short: `Your name must be at least ${LIMITS.nameMin} characters.`,
         name_too_long: `Your name must be ${LIMITS.nameMax} characters or fewer.`,
         email_required: 'Please enter your email address.',
+        email_too_long: `Your email must be ${LIMITS.emailMax} characters or fewer.`,
         email_invalid: 'Please enter a valid email address.',
         message_required: 'Please enter a message.',
         message_too_short: `Your message must be at least ${LIMITS.messageMin} characters.`,
@@ -38,13 +40,23 @@
         return normalized.slice(0, maxLength);
     }
 
-    function sanitizeContactPayload(payload) {
+    function normalizePayloadValues(payload) {
         const rawPayload = payload || {};
         return {
-            name: normalizeText(rawPayload.name, LIMITS.nameMax),
-            email: normalizeText(rawPayload.email, LIMITS.emailMax).toLowerCase(),
-            message: normalizeText(rawPayload.message, LIMITS.messageMax),
-            botField: normalizeText(rawPayload.botField, LIMITS.messageMax)
+            name: asString(rawPayload.name).trim(),
+            email: asString(rawPayload.email).trim().toLowerCase(),
+            message: asString(rawPayload.message).trim(),
+            botField: asString(rawPayload.botField).trim()
+        };
+    }
+
+    function sanitizeContactPayload(payload) {
+        const normalized = normalizePayloadValues(payload);
+        return {
+            name: normalizeText(normalized.name, LIMITS.nameMax),
+            email: normalizeText(normalized.email, LIMITS.emailMax),
+            message: normalizeText(normalized.message, LIMITS.messageMax),
+            botField: normalizeText(normalized.botField, LIMITS.messageMax)
         };
     }
 
@@ -54,31 +66,73 @@
             return false;
         }
 
-        // Practical validation that rejects obvious malformed addresses.
-        const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-        return pattern.test(normalized);
+        const parts = normalized.split('@');
+        if (parts.length !== 2) {
+            return false;
+        }
+
+        const localPart = parts[0];
+        const domainPart = parts[1];
+
+        if (!localPart || !domainPart || localPart.length > 64 || domainPart.length > 253) {
+            return false;
+        }
+
+        if (localPart.startsWith('.') || localPart.endsWith('.') || localPart.includes('..')) {
+            return false;
+        }
+
+        if (!/^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+$/i.test(localPart)) {
+            return false;
+        }
+
+        if (domainPart.includes('..')) {
+            return false;
+        }
+
+        const labels = domainPart.split('.');
+        if (labels.length < 2) {
+            return false;
+        }
+
+        const hasValidLabels = labels.every((label) => {
+            return label.length > 0
+                && !label.startsWith('-')
+                && !label.endsWith('-')
+                && /^[a-z0-9-]+$/i.test(label);
+        });
+
+        const topLevelDomain = labels[labels.length - 1];
+        return hasValidLabels && topLevelDomain.length >= 2;
     }
 
     function validateContactPayload(payload) {
-        const sanitized = sanitizeContactPayload(payload);
+        const normalized = normalizePayloadValues(payload);
+        const sanitized = sanitizeContactPayload(normalized);
         const errors = {};
-        const isBot = sanitized.botField.length > 0;
+        const isBot = normalized.botField.length > 0;
 
-        if (!sanitized.name) {
+        if (!normalized.name) {
             errors.name = 'name_required';
-        } else if (sanitized.name.length < LIMITS.nameMin) {
+        } else if (normalized.name.length > LIMITS.nameMax) {
+            errors.name = 'name_too_long';
+        } else if (normalized.name.length < LIMITS.nameMin) {
             errors.name = 'name_too_short';
         }
 
-        if (!sanitized.email) {
+        if (!normalized.email) {
             errors.email = 'email_required';
-        } else if (!isValidEmail(sanitized.email)) {
+        } else if (normalized.email.length > LIMITS.emailMax) {
+            errors.email = 'email_too_long';
+        } else if (!isValidEmail(normalized.email)) {
             errors.email = 'email_invalid';
         }
 
-        if (!sanitized.message) {
+        if (!normalized.message) {
             errors.message = 'message_required';
-        } else if (sanitized.message.length < LIMITS.messageMin) {
+        } else if (normalized.message.length > LIMITS.messageMax) {
+            errors.message = 'message_too_long';
+        } else if (normalized.message.length < LIMITS.messageMin) {
             errors.message = 'message_too_short';
         }
 

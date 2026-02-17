@@ -1039,11 +1039,17 @@ document.addEventListener('DOMContentLoaded', () => {
             feedback.setAttribute('aria-atomic', 'true');
             form.appendChild(feedback);
         }
+        if (!feedback.id) {
+            feedback.id = form.id ? `${form.id}-feedback` : 'contact-form-feedback';
+        }
         return feedback;
     }
 
     function setContactFeedback(feedbackElement, message, state) {
         if (!feedbackElement) return;
+        const isErrorState = state === 'error';
+        feedbackElement.setAttribute('role', isErrorState ? 'alert' : 'status');
+        feedbackElement.setAttribute('aria-live', isErrorState ? 'assertive' : 'polite');
         feedbackElement.textContent = message;
         feedbackElement.dataset.state = state;
     }
@@ -1068,6 +1074,22 @@ document.addEventListener('DOMContentLoaded', () => {
         return field;
     }
 
+    function setFieldInvalidState(field, isInvalid) {
+        if (!field || typeof field.setAttribute !== 'function') return;
+        field.setAttribute('aria-invalid', isInvalid ? 'true' : 'false');
+    }
+
+    function attachFieldFeedbackReference(field, feedbackElement) {
+        if (!field || !feedbackElement || !feedbackElement.id || typeof field.getAttribute !== 'function') return;
+        const currentIds = (field.getAttribute('aria-describedby') || '')
+            .split(/\s+/)
+            .filter(Boolean);
+        if (!currentIds.includes(feedbackElement.id)) {
+            currentIds.push(feedbackElement.id);
+            field.setAttribute('aria-describedby', currentIds.join(' '));
+        }
+    }
+
     function setupContactFormSubmission() {
         const contactForm = document.querySelector('form[name="contact"]');
         if (!contactForm) return;
@@ -1080,12 +1102,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const submitButton = contactForm.querySelector('button[type="submit"]');
         const feedbackElement = ensureContactFeedbackElement(contactForm);
+        const nameField = findFieldElement(contactForm, 'name');
+        const emailField = findFieldElement(contactForm, 'email');
+        const messageField = findFieldElement(contactForm, 'message');
+        const fields = [nameField, emailField, messageField];
+        fields.forEach((field) => attachFieldFeedbackReference(field, feedbackElement));
         let submissionInFlight = false;
 
         contactForm.addEventListener('input', (event) => {
             const input = event.target;
             if (input && typeof input.setCustomValidity === 'function') {
                 input.setCustomValidity('');
+            }
+            if (input) {
+                setFieldInvalidState(input, false);
+            }
+            if (feedbackElement.dataset.state === 'error') {
+                setContactFeedback(feedbackElement, '', 'info');
             }
         });
 
@@ -1109,13 +1142,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 botField: formData.get('bot-field')
             });
 
-            const nameField = findFieldElement(contactForm, 'name');
-            const emailField = findFieldElement(contactForm, 'email');
-            const messageField = findFieldElement(contactForm, 'message');
-            [nameField, emailField, messageField].forEach((field) => {
+            fields.forEach((field) => {
                 if (field && typeof field.setCustomValidity === 'function') {
                     field.setCustomValidity('');
                 }
+                setFieldInvalidState(field, false);
             });
 
             if (nameField && 'value' in nameField) {
@@ -1152,6 +1183,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (fieldElement && typeof fieldElement.setCustomValidity === 'function') {
                         fieldElement.setCustomValidity(message);
                     }
+                    setFieldInvalidState(fieldElement, true);
                 });
 
                 setContactFeedback(feedbackElement, firstMessage, 'error');
@@ -1186,18 +1218,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 if (!response.ok) {
-                    throw new Error(`Form submission failed with status ${response.status}`);
+                    const submitError = new Error(`Form submission failed with status ${response.status}`);
+                    submitError.status = response.status;
+                    throw submitError;
                 }
 
                 contactForm.reset();
+                fields.forEach((field) => setFieldInvalidState(field, false));
                 setContactFeedback(feedbackElement, contactUtils.getStatusMessage('success'), 'success');
             } catch (error) {
                 logger.error('Contact form submission failed', error);
                 const isAbortError = error && typeof error === 'object' && error.name === 'AbortError';
-                const messageCode = isAbortError ? 'timeout' : 'network';
+                const hasStatusCode = error && typeof error === 'object' && Number.isInteger(error.status);
+                const isOffline = typeof navigator !== 'undefined' && navigator.onLine === false;
+                let messageCode = 'network';
+
+                if (isAbortError) {
+                    messageCode = 'timeout';
+                } else if (isOffline) {
+                    messageCode = 'offline';
+                } else if (hasStatusCode) {
+                    messageCode = 'server';
+                }
+
                 setContactFeedback(feedbackElement, contactUtils.getStatusMessage(messageCode), 'error');
             } finally {
-                if (timeoutId) {
+                if (timeoutId !== null) {
                     window.clearTimeout(timeoutId);
                 }
                 submissionInFlight = false;

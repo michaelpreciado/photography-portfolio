@@ -57,6 +57,9 @@ describe('contact-form-utils', () => {
         expect(isValidEmail('not-an-email')).toBe(false);
         expect(isValidEmail('foo@bar')).toBe(false);
         expect(isValidEmail('foo bar@example.com')).toBe(false);
+        expect(isValidEmail('foo..bar@example.com')).toBe(false);
+        expect(isValidEmail('foo@-example.com')).toBe(false);
+        expect(isValidEmail('foo@example..com')).toBe(false);
     });
 
     test('flags bot honeypot without crashing', () => {
@@ -87,6 +90,42 @@ describe('contact-form-utils', () => {
         expect(payload.message.length).toBe(LIMITS.messageMax);
     });
 
+    test('rejects over-limit values instead of silently accepting them', () => {
+        const overlongName = 'a'.repeat(LIMITS.nameMax + 1);
+        const overlongEmail = `${'a'.repeat(LIMITS.emailMax)}@example.com`;
+        const overlongMessage = 'b'.repeat(LIMITS.messageMax + 1);
+
+        const result = validateContactPayload({
+            name: overlongName,
+            email: overlongEmail,
+            message: overlongMessage,
+            botField: ''
+        });
+
+        expect(result.isValid).toBe(false);
+        expect(result.errors).toEqual({
+            name: 'name_too_long',
+            email: 'email_too_long',
+            message: 'message_too_long'
+        });
+    });
+
+    test('handles nullish and non-string payload values safely', () => {
+        const result = validateContactPayload({
+            name: null,
+            email: 42,
+            message: undefined,
+            botField: null
+        });
+
+        expect(result.isValid).toBe(false);
+        expect(result.errors).toEqual({
+            name: 'name_required',
+            email: 'email_required',
+            message: 'message_required'
+        });
+    });
+
     test('encodes payload for Netlify-compatible form submission', () => {
         const encoded = encodeContactPayload({
             name: 'Jane Doe',
@@ -105,6 +144,8 @@ describe('contact-form-utils', () => {
     test('returns user-friendly status and validation messages', () => {
         expect(getStatusMessage('sending')).toBe('Sending your message...');
         expect(getStatusMessage('missing-key')).toContain('could not save');
+        expect(getStatusMessage('offline')).toContain('offline');
         expect(getValidationMessage('email_invalid')).toContain('valid email');
+        expect(getValidationMessage('email_too_long')).toContain('254');
     });
 });

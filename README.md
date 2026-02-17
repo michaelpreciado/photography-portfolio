@@ -69,6 +69,32 @@ Then open:
 
 - [http://localhost:8080](http://localhost:8080)
 
+## Vercel Deployment
+
+This repository includes `vercel.json` with:
+
+- `npm ci` install command
+- `npm run build` build command
+- clean route rewrites for `/about`, `/portfolio`, and `/contact`
+- cache headers for HTML, assets, and `sw.js`
+
+Deploy steps:
+
+1. Run local checks:
+   ```bash
+   npm run ci
+   ```
+2. Deploy preview:
+   ```bash
+   npx vercel
+   ```
+3. Deploy production (when ready):
+   ```bash
+   npx vercel --prod
+   ```
+
+Important: the contact page currently uses a Netlify form attribute (`data-netlify="true"`). On Vercel, submissions will need a replacement backend (for example, a Vercel Serverless Function) if you want messages delivered.
+
 ## CI/CD
 
 GitHub Actions workflow (`.github/workflows/ci.yml`) runs on pushes and PRs:
@@ -87,6 +113,6 @@ GitHub Actions workflow (`.github/workflows/ci.yml`) runs on pushes and PRs:
 ## Deployment Checklist
 
 1. Run `npm run ci` locally.
-2. Deploy container image or static assets to your host/CDN.
+2. Deploy with Docker or Vercel (`npx vercel`).
 3. Ensure CDN/edge security headers are enabled in production.
 4. Validate service worker updates by loading the site, then redeploying a new build.

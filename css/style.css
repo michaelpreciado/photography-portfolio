@@ -1887,6 +1887,12 @@ section {
     /* Include padding/border in width calculation */
 }
 
+#contact input[aria-invalid="true"],
+#contact textarea[aria-invalid="true"] {
+    border-color: #ff7a7a;
+    box-shadow: 0 0 0 1px rgba(255, 122, 122, 0.55);
+}
+
 #contact textarea {
     min-height: 200px;
     /* Increased height */
@@ -1931,6 +1937,10 @@ section {
 
 #contact .form-feedback[data-state="success"] {
     color: #00ff8c;
+}
+
+#contact .form-feedback[data-state="info"] {
+    color: #9ac9ff;
 }
 
 #contact .form-feedback[data-state="error"] {
