@@ -175,9 +175,8 @@ class LazyImageLoader {
 
     async init() {
         try {
-            // Load image manifest for LQIP data
-            const response = await fetch('images/optimized/manifest.json');
-            this.imageManifest = await response.json();
+            // Reuse shared manifest loader to avoid duplicate network requests
+            this.imageManifest = await loadOptimizedManifest();
 
             // Set up IntersectionObserver for lazy loading
             this.setupIntersectionObserver();
@@ -821,6 +820,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 video.preload = 'none';
                 video.setAttribute('disablePictureInPicture', '');
                 video.setAttribute('controlsList', 'nodownload');
+                video.setAttribute('aria-label', `${category.replace('-', ' ')} video`);
                 video.tabIndex = 0;
                 video.style.backgroundColor = '#000';
 
@@ -1597,7 +1597,7 @@ function initVideoObserver() {
     videoObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             const vid = entry.target;
-            if (entry.intersectionRatio > 0.1 && vid.dataset.loaded !== 'true') {
+            if (entry.intersectionRatio > 0.15 && vid.dataset.loaded !== 'true') {
                 const sourceEl = vid.querySelector('source');
                 if (sourceEl && sourceEl.dataset.src) {
                     sourceEl.src = sourceEl.dataset.src;
@@ -1609,6 +1609,7 @@ function initVideoObserver() {
                 }
                 vid.load();
                 vid.dataset.loaded = 'true';
+                vid.preload = 'metadata';
             }
 
             if (entry.intersectionRatio > 0.6) {
@@ -1622,6 +1623,16 @@ function initVideoObserver() {
             }
         });
     }, {
-        threshold: [0, 0.1, 0.6, 1]
+        rootMargin: '150px 0px',
+        threshold: [0, 0.15, 0.6, 1]
     });
 }
+
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState !== 'hidden') return;
+    document.querySelectorAll('.visuals-grid video').forEach((video) => {
+        if (!video.paused) {
+            video.pause();
+        }
+    });
+});
