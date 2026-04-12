@@ -50,7 +50,11 @@
             
             <a href="index.html" class="header-logo-link">
                 <div class="header-logo-title">
-                    <img src="images/portfolio/header.jpeg" alt="" class="header-decoration-image" loading="eager">
+                    <picture>
+                        <source srcset="images/optimized/header-320-d83b2721.avif 320w, images/optimized/header-640-d83b2721.avif 640w, images/optimized/header-960-d83b2721.avif 960w" sizes="(max-width: 640px) 50px, 80px" type="image/avif">
+                        <source srcset="images/optimized/header-320-d83b2721.webp 320w, images/optimized/header-640-d83b2721.webp 640w, images/optimized/header-960-d83b2721.webp 960w" sizes="(max-width: 640px) 50px, 80px" type="image/webp">
+                        <img src="images/optimized/header-640-d83b2721.jpeg" srcset="images/optimized/header-320-d83b2721.jpeg 320w, images/optimized/header-640-d83b2721.jpeg 640w, images/optimized/header-960-d83b2721.jpeg 960w" sizes="(max-width: 640px) 50px, 80px" alt="Mario Preciado Photography Logo" class="header-decoration-image" loading="eager" decoding="async" fetchpriority="high">
+                    </picture>
                     <h1 class="header-title glow-white">MARIO PRECIADO</h1>
                 </div>
             </a>

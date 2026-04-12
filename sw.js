@@ -3,7 +3,7 @@
  * Network-aware caching with safe defaults and graceful fallbacks.
  */
 
-const CACHE_VERSION = 'v1.1.1';
+const CACHE_VERSION = 'v1.1.2';
 const CACHE_NAME = `mario-preciado-${CACHE_VERSION}`;
 const SW_DEBUG = false;
 
@@ -17,7 +17,7 @@ const CORE_ASSETS = [
   '/js/script.min.js',
   '/js/sw-register.js',
   '/images/optimized/manifest.json',
-  '/images/portfolio/header.jpeg'
+  '/images/optimized/header-640-d83b2721.jpeg'
 ];
 
 const logger = {
@@ -89,9 +89,10 @@ async function routeRequest(request) {
     case 'font':
       return staleWhileRevalidate(request);
     case 'image':
+      return cacheFirst(request);
     case 'video':
     case 'audio':
-      return cacheFirst(request);
+      return networkFirst(request);
     default:
       return networkFirst(request);
   }
