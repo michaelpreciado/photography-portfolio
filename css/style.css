@@ -314,16 +314,6 @@ header.header-scrolled {
     justify-content: center;
 }
 
-.header-logo-title {
-    display: flex;
-    align-items: center;
-    /* Vertically center the image and text */
-    flex-direction: column;
-    /* Stack image and title vertically for all sizes */
-    /* Added transition for opacity */
-    transition: opacity 0.3s ease-in-out;
-}
-
 .header-logo-title.fade-out {
     opacity: 0;
     /* Optional: to remove from layout and prevent interaction after fade */
@@ -403,29 +393,21 @@ header nav ul li a.active {
     /* Slight glow for active page */
 }
 
-/* New wrapper for logo and title */
+/* Wrapper for logo and title — centered absolutely in header */
 .header-logo-title {
     display: flex;
     flex-direction: column;
-    /* Stack image and title vertically for all sizes */
     align-items: center;
-    /* Center items vertically */
     justify-content: center;
     z-index: 5;
-    /* Lower z-index so it doesn't capture clicks meant for category buttons */
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    /* Use absolute positioning to center in the header per user preference */
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
     top: 35px;
-    /* push below nav row */
-    /* Add subtle hover effect optimization */
+    transition: opacity 0.3s ease-in-out, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
-    /* Ensure clickable area is properly contained */
     pointer-events: none;
-    /* Make the container non-interactive */
 }
 
 .header-logo-link:hover .header-logo-title {
@@ -1036,43 +1018,6 @@ header nav ul li a.active {
         margin-bottom: 0.25rem;
     }
 
-    /* X pattern arrangement */
-    .portfolio-categories button:nth-child(1) {
-        /* Live Music */
-        grid-column: 1;
-        grid-row: 1;
-    }
-
-    .portfolio-categories button:nth-child(2) {
-        /* Videography */
-        grid-column: 2;
-        grid-row: 1;
-    }
-
-    .portfolio-categories button:nth-child(3) {
-        /* Art */
-        grid-column: 1;
-        grid-row: 2;
-    }
-
-    .portfolio-categories button:nth-child(4) {
-        /* Typography */
-        grid-column: 2;
-        grid-row: 2;
-    }
-
-    .portfolio-categories button:nth-child(5) {
-        /* Glitch Art */
-        grid-column: 1;
-        grid-row: 3;
-    }
-
-    .portfolio-categories button:nth-child(6) {
-        /* Liquid Lights */
-        grid-column: 2;
-        grid-row: 3;
-    }
-
     .category-button {
         padding: 0.2rem 0.4rem;
         font-size: 0.7rem;
@@ -1460,35 +1405,6 @@ section {
     color: #00ffff;
 }
 
-/* Art - Green */
-.category-button[data-category="art"] {
-    border-color: #00ff8c;
-}
-
-.category-button[data-category="art"].active,
-.category-button[data-category="art"]:hover {
-    box-shadow: 0 0 15px #00ff8c, 0 0 30px rgba(0, 255, 140, 0.6);
-    border-color: #00ff8c;
-    text-shadow: 0 0 5px #00ff8c;
-    color: #00ff8c;
-}
-
-/* Typography - Yellow */
-.category-button[data-category="typography"] {
-    border-color: #ffcc00;
-}
-
-.category-button[data-category="typography"].active,
-.category-button[data-category="typography"]:hover {
-    box-shadow: 0 0 15px #ffcc00, 0 0 30px rgba(255, 204, 0, 0.6);
-    border-color: #ffcc00;
-    text-shadow: 0 0 5px #ffcc00;
-    color: #ffcc00;
-}
-
-
-
-/* Other category styles can be added here as needed */
 
 .portfolio-section h3 {
     margin-top: 2rem;
@@ -1679,24 +1595,6 @@ section {
 }
 
 
-
-/* Glitch Art - Red/Purple */
-.glitch-art-grid .grid-item img {
-    box-shadow: 0 0 8px rgba(255, 0, 102, 0.3);
-}
-
-.glitch-art-grid .grid-item:hover img {
-    box-shadow: 0 0 15px #ff0066, 0 0 30px rgba(255, 0, 102, 0.4);
-}
-
-/* Liquid Lights - Cyan */
-.liquid-lights-grid .grid-item img {
-    box-shadow: 0 0 8px rgba(0, 255, 255, 0.3);
-}
-
-.liquid-lights-grid .grid-item:hover img {
-    box-shadow: 0 0 15px #00ffff, 0 0 30px rgba(0, 255, 255, 0.4);
-}
 
 /* Responsive adjustments */
 @media (max-width: 1200px) {
@@ -1981,20 +1879,6 @@ footer {
     /* Add some space above the footer */
 }
 
-/* Slideshow Container */
-.slideshow-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 /* Add a subtle overlay to enhance image visibility */
 .slideshow-container::after {
     content: '';
@@ -2157,7 +2041,14 @@ footer {
 }
 
 /* The Close Button */
-.modal-close {
+.modal-close,
+.close-modal {
+    background: none;
+    border: 0;
+    padding: 0;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
     position: absolute;
     top: 20px;
     right: 30px;
@@ -2171,7 +2062,9 @@ footer {
 }
 
 .modal-close:hover,
-.modal-close:focus {
+.modal-close:focus,
+.close-modal:hover,
+.close-modal:focus {
     color: #fff;
     text-decoration: none;
     cursor: pointer;
@@ -2207,6 +2100,10 @@ footer {
 
 /* --- Modal Navigation Arrows --- */
 .modal-nav {
+    background: none;
+    border: 0;
+    appearance: none;
+    -webkit-appearance: none;
     cursor: pointer;
     position: absolute;
     top: 50%;
@@ -2303,82 +2200,19 @@ footer {
     color: #ffffff;
 }
 
-/* Videography Theme (Cyan) */
-#portfolio.theme-videography {
+/* Visuals Theme (Cyan) */
+#portfolio.theme-visuals {
     box-shadow: 0 0 40px 5px rgba(0, 255, 255, 0.4);
 }
 
-#portfolio.theme-videography h2 {
+#portfolio.theme-visuals h2 {
     color: #00ffff;
 }
 
-#portfolio.theme-videography .category-button.active {
+#portfolio.theme-visuals .category-button.active {
     background-color: #00ffff;
     border-color: #00ffff;
     color: #000000;
-    /* Black text for contrast */
-}
-
-/* Art Theme (Yellow) */
-#portfolio.theme-art {
-    box-shadow: 0 0 40px 5px rgba(255, 255, 0, 0.4);
-}
-
-#portfolio.theme-art h2 {
-    color: #ffff00;
-}
-
-#portfolio.theme-art .category-button.active {
-    background-color: #ffff00;
-    border-color: #ffff00;
-    color: #000000;
-    /* Black text for contrast */
-}
-
-/* Typography Theme (Orange) */
-#portfolio.theme-typography {
-    box-shadow: 0 0 40px 5px rgba(255, 165, 0, 0.4);
-}
-
-#portfolio.theme-typography h2 {
-    color: #ffa500;
-}
-
-#portfolio.theme-typography .category-button.active {
-    background-color: #ffa500;
-    border-color: #ffa500;
-    color: #ffffff;
-}
-
-/* Glitch Art Theme (Green) */
-#portfolio.theme-glitch-art {
-    box-shadow: 0 0 40px 5px rgba(0, 255, 0, 0.4);
-}
-
-#portfolio.theme-glitch-art h2 {
-    color: #00ff00;
-}
-
-#portfolio.theme-glitch-art .category-button.active {
-    background-color: #00ff00;
-    border-color: #00ff00;
-    color: #000000;
-    /* Black text for contrast */
-}
-
-/* Liquid Lights Theme (BlueViolet) */
-#portfolio.theme-liquid-lights {
-    box-shadow: 0 0 40px 5px rgba(138, 43, 226, 0.4);
-}
-
-#portfolio.theme-liquid-lights h2 {
-    color: #8a2be2;
-}
-
-#portfolio.theme-liquid-lights .category-button.active {
-    background-color: #8a2be2;
-    border-color: #8a2be2;
-    color: #ffffff;
 }
 
 /* --- End Theme Colors --- */
@@ -2479,7 +2313,7 @@ body.portfolio-page::after {
         radial-gradient(circle at 50% 50%, rgba(255, 204, 0, 0.06) 0%, transparent 60%);
     animation: galleryGlow 25s ease-in-out infinite;
     filter: blur(100px) saturate(120%);
-    will-change: background-position;
+    will-change: transform;
     transform: translateZ(0);
 }
 

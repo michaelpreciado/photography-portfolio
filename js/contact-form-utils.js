@@ -1,5 +1,4 @@
 // @ts-check
-/* eslint-disable no-var */
 (function createContactFormUtils(root) {
     const LIMITS = Object.freeze({
         nameMin: 2,
