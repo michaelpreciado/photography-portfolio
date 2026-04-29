@@ -131,17 +131,8 @@ async function getOptimizedImageAsset(originalPath) {
 
 // Set CSS custom property for viewport height (iOS fix)
 function setVHVariable() {
-    // First, get viewport height and multiply by 1% to get a value for 1vh unit
     const vh = window.innerHeight * 0.01;
-    // Then set the value in the --vh custom property to the root of the document
     document.documentElement.style.setProperty('--vh', `${vh}px`);
-
-    // Apply safe area insets for notched iOS devices
-    const safeAreaTop = getComputedStyle(document.documentElement).getPropertyValue('--sat') || '0px';
-    const safeAreaBottom = getComputedStyle(document.documentElement).getPropertyValue('--sab') || '0px';
-
-    document.documentElement.style.setProperty('--safe-area-top', safeAreaTop);
-    document.documentElement.style.setProperty('--safe-area-bottom', safeAreaBottom);
 }
 
 // Handle resize with improved performance using requestAnimationFrame
@@ -381,7 +372,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const body = document.body;
     const mobileNavOverlay = document.getElementById('mobile-nav');
     const mobileNavLinks = document.querySelectorAll('.mobile-nav a');
-    const headerLogoTitle = document.querySelector('.header-logo-title'); // Added this line
+    const headerLogoTitle = document.querySelector('.header-logo-title');
 
     // Mobile menu toggle with improved accessibility
     if (mobileMenuToggle && mobileNavOverlay) {
@@ -396,7 +387,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (!isExpanded) {
                 // Opening menu - prevent scrolling
                 body.style.overflow = 'hidden';
-                if (headerLogoTitle) { // Added this block
+                if (headerLogoTitle) {
                     headerLogoTitle.classList.add('fade-out');
                 }
 
@@ -414,7 +405,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             } else {
                 // Closing menu - restore scrolling
                 body.style.overflow = '';
-                if (headerLogoTitle) { // Added this block
+                if (headerLogoTitle) {
                     headerLogoTitle.classList.remove('fade-out');
                 }
 
@@ -443,7 +434,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 mobileMenuToggle.setAttribute('aria-expanded', 'false');
                 mobileNavOverlay.setAttribute('aria-hidden', 'true');
                 body.style.overflow = '';
-                if (headerLogoTitle) { // Added this line
+                if (headerLogoTitle) {
                     headerLogoTitle.classList.remove('fade-out');
                 }
                 if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
@@ -544,11 +535,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
-                // Optional: Unobserve after animation to save resources
-                // observer.unobserve(entry.target);
-            } else {
-                // Optional: Remove class if you want animation to repeat on scroll up
-                // entry.target.classList.remove('visible');
+                observer.unobserve(entry.target);
             }
         });
     };

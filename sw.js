@@ -15,6 +15,7 @@ const CORE_ASSETS = [
   '/contact.html',
   '/css/style.min.css',
   '/js/script.min.js',
+  '/js/contact-form-utils.js',
   '/js/sw-register.js',
   '/data/media.json',
   '/images/optimized/manifest.json',
