@@ -17,8 +17,11 @@ Production-ready static photography portfolio with optimized assets, offline cac
 - `js/script.js`: Main client runtime
 - `js/script.min.js`: Minified runtime output
 - `sw.js`: Service worker
-- `scripts/optimize-images.js`: Image optimization and manifest generation
-- `images/optimized/manifest.json`: Generated image manifest
+- `scripts/generate-media-manifest.js`: Scans gallery folders and creates the client media manifest
+- `scripts/optimize-images.js`: Image optimization and responsive derivative generation
+- `data/media.json`: Generated gallery/video manifest used by the portfolio UI
+- `images/optimized/manifest.json`: Generated image optimization manifest
+- `images/video-posters/`: Optional generated posters for videos when real video files are available locally
 - `Dockerfile`: Multi-stage production image
 - `docker-compose.yml`: Local production-like execution
 - `.github/workflows/ci.yml`: CI checks for lint/build
@@ -52,10 +55,33 @@ Copy `.env.example` and set values for your environment:
 
 - `npm run lint`: JavaScript syntax checks
 - `npm run test`: Alias to lint checks
+- `npm run media`: Regenerate `data/media.json` from `images/portfolio/**`
 - `npm run images`: Regenerate optimized image assets
 - `npm run minify`: Minify CSS and JavaScript
-- `npm run build`: Full production build (`images + minify`)
+- `npm run build`: Full production build (`media + images + minify`)
 - `npm run ci`: Local CI-equivalent checks
+
+## Adding Photos and Videos Safely
+
+1. Put new photos into a category folder under `images/portfolio/`, for example:
+   - `images/portfolio/live-music/my-new-shot.jpg`
+   - `images/portfolio/portraits/client-name-01.jpg`
+2. Put videos into a category folder the same way:
+   - `images/portfolio/Visuals/new-loop.mp4`
+3. Run:
+   ```bash
+   npm run build
+   ```
+   This regenerates the gallery manifest, responsive image derivatives, minified CSS, and minified JS.
+4. Commit the source media, `data/media.json`, optimized image outputs, and any generated video posters.
+
+Recommendations for protecting Mario's images:
+
+- Upload display-sized images, not full-resolution originals. Keep originals in private storage/backups.
+- Strip EXIF/GPS metadata before publishing. The optimization pipeline normalizes generated display assets, but private originals should stay off the public site.
+- Prefer AVIF/WebP/JPEG derivatives for public display and use cache headers/CDN delivery.
+- Treat watermarking as a branding choice, not real security. The real protection is never publishing full-res originals.
+- Keep video masters private; publish compressed MP4/WebM showcase versions only.
 
 ## Docker Deployment
 

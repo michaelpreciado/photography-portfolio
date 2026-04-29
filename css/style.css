@@ -2651,3 +2651,307 @@ body.portfolio-page::after {
     display: block !important;
     /* visible masonry (columns) */
 }
+
+/* === Portfolio Overhaul: cinematic client showcase layer === */
+:root {
+    --showcase-magenta: #ff2bd6;
+    --showcase-cyan: #22f7ff;
+    --showcase-violet: #8b5cf6;
+    --showcase-amber: #ffd166;
+    --showcase-glass: rgba(10, 0, 20, 0.58);
+    --showcase-border: rgba(255, 255, 255, 0.18);
+    --showcase-shadow: 0 24px 90px rgba(0, 0, 0, 0.55), 0 0 70px rgba(255, 43, 214, 0.13);
+}
+
+body.portfolio-page {
+    background:
+        radial-gradient(circle at 16% 8%, rgba(255, 43, 214, 0.24), transparent 28rem),
+        radial-gradient(circle at 82% 16%, rgba(34, 247, 255, 0.18), transparent 30rem),
+        radial-gradient(circle at 50% 100%, rgba(139, 92, 246, 0.16), transparent 34rem),
+        #000;
+}
+
+body.portfolio-page::after {
+    opacity: 0.5;
+    mix-blend-mode: screen;
+}
+
+.portfolio-hero-panel {
+    position: relative;
+    max-width: min(1120px, calc(100vw - 2rem));
+    margin: clamp(5.5rem, 12vh, 8.5rem) auto 1.4rem;
+    padding: clamp(1.25rem, 4vw, 3rem);
+    border: 1px solid var(--showcase-border);
+    border-radius: 28px;
+    overflow: hidden;
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.025)),
+        var(--showcase-glass);
+    box-shadow: var(--showcase-shadow);
+    backdrop-filter: blur(22px) saturate(145%);
+    -webkit-backdrop-filter: blur(22px) saturate(145%);
+    isolation: isolate;
+}
+
+.portfolio-hero-panel::before,
+.portfolio-hero-panel::after {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.portfolio-hero-panel::before {
+    background: conic-gradient(from 180deg, transparent, rgba(255, 43, 214, 0.38), rgba(34, 247, 255, 0.34), transparent 62%);
+    filter: blur(18px);
+    opacity: 0.85;
+    animation: auraSpin 12s linear infinite;
+}
+
+.portfolio-hero-panel::after {
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size: 38px 38px;
+    mask-image: radial-gradient(circle at top left, #000, transparent 74%);
+}
+
+.portfolio-kicker {
+    margin: 0 0 0.35rem;
+    color: var(--showcase-cyan);
+    font-size: clamp(1.05rem, 2.2vw, 1.45rem);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    text-shadow: 0 0 18px rgba(34, 247, 255, 0.7);
+}
+
+.portfolio-hero-panel h2 {
+    margin: 0;
+    max-width: 950px;
+    text-align: left;
+    font-size: clamp(3.1rem, 10vw, 8.5rem);
+    line-height: 0.82;
+    letter-spacing: -0.035em;
+    text-transform: uppercase;
+    text-shadow:
+        0 0 12px rgba(255, 255, 255, 0.55),
+        0 0 32px rgba(255, 43, 214, 0.35),
+        0 0 70px rgba(34, 247, 255, 0.2);
+}
+
+.portfolio-lede {
+    margin: 1rem 0 0;
+    max-width: 760px;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: clamp(1.25rem, 3vw, 1.8rem);
+    line-height: 1.04;
+}
+
+.portfolio-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin-top: 1.35rem;
+}
+
+.portfolio-stats span {
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 999px;
+    padding: 0.45rem 0.8rem;
+    background: rgba(0, 0, 0, 0.35);
+    color: rgba(255, 255, 255, 0.8);
+    box-shadow: inset 0 0 18px rgba(255, 255, 255, 0.04);
+}
+
+.portfolio-stats strong {
+    color: #fff;
+    margin-right: 0.2rem;
+    text-shadow: 0 0 12px var(--showcase-cyan);
+}
+
+.portfolio-categories {
+    position: sticky;
+    top: calc(var(--header-height) + 0.75rem);
+    z-index: 80;
+    max-width: min(1120px, calc(100vw - 2rem));
+    margin-inline: auto;
+    padding: 0.55rem;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.54);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(16px) saturate(150%);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+}
+
+.portfolio-categories .filters {
+    display: flex;
+    justify-content: center;
+    gap: 0.55rem;
+}
+
+.portfolio-categories .category-button {
+    position: relative;
+    overflow: hidden;
+    border-radius: 999px !important;
+    padding: 0.65rem 1.15rem !important;
+    letter-spacing: 0.12em;
+    background: rgba(255, 255, 255, 0.045) !important;
+}
+
+.portfolio-categories .category-button::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    translate: -120% 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.24), transparent);
+    transition: translate 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.portfolio-categories .category-button:hover::before,
+.portfolio-categories .category-button.active::before {
+    translate: 120% 0;
+}
+
+#portfolio-display {
+    max-width: min(1320px, calc(100vw - 1rem));
+    margin: 1.5rem auto 0;
+}
+
+.image-grid.active {
+    columns: 4 230px;
+    column-gap: clamp(0.75rem, 1.6vw, 1.15rem);
+    display: block !important;
+    perspective: 1000px;
+}
+
+.image-grid.active .grid-item {
+    position: relative;
+    break-inside: avoid;
+    margin: 0 0 clamp(0.75rem, 1.6vw, 1.15rem);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 24px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.045);
+    box-shadow: 0 16px 54px rgba(0, 0, 0, 0.45);
+    transform: translateZ(0);
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s, box-shadow 0.3s, filter 0.3s;
+}
+
+.image-grid.active .grid-item::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.35), transparent 36%);
+    transition: opacity 0.25s ease;
+    mix-blend-mode: overlay;
+}
+
+.image-grid.active .grid-item:hover {
+    transform: translateY(-8px) scale(1.018) rotateX(1deg);
+    border-color: rgba(255, 255, 255, 0.34);
+    box-shadow: 0 26px 80px rgba(0, 0, 0, 0.62), 0 0 46px rgba(255, 43, 214, 0.16);
+    filter: saturate(1.14) contrast(1.06);
+}
+
+.image-grid.active .grid-item:hover::before {
+    opacity: 1;
+}
+
+.image-grid.active .grid-item img,
+.image-grid.active .grid-item video {
+    width: 100%;
+    height: auto;
+    min-height: 180px;
+    object-fit: cover;
+    border-radius: 0;
+    transform: scale(1.01);
+    transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), filter 0.45s ease;
+}
+
+.image-grid.active .grid-item:hover img,
+.image-grid.active .grid-item:hover video {
+    transform: scale(1.06);
+}
+
+.image-grid.active .grid-item::after {
+    content: "VIEW";
+    position: absolute;
+    right: 0.8rem;
+    bottom: 0.8rem;
+    z-index: 3;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    font-size: 0.9rem;
+    letter-spacing: 0.15em;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.25s, transform 0.25s;
+}
+
+.image-grid.active .grid-item:hover::after {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.visuals-grid.active .grid-item::after {
+    content: "PLAY";
+}
+
+.modal.visible {
+    backdrop-filter: blur(18px) saturate(150%);
+    -webkit-backdrop-filter: blur(18px) saturate(150%);
+    background: rgba(0, 0, 0, 0.84);
+}
+
+.modal-content {
+    border-radius: 18px;
+    box-shadow: 0 30px 120px rgba(0, 0, 0, 0.8), 0 0 70px rgba(34, 247, 255, 0.16);
+}
+
+@keyframes auraSpin {
+    to { transform: rotate(360deg); }
+}
+
+@media (max-width: 720px) {
+    .portfolio-hero-panel {
+        border-radius: 20px;
+        margin-top: 5.2rem;
+    }
+
+    .portfolio-categories {
+        top: 0.75rem;
+        border-radius: 18px;
+    }
+
+    .portfolio-categories .filters {
+        justify-content: flex-start;
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+
+    .portfolio-categories .filters::-webkit-scrollbar {
+        display: none;
+    }
+
+    .image-grid.active {
+        columns: 1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .portfolio-hero-panel::before,
+    .image-grid.active .grid-item,
+    .image-grid.active .grid-item img,
+    .image-grid.active .grid-item video {
+        animation: none !important;
+        transition: none !important;
+    }
+}

@@ -3,7 +3,7 @@
  * Network-aware caching with safe defaults and graceful fallbacks.
  */
 
-const CACHE_VERSION = 'v1.1.2';
+const CACHE_VERSION = 'v1.2.0';
 const CACHE_NAME = `mario-preciado-${CACHE_VERSION}`;
 const SW_DEBUG = false;
 
@@ -16,6 +16,7 @@ const CORE_ASSETS = [
   '/css/style.min.css',
   '/js/script.min.js',
   '/js/sw-register.js',
+  '/data/media.json',
   '/images/optimized/manifest.json',
   '/images/optimized/header-640-d83b2721.jpeg'
 ];
