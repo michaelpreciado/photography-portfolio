@@ -22,3 +22,6 @@ npm-debug.log*
 
 # Vercel local/project artifacts
 .vercel
+
+# Build output directory
+public/

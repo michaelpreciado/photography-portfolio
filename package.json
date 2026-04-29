@@ -8,7 +8,7 @@
     "minify:css": "csso css/style.css --output css/style.min.css --source-map file",
     "minify:js": "terser js/script.js -o js/script.min.js --compress --mangle --source-map \"content=inline\"",
     "minify": "npm run minify:css && npm run minify:js",
-    "build": "npm run media && npm run images && npm run minify",
+    "build": "node scripts/build.js",
     "lint": "node --check js/script.js && node --check js/sw-register.js && node --check sw.js && node --check scripts/optimize-images.js && node --check scripts/generate-media-manifest.js && node --check api/contact.js",
     "test": "npm run lint",
     "ci": "npm run lint && npm run build",
