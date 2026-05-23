@@ -109,4 +109,4 @@ MIT License
 
 ---
 
-**Built by Michael Preciado** — [Preciado Tech](https://preciado.tech) · [X @preciadotech](https://x.com/preciadotech)
+**Built by Michael Preciado** — [Preciado Tech](https://preciado-tech.com) · [X @preciadotech](https://x.com/preciadotech)
