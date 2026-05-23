@@ -6,6 +6,7 @@ const {
 } = require('../js/contact-form-utils.js');
 
 const RESEND_API_URL = 'https://api.resend.com/emails';
+const MAX_BODY_BYTES = 12 * 1024;
 
 function asString(value) {
     return typeof value === 'string' ? value : '';
@@ -139,6 +140,21 @@ module.exports = async function contactHandler(req, res) {
         return sendJson(res, 405, {
             ok: false,
             message: 'Method not allowed.'
+        });
+    }
+
+    const contentLength = Number(req.headers?.['content-length'] || 0);
+    if (contentLength > MAX_BODY_BYTES) {
+        return sendJson(res, 413, {
+            ok: false,
+            message: 'Submission is too large.'
+        });
+    }
+
+    if (typeof req.body === 'string' && Buffer.byteLength(req.body, 'utf8') > MAX_BODY_BYTES) {
+        return sendJson(res, 413, {
+            ok: false,
+            message: 'Submission is too large.'
         });
     }
 

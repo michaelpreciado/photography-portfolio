@@ -26,3 +26,6 @@ build/
 
 # Vercel local/project artifacts
 .vercel
+
+# Build output directory
+public/

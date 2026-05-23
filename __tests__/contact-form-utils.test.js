@@ -126,7 +126,7 @@ describe('contact-form-utils', () => {
         });
     });
 
-    test('encodes payload for Netlify-compatible form submission', () => {
+    test('encodes payload for serverless form submission', () => {
         const encoded = encodeContactPayload({
             name: 'Jane Doe',
             email: 'jane@example.com',

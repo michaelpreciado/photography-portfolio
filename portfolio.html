@@ -50,7 +50,11 @@
             
             <a href="index.html" class="header-logo-link">
                 <div class="header-logo-title">
-                    <img src="images/portfolio/header.jpeg" alt="" class="header-decoration-image" loading="eager">
+                    <picture>
+                        <source srcset="images/optimized/header-320-d83b2721.avif 320w, images/optimized/header-640-d83b2721.avif 640w, images/optimized/header-960-d83b2721.avif 960w" sizes="(max-width: 640px) 50px, 80px" type="image/avif">
+                        <source srcset="images/optimized/header-320-d83b2721.webp 320w, images/optimized/header-640-d83b2721.webp 640w, images/optimized/header-960-d83b2721.webp 960w" sizes="(max-width: 640px) 50px, 80px" type="image/webp">
+                        <img src="images/optimized/header-640-d83b2721.jpeg" srcset="images/optimized/header-320-d83b2721.jpeg 320w, images/optimized/header-640-d83b2721.jpeg 640w, images/optimized/header-960-d83b2721.jpeg 960w" sizes="(max-width: 640px) 50px, 80px" alt="Mario Preciado Photography Logo" class="header-decoration-image" loading="eager" decoding="async" fetchpriority="high">
+                    </picture>
                     <h1 class="header-title glow-white">MARIO PRECIADO</h1>
                 </div>
             </a>
@@ -63,12 +67,12 @@
             </nav>
         </div>
         
-        <!-- Mobile navigation overlay with proper ID for accessibility -->
+        <!-- Mobile navigation overlay -->
         <div class="mobile-nav-overlay" id="mobile-nav" aria-hidden="true">
-            <nav class="mobile-nav">
+            <nav class="mobile-nav" aria-label="Mobile navigation">
                 <ul>
                     <li><a href="index.html">HOME</a></li>
-                    <li><a href="portfolio.html" class="active">PORTFOLIO</a></li>
+                    <li><a href="portfolio.html" class="active" aria-current="page">PORTFOLIO</a></li>
                     <li><a href="about.html">ABOUT</a></li>
                     <li><a href="contact.html">CONTACT</a></li>
                 </ul>
@@ -78,8 +82,18 @@
 
     <main>
         <section id="portfolio">
+            <div class="portfolio-hero-panel">
+                <p class="portfolio-kicker">Client-ready showcase</p>
+                <h2>Live music intensity. Visuals with motion.</h2>
+                <p class="portfolio-lede">A fast, cinematic gallery built to protect the work, keep the vibe, and make every new upload feel instantly polished.</p>
+                <div class="portfolio-stats" aria-label="Portfolio stats">
+                    <span><strong data-stat="images">14</strong> photos</span>
+                    <span><strong data-stat="videos">16</strong> visuals</span>
+                    <span><strong data-stat="total">30</strong> protected assets</span>
+                </div>
+            </div>
             
-            <div class="portfolio-categories">
+            <div class="portfolio-categories" aria-label="Portfolio categories">
                 <ul class="filters">
                     <li><button class="category-button active" data-category="live-music" data-active="true">Live Music</button></li>
                     <li><button class="category-button" data-category="visuals">Visuals</button></li>
@@ -144,31 +158,22 @@
                 </div>
 
             </div>
-
-            <!-- Old grid - can be removed or kept for reference -->
-            <!-- 
-            <div class="image-grid all-portfolio-grid">
-                 All portfolio images loaded by JS will go here 
-            </div> 
-            -->
         </section>
     </main>
 
     <footer>
-        <!-- Footer content if needed -->
         <p class="site-credit">Website designed by <a href="https://michael-preciado.com" target="_blank" rel="noopener noreferrer">MP</a></p>
-        <button id="back-to-top" title="Go to top">↑</button>
+        <button id="back-to-top" aria-label="Back to top" title="Go to top">↑</button>
     </footer>
 
     <!-- Image Modal Structure -->
-    <div id="imageModal" class="modal">
-        <span class="close-modal">&times;</span>
-        <!-- Add Navigation Arrows -->
-        <span class="modal-nav modal-prev" title="Previous image">&#10094;</span> 
-        <span class="modal-nav modal-next" title="Next image">&#10095;</span>
-        
-        <img class="modal-content" id="modalImage">
-        <div id="caption"></div> <!-- Optional: for alt text or descriptions -->
+    <div id="imageModal" class="modal" role="dialog" aria-modal="true" aria-label="Media viewer">
+        <button class="close-modal" aria-label="Close media viewer">&times;</button>
+        <button class="modal-nav modal-prev" aria-label="Previous image">&#10094;</button>
+        <button class="modal-nav modal-next" aria-label="Next image">&#10095;</button>
+
+        <img class="modal-content" id="modalImage" alt="">
+        <div id="caption" aria-live="polite"></div>
     </div>
 
     <script src="js/script.min.js" defer></script>

@@ -25,6 +25,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 
 // Optimized image manifest support
 const OPTIMIZED_MANIFEST_URL = 'images/optimized/manifest.json';
+const PORTFOLIO_MEDIA_MANIFEST_URL = 'data/media.json';
 let optimizedManifestPromise = null;
 let optimizedManifestData = null;
 const optimizedImageCache = new Map();
@@ -130,17 +131,8 @@ async function getOptimizedImageAsset(originalPath) {
 
 // Set CSS custom property for viewport height (iOS fix)
 function setVHVariable() {
-    // First, get viewport height and multiply by 1% to get a value for 1vh unit
     const vh = window.innerHeight * 0.01;
-    // Then set the value in the --vh custom property to the root of the document
     document.documentElement.style.setProperty('--vh', `${vh}px`);
-
-    // Apply safe area insets for notched iOS devices
-    const safeAreaTop = getComputedStyle(document.documentElement).getPropertyValue('--sat') || '0px';
-    const safeAreaBottom = getComputedStyle(document.documentElement).getPropertyValue('--sab') || '0px';
-
-    document.documentElement.style.setProperty('--safe-area-top', safeAreaTop);
-    document.documentElement.style.setProperty('--safe-area-bottom', safeAreaBottom);
 }
 
 // Handle resize with improved performance using requestAnimationFrame
@@ -175,9 +167,8 @@ class LazyImageLoader {
 
     async init() {
         try {
-            // Load image manifest for LQIP data
-            const response = await fetch('images/optimized/manifest.json');
-            this.imageManifest = await response.json();
+            // Reuse shared manifest loader to avoid duplicate network requests
+            this.imageManifest = await loadOptimizedManifest();
 
             // Set up IntersectionObserver for lazy loading
             this.setupIntersectionObserver();
@@ -369,7 +360,7 @@ class LazyImageLoader {
 const lazyLoader = new LazyImageLoader();
 window.lazyImageLoader = lazyLoader;
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     // Cache DOM elements for better performance
     const backToTopButton = document.getElementById('back-to-top');
     const portfolioDisplay = document.getElementById('portfolio-display');
@@ -381,7 +372,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const body = document.body;
     const mobileNavOverlay = document.getElementById('mobile-nav');
     const mobileNavLinks = document.querySelectorAll('.mobile-nav a');
-    const headerLogoTitle = document.querySelector('.header-logo-title'); // Added this line
+    const headerLogoTitle = document.querySelector('.header-logo-title');
 
     // Mobile menu toggle with improved accessibility
     if (mobileMenuToggle && mobileNavOverlay) {
@@ -396,7 +387,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!isExpanded) {
                 // Opening menu - prevent scrolling
                 body.style.overflow = 'hidden';
-                if (headerLogoTitle) { // Added this block
+                if (headerLogoTitle) {
                     headerLogoTitle.classList.add('fade-out');
                 }
 
@@ -414,7 +405,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 // Closing menu - restore scrolling
                 body.style.overflow = '';
-                if (headerLogoTitle) { // Added this block
+                if (headerLogoTitle) {
                     headerLogoTitle.classList.remove('fade-out');
                 }
 
@@ -443,7 +434,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 mobileMenuToggle.setAttribute('aria-expanded', 'false');
                 mobileNavOverlay.setAttribute('aria-hidden', 'true');
                 body.style.overflow = '';
-                if (headerLogoTitle) { // Added this line
+                if (headerLogoTitle) {
                     headerLogoTitle.classList.remove('fade-out');
                 }
                 if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
@@ -544,11 +535,7 @@ document.addEventListener('DOMContentLoaded', () => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
-                // Optional: Unobserve after animation to save resources
-                // observer.unobserve(entry.target);
-            } else {
-                // Optional: Remove class if you want animation to repeat on scroll up
-                // entry.target.classList.remove('visible');
+                observer.unobserve(entry.target);
             }
         });
     };
@@ -566,52 +553,150 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Image Data (Categorized) --- //
-    // ** IMPORTANT: Update these paths and categories to match your actual images **
-    const portfolioImages = {
-        'live-music': [
-            'images/portfolio/live-music/portfolio_001.jpeg',
-            'images/portfolio/live-music/portfolio_002.jpeg',
-            'images/portfolio/live-music/portfolio_004.jpg',
-            'images/portfolio/live-music/portfolio_005.jpeg',
-            'images/portfolio/live-music/portfolio_007.JPG',
-            'images/portfolio/live-music/portfolio_008.jpg', // Moved from Art
-            'images/portfolio/live-music/portfolio_009.jpg',
-            'images/portfolio/live-music/portfolio_010.jpg', // Moved from Typography
-            'images/portfolio/live-music/portfolio_011.JPG',
-            'images/portfolio/live-music/portfolio_012.JPG',
-            'images/portfolio/live-music/portfolio_013.jpg', // Moved from Art
-            'images/portfolio/live-music/portfolio_015.jpeg', // Moved from Typography
-            'images/portfolio/live-music/portfolio_016.jpeg',
-            'images/portfolio/live-music/portfolio_017.jpg',
-        ],
-        'visuals': [
-            // Only keep videos that are under GitHub's 100 MB limit and exist in the repo
-            'images/portfolio/Visuals/01.mp4',
-            'images/portfolio/Visuals/02.mp4',
-            'images/portfolio/Visuals/03.mp4',
-            'images/portfolio/Visuals/04.mp4',
-            'images/portfolio/Visuals/05.mp4',
-            'images/portfolio/Visuals/13.mp4',
-            'images/portfolio/Visuals/14.mp4',
-            'images/portfolio/Visuals/15.mp4',
-            'images/portfolio/Visuals/16.mp4',
-            'images/portfolio/Visuals/17.mp4',
-            'images/portfolio/Visuals/18.mp4',
-            'images/portfolio/Visuals/19.mp4',
-            'images/portfolio/Visuals/20.mp4',
-            'images/portfolio/Visuals/21.mp4',
-            'images/portfolio/Visuals/22.mp4',
-            'images/portfolio/Visuals/23.mp4',
-        ]
-    };
-    const VALID_CATEGORIES = new Set(Object.keys(portfolioImages));
+    // --- Media Data (generated by scripts/generate-media-manifest.js) --- //
+    const DEFAULT_PORTFOLIO_CATEGORIES = [
+        {
+            id: 'live-music',
+            label: 'Live Music',
+            media: [
+                'images/portfolio/live-music/portfolio_001.jpeg',
+                'images/portfolio/live-music/portfolio_002.jpeg',
+                'images/portfolio/live-music/portfolio_004.jpg',
+                'images/portfolio/live-music/portfolio_005.jpeg',
+                'images/portfolio/live-music/portfolio_007.JPG',
+                'images/portfolio/live-music/portfolio_008.jpg',
+                'images/portfolio/live-music/portfolio_009.jpg',
+                'images/portfolio/live-music/portfolio_010.jpg',
+                'images/portfolio/live-music/portfolio_011.JPG',
+                'images/portfolio/live-music/portfolio_012.JPG',
+                'images/portfolio/live-music/portfolio_013.jpg',
+                'images/portfolio/live-music/portfolio_015.jpeg',
+                'images/portfolio/live-music/portfolio_016.jpeg',
+                'images/portfolio/live-music/portfolio_017.jpg'
+            ]
+        },
+        {
+            id: 'visuals',
+            label: 'Visuals',
+            media: [
+                'images/portfolio/Visuals/01.mp4',
+                'images/portfolio/Visuals/02.mp4',
+                'images/portfolio/Visuals/03.mp4',
+                'images/portfolio/Visuals/04.mp4',
+                'images/portfolio/Visuals/05.mp4',
+                'images/portfolio/Visuals/13.mp4',
+                'images/portfolio/Visuals/14.mp4',
+                'images/portfolio/Visuals/15.mp4',
+                'images/portfolio/Visuals/16.mp4',
+                'images/portfolio/Visuals/17.mp4',
+                'images/portfolio/Visuals/18.mp4',
+                'images/portfolio/Visuals/19.mp4',
+                'images/portfolio/Visuals/20.mp4',
+                'images/portfolio/Visuals/21.mp4',
+                'images/portfolio/Visuals/22.mp4',
+                'images/portfolio/Visuals/23.mp4'
+            ]
+        }
+    ];
+
+    let portfolioMediaCategories = DEFAULT_PORTFOLIO_CATEGORIES;
+    let portfolioImages = categoriesToMediaMap(portfolioMediaCategories);
+
+    function categoriesToMediaMap(categories) {
+        return categories.reduce((map, category) => {
+            if (category?.id && Array.isArray(category.media)) {
+                map[category.id] = category.media;
+            }
+            return map;
+        }, {});
+    }
+
+    function normalizeMediaEntry(entry) {
+        if (typeof entry === 'string') {
+            return {
+                type: /\.(mp4|webm|mov|m4v)$/i.test(entry) ? 'video' : 'image',
+                src: entry,
+                alt: '',
+                poster: ''
+            };
+        }
+
+        if (!entry || typeof entry.src !== 'string') return null;
+        return {
+            type: entry.type || (/\.(mp4|webm|mov|m4v)$/i.test(entry.src) ? 'video' : 'image'),
+            src: entry.src,
+            alt: entry.alt || '',
+            poster: entry.poster || ''
+        };
+    }
+
+    async function loadPortfolioMediaManifest() {
+        try {
+            const response = await fetch(PORTFOLIO_MEDIA_MANIFEST_URL, { cache: 'no-cache' });
+            if (!response.ok) throw new Error(`media manifest ${response.status}`);
+            const data = await response.json();
+            if (!Array.isArray(data.categories) || data.categories.length === 0) {
+                throw new Error('media manifest has no categories');
+            }
+            portfolioMediaCategories = data.categories;
+            portfolioImages = categoriesToMediaMap(portfolioMediaCategories);
+        } catch (error) {
+            logger.warn('Using bundled media fallback.', error);
+        }
+    }
 
     function isValidCategory(category) {
         return typeof category === 'string'
-            && VALID_CATEGORIES.has(category)
+            && Object.prototype.hasOwnProperty.call(portfolioImages, category)
             && /^[a-z0-9-]+$/.test(category);
     }
+
+    function updatePortfolioStats(categories) {
+        const media = categories.flatMap((category) => Array.isArray(category.media) ? category.media : []);
+        const imageCount = media.filter((item) => normalizeMediaEntry(item)?.type === 'image').length;
+        const videoCount = media.filter((item) => normalizeMediaEntry(item)?.type === 'video').length;
+        const totalCount = imageCount + videoCount;
+
+        const imageStat = document.querySelector('[data-stat="images"]');
+        const videoStat = document.querySelector('[data-stat="videos"]');
+        const totalStat = document.querySelector('[data-stat="total"]');
+        if (imageStat) imageStat.textContent = String(imageCount);
+        if (videoStat) videoStat.textContent = String(videoCount);
+        if (totalStat) totalStat.textContent = String(totalCount);
+    }
+
+    function ensurePortfolioCategoryUI(categories, categoryContainer, displayContainer) {
+        if (!categoryContainer || !displayContainer) return;
+        const filters = categoryContainer.querySelector('.filters') || categoryContainer.appendChild(document.createElement('ul'));
+        filters.classList.add('filters');
+        filters.replaceChildren();
+
+        categories.forEach((category, index) => {
+            if (!isValidCategory(category.id)) return;
+
+            const li = document.createElement('li');
+            const button = document.createElement('button');
+            button.className = `category-button${index === 0 ? ' active' : ''}`;
+            button.dataset.category = category.id;
+            button.textContent = category.label || category.id.replace(/-/g, ' ');
+            if (index === 0) button.dataset.active = 'true';
+            li.appendChild(button);
+            filters.appendChild(li);
+
+            let grid = displayContainer.querySelector(`.${category.id}-grid`);
+            if (!grid) {
+                grid = document.createElement('div');
+                grid.className = `image-grid ${category.id}-grid`;
+                displayContainer.appendChild(grid);
+            }
+            grid.classList.toggle('active', index === 0);
+            grid.dataset.category = category.id;
+        });
+    }
+
+    await loadPortfolioMediaManifest();
+    updatePortfolioStats(portfolioMediaCategories);
+    ensurePortfolioCategoryUI(portfolioMediaCategories, categoryButtonsContainer, portfolioDisplay);
 
     // --- Modal Helpers --- //
     function ensureModalVideoElement() {
@@ -766,8 +851,11 @@ document.addEventListener('DOMContentLoaded', () => {
         gridElement.replaceChildren();
         gridElement.dataset.category = category;
 
-        const mediaPaths = portfolioImages[category] || [];
-        if (mediaPaths.length === 0) {
+        const mediaEntries = (portfolioImages[category] || [])
+            .map(normalizeMediaEntry)
+            .filter(Boolean);
+
+        if (mediaEntries.length === 0) {
             const emptyState = document.createElement('p');
             emptyState.style.textAlign = 'center';
             emptyState.textContent = `No media found for ${category}.`;
@@ -780,40 +868,41 @@ document.addEventListener('DOMContentLoaded', () => {
         const deduplicatedPaths = [];
         const seenInThisRun = new Set();
 
-        mediaPaths.forEach(path => {
-            const normalizedPath = path.toLowerCase();
+        mediaEntries.forEach(mediaEntry => {
+            const normalizedPath = mediaEntry.src.toLowerCase();
             const basename = normalizedPath.split('/').pop();
 
             if (!GLOBAL_IMAGE_REGISTRY.has(basename) && !seenInThisRun.has(basename)) {
-                deduplicatedPaths.push(path);
+                deduplicatedPaths.push(mediaEntry);
                 seenInThisRun.add(basename);
                 GLOBAL_IMAGE_REGISTRY.add(basename);
             }
         });
 
-        if (deduplicatedPaths.length === 0 && mediaPaths.length > 0) {
+        if (deduplicatedPaths.length === 0 && mediaEntries.length > 0) {
             GLOBAL_IMAGE_REGISTRY.clear();
             gridElement.classList.remove('loading');
             return loadPortfolioImagesByCategory(category, gridElement);
         }
 
-        const shuffledPaths = [...deduplicatedPaths];
-        shuffleArray(shuffledPaths);
+        const shuffledMedia = [...deduplicatedPaths];
+        shuffleArray(shuffledMedia);
 
         await loadOptimizedManifest();
 
-        for (const mediaPath of shuffledPaths) {
+        for (const mediaEntry of shuffledMedia) {
+            const mediaPath = mediaEntry.src;
             const gridItem = document.createElement('div');
             gridItem.className = 'grid-item fade-in';
 
-            const isVideo = /\.(mp4|webm|mov)$/i.test(mediaPath);
+            const isVideo = mediaEntry.type === 'video' || /\.(mp4|webm|mov|m4v)$/i.test(mediaPath);
 
             if (isVideo) {
                 const video = document.createElement('video');
                 video.dataset.src = mediaPath;
                 video.dataset.full = mediaPath;
                 video.dataset.mediaType = 'video';
-                video.dataset.caption = `${category.replace('-', ' ')} video`;
+                video.dataset.caption = mediaEntry.alt || `${category.replace('-', ' ')} video`;
                 video.dataset.loaded = 'false';
                 video.loop = true;
                 video.muted = true;
@@ -821,6 +910,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 video.preload = 'none';
                 video.setAttribute('disablePictureInPicture', '');
                 video.setAttribute('controlsList', 'nodownload');
+                video.setAttribute('aria-label', mediaEntry.alt || `${category.replace('-', ' ')} video`);
+                if (mediaEntry.poster) {
+                    video.poster = mediaEntry.poster;
+                }
                 video.tabIndex = 0;
                 video.style.backgroundColor = '#000';
 
@@ -858,7 +951,7 @@ document.addEventListener('DOMContentLoaded', () => {
             img.loading = 'lazy';
             img.decoding = 'async';
             img.fetchPriority = 'low';
-            img.alt = `${category.replace('-', ' ')} photo`;
+            img.alt = mediaEntry.alt || `${category.replace('-', ' ')} photo`;
             img.dataset.mediaType = 'image';
 
             // Set dataset.src for LazyImageLoader to pick up the high-quality version
@@ -982,6 +1075,17 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         // Only run portfolio logic if relevant elements exist (i.e., on portfolio.html)
         // console.log("Not on the portfolio page or necessary elements missing.");
+    }
+
+    // Pointer-reactive light sweep for gallery cards. Safe progressive enhancement.
+    if (portfolioDisplay && !prefersReducedMotion) {
+        portfolioDisplay.addEventListener('pointermove', (event) => {
+            const item = event.target.closest('.grid-item');
+            if (!item) return;
+            const rect = item.getBoundingClientRect();
+            item.style.setProperty('--mx', `${((event.clientX - rect.left) / rect.width) * 100}%`);
+            item.style.setProperty('--my', `${((event.clientY - rect.top) / rect.height) * 100}%`);
+        }, { passive: true });
     }
 
     // --- Back to Top Button Logic --- //
@@ -1597,7 +1701,7 @@ function initVideoObserver() {
     videoObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             const vid = entry.target;
-            if (entry.intersectionRatio > 0.1 && vid.dataset.loaded !== 'true') {
+            if (entry.intersectionRatio > 0.15 && vid.dataset.loaded !== 'true') {
                 const sourceEl = vid.querySelector('source');
                 if (sourceEl && sourceEl.dataset.src) {
                     sourceEl.src = sourceEl.dataset.src;
@@ -1609,6 +1713,7 @@ function initVideoObserver() {
                 }
                 vid.load();
                 vid.dataset.loaded = 'true';
+                vid.preload = 'metadata';
             }
 
             if (entry.intersectionRatio > 0.6) {
@@ -1622,6 +1727,16 @@ function initVideoObserver() {
             }
         });
     }, {
-        threshold: [0, 0.1, 0.6, 1]
+        rootMargin: '150px 0px',
+        threshold: [0, 0.15, 0.6, 1]
     });
 }
+
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState !== 'hidden') return;
+    document.querySelectorAll('.visuals-grid video').forEach((video) => {
+        if (!video.paused) {
+            video.pause();
+        }
+    });
+});
