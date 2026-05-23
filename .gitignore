@@ -20,5 +20,9 @@ npm-debug.log*
 .env
 .env.local
 
+# Build outputs
+dist/
+build/
+
 # Vercel local/project artifacts
 .vercel
