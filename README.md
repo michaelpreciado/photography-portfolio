@@ -1,126 +1,112 @@
-# Mario Preciado Photography Portfolio
+# Photography Portfolio
 
-Production-ready static photography portfolio with optimized assets, offline caching, and containerized deployment.
+> Production static portfolio with optimized assets, offline caching, and containerized deployment. Built by a developer who hates slow photography sites.
+
+## Demo
+
+Live: **[mariopreciado.photography](https://mariopreciado.photography)**
+
+## Why I built this
+
+Photography portfolios should load fast and work offline. Most gallery sites are bloated with heavy frameworks and third party trackers. I wanted something that feels native, caches intelligently, and deploys anywhere. No CMS. No database. Just optimized images and a service worker that keeps things snappy.
+
+## Features
+
+- **Image optimization pipeline** — sharp based resizing and WebP conversion
+- **Offline caching** — service worker for repeat visits
+- **Containerized deployment** — Docker multi stage build
+- **Contact form** — Vercel serverless endpoint with Resend delivery
+- **Security first** — CSP headers, no third party scripts
+
+## Architecture
+
+```mermaid
+graph LR
+    User[Browser] --> |"First Visit"| Nginx[Nginx Container]
+    User --> |"Repeat Visit"| SW[Service Worker Cache]
+    Nginx --> |"Static Assets"| Optimized[Optimized Images + CSS/JS]
+    API[api/contact.js] --> |"POST"| Resend[Resend API]
+    CI[GitHub Actions] --> |"lint + build"| Deploy[Docker / Vercel]
+```
+
+## Quickstart
+
+```bash
+git clone https://github.com/michaelpreciado/photography-portfolio.git
+cd photography-portfolio
+npm ci
+npm run build
+npm run serve
+# Open http://localhost:8000
+```
 
 ## Tech Stack
 
-- HTML/CSS/Vanilla JavaScript
-- Service Worker for offline caching
-- Node.js build pipeline (`sharp`, `terser`, `csso-cli`)
-- Nginx runtime container
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=111)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
+![Nginx](https://img.shields.io/badge/Nginx-009639?style=flat-square&logo=nginx&logoColor=white)
+![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white)
 
 ## Project Structure
 
-- `index.html`, `portfolio.html`, `about.html`, `contact.html`: Site entry points
-- `css/style.css`: Source stylesheet
-- `css/style.min.css`: Minified stylesheet output
-- `js/script.js`: Main client runtime
-- `js/script.min.js`: Minified runtime output
-- `sw.js`: Service worker
-- `scripts/optimize-images.js`: Image optimization and manifest generation
-- `images/optimized/manifest.json`: Generated image manifest
-- `Dockerfile`: Multi-stage production image
-- `docker-compose.yml`: Local production-like execution
-- `.github/workflows/ci.yml`: CI checks for lint/build
+```
+├── css/
+│   ├── style.css          # Source stylesheet
+│   └── style.min.css      # Minified output
+├── js/
+│   ├── script.js          # Main runtime
+│   └── script.min.js      # Minified output
+├── images/
+│   └── optimized/         # Generated image manifest
+├── scripts/
+│   └── optimize-images.js # sharp based optimization
+├── sw.js                  # Service worker
+├── Dockerfile             # Multi stage production image
+├── docker-compose.yml     # Local execution
+└── api/contact.js         # Vercel serverless endpoint
+```
 
-## Local Development
+## Roadmap
 
-1. Install dependencies:
-   ```bash
-   npm ci
-   ```
-2. Build assets:
-   ```bash
-   npm run build
-   ```
-3. Serve locally:
-   ```bash
-   npm run serve
-   ```
-4. Open:
-   - [http://localhost:8000](http://localhost:8000)
+- [ ] Lighthouse score optimization (target 95+)
+- [ ] WebP fallback for older browsers
+- [ ] Image lazy loading with IntersectionObserver
+- [ ] Dark mode toggle
+- [ ] CDN integration for global assets
 
 ## Environment Variables
 
-Copy `.env.example` and set values for your environment:
+Copy `.env.example` and configure:
 
-- `NODE_ENV`: `development` or `production`
-- `PORT`: local port for static serving workflows
-- `SITE_URL`: canonical public URL
-
-## Build and Quality Commands
-
-- `npm run lint`: JavaScript syntax checks
-- `npm run test`: Alias to lint checks
-- `npm run images`: Regenerate optimized image assets
-- `npm run minify`: Minify CSS and JavaScript
-- `npm run build`: Full production build (`images + minify`)
-- `npm run ci`: Local CI-equivalent checks
-
-## Docker Deployment
-
-Build and run with Docker Compose:
-
-```bash
-docker compose up --build
-```
-
-Then open:
-
-- [http://localhost:8080](http://localhost:8080)
-
-## Vercel Deployment
-
-This repository includes `vercel.json` with:
-
-- `npm ci` install command
-- `npm run build` build command
-- clean route rewrites for `/about`, `/portfolio`, and `/contact`
-- cache headers for HTML, assets, `sw.js`, and API responses
-- a Vercel serverless endpoint at `api/contact.js` for contact form submissions
-
-Deploy steps:
-
-1. Run local checks:
-   ```bash
-   npm run ci
-   ```
-2. Deploy preview:
-   ```bash
-   npx vercel
-   ```
-3. Deploy production (when ready):
-   ```bash
-   npx vercel --prod
-   ```
-
-Contact form environment variables (Vercel Project Settings -> Environment Variables):
-
-- `RESEND_API_KEY`: Resend API key used for delivery
-- `CONTACT_TO_EMAIL`: destination inbox for contact submissions
-- `CONTACT_FROM_EMAIL` (optional): sender identity (defaults to `onboarding@resend.dev`)
-- `CONTACT_SUBJECT` (optional): custom email subject line
-
-If `RESEND_API_KEY` or `CONTACT_TO_EMAIL` is missing, the API returns `503` so submissions are not silently dropped.
+| Variable | Description |
+|----------|-------------|
+| `NODE_ENV` | `development` or `production` |
+| `PORT` | Local port for serving |
+| `SITE_URL` | Canonical public URL |
+| `RESEND_API_KEY` | Resend API key for contact form |
+| `CONTACT_TO_EMAIL` | Destination inbox |
 
 ## CI/CD
 
-GitHub Actions workflow (`.github/workflows/ci.yml`) runs on pushes and PRs:
-
+GitHub Actions runs on every PR:
 1. `npm ci`
 2. `npm run lint`
 3. `npm run build`
 
-## Security Notes
+## Security
 
-- No API keys or secrets should be committed; this project is static and should use environment-based configuration for deployment metadata only.
-- CSP is defined in each HTML page and should be strengthened further at the CDN/edge layer with response headers.
-- Service worker caches only same-origin `GET` requests with destination-aware strategies.
-- External third-party scripts were removed from `portfolio.html` to reduce supply-chain exposure.
+- No API keys committed
+- CSP defined per page
+- Service worker caches same origin GET only
+- Third party scripts removed from `portfolio.html`
 
-## Deployment Checklist
+## License
 
-1. Run `npm run ci` locally.
-2. Deploy with Docker or Vercel (`npx vercel`).
-3. Ensure CDN/edge security headers are enabled in production.
-4. Validate service worker updates by loading the site, then redeploying a new build.
+MIT License
+
+---
+
+**Built by Michael Preciado** — [Preciado Tech](https://preciado.tech) · [X @preciadotech](https://x.com/preciadotech)
