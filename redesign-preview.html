@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mario Preciado — Live Music, Street &amp; Portrait Photography · Bay Area</title>
+<meta name="description" content="Mario Preciado is a Bay Area photographer documenting live music, street, fashion, portraiture, and the community around it. Book a session." />
+<meta name="theme-color" content="#0a0a0c" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;900&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   MARIO PRECIADO — concert-pit neon zine
+   ============================================================ */
+
+:root{
+  --ink:        #07070a;
+  --paper:      #f3ede0;
+  --bone:       #c7c2b6;
+  --smoke:      rgba(255,255,255,.06);
+
+  --magenta:    #ff1f6b;
+  --cyan:       #00e6ff;
+  --acid:       #f3ff2b;
+  --violet:     #9900cc;
+
+  --display:    "Big Shoulders Display", "Arial Narrow", sans-serif;
+  --serif:      "Fraunces", "Times New Roman", serif;
+  --mono:       "JetBrains Mono", ui-monospace, monospace;
+
+  --ease:       cubic-bezier(.2,.8,.2,1);
+  --maxw:       1320px;
+  --gutter:     clamp(20px, 4vw, 56px);
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+html,body{ margin:0; padding:0; }
+html{ -webkit-font-smoothing:antialiased; scroll-behavior:smooth; }
+body{
+  background:var(--ink);
+  color:var(--paper);
+  font-family:var(--serif);
+  font-size:17px;
+  line-height:1.55;
+  overflow-x:hidden;
+  position:relative;
+}
+img,svg{ display:block; max-width:100%; }
+a{ color:inherit; text-decoration:none; }
+button{ font:inherit; cursor:pointer; border:0; background:none; color:inherit; }
+
+/* ---------- Atmospheric overlays (grain + halftone) ---------- */
+body::before{
+  /* film grain via SVG noise */
+  content:"";
+  position:fixed; inset:0;
+  pointer-events:none;
+  z-index:99;
+  opacity:.18;
+  mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .8 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+body::after{
+  /* slow magenta/cyan light leak */
+  content:"";
+  position:fixed; inset:0;
+  pointer-events:none;
+  z-index:1;
+  background:
+    radial-gradient(60% 40% at 12% 8%, rgba(255,31,107,.22), transparent 60%),
+    radial-gradient(50% 35% at 92% 18%, rgba(0,230,255,.16), transparent 65%),
+    radial-gradient(80% 60% at 50% 110%, rgba(153,0,204,.22), transparent 70%);
+  animation:drift 22s var(--ease) infinite alternate;
+}
+@keyframes drift{
+  0%   { transform:translate3d(0,0,0) scale(1); }
+  100% { transform:translate3d(-2%, 1%, 0) scale(1.05); }
+}
+
+/* ---------- Selection ---------- */
+::selection{ background:var(--magenta); color:var(--ink); }
+
+/* ---------- Type primitives ---------- */
+.eyebrow{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:var(--bone);
+}
+.eyebrow .dot{
+  display:inline-block; width:6px; height:6px; border-radius:50%;
+  background:var(--magenta);
+  margin-right:8px; vertical-align:middle;
+  box-shadow:0 0 12px var(--magenta);
+  animation:pulse 1.6s ease-in-out infinite;
+}
+@keyframes pulse{ 50% { opacity:.35; transform:scale(.85); } }
+
+h1,h2,h3{ font-family:var(--display); margin:0; line-height:.86; letter-spacing:-.01em; text-transform:uppercase; font-weight:900; font-stretch:75%; }
+.italic{ font-family:var(--serif); font-style:italic; font-weight:400; text-transform:none; letter-spacing:-.01em; }
+
+/* ---------- Wrapper ---------- */
+.wrap{ max-width:var(--maxw); margin:0 auto; padding:0 var(--gutter); position:relative; z-index:2; }
+
+/* ============================================================
+   NAV
+   ============================================================ */
+.nav{
+  position:fixed; top:0; left:0; right:0; z-index:50;
+  padding:14px var(--gutter);
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  background:linear-gradient(to bottom, rgba(7,7,10,.85), rgba(7,7,10,0));
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  transition:background .3s var(--ease), border-color .3s var(--ease);
+  border-bottom:1px solid transparent;
+}
+.nav.scrolled{
+  background:rgba(7,7,10,.78);
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.brand{ display:flex; align-items:center; gap:10px; }
+.brand-mark{
+  width:38px; height:38px; border-radius:50%;
+  background:
+    radial-gradient(circle at 30% 30%, var(--magenta), #b80f4c 70%);
+  display:grid; place-items:center;
+  font-family:var(--display); font-weight:900; font-size:18px; color:var(--ink);
+  letter-spacing:-.02em;
+  box-shadow:0 0 0 2px var(--ink), 0 0 0 3px var(--magenta), 0 8px 24px rgba(255,31,107,.35);
+  transform:rotate(-6deg);
+  position:relative;
+}
+.brand-mark::after{
+  /* sticker shine */
+  content:""; position:absolute; inset:5px; border-radius:50%;
+  background:linear-gradient(135deg, rgba(255,255,255,.35), transparent 40%);
+  pointer-events:none;
+}
+.brand-name{
+  font-family:var(--display); font-weight:900; letter-spacing:.02em;
+  font-size:18px; text-transform:uppercase;
+}
+.brand-name span{ color:var(--magenta); }
+
+.nav-links{ display:flex; gap:28px; align-items:center; }
+.nav-links a{
+  font-family:var(--mono); font-size:12px; letter-spacing:.18em; text-transform:uppercase;
+  position:relative; padding:6px 0; color:var(--paper);
+  transition:color .25s var(--ease);
+}
+.nav-links a::after{
+  content:""; position:absolute; left:0; bottom:0; height:2px; width:100%;
+  background:var(--magenta);
+  transform:scaleX(0); transform-origin:left;
+  transition:transform .35s var(--ease);
+}
+.nav-links a:hover{ color:var(--magenta); }
+.nav-links a:hover::after{ transform:scaleX(1); }
+
+.nav-cta{
+  font-family:var(--mono); font-size:12px; letter-spacing:.18em; text-transform:uppercase;
+  background:var(--magenta); color:var(--ink);
+  padding:11px 18px;
+  border-radius:999px;
+  display:inline-flex; align-items:center; gap:8px;
+  transition:transform .25s var(--ease), box-shadow .25s var(--ease), background .25s var(--ease);
+  box-shadow:0 0 0 1px var(--magenta), 0 8px 30px rgba(255,31,107,.45);
+  font-weight:600;
+}
+.nav-cta:hover{ transform:translateY(-1px); background:var(--acid); box-shadow:0 0 0 1px var(--acid), 0 10px 36px rgba(243,255,43,.4); }
+.nav-cta svg{ width:12px; height:12px; }
+
+.menu-btn{ display:none; }
+@media (max-width:880px){
+  .nav-links{ display:none; }
+  .menu-btn{ display:inline-flex; flex-direction:column; gap:4px; padding:8px; }
+  .menu-btn span{ width:22px; height:2px; background:var(--paper); display:block; }
+  .nav-cta{ padding:9px 14px; font-size:11px; }
+}
+
+/* ============================================================
+   HERO  (editorial cover LEFT + inquiry card RIGHT)
+   ============================================================ */
+.hero{
+  padding:140px var(--gutter) 80px;
+  max-width:var(--maxw);
+  margin:0 auto;
+  position:relative;
+  z-index:2;
+}
+.hero-meta-top{
+  display:flex; justify-content:space-between; align-items:center;
+  font-family:var(--mono); font-size:11px; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--bone);
+  padding-bottom:18px;
+  border-bottom:1px solid rgba(255,255,255,.1);
+  margin-bottom:32px;
+  gap:16px; flex-wrap:wrap;
+}
+.hero-meta-top .center{ color:var(--paper); }
+.hero-grid{
+  display:grid;
+  grid-template-columns: 1.35fr .85fr;
+  gap:56px;
+  align-items:start;
+}
+@media (max-width:980px){
+  .hero{ padding-top:120px; }
+  .hero-grid{ grid-template-columns: 1fr; gap:40px; }
+}
+
+/* --- LEFT cover --- */
+.cover-title{
+  font-size:clamp(60px, 11.5vw, 168px);
+  font-stretch:62%;
+  line-height:.82;
+  letter-spacing:-.02em;
+  color:var(--paper);
+}
+.cover-title .row{
+  display:block;
+  opacity:0; transform:translateY(40px);
+}
+.cover-title .row:nth-child(2){
+  color:transparent;
+  -webkit-text-stroke:1.5px var(--paper);
+}
+.cover-title .row:nth-child(2) em{
+  font-family:var(--serif); font-style:italic; font-weight:600;
+  font-stretch:100%;
+  -webkit-text-stroke:0;
+  color:var(--magenta);
+  display:inline-block;
+  transform:translateY(-.08em);
+  padding:0 .05em;
+}
+.cover-title .row .blink{
+  display:inline-block;
+  background:var(--acid); color:var(--ink);
+  padding:0 .1em;
+  transform:rotate(-2deg) translateY(-.04em);
+  font-stretch:62%;
+}
+
+.cover-lead{
+  margin:36px 0 0;
+  font-family:var(--serif);
+  font-size:clamp(16px, 1.4vw, 19px);
+  line-height:1.55;
+  color:var(--bone);
+  max-width:48ch;
+  opacity:0; transform:translateY(16px);
+}
+.cover-lead strong{ color:var(--paper); font-weight:600; }
+
+.cover-ctas{
+  display:flex; gap:14px; flex-wrap:wrap;
+  margin-top:34px;
+  opacity:0; transform:translateY(16px);
+}
+.btn{
+  font-family:var(--mono); font-size:12px; letter-spacing:.2em; text-transform:uppercase;
+  padding:14px 22px;
+  border-radius:999px;
+  display:inline-flex; align-items:center; gap:10px;
+  transition:transform .25s var(--ease), background .25s var(--ease), color .25s var(--ease), box-shadow .25s var(--ease);
+  font-weight:600;
+}
+.btn svg{ width:13px; height:13px; }
+.btn-primary{
+  background:var(--paper); color:var(--ink);
+  box-shadow:0 0 0 1px var(--paper), 0 10px 30px rgba(255,255,255,.12);
+}
+.btn-primary:hover{ background:var(--magenta); color:var(--ink); box-shadow:0 0 0 1px var(--magenta), 0 14px 38px rgba(255,31,107,.5); transform:translateY(-2px); }
+.btn-ghost{
+  background:transparent; color:var(--paper);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.25);
+}
+.btn-ghost:hover{ box-shadow:inset 0 0 0 1px var(--cyan); color:var(--cyan); transform:translateY(-2px); }
+
+/* Contact-sheet collage placeholder */
+.cover-collage{
+  margin-top:48px;
+  position:relative;
+  height:240px;
+  opacity:0; transform:translateY(20px);
+}
+.frame{
+  position:absolute;
+  border:1px dashed rgba(255,255,255,.45);
+  background:
+    repeating-linear-gradient(45deg, rgba(255,255,255,.025) 0 8px, transparent 8px 16px),
+    linear-gradient(135deg, #1b1b22, #0d0d12);
+  display:grid; place-items:center;
+  font-family:var(--mono); font-size:10px; letter-spacing:.2em; text-transform:uppercase;
+  color:rgba(255,255,255,.55);
+  text-align:center;
+  padding:10px;
+  box-shadow:0 16px 40px rgba(0,0,0,.55);
+  transition:transform .5s var(--ease);
+}
+.frame .label{ display:block; margin-bottom:4px; color:var(--paper); }
+.frame .sub{ color:var(--cyan); }
+.frame:hover{ transform:scale(1.04) !important; z-index:5; }
+
+.frame-1{ left:0;   top:0;    width:38%; height:78%; transform:rotate(-4deg); }
+.frame-2{ left:34%; top:18%;  width:34%; height:80%; transform:rotate(2deg); border-color:rgba(255,31,107,.7); }
+.frame-3{ left:64%; top:6%;   width:36%; height:88%; transform:rotate(-1.5deg); border-color:rgba(0,230,255,.6); }
+.frame-2 .sub{ color:var(--magenta); }
+.frame-3 .sub{ color:var(--cyan); }
+
+@media (max-width:540px){
+  .cover-collage{ height:200px; }
+}
+
+/* --- RIGHT inquiry card (ticket stub) --- */
+.ticket{
+  position:relative;
+  background:linear-gradient(180deg, #15151c, #0c0c12);
+  border:1px solid rgba(255,255,255,.1);
+  padding:28px 28px 32px;
+  border-radius:6px;
+  box-shadow:0 30px 80px rgba(0,0,0,.55), 0 0 0 1px rgba(255,31,107,.25);
+  opacity:0; transform:translateY(28px);
+  /* perforated top edge */
+  mask-image:
+    radial-gradient(circle at 8px 0, transparent 6px, #000 6.5px),
+    linear-gradient(#000,#000);
+  mask-composite:exclude;
+  -webkit-mask-composite:source-out;
+}
+.ticket::before{
+  content:"";
+  position:absolute; left:0; right:0; top:18px;
+  height:1px;
+  background:repeating-linear-gradient(to right, rgba(255,255,255,.25) 0 6px, transparent 6px 12px);
+}
+.ticket-stub{
+  display:flex; justify-content:space-between; align-items:center;
+  font-family:var(--mono); font-size:10px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--bone);
+  padding-bottom:14px;
+  margin-bottom:18px;
+  border-bottom:1px dashed rgba(255,255,255,.18);
+}
+.ticket-stub .serial{ color:var(--magenta); }
+
+.ticket h3{
+  font-family:var(--display); font-size:34px; line-height:.9; text-transform:uppercase;
+  font-stretch:75%;
+  margin-bottom:6px;
+}
+.ticket h3 em{
+  font-family:var(--serif); font-style:italic; font-weight:600;
+  font-stretch:100%;
+  color:var(--cyan);
+  text-transform:none;
+}
+.ticket-sub{
+  font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--bone);
+  margin-bottom:18px;
+}
+
+.field{ margin-bottom:14px; }
+.field label{
+  display:block;
+  font-family:var(--mono); font-size:10px; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--bone); margin-bottom:6px;
+}
+.field input, .field textarea, .field select{
+  width:100%;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.14);
+  color:var(--paper);
+  font:400 14px/1.4 var(--serif);
+  padding:11px 13px;
+  border-radius:3px;
+  transition:border-color .25s var(--ease), background .25s var(--ease), box-shadow .25s var(--ease);
+}
+.field textarea{ resize:vertical; min-height:80px; }
+.field input:focus, .field textarea:focus, .field select:focus{
+  outline:none;
+  border-color:var(--magenta);
+  background:rgba(255,31,107,.06);
+  box-shadow:0 0 0 3px rgba(255,31,107,.15);
+}
+.field-row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+@media (max-width:480px){ .field-row{ grid-template-columns:1fr; } }
+
+.field select{
+  appearance:none;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='%23ff1f6b' d='M6 8 0 0h12z'/></svg>");
+  background-repeat:no-repeat;
+  background-position:right 14px center;
+  padding-right:34px;
+}
+
+.ticket-submit{
+  width:100%;
+  background:var(--magenta);
+  color:var(--ink);
+  font-family:var(--mono); font-size:12px; letter-spacing:.22em; text-transform:uppercase;
+  padding:14px 16px;
+  border-radius:3px;
+  margin-top:8px;
+  display:flex; align-items:center; justify-content:center; gap:10px;
+  font-weight:600;
+  transition:background .25s var(--ease), transform .15s var(--ease), color .25s var(--ease);
+  box-shadow:0 8px 24px rgba(255,31,107,.4);
+}
+.ticket-submit:hover{ background:var(--acid); }
+.ticket-submit.sent{ background:var(--cyan); color:var(--ink); }
+.ticket-foot{
+  display:flex; justify-content:space-between;
+  margin-top:14px;
+  font-family:var(--mono); font-size:10px; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--bone);
+}
+.ticket-foot a{ color:var(--cyan); }
+.ticket-foot a:hover{ color:var(--magenta); }
+
+/* ============================================================
+   MARQUEE
+   ============================================================ */
+.marquee{
+  position:relative;
+  margin-top:30px;
+  padding:18px 0;
+  background:var(--paper);
+  color:var(--ink);
+  overflow:hidden;
+  border-top:1px solid var(--ink);
+  border-bottom:1px solid var(--ink);
+}
+.marquee-track{
+  display:flex; gap:60px; width:max-content;
+  animation:scroll 30s linear infinite;
+}
+.marquee-track span{
+  font-family:var(--display); font-weight:900; font-stretch:62%;
+  font-size:38px; letter-spacing:-.01em;
+  text-transform:uppercase;
+  display:inline-flex; align-items:center; gap:60px;
+  white-space:nowrap;
+}
+.marquee-track span:nth-child(2n){ color:var(--magenta); }
+.marquee-track span:nth-child(3n){ color:var(--violet); font-style:italic; font-family:var(--serif); font-stretch:100%; font-weight:600; font-size:30px; text-transform:none; }
+.marquee-track span svg{ width:18px; height:18px; flex-shrink:0; }
+@keyframes scroll{ to { transform:translateX(-50%); } }
+
+/* ============================================================
+   STATS STRIP
+   ============================================================ */
+.stats{
+  padding:64px var(--gutter);
+  max-width:var(--maxw);
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:24px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.stat{
+  padding-right:24px;
+  border-right:1px dashed rgba(255,255,255,.12);
+}
+.stat:last-child{ border-right:0; }
+.stat-num{
+  font-family:var(--display); font-weight:900; font-stretch:62%;
+  font-size:clamp(48px, 6vw, 88px);
+  line-height:.85; letter-spacing:-.02em;
+  color:var(--paper);
+}
+.stat-num em{
+  font-family:var(--serif); font-style:italic; font-weight:600; font-stretch:100%;
+  color:var(--cyan); font-size:.5em; vertical-align:.4em;
+}
+.stat-label{
+  font-family:var(--mono); font-size:11px; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--bone);
+  margin-top:14px;
+}
+@media (max-width:880px){
+  .stats{ grid-template-columns:repeat(2,1fr); gap:36px 20px; }
+  .stat{ border-right:0; padding-right:0; border-bottom:1px dashed rgba(255,255,255,.12); padding-bottom:24px; }
+  .stat:nth-last-child(-n+2){ border-bottom:0; padding-bottom:0; }
+}
+
+/* ============================================================
+   SECTION HEADING
+   ============================================================ */
+.section-head{
+  display:flex; align-items:flex-end; justify-content:space-between;
+  gap:30px; margin-bottom:42px;
+  border-bottom:1px solid rgba(255,255,255,.1);
+  padding-bottom:22px;
+}
+.section-head h2{
+  font-size:clamp(48px, 7vw, 100px);
+  font-stretch:62%;
+  letter-spacing:-.02em;
+  color:var(--paper);
+  line-height:.86;
+}
+.section-head h2 em{
+  font-family:var(--serif); font-style:italic; font-weight:600; font-stretch:100%;
+  color:var(--magenta);
+  text-transform:none;
+}
+.section-head .meta{
+  font-family:var(--mono); font-size:11px; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--bone);
+  white-space:nowrap;
+  padding-bottom:6px;
+}
+@media (max-width:700px){
+  .section-head{ flex-direction:column; align-items:flex-start; gap:16px; }
+}
+
+/* ============================================================
+   SERVICES
+   ============================================================ */
+.services{
+  padding:100px var(--gutter);
+  max-width:var(--maxw);
+  margin:0 auto;
+}
+.cards{
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  gap:0;
+  border-left:1px solid rgba(255,255,255,.1);
+}
+@media (max-width:980px){ .cards{ grid-template-columns:repeat(2,1fr); } }
+@media (max-width:560px){ .cards{ grid-template-columns:1fr; border-left:0; } }
+
+.card{
+  position:relative;
+  padding:32px 26px 36px;
+  border-right:1px solid rgba(255,255,255,.1);
+  border-top:1px solid rgba(255,255,255,.1);
+  border-bottom:1px solid rgba(255,255,255,.1);
+  overflow:hidden;
+  transition:color .35s var(--ease);
+  isolation:isolate;
+  cursor:pointer;
+  min-height:380px;
+  display:flex; flex-direction:column;
+}
+.card::before{
+  content:"";
+  position:absolute; inset:0;
+  background:var(--magenta);
+  transform:translateY(100%);
+  transition:transform .5s var(--ease);
+  z-index:-1;
+}
+.card:nth-child(2)::before{ background:var(--cyan); }
+.card:nth-child(3)::before{ background:var(--acid); }
+.card:nth-child(4)::before{ background:var(--violet); }
+.card:hover::before{ transform:translateY(0); }
+.card:hover{ color:var(--ink); }
+.card:nth-child(4):hover{ color:var(--paper); }
+.card:hover .card-icon{ color:var(--ink); }
+.card:nth-child(4):hover .card-icon{ color:var(--paper); }
+.card:hover .card-num{ color:var(--ink); }
+.card:nth-child(4):hover .card-num{ color:var(--paper); }
+.card:hover .card-list li{ border-color:rgba(7,7,10,.25); }
+.card:nth-child(4):hover .card-list li{ border-color:rgba(255,255,255,.2); }
+.card:hover .card-price{ color:var(--ink); border-color:var(--ink); }
+.card:nth-child(4):hover .card-price{ color:var(--paper); border-color:var(--paper); }
+
+.card-num{
+  font-family:var(--mono); font-size:11px; letter-spacing:.22em;
+  color:var(--bone);
+  transition:color .35s var(--ease);
+}
+.card-icon{
+  width:36px; height:36px;
+  margin:14px 0 24px;
+  color:var(--magenta);
+  transition:color .35s var(--ease);
+}
+.card:nth-child(2) .card-icon{ color:var(--cyan); }
+.card:nth-child(3) .card-icon{ color:var(--acid); }
+.card:nth-child(4) .card-icon{ color:var(--violet); }
+.card h3{
+  font-family:var(--display); font-weight:900; font-stretch:75%; text-transform:uppercase;
+  font-size:30px; line-height:.92; letter-spacing:-.01em;
+  color:inherit;
+  margin-bottom:10px;
+}
+.card p{
+  font-size:14px; line-height:1.55; color:inherit; opacity:.85;
+  margin:0 0 18px;
+}
+.card-list{ list-style:none; padding:0; margin:0 0 18px; }
+.card-list li{
+  font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+  padding:8px 0;
+  border-bottom:1px dashed rgba(255,255,255,.12);
+  display:flex; align-items:center; gap:8px;
+  transition:border-color .35s var(--ease);
+}
+.card-list li::before{
+  content:"+"; color:inherit; opacity:.6;
+}
+.card-price{
+  margin-top:auto;
+  padding-top:16px;
+  border-top:1px solid rgba(255,255,255,.15);
+  font-family:var(--mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--bone);
+  display:flex; justify-content:space-between; align-items:center;
+  transition:color .35s var(--ease), border-color .35s var(--ease);
+}
+.card-price strong{
+  font-family:var(--display); font-weight:900; font-stretch:75%; font-size:24px;
+  color:var(--paper);
+  letter-spacing:-.01em;
+  transition:color .35s var(--ease);
+}
+.card:hover .card-price strong{ color:var(--ink); }
+.card:nth-child(4):hover .card-price strong{ color:var(--paper); }
+
+/* ============================================================
+   THE REEL  (scroll-snap horizontal gallery)
+   ============================================================ */
+.reel-section{
+  padding:100px 0;
+  border-top:1px solid rgba(255,255,255,.06);
+  position:relative;
+}
+.reel-section .wrap{ margin-bottom:42px; }
+.reel-rail{
+  display:flex; gap:24px;
+  padding:0 var(--gutter) 30px;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  scrollbar-width:none;
+}
+.reel-rail::-webkit-scrollbar{ display:none; }
+
+.shot{
+  scroll-snap-align:start;
+  flex:0 0 auto;
+  width:clamp(260px, 32vw, 420px);
+  position:relative;
+}
+.shot:nth-child(odd){ margin-top:30px; }
+.shot:nth-child(3n){ width:clamp(220px, 26vw, 320px); margin-top:60px; }
+
+.shot-frame{
+  aspect-ratio:4/5;
+  border:1px dashed rgba(255,255,255,.4);
+  background:
+    repeating-linear-gradient(0deg, rgba(255,255,255,.03) 0 6px, transparent 6px 12px),
+    linear-gradient(135deg, #181820, #0a0a10);
+  display:grid; place-items:center;
+  color:rgba(255,255,255,.5);
+  text-align:center;
+  padding:18px;
+  font-family:var(--mono); font-size:10px; letter-spacing:.22em; text-transform:uppercase;
+  position:relative;
+  overflow:hidden;
+  transition:transform .5s var(--ease);
+}
+.shot:nth-child(3n+1) .shot-frame{ aspect-ratio:1/1; border-color:rgba(255,31,107,.55); }
+.shot:nth-child(3n+2) .shot-frame{ aspect-ratio:3/4; border-color:rgba(0,230,255,.5); }
+.shot:nth-child(3n) .shot-frame{ aspect-ratio:4/5; border-color:rgba(243,255,43,.5); }
+
+.shot-frame::after{
+  /* CRT scan lines */
+  content:"";
+  position:absolute; inset:0;
+  background:repeating-linear-gradient(0deg, rgba(0,0,0,.18) 0 2px, transparent 2px 4px);
+  pointer-events:none; opacity:.5;
+}
+.shot-frame .label-big{
+  font-family:var(--display); font-weight:900; font-stretch:62%;
+  font-size:clamp(28px, 3vw, 44px);
+  color:var(--paper); letter-spacing:-.02em; line-height:.9;
+  text-transform:uppercase;
+}
+.shot-frame .label-sub{ margin-top:6px; }
+.shot:hover .shot-frame{ transform:translateY(-6px); }
+
+.shot-meta{
+  display:flex; justify-content:space-between; align-items:center;
+  margin-top:14px;
+  font-family:var(--mono); font-size:10px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--bone);
+}
+.shot-meta .venue{ color:var(--paper); }
+.shot-meta .stock{ color:var(--cyan); }
+
+.reel-hint{
+  display:flex; align-items:center; gap:10px;
+  font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--bone);
+  margin-top:18px;
+  padding:0 var(--gutter);
+}
+.reel-hint .line{ flex:1; height:1px; background:rgba(255,255,255,.1); }
+
+/* ============================================================
+   WARNING STRIPE BAND
+   ============================================================ */
+.stripe{
+  height:36px;
+  background:
+    repeating-linear-gradient(-45deg, var(--acid) 0 22px, var(--ink) 22px 44px);
+  border-top:1px solid var(--ink);
+  border-bottom:1px solid var(--ink);
+}
+
+/* ============================================================
+   HOW IT WORKS
+   ============================================================ */
+.howto{
+  padding:100px var(--gutter);
+  max-width:var(--maxw);
+  margin:0 auto;
+}
+.howto-grid{
+  display:grid; grid-template-columns:repeat(3, 1fr); gap:30px;
+}
+@media (max-width:880px){ .howto-grid{ grid-template-columns:1fr; gap:20px; } }
+.step{
+  padding:30px 24px;
+  border:1px solid rgba(255,255,255,.1);
+  background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0));
+  position:relative;
+  overflow:hidden;
+}
+.step::before{
+  content:"";
+  position:absolute; left:0; top:0; width:3px; height:0;
+  background:var(--magenta);
+  transition:height .6s var(--ease);
+}
+.step.in::before{ height:100%; }
+.step:nth-child(2)::before{ background:var(--cyan); }
+.step:nth-child(3)::before{ background:var(--acid); }
+.step-num{
+  font-family:var(--display); font-weight:900; font-stretch:62%;
+  font-size:80px; line-height:.85; color:var(--paper);
+  letter-spacing:-.03em;
+}
+.step-num em{
+  font-family:var(--serif); font-style:italic; font-weight:600; font-stretch:100%;
+  color:var(--magenta); font-size:.6em; vertical-align:.5em;
+}
+.step:nth-child(2) .step-num em{ color:var(--cyan); }
+.step:nth-child(3) .step-num em{ color:var(--acid); }
+.step h3{
+  font-family:var(--display); font-weight:900; font-stretch:75%;
+  font-size:28px; text-transform:uppercase; letter-spacing:-.01em;
+  margin:18px 0 10px;
+}
+.step p{
+  font-family:var(--serif); font-size:15px; line-height:1.55;
+  color:var(--bone); margin:0;
+}
+
+/* ============================================================
+   QUOTE STRIP
+   ============================================================ */
+.quote{
+  padding:120px var(--gutter);
+  max-width:var(--maxw);
+  margin:0 auto;
+  text-align:center;
+  position:relative;
+}
+.quote blockquote{
+  font-family:var(--serif); font-style:italic; font-weight:400;
+  font-size:clamp(32px, 4.4vw, 64px);
+  line-height:1.15;
+  color:var(--paper);
+  max-width:18ch; margin:0 auto;
+  letter-spacing:-.02em;
+}
+.quote blockquote em{
+  color:var(--magenta);
+  font-style:italic;
+}
+.quote .attrib{
+  margin-top:36px;
+  font-family:var(--mono); font-size:11px; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--bone);
+}
+.quote .attrib strong{ color:var(--paper); }
+.quote::before, .quote::after{
+  content:"";
+  position:absolute;
+  height:1px;
+  width:140px;
+  background:rgba(255,255,255,.18);
+  top:50%;
+}
+.quote::before{ left:var(--gutter); }
+.quote::after{ right:var(--gutter); }
+@media (max-width:880px){ .quote::before, .quote::after{ display:none; } }
+
+/* ============================================================
+   FINAL CTA
+   ============================================================ */
+.final{
+  padding:120px var(--gutter) 100px;
+  max-width:var(--maxw);
+  margin:0 auto;
+  text-align:center;
+  position:relative;
+}
+.final .small{
+  font-family:var(--mono); font-size:12px; letter-spacing:.3em; text-transform:uppercase;
+  color:var(--bone);
+  margin-bottom:30px;
+}
+.final h2{
+  font-family:var(--display); font-weight:900; font-stretch:62%;
+  font-size:clamp(52px, 9vw, 140px);
+  letter-spacing:-.02em; line-height:.86;
+  text-transform:uppercase;
+  color:var(--paper);
+  margin-bottom:40px;
+}
+.final h2 em{
+  font-family:var(--serif); font-style:italic; font-weight:600; font-stretch:100%;
+  color:var(--magenta);
+  text-transform:none;
+}
+.final-mail{
+  display:inline-block;
+  font-family:var(--display); font-weight:900; font-stretch:62%;
+  font-size:clamp(28px, 5vw, 60px);
+  letter-spacing:-.01em;
+  color:var(--paper);
+  padding:18px 28px;
+  border-top:2px solid var(--magenta);
+  border-bottom:2px solid var(--magenta);
+  text-transform:lowercase;
+  transition:background .3s var(--ease), color .3s var(--ease), letter-spacing .3s var(--ease);
+}
+.final-mail:hover{
+  background:var(--magenta); color:var(--ink);
+  letter-spacing:.01em;
+}
+.final-row{
+  margin-top:36px;
+  display:flex; gap:14px; justify-content:center; flex-wrap:wrap;
+  font-family:var(--mono); font-size:11px; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--bone);
+}
+.final-row a{ color:var(--paper); border-bottom:1px dashed rgba(255,255,255,.25); padding-bottom:2px; }
+.final-row a:hover{ color:var(--magenta); border-color:var(--magenta); }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer{
+  border-top:1px solid rgba(255,255,255,.1);
+  padding:50px var(--gutter) 30px;
+  max-width:var(--maxw);
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:1.4fr 1fr 1fr 1fr;
+  gap:40px;
+  font-family:var(--mono); font-size:12px; letter-spacing:.06em;
+  color:var(--bone);
+}
+@media (max-width:780px){ footer{ grid-template-columns:1fr 1fr; gap:30px 24px; } }
+footer h4{
+  font-family:var(--mono); font-size:11px; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--paper); margin:0 0 14px;
+  font-weight:600;
+}
+footer ul{ list-style:none; padding:0; margin:0; }
+footer ul li{ padding:5px 0; }
+footer ul li a:hover{ color:var(--magenta); }
+.footer-brand p{
+  font-family:var(--serif); font-style:italic; font-size:14px; line-height:1.5;
+  color:var(--bone); margin:14px 0 0; max-width:32ch;
+}
+
+.footer-bar{
+  margin-top:40px;
+  padding-top:22px;
+  border-top:1px dashed rgba(255,255,255,.12);
+  display:flex; justify-content:space-between; align-items:center;
+  font-family:var(--mono); font-size:10px; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--bone);
+  flex-wrap:wrap; gap:12px;
+}
+.footer-bar .credit{ color:var(--paper); }
+.footer-bar .credit em{ font-family:var(--serif); font-style:italic; color:var(--magenta); text-transform:none; letter-spacing:0; }
+
+/* ============================================================
+   SCROLL REVEAL
+   ============================================================ */
+.reveal{ opacity:0; transform:translateY(28px); transition:opacity .8s var(--ease), transform .8s var(--ease); }
+.reveal.in{ opacity:1; transform:translateY(0); }
+
+/* ============================================================
+   HERO INTRO (staggered)
+   ============================================================ */
+.hero.loaded .cover-title .row{
+  animation:rise .8s var(--ease) forwards;
+}
+.hero.loaded .cover-title .row:nth-child(1){ animation-delay:.15s; }
+.hero.loaded .cover-title .row:nth-child(2){ animation-delay:.30s; }
+.hero.loaded .cover-title .row:nth-child(3){ animation-delay:.45s; }
+.hero.loaded .cover-lead{    animation:rise .8s var(--ease) .65s forwards; }
+.hero.loaded .cover-ctas{    animation:rise .8s var(--ease) .80s forwards; }
+.hero.loaded .cover-collage{ animation:rise .9s var(--ease) .95s forwards; }
+.hero.loaded .ticket{        animation:rise 1s var(--ease) .55s forwards; }
+@keyframes rise{ to { opacity:1; transform:translateY(0); } }
+
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAV
+     ============================================================ -->
+<nav class="nav" id="nav">
+  <a href="#" class="brand" aria-label="Mario Preciado home">
+    <span class="brand-mark">MP</span>
+    <span class="brand-name">MARIO <span>PRECIADO</span></span>
+  </a>
+
+  <div class="nav-links">
+    <a href="#work">Work</a>
+    <a href="#services">Services</a>
+    <a href="#reel">The Reel</a>
+    <a href="#how">How it works</a>
+    <a href="#contact">Contact</a>
+  </div>
+
+  <a href="#inquire" class="nav-cta">
+    Book a shoot
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 5 7 7-7 7"/></svg>
+  </a>
+
+  <button class="menu-btn" aria-label="Open menu"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- ============================================================
+     HERO  (editorial cover left + inquiry ticket right)
+     ============================================================ -->
+<section class="hero" id="home">
+  <div class="hero-meta-top">
+    <span>Bay Area · CA</span>
+    <span class="center"><span class="eyebrow"><span class="dot"></span>NOW BOOKING · SUMMER ’26 NIGHTS</span></span>
+    <span>Issue No. 26 / Vol. I</span>
+  </div>
+
+  <div class="hero-grid">
+
+    <!-- LEFT: editorial cover -->
+    <div class="cover">
+      <h1 class="cover-title">
+        <span class="row">Framing</span>
+        <span class="row">the <em>Bay’s</em></span>
+        <span class="row">wild <span class="blink">hours</span>.</span>
+      </h1>
+
+      <p class="cover-lead">
+        I’m <strong>Mario Preciado</strong>, a Bay Area photographer chasing live music, street, fashion, portraiture, art culture and the community pulsing around it. My focus is the <strong>style and vibrant colors</strong> that reflect the atmosphere of these subjects and the nights they happen in.
+      </p>
+
+      <div class="cover-ctas">
+        <a href="#inquire" class="btn btn-primary">
+          Book the night
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 5 7 7-7 7"/></svg>
+        </a>
+        <a href="#reel" class="btn btn-ghost">
+          See the reel
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m10 8 6 4-6 4z"/></svg>
+        </a>
+      </div>
+
+      <!-- collage of contact-sheet placeholders -->
+      <div class="cover-collage" aria-hidden="true">
+        <div class="frame frame-1">
+          <div>
+            <span class="label">Live · 001</span>
+            <span class="sub">Fillmore / 2024</span>
+          </div>
+        </div>
+        <div class="frame frame-2">
+          <div>
+            <span class="label">Street · 014</span>
+            <span class="sub">Mission · golden hr</span>
+          </div>
+        </div>
+        <div class="frame frame-3">
+          <div>
+            <span class="label">Portrait · 007</span>
+            <span class="sub">Oakland · Portra 400</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: inquiry ticket -->
+    <aside class="ticket" id="inquire">
+      <div class="ticket-stub">
+        <span>Admit · One Shoot</span>
+        <span class="serial">№ MP-026-A</span>
+      </div>
+
+      <h3>Book the <em>night</em>.</h3>
+      <p class="ticket-sub">Reply within 24 hours · Bay Area + travel</p>
+
+      <form id="inquiry" novalidate>
+        <div class="field">
+          <label for="name">Name</label>
+          <input id="name" name="name" type="text" required autocomplete="name" placeholder="Your name" />
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" required autocomplete="email" placeholder="you@email.com" />
+          </div>
+          <div class="field">
+            <label for="date">Shoot date</label>
+            <input id="date" name="date" type="text" placeholder="MM / DD" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="type">Shoot type</label>
+          <select id="type" name="type">
+            <option>Live music — show / venue</option>
+            <option>Portrait — studio or street</option>
+            <option>Editorial / fashion</option>
+            <option>Event / community</option>
+            <option>Something else</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="msg">The vibe</label>
+          <textarea id="msg" name="msg" rows="3" placeholder="Headliner? Venue? Mood? Anything that helps me show up dialed in."></textarea>
+        </div>
+
+        <button type="submit" class="ticket-submit" id="submit">
+          Send it
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg>
+        </button>
+
+        <div class="ticket-foot">
+          <span>Or DM <a href="https://instagram.com/mariopreciado.art" target="_blank" rel="noopener">@mariopreciado.art</a></span>
+          <span>Roll #001</span>
+        </div>
+      </form>
+    </aside>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     MARQUEE
+     ============================================================ -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Live Music <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span>
+    <span>Street</span>
+    <span>Fashion</span>
+    <span>— Portraiture —</span>
+    <span>Art Culture</span>
+    <span>Community</span>
+    <span>Bay Area Native</span>
+    <span>— Vibrant Colors —</span>
+    <span>Live Music <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span>
+    <span>Street</span>
+    <span>Fashion</span>
+    <span>— Portraiture —</span>
+    <span>Art Culture</span>
+    <span>Community</span>
+    <span>Bay Area Native</span>
+    <span>— Vibrant Colors —</span>
+  </div>
+</div>
+
+<!-- ============================================================
+     STATS
+     ============================================================ -->
+<section class="stats reveal">
+  <div class="stat">
+    <div class="stat-num">200<em>+</em></div>
+    <div class="stat-label">Nights documented</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">2<em>cats.</em></div>
+    <div class="stat-label">Live Music · Visuals</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">SF<em>–OAK</em></div>
+    <div class="stat-label">Bay Area · Travel ok</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">24<em>hr</em></div>
+    <div class="stat-label">Inquiry response</div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SERVICES
+     ============================================================ -->
+<section class="services" id="services">
+  <div class="section-head reveal">
+    <h2>What I <em>shoot</em>.</h2>
+    <div class="meta">§ 01 · Services</div>
+  </div>
+
+  <div class="cards">
+
+    <article class="card reveal">
+      <div class="card-num">01 / Live</div>
+      <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+      </svg>
+      <h3>Live<br>Music</h3>
+      <p>Pit-side coverage for headliners, openers, DIY warehouse sets, and after-show portraits. Pulled in the room’s real colors.</p>
+      <ul class="card-list">
+        <li>Stage + pit + behind-the-scenes</li>
+        <li>Same-night social edits</li>
+        <li>Tour + venue rolling rates</li>
+      </ul>
+      <div class="card-price"><span>From</span><strong>$450 / set</strong></div>
+    </article>
+
+    <article class="card reveal">
+      <div class="card-num">02 / Portrait</div>
+      <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>
+      </svg>
+      <h3>Portrait<br>&amp; Street</h3>
+      <p>One-on-one sessions on location across SF, Oakland, the Mission. Direction that feels candid, never posed.</p>
+      <ul class="card-list">
+        <li>2-hr session · 25 edits</li>
+        <li>Wardrobe + spot scouting</li>
+        <li>Color or B&amp;W finish</li>
+      </ul>
+      <div class="card-price"><span>From</span><strong>$350 / 2 hr</strong></div>
+    </article>
+
+    <article class="card reveal">
+      <div class="card-num">03 / Editorial</div>
+      <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 4h16v16H4z"/><path d="M4 9h16"/><path d="M9 9v11"/>
+      </svg>
+      <h3>Editorial<br>&amp; Fashion</h3>
+      <p>Concept-driven shoots for designers, magazines, and brands. From mood-board to printed spread, I move with the team.</p>
+      <ul class="card-list">
+        <li>Half / full-day rates</li>
+        <li>Crew + location coord</li>
+        <li>Usage licensed à la carte</li>
+      </ul>
+      <div class="card-price"><span>From</span><strong>$900 / day</strong></div>
+    </article>
+
+    <article class="card reveal">
+      <div class="card-num">04 / Community</div>
+      <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><circle cx="9" cy="8" r="3"/><path d="M16 3a4 4 0 0 1 0 8"/><path d="M21 21v-2a4 4 0 0 0-3-3.87"/>
+      </svg>
+      <h3>Art &amp;<br>Community</h3>
+      <p>Openings, block parties, pop-ups, residencies. The shows that don’t make the listings — the ones that hold the scene together.</p>
+      <ul class="card-list">
+        <li>Sliding scale for indie orgs</li>
+        <li>Print-ready archive set</li>
+        <li>Crew + community discount</li>
+      </ul>
+      <div class="card-price"><span>Inquire</span><strong>Sliding</strong></div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     STRIPE
+     ============================================================ -->
+<div class="stripe" aria-hidden="true"></div>
+
+<!-- ============================================================
+     THE REEL — scroll-snap gallery
+     ============================================================ -->
+<section class="reel-section" id="reel">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2>The <em>reel</em>.</h2>
+      <div class="meta">§ 02 · Recent rolls · Drag →</div>
+    </div>
+  </div>
+
+  <div class="reel-rail" id="reel-rail">
+    <div class="shot">
+      <div class="shot-frame">
+        <div>
+          <div class="label-big">Live · 001</div>
+          <div class="label-sub">Fillmore Stage</div>
+        </div>
+      </div>
+      <div class="shot-meta"><span class="venue">Fillmore SF</span><span class="stock">Portra 800</span></div>
+    </div>
+    <div class="shot">
+      <div class="shot-frame">
+        <div>
+          <div class="label-big">Street · 014</div>
+          <div class="label-sub">Mission · 6:42 pm</div>
+        </div>
+      </div>
+      <div class="shot-meta"><span class="venue">24th &amp; Mission</span><span class="stock">Digital</span></div>
+    </div>
+    <div class="shot">
+      <div class="shot-frame">
+        <div>
+          <div class="label-big">Portrait · 007</div>
+          <div class="label-sub">Oakland warehouse</div>
+        </div>
+      </div>
+      <div class="shot-meta"><span class="venue">West Oakland</span><span class="stock">Portra 400</span></div>
+    </div>
+    <div class="shot">
+      <div class="shot-frame">
+        <div>
+          <div class="label-big">Visuals · 011</div>
+          <div class="label-sub">Neon sign study</div>
+        </div>
+      </div>
+      <div class="shot-meta"><span class="venue">Chinatown</span><span class="stock">Cinestill 800T</span></div>
+    </div>
+    <div class="shot">
+      <div class="shot-frame">
+        <div>
+          <div class="label-big">Live · 022</div>
+          <div class="label-sub">DIY warehouse</div>
+        </div>
+      </div>
+      <div class="shot-meta"><span class="venue">Hunters Point</span><span class="stock">Digital</span></div>
+    </div>
+    <div class="shot">
+      <div class="shot-frame">
+        <div>
+          <div class="label-big">Fashion · 003</div>
+          <div class="label-sub">Rooftop golden hr</div>
+        </div>
+      </div>
+      <div class="shot-meta"><span class="venue">SoMa rooftop</span><span class="stock">Portra 160</span></div>
+    </div>
+    <div class="shot">
+      <div class="shot-frame">
+        <div>
+          <div class="label-big">Visuals · 016</div>
+          <div class="label-sub">Crowd at midnight</div>
+        </div>
+      </div>
+      <div class="shot-meta"><span class="venue">Independent SF</span><span class="stock">Push +1</span></div>
+    </div>
+    <div class="shot">
+      <div class="shot-frame">
+        <div>
+          <div class="label-big">Community · 009</div>
+          <div class="label-sub">Block party</div>
+        </div>
+      </div>
+      <div class="shot-meta"><span class="venue">East Oakland</span><span class="stock">Digital</span></div>
+    </div>
+  </div>
+
+  <div class="reel-hint">
+    <span class="line"></span>
+    <span>Drag · Swipe · 30 of 187 frames</span>
+    <span class="line"></span>
+  </div>
+</section>
+
+<!-- ============================================================
+     HOW IT WORKS
+     ============================================================ -->
+<section class="howto" id="how">
+  <div class="section-head reveal">
+    <h2>How a <em>night</em> gets made.</h2>
+    <div class="meta">§ 03 · Process</div>
+  </div>
+
+  <div class="howto-grid">
+    <article class="step reveal">
+      <div class="step-num">01<em>↘</em></div>
+      <h3>Inquire</h3>
+      <p>Send the ticket. Tell me the date, the venue, the headliner, the feeling you’re after. I respond within 24 hours with a rough plan and pricing.</p>
+    </article>
+    <article class="step reveal">
+      <div class="step-num">02<em>↘</em></div>
+      <h3>Lock the night</h3>
+      <p>50% retainer holds the date. We trade refs, confirm credentials and contacts, and I show up early to read the room before doors open.</p>
+    </article>
+    <article class="step reveal">
+      <div class="step-num">03<em>↘</em></div>
+      <h3>Get the roll</h3>
+      <p>Same-night socials within 48 hours. Full edited gallery, color-graded and print-ready, inside two weeks. Archive kept forever.</p>
+    </article>
+  </div>
+</section>
+
+<!-- ============================================================
+     QUOTE
+     ============================================================ -->
+<section class="quote reveal">
+  <blockquote>
+    Mario shows up <em>before</em> the lights drop and leaves with the only frames that mattered.
+  </blockquote>
+  <div class="attrib">
+    <strong>Tour Manager</strong> · West Coast residency · 2025
+  </div>
+</section>
+
+<!-- ============================================================
+     FINAL CTA
+     ============================================================ -->
+<section class="final reveal" id="contact">
+  <div class="small">Let’s make a shoot.</div>
+  <h2>
+    Got a <em>night</em><br>
+    that needs a <em>camera</em>?
+  </h2>
+  <a href="mailto:marioopreciadoo@gmail.com" class="final-mail">marioopreciadoo@gmail.com</a>
+  <div class="final-row">
+    <a href="https://instagram.com/mariopreciado.art" target="_blank" rel="noopener">@mariopreciado.art</a>
+    <span>·</span>
+    <a href="#inquire">Use the inquiry form ↑</a>
+    <span>·</span>
+    <span>Bay Area · Travel OK</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer>
+  <div class="footer-brand">
+    <div class="brand" style="margin-bottom:14px">
+      <span class="brand-mark" style="width:30px;height:30px;font-size:14px;">MP</span>
+      <span class="brand-name" style="font-size:14px">MARIO <span>PRECIADO</span></span>
+    </div>
+    <p>Documenting the Bay Area’s wild hours — live music, street, fashion, portraiture, art culture, and the community around it.</p>
+  </div>
+  <div>
+    <h4>Work</h4>
+    <ul>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#reel">The Reel</a></li>
+      <li><a href="portfolio.html">Full Portfolio</a></li>
+    </ul>
+  </div>
+  <div>
+    <h4>Studio</h4>
+    <ul>
+      <li><a href="about.html">About</a></li>
+      <li><a href="#how">Process</a></li>
+      <li><a href="#contact">Press kit</a></li>
+    </ul>
+  </div>
+  <div>
+    <h4>Connect</h4>
+    <ul>
+      <li><a href="mailto:marioopreciadoo@gmail.com">Email</a></li>
+      <li><a href="https://instagram.com/mariopreciado.art" target="_blank" rel="noopener">Instagram</a></li>
+      <li><a href="#inquire">Book a shoot</a></li>
+    </ul>
+  </div>
+
+  <div class="footer-bar" style="grid-column:1/-1">
+    <span>© 2026 Mario Preciado · Bay Area · All rights reserved</span>
+    <span class="credit">Preview by <em>Preciado Tech</em></span>
+  </div>
+</footer>
+
+<script>
+/* ===== Nav scroll state ===== */
+const nav = document.getElementById('nav');
+const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 24);
+window.addEventListener('scroll', onScroll, { passive:true });
+onScroll();
+
+/* ===== Hero staggered intro ===== */
+requestAnimationFrame(() => {
+  document.querySelector('.hero')?.classList.add('loaded');
+});
+
+/* ===== Cinematic scroll reveals ===== */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting){
+      // Stagger siblings inside a row
+      const parent = e.target.parentElement;
+      const siblings = parent ? [...parent.children].filter(c => c.classList.contains('reveal')) : [];
+      const idx = Math.max(0, siblings.indexOf(e.target));
+      e.target.style.transitionDelay = (idx * 80) + 'ms';
+      e.target.classList.add('in');
+      io.unobserve(e.target);
+    }
+  });
+}, { rootMargin:'0px 0px -10% 0px', threshold:.12 });
+
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ===== Step bar animation ===== */
+const stepIo = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting){ e.target.classList.add('in'); stepIo.unobserve(e.target); }
+  });
+}, { threshold:.4 });
+document.querySelectorAll('.step').forEach(el => stepIo.observe(el));
+
+/* ===== Inquiry form ===== */
+const form = document.getElementById('inquiry');
+const submit = document.getElementById('submit');
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const name = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  if (!name || !/^\S+@\S+\.\S+$/.test(email)){
+    submit.textContent = 'Add name + email';
+    submit.style.background = 'var(--acid)';
+    setTimeout(() => {
+      submit.innerHTML = 'Send it <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg>';
+      submit.style.background = '';
+    }, 1800);
+    return;
+  }
+  submit.classList.add('sent');
+  submit.innerHTML = 'Inquiry sent — check your inbox';
+  setTimeout(() => {
+    submit.classList.remove('sent');
+    submit.innerHTML = 'Send it <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg>';
+    form.reset();
+  }, 3200);
+});
+
+/* ===== Reel drag-scroll ===== */
+const rail = document.getElementById('reel-rail');
+let isDown = false, startX = 0, scrollLeft = 0;
+rail.addEventListener('pointerdown', (e) => {
+  isDown = true; rail.setPointerCapture(e.pointerId);
+  startX = e.pageX - rail.offsetLeft; scrollLeft = rail.scrollLeft;
+  rail.style.cursor = 'grabbing';
+});
+rail.addEventListener('pointermove', (e) => {
+  if (!isDown) return;
+  const x = e.pageX - rail.offsetLeft;
+  rail.scrollLeft = scrollLeft - (x - startX) * 1.2;
+});
+['pointerup','pointercancel','pointerleave'].forEach(ev => rail.addEventListener(ev, () => { isDown = false; rail.style.cursor = ''; }));
+</script>
+
+</body>
+</html>
