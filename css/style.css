@@ -46,6 +46,11 @@
     --transition-medium: 0.3s;
     --transition-slow: 0.5s;
 
+    /* Easing curves for consistent UI animations */
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-smooth: ease-out;
+
     /* Layout */
     --header-height: 70px;
 
@@ -348,9 +353,10 @@ header nav ul li {
 }
 
 header nav ul li a {
-    transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-        border-bottom 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-        text-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: color 0.25s var(--ease-out),
+        text-shadow 0.35s var(--ease-smooth),
+        filter 0.25s ease-out,
+        transform 0.3s var(--ease-spring);
     align-items: center;
     /* Center items horizontally */
     font-size: 1.2rem;
@@ -363,34 +369,57 @@ header nav ul li a {
     /* Uppercase text */
     padding: 0 10px 3px 10px;
     /* Balanced padding for clean look and spacing */
-    border-bottom: 1px solid transparent;
-    /* Thinner border */
+    border-bottom: 2px solid transparent;
+    /* Thinner border, always present for clean animation */
     margin: 0 8px;
     /* Balanced spacing between items */
     letter-spacing: 1px;
     /* Restored to user preference */
+    position: relative;
+    /* For ::before pseudo-element */
     /* Performance optimizations */
     transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
+    will-change: filter, text-shadow, color;
+}
+
+header nav ul li a::before {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: #ffffff;
+    transform: translateX(-50%);
+    transition: width 0.35s var(--ease-out);
 }
 
 header nav ul li a:hover {
     color: #ffffff;
     /* Stay white on hover */
-    border-bottom: 2px solid #ffffff;
-    /* White underline on hover */
+    filter: brightness(1.1);
+    /* Subtle brightness boost on hover */
     text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
     /* Subtle glow effect */
-    transform: translate3d(0, -1px, 0);
-    /* Subtle lift effect */
 }
 
 header nav ul li a.active {
-    border-bottom: 2px solid #ffffff;
-    /* White underline for active page */
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
-    /* Slight glow for active page */
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+    /* Persistent glow for active page */
+}
+
+header nav ul li a.active::before {
+    width: 100%;
+    /* Persistent active indicator */
+}
+
+header nav ul li a:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.8);
+    outline-offset: 2px;
+    border-radius: 2px;
 }
 
 /* Wrapper for logo and title — centered absolutely in header */
@@ -683,21 +712,25 @@ header nav ul li a.active {
     text-decoration: none;
     text-transform: uppercase;
     font-weight: bold;
-    padding: 0.4rem 0.8rem;
-    /* Slightly reduced padding */
+    padding: 0.6rem 1.2rem;
+    /* Increased padding for better touch target (48x48px minimum) */
     margin: 0.3rem 0;
     /* Adjusted vertical margin */
     display: inline-block;
     position: relative;
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-        color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-        text-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 0.3s var(--ease-spring),
+        color 0.25s var(--ease-out),
+        text-shadow 0.3s var(--ease-smooth),
+        font-weight 0.25s ease-out,
+        letter-spacing 0.25s ease-out;
     letter-spacing: 2px;
     /* Reduced letter spacing for better fit */
     /* Performance optimization */
     transform: translate3d(0, 0, 0);
-    will-change: transform, color;
+    will-change: transform, color, text-shadow;
     -webkit-font-smoothing: antialiased;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 .mobile-nav ul li a::after {
@@ -708,20 +741,53 @@ header nav ul li a.active {
     bottom: 0;
     left: 50%;
     background-color: var(--accent-color);
-    transition: width 0.3s ease, left 0.3s ease;
+    transition: width 0.35s var(--ease-out), left 0.35s var(--ease-out);
+    transform: translateX(-50%);
 }
 
-.mobile-nav ul li a:hover,
+.mobile-nav ul li a::before {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--accent-color);
+    transition: width 0.35s var(--ease-out);
+}
+
+.mobile-nav ul li a:hover {
+    color: var(--accent-color);
+    transform: scale(1.03) translateY(-0.5px);
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+.mobile-nav ul li a:hover::after {
+    width: 100%;
+    left: 0;
+}
+
 .mobile-nav ul li a.active {
     color: var(--accent-color);
-    transform: scale(1.05);
-    text-shadow: var(--glow-shadow);
+    transform: scale(1.03) translateY(-0.5px);
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+    font-weight: 900;
+    letter-spacing: 2.5px;
 }
 
-.mobile-nav ul li a:hover::after,
 .mobile-nav ul li a.active::after {
     width: 100%;
     left: 0;
+}
+
+.mobile-nav ul li a.active::before {
+    width: 100%;
+}
+
+.mobile-nav ul li a:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.8);
+    outline-offset: 3px;
+    border-radius: 2px;
 }
 
 /* Desktop adjustments for header spacing and hamburger menu */
@@ -1349,7 +1415,13 @@ section {
     font-family: var(--font-primary);
     font-size: 1rem;
     cursor: pointer;
-    transition: all 0.2s;
+    transition:
+        box-shadow 0.3s var(--ease-out),
+        transform 0.3s var(--ease-spring),
+        filter 0.3s ease-out,
+        color 0.3s ease-out,
+        text-shadow 0.3s ease-out,
+        background-color 0.3s ease-out;
     text-transform: uppercase;
     letter-spacing: 1px;
     min-width: 100px;
@@ -1358,22 +1430,54 @@ section {
     outline: none;
     z-index: 10;
     /* Ensure buttons are clickable */
+    will-change: transform, box-shadow, filter;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+.category-button::before {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: currentColor;
+    transition: width 0.35s var(--ease-out);
 }
 
 .category-button:hover {
     background-color: var(--color-black);
-    transform: translateY(-1px);
-    box-shadow: 0 0 10px var(--color-white);
-    text-shadow: 0 0 5px var(--color-white);
+    transform: scale(1.04);
+    filter: brightness(1.1);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.4),
+                0 0 25px rgba(255, 255, 255, 0.15);
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+.category-button:active {
+    transform: scale(0.98);
 }
 
 .category-button.active,
 .category-button[data-active="true"] {
     background-color: var(--color-black);
     color: var(--color-white);
-    box-shadow: 0 0 5px var(--color-white), 0 0 10px var(--color-white);
-    transform: translateY(0);
-    text-shadow: 0 0 5px var(--color-white), 0 0 10px var(--color-white);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5),
+                0 0 20px rgba(255, 255, 255, 0.2),
+                inset 0 0 12px rgba(255, 255, 255, 0.1);
+    transform: scale(1.04);
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.5),
+                 0 0 15px rgba(255, 255, 255, 0.25);
+}
+
+.category-button.active::before {
+    width: 100%;
+}
+
+.category-button:focus-visible {
+    outline: 2px dashed rgba(255, 255, 255, 0.8);
+    outline-offset: 3px;
 }
 
 /* Category-specific styles */
@@ -1382,11 +1486,21 @@ section {
     border-color: #ff00ff;
 }
 
-.category-button[data-category="live-music"].active,
 .category-button[data-category="live-music"]:hover {
-    box-shadow: 0 0 15px #ff00ff, 0 0 30px rgba(255, 0, 255, 0.6);
+    box-shadow: 0 0 15px #ff00ff,
+                0 0 30px rgba(255, 0, 255, 0.5),
+                inset 0 0 8px rgba(255, 0, 255, 0);
     border-color: #ff00ff;
-    text-shadow: 0 0 5px #ff00ff;
+    color: #ff00ff;
+}
+
+.category-button[data-category="live-music"].active {
+    box-shadow: 0 0 15px #ff00ff,
+                0 0 30px rgba(255, 0, 255, 0.6),
+                0 0 20px rgba(255, 0, 255, 0.3),
+                inset 0 0 12px rgba(255, 0, 255, 0.15);
+    border-color: #ff00ff;
+    text-shadow: 0 0 8px #ff00ff, 0 0 15px rgba(255, 0, 255, 0.6);
     color: #ff00ff;
 }
 
@@ -1395,13 +1509,23 @@ section {
     border-color: #00ffff;
 }
 
-.category-button[data-category="visuals"].active,
 .category-button[data-category="visuals"]:hover {
-    box-shadow: 0 0 15px #00ffff, 0 0 30px rgba(0, 255, 255, 0.6);
+    box-shadow: 0 0 15px #00ffff,
+                0 0 30px rgba(0, 255, 255, 0.5),
+                inset 0 0 8px rgba(0, 255, 255, 0);
     border-color: #00ffff;
-    background-color: rgba(0, 255, 255, 0.12);
+    color: #00ffff;
+}
+
+.category-button[data-category="visuals"].active {
+    box-shadow: 0 0 15px #00ffff,
+                0 0 30px rgba(0, 255, 255, 0.6),
+                0 0 20px rgba(0, 255, 255, 0.3),
+                inset 0 0 12px rgba(0, 255, 255, 0.15);
+    border-color: #00ffff;
+    background-color: rgba(0, 255, 255, 0.08);
     /* subtle cyan fill */
-    text-shadow: 0 0 5px #00ffff;
+    text-shadow: 0 0 8px #00ffff, 0 0 15px rgba(0, 255, 255, 0.6);
     color: #00ffff;
 }
 
@@ -2781,6 +2905,37 @@ body.portfolio-page::after {
 }
 
 @media (prefers-reduced-motion: reduce) {
+    /* Reduce all navigation animations */
+    header nav ul li a,
+    .mobile-nav ul li a,
+    .category-button,
+    .nav-links a,
+    .nav-cta {
+        transition: none !important;
+    }
+
+    /* Keep visibility changes instant, remove transforms */
+    header nav ul li a:hover,
+    .mobile-nav ul li a:hover,
+    .category-button:hover {
+        transform: none !important;
+    }
+
+    .category-button:active {
+        transform: none !important;
+    }
+
+    /* Ensure focus indicators still appear */
+    header nav ul li a:focus-visible,
+    .mobile-nav ul li a:focus-visible,
+    .category-button:focus-visible,
+    .nav-links a:focus-visible,
+    .nav-cta:focus-visible {
+        outline: 2px solid rgba(255, 255, 255, 0.8);
+        outline-offset: 2px;
+    }
+
+    /* Existing reduced-motion styles */
     .portfolio-hero-panel::before,
     .image-grid.active .grid-item,
     .image-grid.active .grid-item img,
