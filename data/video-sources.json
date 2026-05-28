@@ -1,0 +1,19 @@
+{
+  "_README": "Map each video basename to its externally hosted URL and poster. Fill in 'src' with the CDN URL (e.g. https://res.cloudinary.com/.../01.mp4) and 'poster' with a still image (local path like images/video-posters/visuals-01.jpg, or a hosted URL). Entries with an empty 'src' are ignored and fall back to the local file. Keys may include or omit the .mp4 extension. After editing, run: npm run media (or npm run build).",
+  "01": { "src": "", "poster": "" },
+  "02": { "src": "", "poster": "" },
+  "03": { "src": "", "poster": "" },
+  "04": { "src": "", "poster": "" },
+  "05": { "src": "", "poster": "" },
+  "13": { "src": "", "poster": "" },
+  "14": { "src": "", "poster": "" },
+  "15": { "src": "", "poster": "" },
+  "16": { "src": "", "poster": "" },
+  "17": { "src": "", "poster": "" },
+  "18": { "src": "", "poster": "" },
+  "19": { "src": "", "poster": "" },
+  "20": { "src": "", "poster": "" },
+  "21": { "src": "", "poster": "" },
+  "22": { "src": "", "poster": "" },
+  "23": { "src": "", "poster": "" }
+}

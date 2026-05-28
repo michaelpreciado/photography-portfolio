@@ -15,6 +15,7 @@ const ROOT = process.cwd();
 const PORTFOLIO_DIR = path.join(ROOT, 'images', 'portfolio');
 const OUTPUT_PATH = path.join(ROOT, 'data', 'media.json');
 const POSTER_DIR = path.join(ROOT, 'images', 'video-posters');
+const VIDEO_SOURCES_PATH = path.join(ROOT, 'data', 'video-sources.json');
 
 const IMAGE_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.avif']);
 const VIDEO_EXTENSIONS = new Set(['.mp4', '.webm', '.mov', '.m4v']);
@@ -40,6 +41,27 @@ function titleCase(value) {
 
 function publicPath(absolutePath) {
   return path.relative(ROOT, absolutePath).split(path.sep).join('/');
+}
+
+/**
+ * Loads optional per-video overrides so externally hosted clips (CDN URLs) and
+ * their posters survive manifest regeneration during the build.
+ * Shape: { "<basename>": { "src": "https://...", "poster": "images/video-posters/..." } }
+ * Keys may include or omit the file extension.
+ */
+function loadVideoOverrides() {
+  try {
+    if (!fs.existsSync(VIDEO_SOURCES_PATH)) return {};
+    const parsed = JSON.parse(fs.readFileSync(VIDEO_SOURCES_PATH, 'utf8'));
+    return (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) ? parsed : {};
+  } catch (error) {
+    console.warn(`Ignoring ${publicPath(VIDEO_SOURCES_PATH)} (${error.message}).`);
+    return {};
+  }
+}
+
+function resolveVideoOverride(overrides, file) {
+  return overrides[path.basename(file)] || overrides[path.basename(file, path.extname(file))] || null;
 }
 
 async function walk(dir) {
@@ -104,6 +126,7 @@ async function main() {
     .filter((entry) => entry.isDirectory())
     .sort((a, b) => a.name.localeCompare(b.name));
 
+  const videoOverrides = loadVideoOverrides();
   const categories = [];
 
   for (const categoryDir of categoryDirs) {
@@ -122,10 +145,21 @@ async function main() {
       const type = VIDEO_EXTENSIONS.has(extension) ? 'video' : IMAGE_EXTENSIONS.has(extension) ? 'image' : null;
       if (!type) continue;
 
+      let src = publicPath(file);
+      let poster = type === 'video' ? await ensureVideoPoster(file, categorySlug) : '';
+
+      if (type === 'video') {
+        const override = resolveVideoOverride(videoOverrides, file);
+        if (override) {
+          if (typeof override.src === 'string' && override.src) src = override.src;
+          if (typeof override.poster === 'string' && override.poster) poster = override.poster;
+        }
+      }
+
       media.push({
         type,
-        src: publicPath(file),
-        poster: type === 'video' ? await ensureVideoPoster(file, categorySlug) : '',
+        src,
+        poster,
         alt: makeAlt(label, file, type)
       });
     }
