@@ -2863,6 +2863,49 @@ body.portfolio-page::after {
     content: "PLAY";
 }
 
+/* Graceful fallback when a video fails to load (e.g. host/CSP issue) */
+.media-fallback {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    min-height: 220px;
+    aspect-ratio: 4 / 5;
+    background-color: #0a0010;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.media-fallback:not(.has-poster) {
+    background-image:
+        radial-gradient(circle at 30% 20%, rgba(255, 43, 214, 0.18), transparent 55%),
+        radial-gradient(circle at 80% 90%, rgba(34, 247, 255, 0.16), transparent 55%),
+        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.035) 0 10px, transparent 10px 20px);
+}
+
+.media-fallback::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent 55%);
+}
+
+.media-fallback-label {
+    position: relative;
+    z-index: 1;
+    margin: 0.9rem;
+    padding: 0.3rem 0.7rem;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.5);
+    color: rgba(255, 255, 255, 0.92);
+    font-family: var(--font-primary);
+    font-size: 0.95rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
 .modal.visible {
     backdrop-filter: blur(18px) saturate(150%);
     -webkit-backdrop-filter: blur(18px) saturate(150%);

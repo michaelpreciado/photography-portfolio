@@ -748,6 +748,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 modalImage.style.backgroundImage = '';
             }
             if (videoEl) {
+                videoEl.poster = mediaData.poster || '';
                 const requiresNewSource = videoEl.src !== mediaData.src;
                 if (requiresNewSource) {
                     videoEl.pause();
@@ -922,8 +923,21 @@ document.addEventListener('DOMContentLoaded', async () => {
                 source.dataset.src = mediaPath;
                 video.appendChild(source);
 
-                video.addEventListener('error', (event) => {
-                    logger.error('Video error', event);
+                video.addEventListener('error', () => {
+                    logger.error('Video error', { mediaPath });
+                    const fallback = document.createElement('div');
+                    fallback.className = 'media-fallback';
+                    fallback.setAttribute('role', 'img');
+                    fallback.setAttribute('aria-label', mediaEntry.alt || 'Video unavailable');
+                    if (mediaEntry.poster) {
+                        fallback.classList.add('has-poster');
+                        fallback.style.backgroundImage = `url(${mediaEntry.poster})`;
+                    }
+                    const label = document.createElement('span');
+                    label.className = 'media-fallback-label';
+                    label.textContent = 'Visual unavailable';
+                    fallback.appendChild(label);
+                    video.replaceWith(fallback);
                 });
 
                 gridItem.appendChild(video);
@@ -1480,7 +1494,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                     type: 'video',
                     element,
                     alt: caption,
-                    src: videoSrc
+                    src: videoSrc,
+                    poster: element.poster || element.dataset.poster || ''
                 };
             });
 
