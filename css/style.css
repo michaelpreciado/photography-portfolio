@@ -2987,3 +2987,541 @@ body.portfolio-page::after {
         transition: none !important;
     }
 }
+
+/* ============================================================
+   NEON-CINEMATIC REDESIGN LAYER (v2)
+   Elevates the existing theme: real display typography, editorial
+   rhythm, cinematic hero, premium video fallback, scroll reveals.
+   Builds on the --showcase-* tokens defined above.
+   ============================================================ */
+:root {
+    /* Typography: VT323 stays the retro accent; Space Grotesk carries
+       display headings + readable body copy. */
+    --font-display: 'Space Grotesk', 'VT323', system-ui, sans-serif;
+    --font-body: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+
+    /* Canonical palette (showcase set promoted; legacy neons kept as aliases) */
+    --c-magenta: var(--showcase-magenta);
+    --c-cyan: var(--showcase-cyan);
+    --c-violet: var(--showcase-violet);
+    --c-bone: rgba(255, 255, 255, 0.62);
+
+    /* Rhythm */
+    --container: min(1320px, calc(100vw - 2.5rem));
+    --radius-card: 22px;
+    --radius-pill: 999px;
+    --glass-bg: rgba(12, 8, 20, 0.55);
+    --glass-blur: blur(20px) saturate(150%);
+    --ease-cine: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* ---------- Editorial eyebrow (shared) ---------- */
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-primary);
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--c-cyan);
+    text-shadow: 0 0 18px rgba(34, 247, 255, 0.45);
+}
+.eyebrow .dot,
+.portfolio-kicker .dot,
+.welcome-eyebrow .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--c-magenta);
+    box-shadow: 0 0 14px var(--c-magenta);
+    animation: dotPulse 1.7s ease-in-out infinite;
+}
+@keyframes dotPulse {
+    50% { opacity: 0.35; transform: scale(0.7); }
+}
+
+/* ---------- Scroll reveal primitive ---------- */
+.reveal {
+    opacity: 0;
+    transform: translateY(26px);
+    filter: blur(6px);
+    transition: opacity 0.7s var(--ease-cine), transform 0.7s var(--ease-cine), filter 0.7s var(--ease-cine);
+    will-change: opacity, transform;
+}
+.reveal.is-visible {
+    opacity: 1;
+    transform: none;
+    filter: none;
+}
+
+/* ============================================================
+   HOME HERO
+   ============================================================ */
+.welcome-overlay {
+    background:
+        radial-gradient(120% 80% at 50% 0%, rgba(0, 0, 0, 0.25), transparent 60%),
+        linear-gradient(to top, rgba(0, 0, 0, 0.82) 0%, rgba(0, 0, 0, 0.35) 45%, rgba(0, 0, 0, 0.55) 100%);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+}
+
+.welcome-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 0 0 1.1rem;
+    font-family: var(--font-primary);
+    font-size: clamp(1rem, 2.4vw, 1.3rem);
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--c-cyan);
+    text-shadow: 0 0 18px rgba(34, 247, 255, 0.45);
+}
+
+.welcome-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(3.2rem, 11vw, 8rem);
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.6rem;
+    background: linear-gradient(180deg, #fff 0%, #f3d9ff 55%, #b9f6ff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 50px rgba(255, 43, 214, 0.35);
+    animation: none;
+}
+
+.welcome-subtitle {
+    font-family: var(--font-primary);
+    font-size: clamp(1.2rem, 3.4vw, 2rem);
+    letter-spacing: 0.32em;
+    color: rgba(255, 255, 255, 0.78);
+}
+
+.welcome-buttons {
+    display: flex;
+    gap: 0.9rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.welcome-button {
+    font-family: var(--font-primary);
+    border-radius: var(--radius-pill);
+    border-width: 1.5px;
+    letter-spacing: 0.18em;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+.welcome-button:not(.welcome-button-ghost) {
+    background: var(--c-magenta);
+    border-color: var(--c-magenta);
+    color: #0a0010;
+    box-shadow: 0 0 0 1px var(--c-magenta), 0 14px 40px rgba(255, 43, 214, 0.4);
+}
+.welcome-button:not(.welcome-button-ghost):hover {
+    box-shadow: 0 0 22px rgba(255, 43, 214, 0.7), 0 18px 48px rgba(255, 43, 214, 0.5);
+    transform: translateY(-3px);
+}
+.welcome-button-ghost {
+    border-color: rgba(255, 255, 255, 0.45);
+    color: #fff;
+}
+.welcome-button-ghost:hover {
+    border-color: var(--c-cyan);
+    color: var(--c-cyan);
+    box-shadow: 0 0 18px rgba(34, 247, 255, 0.4);
+}
+
+/* ============================================================
+   PORTFOLIO HERO — display type + accent
+   ============================================================ */
+.portfolio-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-primary);
+}
+.portfolio-hero-panel h2 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    text-transform: none;
+    letter-spacing: -0.03em;
+    line-height: 0.92;
+    font-size: clamp(2.4rem, 7vw, 5.4rem);
+}
+.portfolio-hero-panel h2 em {
+    font-style: italic;
+    color: var(--c-cyan);
+    text-shadow: 0 0 26px rgba(34, 247, 255, 0.5);
+}
+.portfolio-lede {
+    font-family: var(--font-body);
+    font-weight: 400;
+    line-height: 1.5;
+    font-size: clamp(1.05rem, 2.2vw, 1.3rem);
+    color: var(--c-bone);
+}
+.portfolio-stats span {
+    font-family: var(--font-primary);
+    letter-spacing: 0.08em;
+}
+
+/* ============================================================
+   GALLERY — reveal stagger + refined chip
+   ============================================================ */
+.image-grid.active .grid-item {
+    opacity: 0;
+    transform: translateY(22px) scale(0.985);
+    animation: tileIn 0.6s var(--ease-cine) forwards;
+    animation-delay: calc(var(--i, 0) * 55ms);
+}
+@keyframes tileIn {
+    to { opacity: 1; transform: none; }
+}
+/* Preserve hover transform after entrance */
+.image-grid.active .grid-item:hover {
+    animation: none;
+    opacity: 1;
+}
+.image-grid.active .grid-item::after {
+    font-family: var(--font-primary);
+    font-size: 0.95rem;
+    letter-spacing: 0.22em;
+    background: rgba(0, 0, 0, 0.6);
+    border-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(4px);
+}
+.live-music-grid.active .grid-item:hover::after {
+    border-color: rgba(255, 43, 214, 0.6);
+    color: #fff;
+    box-shadow: 0 0 18px rgba(255, 43, 214, 0.4);
+}
+.visuals-grid.active .grid-item:hover::after {
+    border-color: rgba(34, 247, 255, 0.6);
+    box-shadow: 0 0 18px rgba(34, 247, 255, 0.4);
+}
+
+/* ============================================================
+   PREMIUM VIDEO POSTER / FALLBACK
+   Shown when a clip errors OR no CDN src is set yet, so the
+   Visuals tab always reads as intentional — never an empty box.
+   ============================================================ */
+.media-fallback {
+    align-items: center;
+    justify-content: center;
+    min-height: 240px;
+    overflow: hidden;
+}
+.media-fallback:not(.has-poster) {
+    background-image:
+        radial-gradient(circle at 28% 22%, rgba(255, 43, 214, 0.28), transparent 55%),
+        radial-gradient(circle at 78% 84%, rgba(34, 247, 255, 0.24), transparent 55%),
+        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.04) 0 12px, transparent 12px 24px);
+    background-size: 200% 200%, 200% 200%, auto;
+    animation: fallbackShimmer 9s ease-in-out infinite alternate;
+}
+@keyframes fallbackShimmer {
+    0% { background-position: 0% 0%, 100% 100%, 0 0; }
+    100% { background-position: 100% 100%, 0% 0%, 0 0; }
+}
+/* Play glyph in the center of any video poster/fallback */
+.media-fallback.is-video::after {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    left: 50%;
+    width: 64px;
+    height: 64px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.45);
+    border: 1.5px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 24px rgba(34, 247, 255, 0.4);
+    backdrop-filter: blur(4px);
+}
+.media-fallback.is-video::before {
+    content: "";
+    z-index: 3;
+    position: absolute;
+    top: 50%;
+    left: calc(50% + 3px);
+    width: 0;
+    height: 0;
+    transform: translate(-50%, -50%);
+    border-left: 16px solid #fff;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    background: none;
+    inset: auto;
+}
+.media-fallback-label {
+    font-family: var(--font-primary);
+    align-self: flex-end;
+}
+
+/* ============================================================
+   ABOUT — editorial split layout
+   ============================================================ */
+body.about-page main,
+body.contact-page main {
+    min-height: 100vh;
+}
+.about-shell {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: clamp(6.5rem, 14vh, 9rem) 0 4rem;
+}
+.about-grid {
+    display: grid;
+    grid-template-columns: 0.85fr 1fr;
+    gap: clamp(1.5rem, 5vw, 4rem);
+    align-items: center;
+}
+.about-portrait {
+    position: relative;
+    margin: 0;
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    border: 1px solid var(--showcase-border);
+    box-shadow: var(--showcase-shadow);
+}
+.about-portrait img {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    display: block;
+    filter: saturate(1.05) contrast(1.03);
+}
+.about-portrait figcaption {
+    position: absolute;
+    left: 0.9rem;
+    bottom: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.7rem;
+    border-radius: var(--radius-pill);
+    background: rgba(0, 0, 0, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-family: var(--font-primary);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-size: 0.95rem;
+    color: #fff;
+    backdrop-filter: blur(6px);
+}
+.about-portrait figcaption .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--c-magenta);
+    box-shadow: 0 0 12px var(--c-magenta);
+}
+.about-copy .about-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    text-transform: none;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+    font-size: clamp(2.6rem, 6vw, 4.6rem);
+    margin: 0.6rem 0 1.2rem;
+    color: #fff;
+    text-shadow: 0 0 40px rgba(255, 43, 214, 0.25);
+}
+.about-copy .about-title em {
+    font-style: italic;
+    color: var(--c-magenta);
+    text-shadow: 0 0 26px rgba(255, 43, 214, 0.5);
+}
+.about-copy p {
+    font-family: var(--font-body);
+    font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+    line-height: 1.6;
+    color: var(--c-bone);
+    text-transform: none;
+    max-width: 52ch;
+}
+.about-copy p strong {
+    color: #fff;
+    font-weight: 600;
+}
+.about-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1.6rem 0;
+}
+.about-tags span {
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 0.35rem 0.85rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(255, 255, 255, 0.85);
+}
+.about-copy .social-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+.about-copy .social-links a {
+    color: #fff;
+    transition: transform 0.3s var(--ease-cine), filter 0.3s ease;
+}
+.about-copy .social-links a:hover {
+    transform: translateY(-3px);
+    filter: drop-shadow(0 0 10px rgba(34, 247, 255, 0.6));
+}
+
+@media (max-width: 860px) {
+    .about-grid { grid-template-columns: 1fr; }
+    .about-portrait { max-width: 420px; }
+}
+
+/* ============================================================
+   CONTACT — glass card
+   ============================================================ */
+.contact-shell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: clamp(6.5rem, 14vh, 9rem) 1.25rem 4rem;
+}
+.contact-card {
+    position: relative;
+    width: min(560px, 100%);
+    padding: clamp(1.5rem, 5vw, 2.8rem);
+    border-radius: var(--radius-card);
+    border: 1px solid var(--showcase-border);
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02)),
+        var(--glass-bg);
+    box-shadow: var(--showcase-shadow);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    isolation: isolate;
+    overflow: hidden;
+}
+.contact-card::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    z-index: -1;
+    background: conic-gradient(from 200deg, transparent, rgba(255, 43, 214, 0.32), rgba(34, 247, 255, 0.3), transparent 60%);
+    filter: blur(20px);
+    opacity: 0.7;
+    animation: auraSpin 14s linear infinite;
+}
+.contact-card h2 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    text-transform: none;
+    letter-spacing: -0.03em;
+    font-size: clamp(2.3rem, 6vw, 3.4rem);
+    margin: 0.5rem 0 0.6rem;
+    color: #fff;
+}
+.contact-card h2 em {
+    font-style: italic;
+    color: var(--c-cyan);
+    text-shadow: 0 0 26px rgba(34, 247, 255, 0.5);
+}
+.contact-lede {
+    font-family: var(--font-body);
+    color: var(--c-bone);
+    line-height: 1.55;
+    margin: 0 0 1.6rem;
+}
+.contact-card form p { margin: 0 0 1rem; }
+.contact-card label {
+    display: block;
+    font-family: var(--font-primary);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-size: 0.95rem;
+    color: var(--c-bone);
+    margin-bottom: 0.4rem;
+}
+.contact-card input,
+.contact-card textarea {
+    width: 100%;
+    box-sizing: border-box;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 12px;
+    padding: 0.8rem 0.9rem;
+    transition: border-color 0.25s var(--ease-cine), box-shadow 0.25s var(--ease-cine), background 0.25s var(--ease-cine);
+}
+.contact-card textarea {
+    resize: vertical;
+    min-height: 130px;
+}
+.contact-card input::placeholder,
+.contact-card textarea::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+.contact-card input:focus,
+.contact-card textarea:focus {
+    outline: none;
+    border-color: var(--c-magenta);
+    background: rgba(255, 43, 214, 0.06);
+    box-shadow: 0 0 0 3px rgba(255, 43, 214, 0.18);
+}
+.contact-card input[aria-invalid="true"],
+.contact-card textarea[aria-invalid="true"] {
+    border-color: #ff5470;
+    box-shadow: 0 0 0 3px rgba(255, 84, 112, 0.18);
+}
+.contact-card button[type="submit"] {
+    width: 100%;
+    font-family: var(--font-primary);
+    font-size: 1.15rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #0a0010;
+    background: var(--c-magenta);
+    border: none;
+    border-radius: 12px;
+    padding: 0.9rem 1rem;
+    cursor: pointer;
+    box-shadow: 0 12px 34px rgba(255, 43, 214, 0.4);
+    transition: transform 0.2s var(--ease-cine), background 0.25s var(--ease-cine), box-shadow 0.25s var(--ease-cine);
+}
+.contact-card button[type="submit"]:hover {
+    transform: translateY(-2px);
+    background: #ff52e0;
+    box-shadow: 0 0 22px rgba(255, 43, 214, 0.7), 0 16px 40px rgba(255, 43, 214, 0.5);
+}
+.contact-card .form-feedback {
+    font-family: var(--font-primary);
+    letter-spacing: 0.08em;
+    text-align: center;
+}
+.contact-card .form-feedback[data-state="success"] { color: var(--c-cyan); }
+.contact-card .form-feedback[data-state="error"] { color: #ff7088; }
+
+/* ============================================================
+   REDUCED MOTION — settle everything gracefully
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1 !important; transform: none !important; filter: none !important; transition: none !important; }
+    .image-grid.active .grid-item { opacity: 1 !important; transform: none !important; animation: none !important; }
+    .eyebrow .dot, .portfolio-kicker .dot, .welcome-eyebrow .dot,
+    .media-fallback:not(.has-poster), .contact-card::before {
+        animation: none !important;
+    }
+}
+

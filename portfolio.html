@@ -23,7 +23,7 @@
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
 
     <!-- Fonts with display=swap for better font loading performance -->
-    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=VT323&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.min.css">
 </head>
 <body class="portfolio-page">
@@ -82,9 +82,9 @@
 
     <main>
         <section id="portfolio">
-            <div class="portfolio-hero-panel">
-                <p class="portfolio-kicker">Client-ready showcase</p>
-                <h2>Live music intensity. Visuals with motion.</h2>
+            <div class="portfolio-hero-panel reveal">
+                <p class="portfolio-kicker"><span class="dot" aria-hidden="true"></span>Client-ready showcase</p>
+                <h2>Live music intensity.<br><em>Visuals</em> with motion.</h2>
                 <p class="portfolio-lede">A fast, cinematic gallery built to protect the work, keep the vibe, and make every new upload feel instantly polished.</p>
                 <div class="portfolio-stats" aria-label="Portfolio stats">
                     <span><strong data-stat="images">14</strong> photos</span>
@@ -178,5 +178,9 @@
 
     <script src="js/script.min.js" defer></script>
     <script src="js/sw-register.js" defer></script>
+
+    <!-- Vercel Web Analytics + Speed Insights (same-origin, CSP-safe) -->
+    <script defer src="/_vercel/insights/script.js"></script>
+    <script defer src="/_vercel/speed-insights/script.js"></script>
 </body>
 </html>

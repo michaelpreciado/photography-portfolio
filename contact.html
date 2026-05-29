@@ -15,7 +15,7 @@
     <title>Contact - Mario Preciado Photography</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=VT323&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.min.css">
 </head>
 <body class="contact-page">
@@ -73,8 +73,11 @@
     </header>
 
     <main>
-        <section id="contact">
-            <h2>CONTACT</h2>
+        <section id="contact" class="contact-shell">
+          <div class="contact-card reveal">
+            <p class="eyebrow"><span class="dot" aria-hidden="true"></span>Let's make a shoot</p>
+            <h2>Get in <em>touch</em>.</h2>
+            <p class="contact-lede">Tell me the date, the venue, the vibe you're after — I'll get back to you within 24 hours.</p>
             <!-- Vercel serverless contact form -->
             <form id="contact-form" name="contact" method="POST" action="/api/contact">
               <input type="hidden" name="form-name" value="contact">
@@ -99,6 +102,7 @@
               </p>
               <p id="contact-form-feedback" class="form-feedback" role="status" aria-live="polite" aria-atomic="true"></p>
             </form>
+          </div>
         </section>
     </main>
 
@@ -124,5 +128,9 @@
     <script src="js/contact-form-utils.js" defer></script>
     <script src="js/script.min.js" defer></script>
     <script src="js/sw-register.js" defer></script>
+
+    <!-- Vercel Web Analytics + Speed Insights (same-origin, CSP-safe) -->
+    <script defer src="/_vercel/insights/script.js"></script>
+    <script defer src="/_vercel/speed-insights/script.js"></script>
 </body>
 </html> 

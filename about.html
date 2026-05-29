@@ -15,7 +15,7 @@
     <title>About - Mario Preciado Photography</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=VT323&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.min.css">
 </head>
 <body class="about-page">
@@ -73,23 +73,45 @@
     </header>
 
     <main>
-        <section id="about">
-            <h2>ABOUT</h2>
-            <p>I'M MARIO PRECIADO. I'M A BAY AREA BASED PHOTOGRAPHER.</p>
-            <p>MY PHOTOGRAPHY CONSISTS OF LIVE MUSIC, STREET, FASHION, PORTRAITURE, ART CULTURE AND COMMUNITY. MY FOCUS IS EXPRESSING THE STYLE AND VIBRANT COLORS THAT I BELIEVE HELP REFLECT THE ATMOSPHERE OF THESE SUBJECTS/EVENTS.</p>
-            <p>I LOOK FORWARD TO WORKING WITH YOU!</p>
-            <div class="social-links">
-                <!-- Add actual links -->
-                <a href="https://www.instagram.com/mariopreciado.art" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                    <svg class="icon icon-instagram" width="45" height="45" aria-hidden="true">
-                        <use href="images/icons.svg#icon-instagram"></use>
-                    </svg>
-                </a>
-                <a href="mailto:marioopreciadoo@gmail.com" aria-label="Email">
-                    <svg class="icon icon-envelope" width="45" height="45" aria-hidden="true">
-                        <use href="images/icons.svg#icon-envelope"></use>
-                    </svg>
-                </a>
+        <section id="about" class="about-shell">
+            <div class="about-grid">
+                <figure class="about-portrait reveal">
+                    <picture>
+                        <source srcset="images/optimized/portfolio_009-640-867fd519.avif 640w, images/optimized/portfolio_009-960-867fd519.avif 960w" sizes="(max-width: 860px) 100vw, 42vw" type="image/avif">
+                        <source srcset="images/optimized/portfolio_009-640-867fd519.webp 640w, images/optimized/portfolio_009-960-867fd519.webp 960w" sizes="(max-width: 860px) 100vw, 42vw" type="image/webp">
+                        <img src="images/optimized/portfolio_009-960-867fd519.jpeg" alt="Mario Preciado photography — live music" loading="eager" decoding="async">
+                    </picture>
+                    <figcaption><span class="dot" aria-hidden="true"></span>Bay Area · CA</figcaption>
+                </figure>
+
+                <div class="about-copy">
+                    <p class="eyebrow reveal"><span class="dot" aria-hidden="true"></span>About the artist</p>
+                    <h2 class="about-title reveal">Capturing the <em>wild hours</em>.</h2>
+                    <p class="reveal">I'm <strong>Mario Preciado</strong>, a Bay Area based photographer.</p>
+                    <p class="reveal">My photography consists of live music, street, fashion, portraiture, art culture and community. My focus is expressing the style and vibrant colors that I believe help reflect the atmosphere of these subjects and events.</p>
+                    <p class="reveal">I look forward to working with you.</p>
+
+                    <div class="about-tags reveal" aria-label="Focus areas">
+                        <span>Live Music</span>
+                        <span>Street</span>
+                        <span>Fashion</span>
+                        <span>Portraiture</span>
+                        <span>Community</span>
+                    </div>
+
+                    <div class="social-links reveal">
+                        <a href="https://www.instagram.com/mariopreciado.art" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                            <svg class="icon icon-instagram" width="45" height="45" aria-hidden="true">
+                                <use href="images/icons.svg#icon-instagram"></use>
+                            </svg>
+                        </a>
+                        <a href="mailto:marioopreciadoo@gmail.com" aria-label="Email">
+                            <svg class="icon icon-envelope" width="45" height="45" aria-hidden="true">
+                                <use href="images/icons.svg#icon-envelope"></use>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
@@ -103,5 +125,9 @@
 
     <script src="js/script.min.js" defer></script>
     <script src="js/sw-register.js" defer></script>
+
+    <!-- Vercel Web Analytics + Speed Insights (same-origin, CSP-safe) -->
+    <script defer src="/_vercel/insights/script.js"></script>
+    <script defer src="/_vercel/speed-insights/script.js"></script>
 </body>
 </html> 
