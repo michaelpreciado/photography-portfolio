@@ -985,18 +985,19 @@ header nav ul li a:focus-visible {
 /* End of mobile media query styles */
 
 /* Additional media query for very small screens (e.g., mobile portrait) */
-/* Photography Grid - Two columns on desktop, one on mobile */
+/* Photography Grid - Two columns across all viewports */
 .image-grid.live-music-grid {
-    grid-template-columns: 1fr;
-    /* Default single column on mobile */
-    gap: 1rem;
+    grid-template-columns: repeat(2, 1fr);
+    /* Two columns on mobile and up, per client request */
+    gap: 0.8rem;
     /* Consistent gap */
 }
 
 @media (min-width: 768px) {
     .image-grid.live-music-grid {
         grid-template-columns: repeat(2, 1fr);
-        /* Two-column grid on desktop as per client feedback */
+        gap: 1rem;
+        /* Slightly larger gutter on desktop */
     }
 }
 
@@ -1603,13 +1604,27 @@ section {
 #portfolio-display .visuals-grid.active {
     display: grid;
     /* Use grid instead of flex */
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    /* Responsive column sizing */
-    gap: 2.5rem;
-    /* Increased spacing */
     justify-content: center;
     margin: 0 auto;
     /* Center the entire grid */
+}
+
+/* Live music: always exactly two columns, including on mobile */
+#portfolio-display .live-music-grid.active {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+}
+
+@media (min-width: 768px) {
+    #portfolio-display .live-music-grid.active {
+        gap: 2.5rem;
+    }
+}
+
+/* Visuals: single, larger column for video playback */
+#portfolio-display .visuals-grid.active {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2.5rem;
 }
 
 /* Grid items for masonry layout */
@@ -3525,3 +3540,128 @@ body.contact-page main {
     }
 }
 
+
+/* ============================================================
+   TAP-TO-EXPAND AFFORDANCE
+   The "VIEW"/"PLAY" badge is hover-only, which never triggers on
+   touch screens. On devices without hover, surface it persistently
+   (and reword to "TAP") so visitors know images open full-size.
+   The tap handler itself already lives in script.js (image modal).
+   ============================================================ */
+@media (hover: none), (pointer: coarse) {
+    .image-grid.active .grid-item::after {
+        content: "TAP";
+        opacity: 0.85;
+        transform: none;
+    }
+    .visuals-grid.active .grid-item::after {
+        content: "TAP";
+    }
+}
+
+/* ============================================================
+   LIQUID GLASS BUTTONS (iOS-style)
+   Translucent panes that refract whatever sits behind them. The
+   backdrop-filter samples the live page beneath each button, so the
+   colour shifts as the purple/cyan gradients move past on scroll.
+   Keeps the magenta/cyan identity as a tint + edge highlight.
+   ============================================================ */
+.welcome-button,
+.category-button,
+.contact-card button[type="submit"] {
+    position: relative;
+    isolation: isolate;
+    background-color: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    -webkit-backdrop-filter: blur(14px) saturate(180%);
+    backdrop-filter: blur(14px) saturate(180%);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.45),
+        inset 0 -1px 1px rgba(255, 255, 255, 0.08),
+        0 8px 28px rgba(0, 0, 0, 0.45);
+    transition:
+        background-color 0.3s var(--ease-out),
+        box-shadow 0.3s var(--ease-out),
+        border-color 0.3s var(--ease-out),
+        transform 0.3s var(--ease-spring);
+}
+
+/* Top sheen — the glassy specular highlight that sells the material */
+.welcome-button::after,
+.category-button::after,
+.contact-card button[type="submit"]::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.30) 0%,
+        rgba(255, 255, 255, 0.06) 38%,
+        rgba(255, 255, 255, 0) 60%
+    );
+    pointer-events: none;
+    z-index: -1;
+    mix-blend-mode: screen;
+}
+
+/* Magenta-tinted primary glass (home + contact CTAs) */
+.welcome-button:not(.welcome-button-ghost),
+.contact-card button[type="submit"] {
+    background-color: rgba(255, 43, 214, 0.16) !important;
+    border-color: rgba(255, 43, 214, 0.42);
+    color: #fff !important;
+    text-shadow: 0 0 10px rgba(255, 43, 214, 0.55);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.5),
+        inset 0 -1px 1px rgba(255, 43, 214, 0.18),
+        0 10px 30px rgba(255, 43, 214, 0.28);
+}
+.welcome-button:not(.welcome-button-ghost):hover,
+.contact-card button[type="submit"]:hover {
+    background-color: rgba(255, 43, 214, 0.26) !important;
+    border-color: rgba(255, 43, 214, 0.7);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.6),
+        0 0 26px rgba(255, 43, 214, 0.5),
+        0 16px 44px rgba(255, 43, 214, 0.4);
+    transform: translateY(-3px);
+}
+
+/* Cyan-tinted ghost / hover for the secondary glass button */
+.welcome-button-ghost:hover {
+    background-color: rgba(34, 247, 255, 0.16) !important;
+    border-color: rgba(34, 247, 255, 0.6);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.5),
+        0 0 22px rgba(34, 247, 255, 0.4);
+}
+
+/* Category filter glass picks up its per-category accent */
+.category-button:hover {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+}
+.category-button[data-category="live-music"]:hover,
+.category-button[data-category="live-music"].active {
+    background-color: rgba(255, 43, 214, 0.18) !important;
+    border-color: rgba(255, 43, 214, 0.6);
+}
+.category-button[data-category="visuals"]:hover,
+.category-button[data-category="visuals"].active {
+    background-color: rgba(34, 247, 255, 0.16) !important;
+    border-color: rgba(34, 247, 255, 0.6);
+}
+
+/* Graceful fallback: if backdrop-filter is unsupported, fall back to a
+   slightly more opaque fill so text stays legible (no see-through). */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .welcome-button,
+    .category-button,
+    .contact-card button[type="submit"] {
+        background-color: rgba(20, 6, 24, 0.72) !important;
+    }
+    .welcome-button:not(.welcome-button-ghost),
+    .contact-card button[type="submit"] {
+        background-color: rgba(120, 20, 100, 0.6) !important;
+    }
+}
