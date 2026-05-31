@@ -8,15 +8,15 @@
     --color-gray-medium: #333333;
     --color-gray-light: #666666;
 
-    /* Neon colors */
-    --neon-pink: #ff00ff;
-    --neon-blue: #00ffff;
+    /* Stage-light palette (drawn from the live-music photography) */
+    --neon-pink: #ff9e2c;  /* warm stage amber (primary brand accent) */
+    --neon-blue: #00ffff;  /* cyan stage wash (cool counter-accent) */
     --neon-green: #00ff8c;
     --neon-yellow: #ffcc00;
 
     /* Functional colors */
     --text-color: var(--color-white);
-    --bg-color: var(--color-black);
+    --bg-color: #0a0706;   /* warm near-black, cohesive with the photos */
     --accent-color: var(--color-white);
 
     /* Spacing */
@@ -61,7 +61,7 @@
     --glow-white: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #fff;
 
     /* Category-specific glows */
-    --glow-live-music: 0 0 15px var(--neon-pink), 0 0 30px rgba(255, 0, 255, 0.4);
+    --glow-live-music: 0 0 15px var(--neon-pink), 0 0 30px rgba(255, 158, 44, 0.4);
     --glow-visuals: 0 0 15px var(--neon-blue), 0 0 30px rgba(0, 255, 255, 0.4);
     --glow-art: 0 0 15px var(--neon-green), 0 0 30px rgba(0, 255, 140, 0.4);
     --glow-typography: 0 0 15px var(--neon-yellow), 0 0 30px rgba(255, 204, 0, 0.4);
@@ -594,7 +594,7 @@ header nav ul li a:focus-visible {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     /* Add subtle gradient overlay */
-    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.95), rgba(20, 0, 20, 0.92));
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.95), rgba(20, 12, 6, 0.92));
     /* Add subtle border */
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -1483,25 +1483,25 @@ section {
 /* Category-specific styles */
 /* Live Music - Magenta/Pink */
 .category-button[data-category="live-music"] {
-    border-color: #ff00ff;
+    border-color: #ff9e2c;
 }
 
 .category-button[data-category="live-music"]:hover {
-    box-shadow: 0 0 15px #ff00ff,
-                0 0 30px rgba(255, 0, 255, 0.5),
-                inset 0 0 8px rgba(255, 0, 255, 0);
-    border-color: #ff00ff;
-    color: #ff00ff;
+    box-shadow: 0 0 15px #ff9e2c,
+                0 0 30px rgba(255, 158, 44, 0.5),
+                inset 0 0 8px rgba(255, 158, 44, 0);
+    border-color: #ff9e2c;
+    color: #ff9e2c;
 }
 
 .category-button[data-category="live-music"].active {
-    box-shadow: 0 0 15px #ff00ff,
-                0 0 30px rgba(255, 0, 255, 0.6),
-                0 0 20px rgba(255, 0, 255, 0.3),
-                inset 0 0 12px rgba(255, 0, 255, 0.15);
-    border-color: #ff00ff;
-    text-shadow: 0 0 8px #ff00ff, 0 0 15px rgba(255, 0, 255, 0.6);
-    color: #ff00ff;
+    box-shadow: 0 0 15px #ff9e2c,
+                0 0 30px rgba(255, 158, 44, 0.6),
+                0 0 20px rgba(255, 158, 44, 0.3),
+                inset 0 0 12px rgba(255, 158, 44, 0.15);
+    border-color: #ff9e2c;
+    text-shadow: 0 0 8px #ff9e2c, 0 0 15px rgba(255, 158, 44, 0.6);
+    color: #ff9e2c;
 }
 
 /* Visuals - Cyan Blue */
@@ -1679,12 +1679,12 @@ section {
 /* Live Music - Magenta/Pink */
 .live-music-grid .grid-item img,
 .live-music-grid .grid-item video {
-    box-shadow: 0 0 8px rgba(255, 0, 255, 0.3);
+    box-shadow: 0 0 8px rgba(255, 158, 44, 0.3);
 }
 
 .live-music-grid .grid-item:hover img,
 .live-music-grid .grid-item:hover video {
-    box-shadow: 0 0 15px #ff00ff, 0 0 30px rgba(255, 0, 255, 0.4);
+    box-shadow: 0 0 15px #ff9e2c, 0 0 30px rgba(255, 158, 44, 0.4);
 }
 
 .image-grid .grid-item img.with-lqip {
@@ -1856,7 +1856,7 @@ section {
 }
 
 .social-links a:hover {
-    background-color: #ff00ff;
+    background-color: #ff9e2c;
     /* Pink background on hover */
     transform: scale(1.1);
     /* Slight scale effect on hover */
@@ -1939,7 +1939,7 @@ section {
 }
 
 #contact button:hover {
-    background-color: #ff00ff;
+    background-color: #ff9e2c;
     /* Bright pink hover */
     color: #ffffff;
     /* White text */
@@ -1974,7 +1974,7 @@ section {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background-color: rgba(255, 0, 255, 0.7);
+    background-color: rgba(255, 158, 44, 0.7);
     /* Semi-transparent pink */
     color: #ffffff;
     /* Changed to white */
@@ -1991,7 +1991,7 @@ section {
 }
 
 #back-to-top:hover {
-    background-color: rgba(255, 0, 255, 1);
+    background-color: rgba(255, 158, 44, 1);
     /* Solid pink on hover */
 }
 
@@ -2099,7 +2099,7 @@ footer {
     /* Add vertical padding */
     border-top: 1px solid rgba(255, 255, 255, 0.2);
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 0 40px rgba(255, 0, 255, 0.1) inset, 0 0 20px rgba(0, 255, 255, 0.1) inset;
+    box-shadow: 0 0 40px rgba(255, 158, 44, 0.1) inset, 0 0 20px rgba(0, 255, 255, 0.1) inset;
     justify-content: center;
     align-items: center;
     will-change: opacity;
@@ -2128,7 +2128,7 @@ footer {
     padding: 20px 0;
     /* Add glow effect */
     border-radius: 4px;
-    box-shadow: 0 0 30px rgba(255, 255, 255, 0.25), 0 0 60px rgba(255, 0, 255, 0.15), 0 0 90px rgba(0, 255, 255, 0.1);
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.25), 0 0 60px rgba(255, 158, 44, 0.15), 0 0 90px rgba(0, 255, 255, 0.1);
     /* Add subtle border */
     border: 1px solid rgba(255, 255, 255, 0.1);
     /* Enhanced GPU acceleration */
@@ -2192,7 +2192,7 @@ footer {
     color: #fff;
     text-decoration: none;
     cursor: pointer;
-    text-shadow: 0 0 15px rgba(255, 0, 255, 0.8), 0 0 25px rgba(0, 255, 255, 0.6);
+    text-shadow: 0 0 15px rgba(255, 158, 44, 0.8), 0 0 25px rgba(0, 255, 255, 0.6);
 }
 
 /* Optional Caption */
@@ -2262,7 +2262,7 @@ footer {
 }
 
 .modal-nav:hover {
-    background-color: rgba(255, 0, 255, 0.8);
+    background-color: rgba(255, 158, 44, 0.8);
     /* Pink hover */
 }
 
@@ -2300,27 +2300,27 @@ footer {
 }
 
 #portfolio h2 {
-    color: #ff00ff;
+    color: #ff9e2c;
     /* Default to pink if no theme */
 }
 
 #portfolio .category-button.active {
-    background-color: #ff00ff;
-    border-color: #ff00ff;
+    background-color: #ff9e2c;
+    border-color: #ff9e2c;
 }
 
 /* Live Music Theme (Pink) */
 #portfolio.theme-live-music {
-    box-shadow: 0 0 40px 5px rgba(255, 0, 255, 0.4);
+    box-shadow: 0 0 40px 5px rgba(255, 158, 44, 0.4);
 }
 
 #portfolio.theme-live-music h2 {
-    color: #ff00ff;
+    color: #ff9e2c;
 }
 
 #portfolio.theme-live-music .category-button.active {
-    background-color: #ff00ff;
-    border-color: #ff00ff;
+    background-color: #ff9e2c;
+    border-color: #ff9e2c;
     color: #ffffff;
 }
 
@@ -2415,7 +2415,7 @@ header {
 
 /* Category-specific glow variables */
 .live-music-grid .grid-item {
-    --glowColor: #ff00ff;
+    --glowColor: #ff9e2c;
 }
 
 .visuals-grid .grid-item {
@@ -2432,7 +2432,7 @@ body.portfolio-page::after {
     height: 100%;
     z-index: var(--z-background);
     pointer-events: none;
-    background: radial-gradient(circle at 20% 30%, rgba(255, 0, 255, 0.10) 0%, transparent 60%),
+    background: radial-gradient(circle at 20% 30%, rgba(255, 158, 44, 0.10) 0%, transparent 60%),
         radial-gradient(circle at 80% 75%, rgba(0, 255, 255, 0.08) 0%, transparent 60%),
         radial-gradient(circle at 50% 50%, rgba(255, 204, 0, 0.06) 0%, transparent 60%);
     animation: galleryGlow 25s ease-in-out infinite;
@@ -2611,22 +2611,25 @@ body.portfolio-page::after {
 }
 
 /* === Portfolio Overhaul: cinematic client showcase layer === */
+/* Stage-light palette: amber/ember warm accents + cyan counter-accent.
+   (--showcase-magenta/violet keep their names for the cascade but now
+   carry the warm amber + ember stage tones from the photography.) */
 :root {
-    --showcase-magenta: #ff2bd6;
-    --showcase-cyan: #22f7ff;
-    --showcase-violet: #8b5cf6;
+    --showcase-magenta: #ff9e2c;  /* stage amber — primary accent */
+    --showcase-cyan: #22f7ff;     /* cyan stage wash — cool accent */
+    --showcase-violet: #ff5a1f;   /* ember orange — warm secondary */
     --showcase-amber: #ffd166;
-    --showcase-glass: rgba(10, 0, 20, 0.58);
+    --showcase-glass: rgba(20, 12, 6, 0.58);
     --showcase-border: rgba(255, 255, 255, 0.18);
-    --showcase-shadow: 0 24px 90px rgba(0, 0, 0, 0.55), 0 0 70px rgba(255, 43, 214, 0.13);
+    --showcase-shadow: 0 24px 90px rgba(0, 0, 0, 0.55), 0 0 70px rgba(255, 158, 44, 0.13);
 }
 
 body.portfolio-page {
     background:
-        radial-gradient(circle at 16% 8%, rgba(255, 43, 214, 0.24), transparent 28rem),
+        radial-gradient(circle at 16% 8%, rgba(255, 158, 44, 0.24), transparent 28rem),
         radial-gradient(circle at 82% 16%, rgba(34, 247, 255, 0.18), transparent 30rem),
-        radial-gradient(circle at 50% 100%, rgba(139, 92, 246, 0.16), transparent 34rem),
-        #000;
+        radial-gradient(circle at 50% 100%, rgba(255, 90, 31, 0.16), transparent 34rem),
+        #0a0706;
 }
 
 body.portfolio-page::after {
@@ -2661,7 +2664,7 @@ body.portfolio-page::after {
 }
 
 .portfolio-hero-panel::before {
-    background: conic-gradient(from 180deg, transparent, rgba(255, 43, 214, 0.38), rgba(34, 247, 255, 0.34), transparent 62%);
+    background: conic-gradient(from 180deg, transparent, rgba(255, 158, 44, 0.38), rgba(34, 247, 255, 0.34), transparent 62%);
     filter: blur(18px);
     opacity: 0.85;
     animation: auraSpin 12s linear infinite;
@@ -2694,7 +2697,7 @@ body.portfolio-page::after {
     text-transform: uppercase;
     text-shadow:
         0 0 12px rgba(255, 255, 255, 0.55),
-        0 0 32px rgba(255, 43, 214, 0.35),
+        0 0 32px rgba(255, 158, 44, 0.35),
         0 0 70px rgba(34, 247, 255, 0.2);
 }
 
@@ -2812,7 +2815,7 @@ body.portfolio-page::after {
 .image-grid.active .grid-item:hover {
     transform: translateY(-8px) scale(1.018) rotateX(1deg);
     border-color: rgba(255, 255, 255, 0.34);
-    box-shadow: 0 26px 80px rgba(0, 0, 0, 0.62), 0 0 46px rgba(255, 43, 214, 0.16);
+    box-shadow: 0 26px 80px rgba(0, 0, 0, 0.62), 0 0 46px rgba(255, 158, 44, 0.16);
     filter: saturate(1.14) contrast(1.06);
 }
 
@@ -2870,7 +2873,7 @@ body.portfolio-page::after {
     justify-content: flex-start;
     min-height: 220px;
     aspect-ratio: 4 / 5;
-    background-color: #0a0010;
+    background-color: #1a0f04;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -2879,7 +2882,7 @@ body.portfolio-page::after {
 
 .media-fallback:not(.has-poster) {
     background-image:
-        radial-gradient(circle at 30% 20%, rgba(255, 43, 214, 0.18), transparent 55%),
+        radial-gradient(circle at 30% 20%, rgba(255, 158, 44, 0.18), transparent 55%),
         radial-gradient(circle at 80% 90%, rgba(34, 247, 255, 0.16), transparent 55%),
         repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.035) 0 10px, transparent 10px 20px);
 }
@@ -3010,7 +3013,7 @@ body.portfolio-page::after {
     --container: min(1320px, calc(100vw - 2.5rem));
     --radius-card: 22px;
     --radius-pill: 999px;
-    --glass-bg: rgba(12, 8, 20, 0.55);
+    --glass-bg: rgba(20, 12, 6, 0.55);
     --glass-blur: blur(20px) saturate(150%);
     --ease-cine: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
@@ -3086,11 +3089,11 @@ body.portfolio-page::after {
     line-height: 0.9;
     letter-spacing: -0.02em;
     margin-bottom: 0.6rem;
-    background: linear-gradient(180deg, #fff 0%, #f3d9ff 55%, #b9f6ff 100%);
+    background: linear-gradient(180deg, #fff 0%, #ffe2bd 55%, #ffc46b 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    text-shadow: 0 0 50px rgba(255, 43, 214, 0.35);
+    text-shadow: 0 0 50px rgba(255, 158, 44, 0.35);
     animation: none;
 }
 
@@ -3119,11 +3122,11 @@ body.portfolio-page::after {
 .welcome-button:not(.welcome-button-ghost) {
     background: var(--c-magenta);
     border-color: var(--c-magenta);
-    color: #0a0010;
-    box-shadow: 0 0 0 1px var(--c-magenta), 0 14px 40px rgba(255, 43, 214, 0.4);
+    color: #1a0f04;
+    box-shadow: 0 0 0 1px var(--c-magenta), 0 14px 40px rgba(255, 158, 44, 0.4);
 }
 .welcome-button:not(.welcome-button-ghost):hover {
-    box-shadow: 0 0 22px rgba(255, 43, 214, 0.7), 0 18px 48px rgba(255, 43, 214, 0.5);
+    box-shadow: 0 0 22px rgba(255, 158, 44, 0.7), 0 18px 48px rgba(255, 158, 44, 0.5);
     transform: translateY(-3px);
 }
 .welcome-button-ghost {
@@ -3196,9 +3199,9 @@ body.portfolio-page::after {
     backdrop-filter: blur(4px);
 }
 .live-music-grid.active .grid-item:hover::after {
-    border-color: rgba(255, 43, 214, 0.6);
+    border-color: rgba(255, 158, 44, 0.6);
     color: #fff;
-    box-shadow: 0 0 18px rgba(255, 43, 214, 0.4);
+    box-shadow: 0 0 18px rgba(255, 158, 44, 0.4);
 }
 .visuals-grid.active .grid-item:hover::after {
     border-color: rgba(34, 247, 255, 0.6);
@@ -3218,7 +3221,7 @@ body.portfolio-page::after {
 }
 .media-fallback:not(.has-poster) {
     background-image:
-        radial-gradient(circle at 28% 22%, rgba(255, 43, 214, 0.28), transparent 55%),
+        radial-gradient(circle at 28% 22%, rgba(255, 158, 44, 0.28), transparent 55%),
         radial-gradient(circle at 78% 84%, rgba(34, 247, 255, 0.24), transparent 55%),
         repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.04) 0 12px, transparent 12px 24px);
     background-size: 200% 200%, 200% 200%, auto;
@@ -3332,12 +3335,12 @@ body.contact-page main {
     font-size: clamp(2.6rem, 6vw, 4.6rem);
     margin: 0.6rem 0 1.2rem;
     color: #fff;
-    text-shadow: 0 0 40px rgba(255, 43, 214, 0.25);
+    text-shadow: 0 0 40px rgba(255, 158, 44, 0.25);
 }
 .about-copy .about-title em {
     font-style: italic;
     color: var(--c-magenta);
-    text-shadow: 0 0 26px rgba(255, 43, 214, 0.5);
+    text-shadow: 0 0 26px rgba(255, 158, 44, 0.5);
 }
 .about-copy p {
     font-family: var(--font-body);
@@ -3417,7 +3420,7 @@ body.contact-page main {
     position: absolute;
     inset: -2px;
     z-index: -1;
-    background: conic-gradient(from 200deg, transparent, rgba(255, 43, 214, 0.32), rgba(34, 247, 255, 0.3), transparent 60%);
+    background: conic-gradient(from 200deg, transparent, rgba(255, 158, 44, 0.32), rgba(34, 247, 255, 0.3), transparent 60%);
     filter: blur(20px);
     opacity: 0.7;
     animation: auraSpin 14s linear infinite;
@@ -3477,8 +3480,8 @@ body.contact-page main {
 .contact-card textarea:focus {
     outline: none;
     border-color: var(--c-magenta);
-    background: rgba(255, 43, 214, 0.06);
-    box-shadow: 0 0 0 3px rgba(255, 43, 214, 0.18);
+    background: rgba(255, 158, 44, 0.06);
+    box-shadow: 0 0 0 3px rgba(255, 158, 44, 0.18);
 }
 .contact-card input[aria-invalid="true"],
 .contact-card textarea[aria-invalid="true"] {
@@ -3491,19 +3494,19 @@ body.contact-page main {
     font-size: 1.15rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: #0a0010;
+    color: #1a0f04;
     background: var(--c-magenta);
     border: none;
     border-radius: 12px;
     padding: 0.9rem 1rem;
     cursor: pointer;
-    box-shadow: 0 12px 34px rgba(255, 43, 214, 0.4);
+    box-shadow: 0 12px 34px rgba(255, 158, 44, 0.4);
     transition: transform 0.2s var(--ease-cine), background 0.25s var(--ease-cine), box-shadow 0.25s var(--ease-cine);
 }
 .contact-card button[type="submit"]:hover {
     transform: translateY(-2px);
-    background: #ff52e0;
-    box-shadow: 0 0 22px rgba(255, 43, 214, 0.7), 0 16px 40px rgba(255, 43, 214, 0.5);
+    background: #ffb454;
+    box-shadow: 0 0 22px rgba(255, 158, 44, 0.7), 0 16px 40px rgba(255, 158, 44, 0.5);
 }
 .contact-card .form-feedback {
     font-family: var(--font-primary);
