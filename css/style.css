@@ -8,11 +8,33 @@
     --color-gray-medium: #333333;
     --color-gray-light: #666666;
 
-    /* Neon colors */
-    --neon-pink: #ff00ff;
-    --neon-blue: #00ffff;
+    /* Accent system — single source of truth (magenta primary, cyan secondary) */
+    --accent: #ff2bd6;
+    --accent-2: #22f7ff;
+    --accent-3: #8b5cf6;
+    --accent-amber: #ffd166;
+
+    /* Legacy neon aliases → mapped onto the unified accent system so every
+       older rule that still references them picks up the canonical palette. */
+    --neon-pink: var(--accent);
+    --neon-blue: var(--accent-2);
     --neon-green: #00ff8c;
-    --neon-yellow: #ffcc00;
+    --neon-yellow: var(--accent-amber);
+
+    /* Status colors (single red / single success across the whole site) */
+    --color-danger: #ff5a76;
+    --color-success: var(--accent-2);
+
+    /* Neutral ramp (9 steps, near-black base → bright foreground) */
+    --bg-900: #07070a;
+    --bg-800: #0e0e13;
+    --surface-1: #15151c;
+    --surface-2: #1e1e27;
+    --line-soft: rgba(255, 255, 255, 0.06);
+    --line: rgba(255, 255, 255, 0.10);
+    --line-strong: rgba(255, 255, 255, 0.16);
+    --fg-muted: #a0a0ad;
+    --fg-faint: #6b6b78;
 
     /* Functional colors */
     --text-color: var(--color-white);
@@ -36,10 +58,17 @@
     --font-size-xxl: 2rem;
     --font-size-huge: 3rem;
 
-    /* Borders */
-    --border-radius-sm: 2px;
-    --border-radius-md: 4px;
-    --border-radius-lg: 8px;
+    /* Borders — unified radii scale (5 steps + pill) */
+    --r-xs: 4px;
+    --r-sm: 8px;
+    --r-md: 12px;
+    --r-lg: 18px;
+    --r-xl: 24px;
+    --r-pill: 999px;
+    /* Legacy radius names mapped onto the scale */
+    --border-radius-sm: var(--r-xs);
+    --border-radius-md: var(--r-sm);
+    --border-radius-lg: var(--r-md);
 
     /* Animations */
     --transition-fast: 0.2s;
@@ -65,6 +94,14 @@
     --glow-visuals: 0 0 15px var(--neon-blue), 0 0 30px rgba(0, 255, 255, 0.4);
     --glow-art: 0 0 15px var(--neon-green), 0 0 30px rgba(0, 255, 140, 0.4);
     --glow-typography: 0 0 15px var(--neon-yellow), 0 0 30px rgba(255, 204, 0, 0.4);
+
+    /* Elevation — soft layered depth for surfaces (no neon) */
+    --elev-1: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --elev-2: 0 8px 24px rgba(0, 0, 0, 0.45);
+    --elev-3: 0 24px 70px rgba(0, 0, 0, 0.55);
+    /* Restrained accent halo — reserved for primary / active / focus states */
+    --glow-accent: 0 0 0 1px rgba(255, 43, 214, 0.45), 0 8px 30px rgba(255, 43, 214, 0.30);
+    --ring: 0 0 0 2px var(--bg-900), 0 0 0 4px var(--accent);
 
     /* Z-index layers */
     --z-background: -1;
@@ -119,8 +156,10 @@ body,
 html {
     margin: 0;
     padding: 0;
-    font-family: 'VT323', monospace, -apple-system, BlinkMacSystemFont, sans-serif;
-    /* Added system fonts as fallbacks */
+    font-family: var(--font-body);
+    /* Space Grotesk carries UI + body; VT323 is reserved for accents/labels */
+    font-size: 1rem;
+    line-height: 1.6;
     background-color: var(--bg-color);
     color: var(--text-color);
     -webkit-font-smoothing: antialiased;
@@ -215,6 +254,14 @@ a {
     text-decoration: none;
 }
 
+/* Consistent, on-brand keyboard focus ring for every interactive element.
+   (Mouse/touch users never see it; only :focus-visible triggers it.) */
+:where(a, button, input, textarea, select, [tabindex]):focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: var(--r-xs);
+}
+
 ul {
     list-style: none;
     padding: 0;
@@ -234,9 +281,10 @@ h3 {
     text-transform: uppercase;
     margin-top: 4rem;
     margin-bottom: 2rem;
-    letter-spacing: 2px;
-    font-family: 'VT323', monospace;
-    /* Ensure headers use the font too */
+    letter-spacing: -0.01em;
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1.1;
     transition: color 0.3s ease-in-out;
     /* Add transition for color change */
 }
@@ -398,17 +446,15 @@ header nav ul li a::before {
 
 header nav ul li a:hover {
     color: #ffffff;
-    /* Stay white on hover */
-    filter: brightness(1.1);
-    /* Subtle brightness boost on hover */
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
-    /* Subtle glow effect */
+    /* Underline (::before) is the indicator — keep the type itself crisp */
+}
+
+header nav ul li a:hover::before {
+    width: 60%;
 }
 
 header nav ul li a.active {
     color: #ffffff;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
-    /* Persistent glow for active page */
 }
 
 header nav ul li a.active::before {
@@ -454,20 +500,17 @@ header nav ul li a:focus-visible {
     /* Prevent wrapping */
     margin: 0 0 15px 0;
     /* Add bottom margin to create space between title and categories */
-    /* Enhanced rainbow gradient effect */
-    background: linear-gradient(to right, var(--neon-pink), var(--neon-blue), var(--neon-green), var(--neon-yellow));
+    /* Refined two-stop brand gradient (magenta → cyan) — calm, not rainbow */
+    background: linear-gradient(105deg, #ffffff 0%, var(--accent) 55%, var(--accent-2) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
     /* Make the original text color transparent */
     padding: 0 5px;
     /* Add slight padding so gradient doesn't clip */
-    letter-spacing: 2px;
-    /* Increased letter spacing for better readability */
+    letter-spacing: 1px;
     font-family: var(--font-primary);
-    /* Use our design token */
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-    /* Enhanced glow effect */
+    /* VT323 logotype stays as the brand accent voice */
     pointer-events: auto;
     /* Make the text clickable */
 }
@@ -1448,12 +1491,8 @@ section {
 }
 
 .category-button:hover {
-    background-color: var(--color-black);
-    transform: scale(1.04);
-    filter: brightness(1.1);
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.4),
-                0 0 25px rgba(255, 255, 255, 0.15);
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+    color: var(--color-white);
 }
 
 .category-button:active {
@@ -1462,14 +1501,8 @@ section {
 
 .category-button.active,
 .category-button[data-active="true"] {
-    background-color: var(--color-black);
     color: var(--color-white);
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5),
-                0 0 20px rgba(255, 255, 255, 0.2),
-                inset 0 0 12px rgba(255, 255, 255, 0.1);
-    transform: scale(1.04);
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.5),
-                 0 0 15px rgba(255, 255, 255, 0.25);
+    transform: translateY(-1px);
 }
 
 .category-button.active::before {
@@ -1481,53 +1514,37 @@ section {
     outline-offset: 3px;
 }
 
-/* Category-specific styles */
-/* Live Music - Magenta/Pink */
+/* Category-specific styles — accent border + restrained active glow.
+   Fills/sheen are handled by the glass-button layer; here we only set the
+   per-category edge color and a single subtle active halo. */
+/* Live Music - Magenta */
 .category-button[data-category="live-music"] {
-    border-color: #ff00ff;
+    border-color: rgba(255, 43, 214, 0.45);
 }
 
-.category-button[data-category="live-music"]:hover {
-    box-shadow: 0 0 15px #ff00ff,
-                0 0 30px rgba(255, 0, 255, 0.5),
-                inset 0 0 8px rgba(255, 0, 255, 0);
-    border-color: #ff00ff;
-    color: #ff00ff;
+.category-button[data-category="live-music"]:hover,
+.category-button[data-category="live-music"].active {
+    border-color: var(--accent);
+    color: #fff;
 }
 
 .category-button[data-category="live-music"].active {
-    box-shadow: 0 0 15px #ff00ff,
-                0 0 30px rgba(255, 0, 255, 0.6),
-                0 0 20px rgba(255, 0, 255, 0.3),
-                inset 0 0 12px rgba(255, 0, 255, 0.15);
-    border-color: #ff00ff;
-    text-shadow: 0 0 8px #ff00ff, 0 0 15px rgba(255, 0, 255, 0.6);
-    color: #ff00ff;
+    box-shadow: 0 6px 22px rgba(255, 43, 214, 0.28);
 }
 
-/* Visuals - Cyan Blue */
+/* Visuals - Cyan */
 .category-button[data-category="visuals"] {
-    border-color: #00ffff;
+    border-color: rgba(34, 247, 255, 0.45);
 }
 
-.category-button[data-category="visuals"]:hover {
-    box-shadow: 0 0 15px #00ffff,
-                0 0 30px rgba(0, 255, 255, 0.5),
-                inset 0 0 8px rgba(0, 255, 255, 0);
-    border-color: #00ffff;
-    color: #00ffff;
+.category-button[data-category="visuals"]:hover,
+.category-button[data-category="visuals"].active {
+    border-color: var(--accent-2);
+    color: #fff;
 }
 
 .category-button[data-category="visuals"].active {
-    box-shadow: 0 0 15px #00ffff,
-                0 0 30px rgba(0, 255, 255, 0.6),
-                0 0 20px rgba(0, 255, 255, 0.3),
-                inset 0 0 12px rgba(0, 255, 255, 0.15);
-    border-color: #00ffff;
-    background-color: rgba(0, 255, 255, 0.08);
-    /* subtle cyan fill */
-    text-shadow: 0 0 8px #00ffff, 0 0 15px rgba(0, 255, 255, 0.6);
-    color: #00ffff;
+    box-shadow: 0 6px 22px rgba(34, 247, 255, 0.26);
 }
 
 
@@ -1679,27 +1696,27 @@ section {
     z-index: 1;
     max-width: 100%;
     /* Ensure images don't exceed container */
-    /* Add subtle glow to all media items */
-    box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+    /* Elevation comes from the card wrapper — keep the media itself clean */
+    box-shadow: none;
 }
 
 /* Base hover effects for all portfolio media (images and videos) */
 .image-grid .grid-item:hover img,
 .image-grid .grid-item:hover video {
     transform: scale(1.03);
-    filter: brightness(1.1) contrast(1.05);
+    filter: brightness(1.05) contrast(1.03);
 }
 
 /* Category-specific glow effects that match category button colors */
-/* Live Music - Magenta/Pink */
+/* Live Music - Magenta */
 .live-music-grid .grid-item img,
 .live-music-grid .grid-item video {
-    box-shadow: 0 0 8px rgba(255, 0, 255, 0.3);
+    box-shadow: none;
 }
 
 .live-music-grid .grid-item:hover img,
 .live-music-grid .grid-item:hover video {
-    box-shadow: 0 0 15px #ff00ff, 0 0 30px rgba(255, 0, 255, 0.4);
+    box-shadow: none;
 }
 
 .image-grid .grid-item img.with-lqip {
@@ -1712,25 +1729,26 @@ section {
     align-items: center;
     justify-content: center;
     min-height: 220px;
-    border-radius: 4px;
-    border: 1px dashed rgba(255, 255, 255, 0.25);
-    color: rgba(255, 255, 255, 0.6);
+    border-radius: var(--r-lg);
+    border: 1px solid var(--line);
+    color: var(--fg-muted);
     text-transform: uppercase;
     letter-spacing: 0.12em;
-    font-size: 0.9rem;
-    background: rgba(255, 255, 255, 0.04);
+    font-family: var(--font-primary);
+    font-size: 0.95rem;
+    background: var(--surface-1);
     padding: 1.5rem;
 }
 
-/* Visuals - Cyan Blue */
+/* Visuals - Cyan */
 .visuals-grid .grid-item img,
 .visuals-grid .grid-item video {
-    box-shadow: 0 0 8px rgba(0, 255, 255, 0.3);
+    box-shadow: none;
 }
 
 .visuals-grid .grid-item:hover img,
 .visuals-grid .grid-item:hover video {
-    box-shadow: 0 0 15px #00ffff, 0 0 30px rgba(0, 255, 255, 0.4);
+    box-shadow: none;
 }
 
 
@@ -1849,16 +1867,18 @@ section {
     /* Use flexbox for perfect centering */
     align-items: center;
     justify-content: center;
-    background-color: #333;
-    /* Dark gray background */
+    background-color: var(--surface-1);
+    border: 1px solid var(--line);
     border-radius: 50%;
     /* Make it circular */
-    width: 45px;
-    /* Size of the circle */
-    height: 45px;
+    width: 46px;
+    height: 46px;
     margin: 0 0.5rem;
     /* Spacing between icons */
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    transition: background-color var(--transition-medium) ease,
+        border-color var(--transition-medium) ease,
+        transform var(--transition-medium) var(--ease-spring),
+        box-shadow var(--transition-medium) ease;
 }
 
 .social-links svg.icon {
@@ -1871,10 +1891,10 @@ section {
 }
 
 .social-links a:hover {
-    background-color: #ff00ff;
-    /* Pink background on hover */
-    transform: scale(1.1);
-    /* Slight scale effect on hover */
+    background-color: rgba(255, 43, 214, 0.16);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: var(--glow-accent);
 }
 
 .social-links a:hover svg.icon {
@@ -1882,106 +1902,25 @@ section {
     /* Keep white on hover */
 }
 
-/* Contact Section */
-#contact form {
-    max-width: 600px;
-    margin: 0 auto;
-    /* display: flex; flex-direction: column; No longer needed */
-}
-
-/* Add rule to control spacing of form field paragraphs */
-#contact form p {
-    margin: 0 0 1.5rem 0;
-    /* Reset default margins, add bottom margin for spacing */
-}
-
-#contact label {
-    display: block;
-    /* Make labels stack above inputs */
-    margin-bottom: 0.5rem;
-    /* Space between label and input */
-    font-size: 0.9rem;
-    text-align: left;
-    /* margin-top: 1rem; Removed */
-}
-
-#contact input,
-#contact textarea {
-    background-color: transparent;
-    /* Make background transparent */
-    border: 1px solid #555555;
-    /* Keep existing border */
-    color: #ffffff;
-    /* Keep existing text color */
-    padding: 0.8rem;
-    font-family: 'VT323', monospace;
-    font-size: 1rem;
-    /* margin-bottom: 1rem; Removed, handled by parent p tag */
-    border-radius: 4px;
-    width: 100%;
-    /* Make inputs fill container width */
-    box-sizing: border-box;
-    /* Include padding/border in width calculation */
-}
-
-#contact input[aria-invalid="true"],
-#contact textarea[aria-invalid="true"] {
-    border-color: #ff7a7a;
-    box-shadow: 0 0 0 1px rgba(255, 122, 122, 0.55);
-}
-
-#contact textarea {
-    min-height: 200px;
-    /* Increased height */
-    resize: vertical;
-}
-
-#contact button {
-    background-color: #555555;
-    /* Darker button background */
-    color: #ffffff;
-    /* White text */
-    border: none;
-    padding: 1rem;
-    /* font-family inherit removed as explicitly set above */
-    font-size: 1.2rem;
-    /* Slightly larger button text */
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    border-radius: 4px;
-    margin-top: 1rem;
-}
-
-#contact button:hover {
-    background-color: #ff00ff;
-    /* Bright pink hover */
-    color: #ffffff;
-    /* White text */
-}
-
-#contact button[disabled] {
-    opacity: 0.65;
-    cursor: not-allowed;
-}
-
-#contact .form-feedback {
+/* Contact Section
+   NOTE: the live contact markup uses the glass `.contact-card` layer defined
+   further down. The previous `#contact …` rules here overrode that card via
+   ID specificity (forcing VT323 / grey borders), so they were removed. Only
+   the genuinely additive states (disabled button, info feedback, min-height)
+   are kept below, scoped to the card so they don't fight the v2 styling. */
+.contact-card .form-feedback {
     min-height: 1.25rem;
     margin-top: 0.5rem;
-    font-size: 1rem;
-    text-align: left;
 }
 
-#contact .form-feedback[data-state="success"] {
-    color: #00ff8c;
+.contact-card .form-feedback[data-state="info"] {
+    color: var(--accent-2);
 }
 
-#contact .form-feedback[data-state="info"] {
-    color: #9ac9ff;
-}
-
-#contact .form-feedback[data-state="error"] {
-    color: #ff7a7a;
+.contact-card button[type="submit"][disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
 }
 
 /* Back to Top Button */
@@ -1989,25 +1928,28 @@ section {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background-color: rgba(255, 0, 255, 0.7);
-    /* Semi-transparent pink */
+    background-color: rgba(255, 43, 214, 0.85);
     color: #ffffff;
-    /* Changed to white */
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    font-size: 1.5rem;
+    width: 48px;
+    height: 48px;
+    font-size: 1.4rem;
     cursor: pointer;
     display: none;
     /* Hidden by default */
     z-index: 999;
-    transition: opacity 0.3s ease, background-color 0.3s ease;
+    box-shadow: var(--elev-2);
+    transition: opacity var(--transition-medium) ease,
+        background-color var(--transition-medium) ease,
+        transform var(--transition-medium) var(--ease-spring),
+        box-shadow var(--transition-medium) ease;
 }
 
 #back-to-top:hover {
-    background-color: rgba(255, 0, 255, 1);
-    /* Solid pink on hover */
+    background-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: var(--glow-accent);
 }
 
 /* Footer */
@@ -2207,7 +2149,7 @@ footer {
     color: #fff;
     text-decoration: none;
     cursor: pointer;
-    text-shadow: 0 0 15px rgba(255, 0, 255, 0.8), 0 0 25px rgba(0, 255, 255, 0.6);
+    text-shadow: 0 0 14px rgba(255, 43, 214, 0.7);
 }
 
 /* Optional Caption */
@@ -2215,7 +2157,9 @@ footer {
     width: 80%;
     max-width: 700px;
     text-align: center;
-    color: #ccc;
+    color: var(--fg-muted);
+    font-family: var(--font-primary);
+    letter-spacing: 0.08em;
     padding: 10px 0;
     margin-top: 10px;
     position: absolute;
@@ -2277,8 +2221,7 @@ footer {
 }
 
 .modal-nav:hover {
-    background-color: rgba(255, 0, 255, 0.8);
-    /* Pink hover */
+    background-color: rgba(255, 43, 214, 0.8);
 }
 
 /* --- End Modal Navigation Arrows --- */
@@ -2286,20 +2229,18 @@ footer {
 /* Site Credit */
 .site-credit {
     font-size: 0.8rem;
-    /* Smaller font size */
-    color: #aaa;
-    /* Dimmed color */
+    color: var(--fg-faint);
     margin-top: 1rem;
     /* Add some space above */
     text-align: center;
     /* Center the text */
+    letter-spacing: 0.04em;
 }
 
 .site-credit a {
-    color: #ccc;
-    /* Slightly brighter link color */
+    color: var(--fg-muted);
     text-decoration: underline;
-    /* Add underline for clarity */
+    text-underline-offset: 2px;
 }
 
 .site-credit a:hover {
@@ -2307,51 +2248,16 @@ footer {
     /* White on hover */
 }
 
-/* --- Theme Colors for Portfolio Section --- */
-/* Defaults (can be overridden by specific themes) */
+/* --- Theme accents for Portfolio Section ---
+   The headline stays white (with a cyan <em> from the hero layer); the heavy
+   per-theme section glow was removed — ambient color comes from the page
+   background gradient instead, so the gallery reads calm and gallery-like. */
 #portfolio {
-    /* Add transition for potential background or shadow changes */
     transition: box-shadow 0.5s ease-in-out;
 }
 
 #portfolio h2 {
-    color: #ff00ff;
-    /* Default to pink if no theme */
-}
-
-#portfolio .category-button.active {
-    background-color: #ff00ff;
-    border-color: #ff00ff;
-}
-
-/* Live Music Theme (Pink) */
-#portfolio.theme-live-music {
-    box-shadow: 0 0 40px 5px rgba(255, 0, 255, 0.4);
-}
-
-#portfolio.theme-live-music h2 {
-    color: #ff00ff;
-}
-
-#portfolio.theme-live-music .category-button.active {
-    background-color: #ff00ff;
-    border-color: #ff00ff;
-    color: #ffffff;
-}
-
-/* Visuals Theme (Cyan) */
-#portfolio.theme-visuals {
-    box-shadow: 0 0 40px 5px rgba(0, 255, 255, 0.4);
-}
-
-#portfolio.theme-visuals h2 {
-    color: #00ffff;
-}
-
-#portfolio.theme-visuals .category-button.active {
-    background-color: #00ffff;
-    border-color: #00ffff;
-    color: #000000;
+    color: #fff;
 }
 
 /* --- End Theme Colors --- */
@@ -2415,7 +2321,7 @@ header {
     transform: translate(-50%, -50%);
     border-radius: inherit;
     background: radial-gradient(circle at center, var(--glowColor) 0%, rgba(0, 0, 0, 0) 70%);
-    opacity: 0.6;
+    opacity: 0.35;
     filter: blur(18px) saturate(150%);
     transition: opacity var(--transition-medium) ease, transform var(--transition-medium) ease;
     pointer-events: none;
@@ -2425,16 +2331,16 @@ header {
 
 .image-grid .grid-item:hover::before {
     transform: translate(-50%, -50%) scale(1.12);
-    opacity: 0.9;
+    opacity: 0.6;
 }
 
 /* Category-specific glow variables */
 .live-music-grid .grid-item {
-    --glowColor: #ff00ff;
+    --glowColor: var(--accent);
 }
 
 .visuals-grid .grid-item {
-    --glowColor: #00ffff;
+    --glowColor: var(--accent-2);
 }
 
 /* Ambient colourful backdrop that mimics gallery lighting */
@@ -2447,9 +2353,9 @@ body.portfolio-page::after {
     height: 100%;
     z-index: var(--z-background);
     pointer-events: none;
-    background: radial-gradient(circle at 20% 30%, rgba(255, 0, 255, 0.10) 0%, transparent 60%),
-        radial-gradient(circle at 80% 75%, rgba(0, 255, 255, 0.08) 0%, transparent 60%),
-        radial-gradient(circle at 50% 50%, rgba(255, 204, 0, 0.06) 0%, transparent 60%);
+    background: radial-gradient(circle at 20% 30%, rgba(255, 43, 214, 0.10) 0%, transparent 60%),
+        radial-gradient(circle at 80% 75%, rgba(34, 247, 255, 0.08) 0%, transparent 60%),
+        radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.06) 0%, transparent 60%);
     animation: galleryGlow 25s ease-in-out infinite;
     filter: blur(100px) saturate(120%);
     will-change: transform;
@@ -3497,8 +3403,8 @@ body.contact-page main {
 }
 .contact-card input[aria-invalid="true"],
 .contact-card textarea[aria-invalid="true"] {
-    border-color: #ff5470;
-    box-shadow: 0 0 0 3px rgba(255, 84, 112, 0.18);
+    border-color: var(--color-danger);
+    box-shadow: 0 0 0 3px rgba(255, 90, 118, 0.2);
 }
 .contact-card button[type="submit"] {
     width: 100%;
@@ -3526,7 +3432,7 @@ body.contact-page main {
     text-align: center;
 }
 .contact-card .form-feedback[data-state="success"] { color: var(--c-cyan); }
-.contact-card .form-feedback[data-state="error"] { color: #ff7088; }
+.contact-card .form-feedback[data-state="error"] { color: var(--color-danger); }
 
 /* ============================================================
    REDUCED MOTION — settle everything gracefully
